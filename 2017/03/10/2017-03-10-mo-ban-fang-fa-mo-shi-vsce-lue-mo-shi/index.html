@@ -16,7 +16,7 @@
 <meta property="og:site_name" content="0x08 0x17">
 <meta property="og:description" content="模版方法模式和策略模式是两个比较”神似”的设计模式，都把一个类的可变部分移交给其他类进行处理，使整体保持灵活，但是两者在使用方法和侧重点上还是各有不同的，下面会展开讲述 模版方法模式 在一个方法中定义算法骨架,而将一些步骤延迟到子类中。模版方法使得子类可以在不改变算法结构的情况下,重新定义算法中的某些步骤">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2018-05-17T07:49:49.000Z">
+<meta property="og:updated_time" content="2018-05-17T08:09:27.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="模版方法模式vs策略模式">
 <meta name="twitter:description" content="模版方法模式和策略模式是两个比较”神似”的设计模式，都把一个类的可变部分移交给其他类进行处理，使整体保持灵活，但是两者在使用方法和侧重点上还是各有不同的，下面会展开讲述 模版方法模式 在一个方法中定义算法骨架,而将一些步骤延迟到子类中。模版方法使得子类可以在不改变算法结构的情况下,重新定义算法中的某些步骤">
@@ -196,7 +196,7 @@
 <li>策略模式采用组合的方式实现，更加有弹性; 模版方法模式采用继承的方式实现</li>
 </ul>
 <p>举个例子，在 <code>Head Fist 设计模式</code>中提到，Java <code>Arrays</code>类的排序方法也提供了一种模版方法模式的变式:<br>在 <code>mergeSort</code> 模版方法中, 依赖于 <code>comparable</code> 接口的 <code>compareTo</code> 方法来完成算法；但是我认为这里理解为一个策略也是合理的，<code>comparable</code> 就可以理解为一个算法家族的接口，可以有不同的实现方法，当方法接收了此类型的参数，实质上就采用了某个具体的策略。还是一贯的观点，编程是一门实践性很强的科学，死抠概念是没意思的，况且有的概念本身就没有定论。<strong>在思考的基础上学会质疑是一种好的习惯</strong></p>
-<h2 id="完"><a href="#完" class="headerlink" title="--完--"></a>--完--</h2>
+
       
 
       
