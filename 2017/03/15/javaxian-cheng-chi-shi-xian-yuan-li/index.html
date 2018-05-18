@@ -16,7 +16,7 @@
 <meta property="og:site_name" content="0x08 0x17">
 <meta property="og:description" content="为什么要使用线程池在开发中，我们使用多线程来处理多个任务，一般是先编写实现任务的代码(任务类一般实现Runnable接口)，然后为每个任务启动一个线程(Thread类)，接下来由系统负责完成线程间的调度。假设任务很多，而且执行时间不长，为每个任务都创建一个对应的线程，会使线程频繁的创建和销毁，所以我们引入线程池，控制线程创建的数目，尽量的使线程可以复用 实现线程池要考虑的问题 线程池自身的状态如何">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2018-05-18T06:39:40.000Z">
+<meta property="og:updated_time" content="2018-05-18T07:18:29.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Java线程池实现原理">
 <meta name="twitter:description" content="为什么要使用线程池在开发中，我们使用多线程来处理多个任务，一般是先编写实现任务的代码(任务类一般实现Runnable接口)，然后为每个任务启动一个线程(Thread类)，接下来由系统负责完成线程间的调度。假设任务很多，而且执行时间不长，为每个任务都创建一个对应的线程，会使线程频繁的创建和销毁，所以我们引入线程池，控制线程创建的数目，尽量的使线程可以复用 实现线程池要考虑的问题 线程池自身的状态如何">
@@ -199,16 +199,7 @@
 </blockquote>
 <p>首先，判断提交的任务command是否为null，若是null，则抛出空指针异常</p>
 <blockquote>
-<p>接着是这句，这句要好好理解一下：<code>if (poolSize &gt;= corePoolSize || !addIfUnderCorePoolSize(command))</code>由于是或条件运算符，所以先计算前半部分的值，如果线程池中当前线程数不小于核心池大小，那么就会直接进入下面的if语句块了</p>
-</blockquote>
-<blockquote>
-<p>如果线程池中<strong>当前线程数小于核心池大小</strong>，则接着执行后半部分，也就是执行<code>addIfUnderCorePoolSize(command)</code>如果执行完<code>addIfUnderCorePoolSize</code>这个方法返回false，则继续执行下面的if语句块，否则整个方法就直接执行完毕了</p>
-</blockquote>
-<blockquote>
-<p>如果执行完<code>addIfUnderCorePoolSize</code>这个方法返回false，然后接着判断：<code>if (runState == RUNNING &amp;&amp; workQueue.offer(command))</code>如果当前线程池处于RUNNING状态，则将任务放入任务缓存队列；如果当前线程池不处于RUNNING状态或者任务放入缓存队列失败，则执行：<code>addIfUnderMaximumPoolSize(command)</code>如果执行<code>addIfUnderMaximumPoolSize</code>方法失败，则执行<code>reject()</code>方法进行任务拒绝处理</p>
-</blockquote>
-<blockquote>
-<p>回到前面 <code>if (runState == RUNNING &amp;&amp; workQueue.offer(command))</code>这句的执行，如果说当前线程池处于RUNNING状态且将任务放入任务缓存队列成功，则继续进行判断：<br><code>if (runState != RUNNING || poolSize == 0)</code><br>这句判断是为了防止在将此任务添加进任务缓存队列的同时其他线程突然调用shutdown或者shutdownNow方法关闭了线程池的一种应急措施。如果是这样就执行：<code>ensureQueuedTaskHandled(command)</code>进行应急处理，从名字可以看出是保证 添加到任务缓存队列中的任务得到处理。</p>
+<p>接着是这句，这句要好好理解一下：<code>if (poolSize &gt;= corePoolSize || !addIfUnderCorePoolSize(command))</code>由于是或条件运算符，所以先计算前半部分的值，如果线程池中当前线程数不小于核心池大小，那么就会直接进入下面的if语句块了<br><br>如果线程池中<strong>当前线程数小于核心池大小</strong>，则接着执行后半部分，也就是执行<code>addIfUnderCorePoolSize(command)</code>如果执行完<code>addIfUnderCorePoolSize</code>这个方法返回false，则继续执行下面的if语句块，否则整个方法就直接执行完毕了<br><br>如果执行完<code>addIfUnderCorePoolSize</code>这个方法返回false，然后接着判断：<code>if (runState == RUNNING &amp;&amp; workQueue.offer(command))</code>如果当前线程池处于RUNNING状态，则将任务放入任务缓存队列；如果当前线程池不处于RUNNING状态或者任务放入缓存队列失败，则执行：<code>addIfUnderMaximumPoolSize(command)</code>如果执行<code>addIfUnderMaximumPoolSize</code>方法失败，则执行<code>reject()</code>方法进行任务拒绝处理<br><br>回到前面 <code>if (runState == RUNNING &amp;&amp; workQueue.offer(command))</code>这句的执行，如果说当前线程池处于RUNNING状态且将任务放入任务缓存队列成功，则继续进行判断：<br><code>if (runState != RUNNING || poolSize == 0)</code><br>这句判断是为了防止在将此任务添加进任务缓存队列的同时其他线程突然调用shutdown或者shutdownNow方法关闭了线程池的一种应急措施。如果是这样就执行：<code>ensureQueuedTaskHandled(command)</code>进行应急处理，从名字可以看出是保证 添加到任务缓存队列中的任务得到处理。</p>
 </blockquote>
 <p>接下里重点关注 <code>addIfUnderCorePoolSize(Runnable firstTask)</code> 方法</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">boolean</span> <span class="title">addIfUnderCorePoolSize</span><span class="params">(Runnable firstTask)</span> </span>&#123;</span><br><span class="line">    Thread t = <span class="keyword">null</span>;</span><br><span class="line">    <span class="keyword">final</span> ReentrantLock mainLock = <span class="keyword">this</span>.mainLock;</span><br><span class="line">    mainLock.lock();</span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">        <span class="keyword">if</span> (poolSize &lt; corePoolSize &amp;&amp; runState == RUNNING)</span><br><span class="line">            t = addThread(firstTask);   </span><br><span class="line">        &#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">        mainLock.unlock();</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span> (t == <span class="keyword">null</span>)</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">    t.start();</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
@@ -403,11 +394,11 @@ div.article-footer-copyright{
   
 <nav id="article-nav">
   
-    <a href="/2017/09/23/visitor-pattern/" id="article-nav-newer" class="article-nav-link-wrap">
+    <a href="/2017/04/03/2017-04-03-threadlocaljie-xi/" id="article-nav-newer" class="article-nav-link-wrap">
       <i class="icon-circle-left"></i>
       <div class="article-nav-title">
         
-          Visitor pattern
+          ThreadLocal解析
         
       </div>
     </a>
@@ -554,15 +545,15 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">翻译</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">设计</a>
               </li>
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">算法</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">翻译</a>
               </li>
             
             <div class="clearfix"></div>
