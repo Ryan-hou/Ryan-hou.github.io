@@ -16,7 +16,7 @@
 <meta property="og:site_name" content="0x08 0x17">
 <meta property="og:description" content="之前写过一篇关于线程池的文章，Java线程池实现原理，侧重于从代码的角度(主要是execute方法的实现)来解释线程池的实现，本文将结合一些例子来谈谈实际使用中遇到的问题，侧重于从使用层面看待线程池 线程池使用中涉及的重要问题还是再强调一下，Executor 和 ThreadPoolExecutor 这两个接口/类，一定去认真读一下jdk文档，写的很好 先从ThreadPoolExecutor实现">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2018-05-18T06:52:08.000Z">
+<meta property="og:updated_time" content="2018-05-18T06:54:08.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="再谈线程池">
 <meta name="twitter:description" content="之前写过一篇关于线程池的文章，Java线程池实现原理，侧重于从代码的角度(主要是execute方法的实现)来解释线程池的实现，本文将结合一些例子来谈谈实际使用中遇到的问题，侧重于从使用层面看待线程池 线程池使用中涉及的重要问题还是再强调一下，Executor 和 ThreadPoolExecutor 这两个接口/类，一定去认真读一下jdk文档，写的很好 先从ThreadPoolExecutor实现">
@@ -200,11 +200,11 @@ TimeUnit unit,BlockingQueue&lt;Runnable&gt; workQueue,ThreadFactory threadFactor
 </blockquote>
 <h3 id="错误使用BlockQueue导致长时间阻塞"><a href="#错误使用BlockQueue导致长时间阻塞" class="headerlink" title="错误使用BlockQueue导致长时间阻塞"></a>错误使用BlockQueue导致长时间阻塞</h3><p>使用BlockQueue既要对容量敏感(不然OOM了就悲剧了)，还要对阻塞操作敏感（下面引用之前看到的一篇文章，文章的出处在结尾给出）:</p>
 <blockquote>
-</blockquote>
 <p>对于在线业务场景而言，所有的并发，外部访问阻塞的地方的一个真理就是一定要有<strong>超时机制</strong>。我不知道见过多少次由于没有超时造成的在线业务的严重故障，在线业务最强调的是快速处理掉一次请求，所以<strong>fail fast是在线业务系统设计，代码编写中的最重要原则，</strong>按照这个原则上面的代码最起码明显犯的错误就是用put而不是带超时机制的offer，或者说如果是不重要的场景，完全就应该直接用offer，false了直接抛异常或记录下异常即可。</p>
+</blockquote>
 <p>Java的ThreadPoolExecutor中有个参数是BlockingQueue，如果这个地方用的是ArrayBlockingQueue或LinkedBlockingQueue，而线程池的coreSize和poolSize不一样的话，在coreSize线程满了后，这个时候线程池首先会做的是offer到BlockingQueue，成功的话就结束，这种场景同样不符合在线业务的需求，在线业务更希望的是快速处理，而不是先排队，而且其实在线业务最好是不要让请求堆在排队队列里，在线业务这样做很容易引发雪崩，超出处理能力范围直接拒绝抛错是相对比较好的做法，至于在前面页面上排队什么这个是可以的，那是另外一种限流机制。</p>
-<p>所以说在写高并发、分布式的代码时，除了系统设计外，代码细节的功力是非常非常重要的。</p>
 <blockquote>
+<p>所以说在写高并发、分布式的代码时，除了系统设计外，代码细节的功力是非常非常重要的。</p>
 </blockquote>
 <h3 id="在与ThreadLocal结合使用时也有坑-在后续介绍ThreadLocal的坑时在说明"><a href="#在与ThreadLocal结合使用时也有坑-在后续介绍ThreadLocal的坑时在说明" class="headerlink" title="在与ThreadLocal结合使用时也有坑(在后续介绍ThreadLocal的坑时在说明)"></a>在与ThreadLocal结合使用时也有坑(在后续介绍ThreadLocal的坑时在说明)</h3><hr>
 <p><strong>推荐阅读：</strong></p>
