@@ -16,7 +16,7 @@
 <meta property="og:site_name" content="0x08 0x17">
 <meta property="og:description" content="volatile关键字作用 保证内存可见性 防止指令重排序  此外需注意volatile并不保证操作的原子性 内存可见性Java内存模型规定，对于多个线程共享的变量，存储在主内存当中，每个线程都有自己的工作内存(比如CPU寄存器)，工作内存中保存了主内存共享变量的副本。线程只能访问自己的工作内存，不可以访问其他线程的工作内存。这就导致了各个线程的工作内存与主内存的数据可能并不是完全一致的，即共享变">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2018-05-18T11:17:28.000Z">
+<meta property="og:updated_time" content="2018-05-18T11:21:52.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="volatile与final关键字解析">
 <meta name="twitter:description" content="volatile关键字作用 保证内存可见性 防止指令重排序  此外需注意volatile并不保证操作的原子性 内存可见性Java内存模型规定，对于多个线程共享的变量，存储在主内存当中，每个线程都有自己的工作内存(比如CPU寄存器)，工作内存中保存了主内存共享变量的副本。线程只能访问自己的工作内存，不可以访问其他线程的工作内存。这就导致了各个线程的工作内存与主内存的数据可能并不是完全一致的，即共享变">
@@ -196,7 +196,7 @@
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Singleton</span> </span>&#123;</span><br><span class="line">	<span class="keyword">private</span> <span class="keyword">static</span> Singleton instance = <span class="keyword">null</span>;</span><br><span class="line">	<span class="function"><span class="keyword">private</span> <span class="title">Singleton</span><span class="params">()</span> </span>&#123;&#125;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> Singleton <span class="title">getInstance</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		<span class="keyword">if</span> (instance == <span class="keyword">null</span>) &#123;</span><br><span class="line">			<span class="keyword">synchronized</span> (Singleton.class) &#123;</span><br><span class="line">				<span class="keyword">if</span> (instance == <span class="keyword">null</span>) &#123;</span><br><span class="line">					instance = <span class="keyword">new</span> Singleton(); <span class="comment">// 非原子操作，可能会被重排序</span></span><br><span class="line">				&#125;</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>上述代码中，<code>instance = new Singleton()</code> 并不是一个原子操作，在 JVM 中可以抽象为三条指令：</p>
 <blockquote>
-<p>memory = allocate(); // 1:分配对象的内存空间<br><br>ctorInstnace(memory); // 2:初始化对象<br><br>instance = memory; // 3:设置instance指向刚分配的内存地址</p>
+<p>memory = allocate(); // 1:分配对象的内存空间<br>ctorInstnace(memory); // 2:初始化对象<br>instance = memory; // 3:设置instance指向刚分配的内存地址</p>
 </blockquote>
 <p>上面三条指令中 2 依赖于 1，但是 3 并不依赖于 2，所以实际执行时可能是 <code>1 - 3 - 2</code>；那么线程 A 在执行完 3 时，对象还没有初始化就已经赋值给 instance，这时线程 B 进入方法判断 instance 引用不为 null，然后返回一个没有被初始化好的对象，导致出错</p>
 <p>在 JDK5 之后可以使用 <code>private static volatile Singleton instance;</code> 来防止指令重排序。原理是为了实现 volatile 的内存语义，编译器在生成字节码时，会在指令序列中插入内存屏障来禁止特定类型的处理器重排序</p>
@@ -210,7 +210,6 @@
 <blockquote>
 <p>Marking a field as final forces the compiler to complete initialization of the field before the constructor completes. There is no such guarantee however for non-final fields. This might seem weird, however there are many things done by the compiler and JVM for optimization purposes such as reordering instructions, that cause such stuff to occur.<br><br>The usage model for final fields is a simple one: Set the final fields for an object in that object’s constructor; and do not write a reference to the object being constructed in a place where another thread can see it before the object’s constructor is finished. If this is followed, then when the object is seen by another thread, that thread will always see the correctly constructed version of that object’s final fields. </p>
 </blockquote>
-<hr>
 <h3 id="参考文章："><a href="#参考文章：" class="headerlink" title="参考文章："></a>参考文章：</h3><ul>
 <li><a href="https://tech.meituan.com/java-memory-reordering.html" target="_blank" rel="noopener">Java内存访问重排序的研究</a></li>
 <li><a href="https://docs.oracle.com/javase/specs/jls/se8/html/jls-17.html#jls-17.5" target="_blank" rel="noopener">17.5. final Field Semantics</a></li>
