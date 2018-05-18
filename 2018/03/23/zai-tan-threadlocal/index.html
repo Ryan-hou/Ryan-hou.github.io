@@ -6,20 +6,20 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="https://ryan-hou.github.io">
-  <title>Java泛型与通配符 | 0x08 0x17</title>
+  <title>再谈ThreadLocal | 0x08 0x17</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="从一个问题说起String 是 Object 的 subtype，但是List&amp;lt;String&amp;gt;不是List&amp;lt;Object&amp;gt;的subtype，为什么？ 最核心的原因是：不满足里氏替换原则(LSP)，这里就引出了里氏替换原则的定义，简单来说，A 是 B 的子类型当且仅当一个有效的使用了 B 类型的程序，把其中所有的 B 类型换成 A 类型，程序的有效性依然存在，那么A就是B的子">
+  <meta name="description" content="之前曾写过关于ThreadLocal的文章ThreadLocal解析，主要从ThreadLocal的一些基本知识和代码实现思路来整理，本文将试着从更加深入的角度来看ThreadLocal以及在使用TreadLocal 中遇到的一些坑 设计初衷一句话：提供线程内部的局部变量，在本线程内随时随地可取，隔离其他线程。 稍微展开来说一点，ThreadLocal的作用是提供线程内的局部变量 (类比方法的局部">
 <meta name="keywords" content="Java">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Java泛型与通配符">
-<meta property="og:url" content="https://ryan-hou.github.io/2017/01/09/javafan-xing-yu-tong-pei-fu/index.html">
+<meta property="og:title" content="再谈ThreadLocal">
+<meta property="og:url" content="https://ryan-hou.github.io/2018/03/23/zai-tan-threadlocal/index.html">
 <meta property="og:site_name" content="0x08 0x17">
-<meta property="og:description" content="从一个问题说起String 是 Object 的 subtype，但是List&amp;lt;String&amp;gt;不是List&amp;lt;Object&amp;gt;的subtype，为什么？ 最核心的原因是：不满足里氏替换原则(LSP)，这里就引出了里氏替换原则的定义，简单来说，A 是 B 的子类型当且仅当一个有效的使用了 B 类型的程序，把其中所有的 B 类型换成 A 类型，程序的有效性依然存在，那么A就是B的子">
+<meta property="og:description" content="之前曾写过关于ThreadLocal的文章ThreadLocal解析，主要从ThreadLocal的一些基本知识和代码实现思路来整理，本文将试着从更加深入的角度来看ThreadLocal以及在使用TreadLocal 中遇到的一些坑 设计初衷一句话：提供线程内部的局部变量，在本线程内随时随地可取，隔离其他线程。 稍微展开来说一点，ThreadLocal的作用是提供线程内的局部变量 (类比方法的局部">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2018-05-18T02:39:36.000Z">
+<meta property="og:updated_time" content="2018-05-18T08:22:38.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Java泛型与通配符">
-<meta name="twitter:description" content="从一个问题说起String 是 Object 的 subtype，但是List&amp;lt;String&amp;gt;不是List&amp;lt;Object&amp;gt;的subtype，为什么？ 最核心的原因是：不满足里氏替换原则(LSP)，这里就引出了里氏替换原则的定义，简单来说，A 是 B 的子类型当且仅当一个有效的使用了 B 类型的程序，把其中所有的 B 类型换成 A 类型，程序的有效性依然存在，那么A就是B的子">
+<meta name="twitter:title" content="再谈ThreadLocal">
+<meta name="twitter:description" content="之前曾写过关于ThreadLocal的文章ThreadLocal解析，主要从ThreadLocal的一些基本知识和代码实现思路来整理，本文将试着从更加深入的角度来看ThreadLocal以及在使用TreadLocal 中遇到的一些坑 设计初衷一句话：提供线程内部的局部变量，在本线程内随时随地可取，隔离其他线程。 稍微展开来说一点，ThreadLocal的作用是提供线程内的局部变量 (类比方法的局部">
   
     <link rel="alternative" href="/atom.xml" title="0x08 0x17" type="application/atom+xml">
   
@@ -151,59 +151,75 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            <article id="post-javafan-xing-yu-tong-pei-fu" class="article article-type-post " itemscope itemprop="blogPost">
+            <article id="post-zai-tan-threadlocal" class="article article-type-post " itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
         
   
     <h1 class="article-title" itemprop="name">
-      Java泛型与通配符
+      再谈ThreadLocal
     </h1>
   
 
         
-        <a href="/2017/01/09/javafan-xing-yu-tong-pei-fu/" class="archive-article-date">
-  	<time datetime="2017-01-09T13:34:50.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-01-09</time>
+        <a href="/2018/03/23/zai-tan-threadlocal/" class="archive-article-date">
+  	<time datetime="2018-03-23T06:20:44.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-03-23</time>
 </a>
         
       </header>
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h2 id="从一个问题说起"><a href="#从一个问题说起" class="headerlink" title="从一个问题说起"></a>从一个问题说起</h2><p>String 是 Object 的 subtype，但是<code>List&lt;String&gt;</code>不是<code>List&lt;Object&gt;</code>的subtype，为什么？</p>
-<p>最核心的原因是：<strong>不满足里氏替换原则(LSP)</strong>，这里就引出了里氏替换原则的定义，简单来说，A 是 B 的子类型当且仅当一个有效的使用了 B 类型的程序，把其中所有的 B 类型换成 A 类型，程序的有效性依然存在，那么A就是B的子类型(也就是<strong>所有使用supertype的地方都可以透明的使用其subtype</strong>)</p>
-<a id="more"></a>
-<p>根据里氏替换原则，下面这个有效(可以正确编译)的程序：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">doThing</span><span class="params">(List&lt;Object&gt; x)</span> </span>&#123;</span><br><span class="line">	x.add(<span class="keyword">new</span> Object());</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>如果 <code>List&lt;Object&gt;</code> 可以正确的被替换为 <code>List&lt;String&gt;</code>,那么<code>List&lt;String&gt;</code> 就是 <code>List&lt;Object&gt;</code> 的子类型，即：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">doThing</span><span class="params">(List&lt;String&gt; y)</span> </span>&#123;</span><br><span class="line">	y.add(<span class="keyword">new</span> Object());</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>显然上面的代码不能编译通过，也就是说<code>List&lt;String&gt;</code>就不是<code>List&lt;Object&gt;</code>的子类型，那么问题来了，各种参数化类型集合的超类是谁呢？答案是 <code>Collection&lt;?&gt;</code> 念做 <strong>collection of unknow</strong> 其中 <code>?</code> 是一个泛型通配符，可以匹配任何类型，下面会展开讲述</p>
-<h2 id="泛型通配符"><a href="#泛型通配符" class="headerlink" title="泛型通配符"></a>泛型通配符</h2><p><strong>提前声明：任何关于Java语言的概念，最权威的参考一定是 JLS，这里给出链接<a href="https://docs.oracle.com/javase/tutorial/extra/generics/wildcards.html" target="_blank" rel="noopener">Wildcards</a>，下面的内容会参考 JSL 来做说明。</strong></p>
-<p>由上面我们知道了，各种参数化类型集合的超类是 <code>Collection&lt;?&gt;</code>，<strong>?</strong>就是我们说的通配符，有了这个超类，我们就可以构造一个方法来接收任何参数实例化的 Collection了，如下：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">printCollection</span><span class="params">(Collection&lt;?&gt; c)</span> </span>&#123;</span><br><span class="line">	<span class="keyword">for</span> (Object e : c) &#123;</span><br><span class="line">		System.out.println(e);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>上面例子中我们读取集合中的每一个元素时都转为 Object，这样做总是安全的，因为 Object 是任何一个元素类型的超类。但是像下面这样就是错误的：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Collection&lt;?&gt; c = <span class="keyword">new</span> ArrayList&lt;String&gt;();</span><br><span class="line">c.add(<span class="keyword">new</span> Object()); <span class="comment">// Complie time error</span></span><br></pre></td></tr></table></figure>
-<p>因为当实际类型参数是<strong>?</strong>，代表一个未知的类型，所以我们不能向其传入任何类型的参数，只有一个例外，那就是<code>null</code>(任何类型的一个成员)，这里后面在说 <strong>&lt;? extends T&gt; vs &lt;? super T&gt;</strong>时会再谈到</p>
-<h3 id="受限的类型参数"><a href="#受限的类型参数" class="headerlink" title="受限的类型参数"></a>受限的类型参数</h3><p>在实际使用中，我们可能需要限制泛型的类型参数，比如，一个方法接收数字类型的参数，那么就可以把泛型的类型参数限定为 Number 类型或者他的子类型，使用的语法是：<strong>列出该参数的名字，然后跟上 extends 关键字，再跟上 upper bound</strong>，比如： <code>List&lt;T extends Number&gt;</code></p>
-<p><strong>注意，在上面的上下文语境中，extends 既代表类中的 extends，也代表接口中的 implements</strong></p>
-<p>一个类型参数可以同时存在有多个上界，比如：<code>&lt;T extends B1 &amp; B2 &amp; B3&gt;</code>, 该类型参数就是 B1，B2和B3的子类型，B1，B2，B3中只能存在一个 class，且该class必须放在第一个位置上</p>
-<p>这里 <code>&amp;</code> 还可以用于返回值中，也只能存在一个 class，比如：<br><code>return (Comparator&lt;T&gt; &amp; Serializable) a</code> 表示 a 被转型为 Comparator <strong>and</strong> Serializable(也就是一个可序列化的比较器)</p>
-<h2 id="lt-T-extends-Comparable-lt-super-T-gt-gt-怎么理解"><a href="#lt-T-extends-Comparable-lt-super-T-gt-gt-怎么理解" class="headerlink" title="&lt;T extends Comparable&lt;? super T&gt;&gt;怎么理解"></a><code>&lt;T extends Comparable&lt;? super T&gt;&gt;</code>怎么理解</h2><p>在 <code>Collections.sort</code> 的 javadoc 中我们可以看到这样的签名：<code>public static &lt;T extends Comparable&lt;? super T&gt;&gt; void sort(List&lt;T&gt; list)</code>，可能会有这样的疑问，为什么不写成<code>&lt;T implements Comparable&lt;T&gt;&gt;</code>?</p>
-<p>首先我们在上面受限的泛型参数中说到 extends 既可以表示 extends 也可以表示 implements；其次，javadoc 中的方法签名表示 T 能够实现 <code>Comparable&lt;? super T&gt;</code> 而不仅仅是 <code>Comparable&lt;T&gt;</code>,举个例子，一个 Student 类可以实现 Comparable<person>，其中 Student 是 Person 的子类，如下：</person></p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Person</span> </span>&#123;&#125;</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Student</span> <span class="keyword">extends</span> <span class="title">Person</span> <span class="keyword">implements</span> <span class="title">Comparable</span>&lt;<span class="title">Person</span>&gt; </span>&#123;</span><br><span class="line">	<span class="meta">@Override</span> </span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">compareTo</span><span class="params">(Person that)</span> </span>&#123;</span><br><span class="line">		<span class="comment">// ...</span></span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>在上面的例子中，一个List<student> 可以被 Collections.sort() 方法进行排序，但是<strong>只能根据 Person 类的属性</strong>，因为把 Student 实例传入 compareTo 方法中是按照超类型 Person 来处理的(除非你自己 downcast)</student></p>
-<p>在实际使用中，我们不会用 Student 类来实现 <code>Comparable&lt;Person&gt;</code>，因为 Person 类很可能已经实现了 <code>Comparable&lt;Person&gt;</code> 接口，Student 类会继承该实现，但是结果是一样的，你可以把 <code>List&lt;Student&gt;</code> 传给 Collections.sort() 调用，但还是根据Person 的属性来调用的</p>
-<h2 id="lt-extends-T-gt-vs-lt-super-T-gt"><a href="#lt-extends-T-gt-vs-lt-super-T-gt" class="headerlink" title="&lt;? extends T&gt; vs &lt;? super T&gt;"></a><code>&lt;? extends T&gt; vs &lt;? super T&gt;</code></h2><p>解释这种用法的最佳例子就是 <code>Collections.copy()</code> 方法:<br><code>public static &lt;T&gt; void copy(List&lt;? super T&gt; dest, List&lt;? extends T&gt; src)</code></p>
-<p>注意到在这个方法签名中，src list 声明为 extends，允许我传入相关的 List 类型的 family，仍然保证会产生类型T或者他的子类型，但是不能向 src list 中添加新的元素，因为我们无法确定元素的类型</p>
-<p>dest list 声明为 super, 允许我们传入相关的List类型的family(类型T或者其超类)，仍然保证我可以写入一个 T 类型元素到该 list 中。但是不能保证从该list中读出的元素是T类型的元素</p>
-<p>所以，由于上面的泛型通配符，我们可以用上面一个方法签名，满足下面不同方法的调用，大大增强了算法的普适性：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// copy(dest, src)</span></span><br><span class="line">Collections.copy(<span class="keyword">new</span> ArrayList&lt;Number&gt;(), <span class="keyword">new</span> ArrayList&lt;Number&gt;());</span><br><span class="line">Collections.copy(<span class="keyword">new</span> ArrayList&lt;Number&gt;(), <span class="keyword">new</span> ArrayList&lt;Integer&gt;());</span><br><span class="line">Collections.copy(<span class="keyword">new</span> ArrayList&lt;Object&gt;(), <span class="keyword">new</span> ArrayList&lt;Number&gt;());</span><br><span class="line">Collections.copy(<span class="keyword">new</span> ArrayList&lt;Object&gt;(), <span class="keyword">new</span> ArrayList&lt;Double&gt;());</span><br></pre></td></tr></table></figure>
-<p>总结起来就是：<strong>PECS（Producer Extends, Consumer Super</strong></p>
+        <p>之前曾写过关于ThreadLocal的文章<a href="https://ryan-hou.github.io/2017/04/03/threadlocaljie-xi/">ThreadLocal解析</a>，主要从ThreadLocal的一些基本知识和代码实现思路来整理，本文将试着从更加深入的角度来看ThreadLocal以及在使用TreadLocal 中遇到的一些坑</p>
+<h2 id="设计初衷"><a href="#设计初衷" class="headerlink" title="设计初衷"></a>设计初衷</h2><p>一句话：<strong>提供线程内部的局部变量，在本线程内随时随地可取，隔离其他线程。</strong></p>
+<p>稍微展开来说一点，ThreadLocal的作用是提供线程内的局部变量 (类比方法的局部变量)，这种变量在自身线程的生命周期内起作用（其他线程访问不到），减少同一个线程内多个函数或者组件之间一些公共变量的传递的复杂度（同时隔离了多个线程）。</p>
+<p>从上面的设计初衷，我们不难得出ThreadLocal的使用场景：</p>
 <ul>
-<li>Producer Extends: 如果你需要一个List来产生T类型的值(也就是说你想从List中读取T类型的值)，你需要使用 <code>? extends T</code>,即<code>List&lt;? extends T&gt;</code>。但是你不可以往该list中添加元素</li>
-<li>Consumer Super: 如果你需要一个List来消费T类型的值(也就是说你想把T类型的值写入到list中)，你需要使用<code>？ super T</code>，即<code>List&lt;? super T&gt;</code>。但是不能保证你从list中读取的值的类型是T</li>
-<li>如果你需要同时从list中进行读和写，那么就不要使用通配符，即<code>List&lt;T&gt;</code></li>
+<li>在同一个线程中的多个函数需要操作相同的数据，使用线程局部变量(ThreadLocal)可以达到在本线程内的多个函数之间共享数据</li>
+</ul>
+<a id="more"></a>
+<ul>
+<li><strong>为多线程环境常出现的并发访问问题提供了一种隔离机制。</strong>通过ThreadLocal存取的数据，总是与当前线程相关，也就是说，JVM 为每个运行的线程，绑定了私有的本地实例存取空间， 从而为多线程环境常出现的并发访问问题提供了一种隔离机制。(<strong>对于多线程共享资源问题，同步机制采用了”时间换空间”的实现方式，而ThreadLocal采用了“空间换时间”的方式。</strong> 前者仅提供一份变量，让不同的线程排队访问，而后者为每一个线程都提供了一份变量，因此可以同时访问而互不影响。)</li>
+</ul>
+<h2 id="实现思路"><a href="#实现思路" class="headerlink" title="实现思路"></a>实现思路</h2><p>如果让我们自己来实现一个ThreadLocal，大家应该比较容易想到的方式是实用Map实现，用线程id作为key，线程对应的值作为value。JDK在最早期就是这样实现的，在最新的jdk中使用了新的方式，简单概括下：每个Thread维护一个ThreadLocalMap映射表，这个映射表的key是ThreadLocal实例本身，value是真正需要存储的Object。具体点说就是：</p>
+<ul>
+<li>每个线程都有一个 ThreadLocalMap 类型的 threadLocals 属性</li>
+<li>ThreadLocalMap 类相当于一个Map（<strong>该map底层是由 Entry 数组实现，和HashMap使用链地址法解决冲突不同，ThreadLocalMap使用了开放地址法解决哈希冲突</strong>），<strong>每一个 Entry 封装了 key－value 键值对，key 是 ThreadLocal 本身，value 就是我们的值</strong></li>
+<li>当我们使用 threadLocal.set(new Integer(111)); 我们就会在这个线程中的 threadLocals 属性中放入一个键值对，key 就是这个 threadLocal，value 就是111</li>
+<li>当我们通过 threadlocal.get() 方法的时候，首先会根据这个线程得到这个线程的 threadLocals 属性，然后由于这个属性放的是键值对，我们就可以根据键 threadlocal 拿到值。 注意，<strong>这时候这个键 threadlocal 和 我们 set 方法的时候的那个键 threadlocal 是一样的，所以我们能够拿到相同的值</strong></li>
+</ul>
+<p>通过上面描述我们就会思考，为什么jdk后来采用了新的实现方式，这是一个好问题，我认为一个比较合理的解释方式是使用Map来实现的ThreadLocal需要自己处理线程并发的问题，而使用Thread来维护一个threadLocalMap则不需要；另外当Thread销毁之后对应的ThreadLocalMap也就随之销毁了，能减少内存使用量。</p>
+<h2 id="内存泄漏问题"><a href="#内存泄漏问题" class="headerlink" title="内存泄漏问题"></a>内存泄漏问题</h2><p>针对ThreadLocalMap使用弱引用的ThreadLocal来作为key，存在这样一种看法</p>
+<blockquote>
+<p>ThreadLocalMap使用ThreadLocal的弱引用作为key，如果一个ThreadLocal没有外部强引用引用他，那么系统gc的时候，这个ThreadLocal势必会被回收，这样一来，ThreadLocalMap中就会出现key为null的Entry，就没有办法访问这些key为null的Entry的value，如果当前线程再迟迟不结束的话，这些key为null的Entry的value就会一直存在一条强引用链，永远无法回收，造成内存泄露。</p>
+</blockquote>
+<p>实际上造成ThreadLocal内存泄露的根本原因在于<strong>ThreadLocalMap的生命周期跟Thread一样长，如果没有手动删除对应key就会导致内存泄漏，而不是因为弱引用。</strong>我们可以针对ThreadLocal使用强引用和弱引用分别来分析(下面分析来自其它博客，原文链接结尾会给出)：</p>
+<blockquote>
+<p>key 使用强引用：<br><br>引用的ThreadLocal的对象被回收了，但是ThreadLocalMap还持有ThreadLocal的强引用，如果没有手动删除，ThreadLocal不会被回收，导致Entry内存泄漏。<br><br><br>key 使用弱引用：<br><br>引用的ThreadLocal的对象被回收了，由于ThreadLocalMap持有ThreadLocal的弱引用，即使没有手动删除，ThreadLocal也会被回收。value在下一次ThreadLocalMap调用set,get，remove的时候会被清除。<br><br><br>比较两种情况，我们可以发现：由于ThreadLocalMap的生命周期跟Thread一样长，如果都没有手动删除对应key，都会导致内存泄漏，但是使用弱引用可以多一层保障：弱引用ThreadLocal不会内存泄漏，对应的value在下一次ThreadLocalMap调用set,get,remove的时候会被清除。</p>
+</blockquote>
+<p>综上，<strong>使用 threadlocal 要注意设置，清理上下文(因为线程池的原因）。每次使用完ThreadLocal，都调用它的remove()方法，清除数据。</strong><br>在使用线程池的情况下，没有及时清理ThreadLocal，不仅是内存泄漏的问题，更严重的是可能导致业务逻辑出现问题。所以，使用ThreadLocal就跟加锁完要解锁一样，用完就清理。（但是在清理上下文时，要注意会不会把其他业务代码中还在使用的同一个上下文给清理掉？）</p>
+<p>而且JDK建议将ThreadLocal变量定义成<strong>private static</strong>的，这样的话ThreadLocal的生命周期就更长，由于一直存在ThreadLocal的强引用，所以ThreadLocal也就不会被回收，也就能保证任何时候都能根据ThreadLocal的弱引用访问到Entry的value值，然后remove它，防止内存泄露。</p>
+<h2 id="ThreadLocal其它要注意的问题"><a href="#ThreadLocal其它要注意的问题" class="headerlink" title="ThreadLocal其它要注意的问题"></a>ThreadLocal其它要注意的问题</h2><p>除了上面说的内存血泄漏问题，每次在使用时要注意设置清理上下文，还有其它要考虑的地方</p>
+<ul>
+<li>ThreadLocal不能解决父子线程传递问题</li>
+</ul>
+<p>JDK提供了<code>InheritableThreadLocal</code>来实现父子线程的传递问题</p>
+<blockquote>
+<p>This class extends ThreadLocal to provide inheritance of values from parent thread to child thread: when a child thread is created, the child receives initial values for all inheritable thread-local variables for which the parent has values. </p>
+</blockquote>
+<p>当我们创建一个新的线程的时候X，X线程就会有 ThreadLocalMap 类型的 inheritableThreadLocals，因为它是 Thread 类的一个属性。然后，先得到当前线程存储的这些值，例如 Entry[] parentTable = parentMap.table; 再通过一个 for 循环，不断的把当前线程的这些值复制到我们新创建的线程X 的inheritableThreadLocals 中</p>
+<ul>
+<li>在线程池中使用ThreadLocal</li>
+</ul>
+<p>除了要注意设置清理上下文，并且在清理上下文时要注意不要把别的业务还在使用的上下文一起清除掉；还要注意线程池缓存线程带来的 ThreadLocal 取值不是任务提交时值。<strong>对于使用线程池等会缓存线程的组件的情况，线程由线程池创建好，并且线程是缓存起来反复使用的；这时父子线程关系的ThreadLocal值传递已经没有意义，应用需要的实际上是把 任务提交给线程池时的ThreadLocal值传递到 任务执行时。</strong>这时我们可以使用阿里开源的 <a href="https://github.com/alibaba/transmittable-thread-local" target="_blank" rel="noopener">transmittable-thread-local</a></p>
+<hr>
+<p>####参考文章</p>
+<ul>
+<li><a href="http://www.importnew.com/22039.html" target="_blank" rel="noopener">深入分析 ThreadLocal 内存泄漏问题</a></li>
+<li><a href="https://stackoverflow.com/questions/17968803/threadlocal-memory-leak" target="_blank" rel="noopener">ThreadLocal &amp; Memory Leak
+</a></li>
+<li><a href="https://github.com/alibaba/transmittable-thread-local" target="_blank" rel="noopener">alibaba/transmittable-thread-local</a></li>
 </ul>
 
       
@@ -288,8 +304,8 @@ div.article-footer-copyright{
 </style>
 
 <div class="article-footer-copyright">
-	<p>本文标题: <a href="/2017/01/09/javafan-xing-yu-tong-pei-fu/" target="_blank" title="Java泛型与通配符">Java泛型与通配符</a></p>
-	<p>本文链接: <a href="/2017/01/09/javafan-xing-yu-tong-pei-fu/" target="_blank" title="Java泛型与通配符">https://ryan-hou.github.io/2017/01/09/javafan-xing-yu-tong-pei-fu/</a></p>
+	<p>本文标题: <a href="/2018/03/23/zai-tan-threadlocal/" target="_blank" title="再谈ThreadLocal">再谈ThreadLocal</a></p>
+	<p>本文链接: <a href="/2018/03/23/zai-tan-threadlocal/" target="_blank" title="再谈ThreadLocal">https://ryan-hou.github.io/2018/03/23/zai-tan-threadlocal/</a></p>
 	<p>转载请注明本文链接~~</p>
 </div>
 
@@ -358,7 +374,7 @@ div.article-footer-copyright{
     <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
     <p>扫一扫，分享到微信</p>
     <div class="wx-qrcode">
-      <img src="//pan.baidu.com/share/qrcode?url=https://ryan-hou.github.io/2017/01/09/javafan-xing-yu-tong-pei-fu/" alt="微信分享二维码">
+      <img src="//pan.baidu.com/share/qrcode?url=https://ryan-hou.github.io/2018/03/23/zai-tan-threadlocal/" alt="微信分享二维码">
     </div>
 </div>
 
@@ -372,18 +388,18 @@ div.article-footer-copyright{
   
 <nav id="article-nav">
   
-    <a href="/2017/03/10/mo-ban-fang-fa-mo-shi-vsce-lue-mo-shi/" id="article-nav-newer" class="article-nav-link-wrap">
+    <a href="/2018/04/01/dan-li-mo-shi-de-ge-chong-zi-shi/" id="article-nav-newer" class="article-nav-link-wrap">
       <i class="icon-circle-left"></i>
       <div class="article-nav-title">
         
-          模版方法模式vs策略模式
+          单例模式的各种姿势
         
       </div>
     </a>
   
   
-    <a href="/2017/01/08/tan-tan-java-fan-xing/" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">谈谈 Java 泛型</div>
+    <a href="/2018/03/17/zai-tan-xian-cheng-chi/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">再谈线程池</div>
       <i class="icon-circle-right"></i>
     </a>
   
@@ -422,7 +438,7 @@ div.article-footer-copyright{
 <script src="https://billts.site/js/gitment.js"></script>
 <script>
 var gitment = new Gitment({
-  id: 'Java泛型与通配符',
+  id: '再谈ThreadLocal',
   owner: 'Ryan-hou',
   repo: 'Ryan-hou.github.io',
   oauth: {

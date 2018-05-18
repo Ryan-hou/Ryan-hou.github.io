@@ -16,12 +16,12 @@
 <meta property="og:site_name" content="0x08 0x17">
 <meta property="og:description" content="是什么这个类的名字已经很清楚的告诉我们该类的作用了，即线程局部变量，可以类比一般的局部变量，ThreadLocal说明了该局部变量的上下文环境为Thread，即每个线程都有一个互不影响的变量，可以通过get()或者set(T value)等方法分别操作自己的变量副本，而对其他的线程操作保持封闭 为什么那么为什么需要使用ThreadLocal呢？可以考虑这样两个场景：  在同一个线程中的多个函数需要">
 <meta property="og:locale" content="default">
-<meta property="og:image" content="http://ryan-hou.github.io/assets/img/threadLocal.png">
-<meta property="og:updated_time" content="2018-05-18T08:02:40.000Z">
+<meta property="og:image" content="http://ryan-hou.github.io/assets/img/blogPic/threadLocal.png">
+<meta property="og:updated_time" content="2018-05-18T08:22:01.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="ThreadLocal解析">
 <meta name="twitter:description" content="是什么这个类的名字已经很清楚的告诉我们该类的作用了，即线程局部变量，可以类比一般的局部变量，ThreadLocal说明了该局部变量的上下文环境为Thread，即每个线程都有一个互不影响的变量，可以通过get()或者set(T value)等方法分别操作自己的变量副本，而对其他的线程操作保持封闭 为什么那么为什么需要使用ThreadLocal呢？可以考虑这样两个场景：  在同一个线程中的多个函数需要">
-<meta name="twitter:image" content="http://ryan-hou.github.io/assets/img/threadLocal.png">
+<meta name="twitter:image" content="http://ryan-hou.github.io/assets/img/blogPic/threadLocal.png">
   
     <link rel="alternative" href="/atom.xml" title="0x08 0x17" type="application/atom+xml">
   
@@ -208,13 +208,12 @@
 <li>map 不为空，获取threadLocal在该线程的中的value值：ThreadLocalMap.Entry e = map.getEntry(this); T result = (T) e.value;</li>
 </ul>
 <p>现在整个ThreadLocal的结构已经很清晰了，可以参考下面的图进行理解（<strong>图片的出处会在最后引用的文章链接中给出</strong>）</p>
-<p><img src="http://ryan-hou.github.io/assets/img/threadLocal.png" alt=""></p>
+<p><img src="http://ryan-hou.github.io/assets/img/blogPic/threadLocal.png" alt=""></p>
 <h2 id="ThreadLocal的内存泄漏问题"><a href="#ThreadLocal的内存泄漏问题" class="headerlink" title="ThreadLocal的内存泄漏问题"></a>ThreadLocal的内存泄漏问题</h2><p>起因：ThreadLocalMap使用ThreadLocal的弱引用作为key，如果一个ThreadLocal没有外部强引用引用他，那么系统gc的时候，这个ThreadLocal势必会被回收，这样一来，ThreadLocalMap中就会出现key为null的Entry，就没有办法访问这些key为null的Entry的value，如果当前线程再迟迟不结束的话，这些key为null的Entry的value就会一直存在一条强引用链：<br><code>Thread Ref -&gt; Thread -&gt; ThreaLocalMap -&gt; Entry -&gt; value</code></p>
 <p>解决：事实上jdk在设计的时候已经考虑到了这个情况，在getEntry函数和set函数中会对key为null的Entry进行擦出，<strong>但是</strong>，上面的设计思路依赖一个前提条件：要调用ThreadLocalMap的genEntry函数或者set函数。这当然是不可能任何情况都成立的，所以很多情况下需要使用者手动调用ThreadLocal的remove函数，手动删除不再需要的ThreadLocal，防止内存泄露。<strong>所以JDK建议将ThreadLocal变量定义成private static的，这样的话ThreadLocal的生命周期就更长，由于一直存在ThreadLocal的强引用，所以ThreadLocal也就不会被回收，也就能保证任何时候都能根据ThreadLocal的弱引用访问到Entry的value值，然后remove它，防止内存泄露。
 </strong></p>
 <hr>
-<p>####参考文章：</p>
-<ul>
+<h3 id="参考文章："><a href="#参考文章：" class="headerlink" title="参考文章："></a>参考文章：</h3><ul>
 <li><a href="http://blog.decaywood.me/2016/03/15/ThreadLocal-intro/" target="_blank" rel="noopener">ThreadLocal原理分析</a></li>
 <li><a href="https://www.zhihu.com/question/23089780/answer/62097840" target="_blank" rel="noopener">ThreadLocal原理</a></li>
 </ul>
@@ -532,15 +531,15 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
           <ul class="article-tag-list" q-show="showTags">
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">算法</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">Java</a>
               </li>
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">设计</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">算法</a>
               </li>
              
               <li class="article-tag-list-item">
