@@ -491,35 +491,30 @@
 
 
   
-    <article id="post-2017-01-08-tan-tan-java-fan-xing" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+    <article id="post-javafan-xing-yu-tong-pei-fu" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2017/01/08/2017-01-08-tan-tan-java-fan-xing/">谈谈 Java 泛型</a>
+      <a class="article-title" href="/2017/01/09/javafan-xing-yu-tong-pei-fu/">Java泛型与通配符</a>
     </h1>
   
 
         
-        <a href="/2017/01/08/2017-01-08-tan-tan-java-fan-xing/" class="archive-article-date">
-  	<time datetime="2017-01-08T13:09:25.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-01-08</time>
+        <a href="/2017/01/09/javafan-xing-yu-tong-pei-fu/" class="archive-article-date">
+  	<time datetime="2017-01-09T13:34:50.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-01-09</time>
 </a>
         
       </header>
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h2 id="相关术语和入门使用"><a href="#相关术语和入门使用" class="headerlink" title="相关术语和入门使用"></a>相关术语和入门使用</h2><p><strong>关于泛型的几个术语</strong></p>
-<ul>
-<li>ArrayList<e> 中的 <code>&lt;&gt;</code> 念作 <code>typeof</code>，E 称为类型参数变量</e></li>
-<li>ArrayList<integer> 中的 Integer 称为实际类型参数</integer></li>
-<li>整个 ArrayList<e> 称为泛型类型；整个 ArrayList<integer> 称为参数化的类型</integer></e></li>
-</ul>
-<p><strong>关于泛型几个需要注意的点(由于Java的泛型采用类型擦除来现实，存在相关问题，后面会继续讨论)</strong></p>
+        <h2 id="从一个问题说起"><a href="#从一个问题说起" class="headerlink" title="从一个问题说起"></a>从一个问题说起</h2><p>String 是 Object 的 subtype，但是<code>List&lt;String&gt;</code>不是<code>List&lt;Object&gt;</code>的subtype，为什么？</p>
+<p>最核心的原因是：<strong>不满足里氏替换原则(LSP)</strong>，这里就引出了里氏替换原则的定义，简单来说，A 是 B 的子类型当且仅当一个有效的使用了 B 类型的程序，把其中所有的 B 类型换成 A 类型，程序的有效性依然存在，那么A就是B的子类型(也就是<strong>所有使用supertype的地方都可以透明的使用其subtype</strong>)</p>
         
-          <a class="article-more-a" href="/2017/01/08/2017-01-08-tan-tan-java-fan-xing/#more">more >></a>
+          <a class="article-more-a" href="/2017/01/09/javafan-xing-yu-tong-pei-fu/#more">more >></a>
         
       
 
@@ -545,7 +540,92 @@
 
       
         <p class="article-more-link">
-          <a class="article-more-a" href="/2017/01/08/2017-01-08-tan-tan-java-fan-xing/">展开全文 >></a>
+          <a class="article-more-a" href="/2017/01/09/javafan-xing-yu-tong-pei-fu/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+
+  
+    <article id="post-tan-tan-java-fan-xing" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/01/08/tan-tan-java-fan-xing/">谈谈 Java 泛型</a>
+    </h1>
+  
+
+        
+        <a href="/2017/01/08/tan-tan-java-fan-xing/" class="archive-article-date">
+  	<time datetime="2017-01-08T13:09:25.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-01-08</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="相关术语和入门使用"><a href="#相关术语和入门使用" class="headerlink" title="相关术语和入门使用"></a>相关术语和入门使用</h2><p><strong>关于泛型的几个术语</strong></p>
+<ul>
+<li>ArrayList<e> 中的 <code>&lt;&gt;</code> 念作 <code>typeof</code>，E 称为类型参数变量</e></li>
+<li><code>ArrayList&lt;Integer&gt;</code> 中的 Integer 称为实际类型参数</li>
+<li>整个 <code>ArrayList&lt;E&gt;</code> 称为泛型类型；整个 <code>ArrayList&lt;Integer&gt;</code> 称为参数化的类型</li>
+</ul>
+<p><strong>关于泛型几个需要注意的点(由于Java的泛型采用类型擦除来现实，存在相关问题，后面会继续讨论)</strong></p>
+        
+          <a class="article-more-a" href="/2017/01/08/tan-tan-java-fan-xing/#more">more >></a>
+        
+      
+
+      
+    </div>
+	<!-- 版权内容 -->
+	
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">Java</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2017/01/08/tan-tan-java-fan-xing/">展开全文 >></a>
         </p>
       
 
