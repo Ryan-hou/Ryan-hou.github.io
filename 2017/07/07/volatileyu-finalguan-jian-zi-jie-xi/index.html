@@ -6,20 +6,20 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="https://ryan-hou.github.io">
-  <title>谈谈 Java 泛型 | 0x08 0x17</title>
+  <title>volatile与final关键字解析 | 0x08 0x17</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="相关术语和入门使用关于泛型的几个术语  ArrayList 中的 &amp;lt;&amp;gt; 念作 typeof，E 称为类型参数变量 ArrayList&amp;lt;Integer&amp;gt; 中的 Integer 称为实际类型参数 整个 ArrayList&amp;lt;E&amp;gt; 称为泛型类型；整个 ArrayList&amp;lt;Integer&amp;gt; 称为参数化的类型  关于泛型几个需要注意的点(由于Java的泛型采用类">
+  <meta name="description" content="volatile关键字作用 保证内存可见性 防止指令重排序  此外需注意volatile并不保证操作的原子性 内存可见性Java内存模型规定，对于多个线程共享的变量，存储在主内存当中，每个线程都有自己的工作内存(比如CPU寄存器)，工作内存中保存了主内存共享变量的副本。线程只能访问自己的工作内存，不可以访问其他线程的工作内存。这就导致了各个线程的工作内存与主内存的数据可能并不是完全一致的，即共享变">
 <meta name="keywords" content="Java">
 <meta property="og:type" content="article">
-<meta property="og:title" content="谈谈 Java 泛型">
-<meta property="og:url" content="https://ryan-hou.github.io/2017/01/08/tan-tan-java-fan-xing/index.html">
+<meta property="og:title" content="volatile与final关键字解析">
+<meta property="og:url" content="https://ryan-hou.github.io/2017/07/07/volatileyu-finalguan-jian-zi-jie-xi/index.html">
 <meta property="og:site_name" content="0x08 0x17">
-<meta property="og:description" content="相关术语和入门使用关于泛型的几个术语  ArrayList 中的 &amp;lt;&amp;gt; 念作 typeof，E 称为类型参数变量 ArrayList&amp;lt;Integer&amp;gt; 中的 Integer 称为实际类型参数 整个 ArrayList&amp;lt;E&amp;gt; 称为泛型类型；整个 ArrayList&amp;lt;Integer&amp;gt; 称为参数化的类型  关于泛型几个需要注意的点(由于Java的泛型采用类">
+<meta property="og:description" content="volatile关键字作用 保证内存可见性 防止指令重排序  此外需注意volatile并不保证操作的原子性 内存可见性Java内存模型规定，对于多个线程共享的变量，存储在主内存当中，每个线程都有自己的工作内存(比如CPU寄存器)，工作内存中保存了主内存共享变量的副本。线程只能访问自己的工作内存，不可以访问其他线程的工作内存。这就导致了各个线程的工作内存与主内存的数据可能并不是完全一致的，即共享变">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2018-05-18T02:16:58.000Z">
+<meta property="og:updated_time" content="2018-05-18T11:17:28.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="谈谈 Java 泛型">
-<meta name="twitter:description" content="相关术语和入门使用关于泛型的几个术语  ArrayList 中的 &amp;lt;&amp;gt; 念作 typeof，E 称为类型参数变量 ArrayList&amp;lt;Integer&amp;gt; 中的 Integer 称为实际类型参数 整个 ArrayList&amp;lt;E&amp;gt; 称为泛型类型；整个 ArrayList&amp;lt;Integer&amp;gt; 称为参数化的类型  关于泛型几个需要注意的点(由于Java的泛型采用类">
+<meta name="twitter:title" content="volatile与final关键字解析">
+<meta name="twitter:description" content="volatile关键字作用 保证内存可见性 防止指令重排序  此外需注意volatile并不保证操作的原子性 内存可见性Java内存模型规定，对于多个线程共享的变量，存储在主内存当中，每个线程都有自己的工作内存(比如CPU寄存器)，工作内存中保存了主内存共享变量的副本。线程只能访问自己的工作内存，不可以访问其他线程的工作内存。这就导致了各个线程的工作内存与主内存的数据可能并不是完全一致的，即共享变">
   
     <link rel="alternative" href="/atom.xml" title="0x08 0x17" type="application/atom+xml">
   
@@ -151,71 +151,71 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            <article id="post-tan-tan-java-fan-xing" class="article article-type-post " itemscope itemprop="blogPost">
+            <article id="post-volatileyu-finalguan-jian-zi-jie-xi" class="article article-type-post " itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
         
   
     <h1 class="article-title" itemprop="name">
-      谈谈 Java 泛型
+      volatile与final关键字解析
     </h1>
   
 
         
-        <a href="/2017/01/08/tan-tan-java-fan-xing/" class="archive-article-date">
-  	<time datetime="2017-01-08T13:09:25.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-01-08</time>
+        <a href="/2017/07/07/volatileyu-finalguan-jian-zi-jie-xi/" class="archive-article-date">
+  	<time datetime="2017-07-07T07:25:57.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-07-07</time>
 </a>
         
       </header>
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h2 id="相关术语和入门使用"><a href="#相关术语和入门使用" class="headerlink" title="相关术语和入门使用"></a>相关术语和入门使用</h2><p><strong>关于泛型的几个术语</strong></p>
-<ul>
-<li>ArrayList<e> 中的 <code>&lt;&gt;</code> 念作 <code>typeof</code>，E 称为类型参数变量</e></li>
-<li><code>ArrayList&lt;Integer&gt;</code> 中的 Integer 称为实际类型参数</li>
-<li>整个 <code>ArrayList&lt;E&gt;</code> 称为泛型类型；整个 <code>ArrayList&lt;Integer&gt;</code> 称为参数化的类型</li>
+        <h2 id="volatile关键字"><a href="#volatile关键字" class="headerlink" title="volatile关键字"></a>volatile关键字</h2><h3 id="作用"><a href="#作用" class="headerlink" title="作用"></a>作用</h3><ul>
+<li>保证内存可见性</li>
+<li>防止指令重排序</li>
 </ul>
-<p><strong>关于泛型几个需要注意的点(由于Java的泛型采用类型擦除来现实，存在相关问题，后面会继续讨论)</strong></p>
+<p>此外需注意volatile并不保证操作的原子性</p>
+<h3 id="内存可见性"><a href="#内存可见性" class="headerlink" title="内存可见性"></a>内存可见性</h3><p>Java内存模型规定，对于多个线程共享的变量，存储在主内存当中，每个线程都有自己的工作内存(比如CPU寄存器)，<strong>工作内存中保存了主内存共享变量的副本。线程只能访问自己的工作内存，不可以访问其他线程的工作内存</strong>。这就导致了<strong>各个线程的工作内存与主内存的数据可能并不是完全一致的</strong>，即共享变量的改变在不同的线程间是不可见的</p>
+<p>内存不可见会带来一些问题，比如有一个共享变量<code>boolean open = true;</code> 描述一个资源的状态，true 表示可用。现在线程 A 进行操作后，把该变量值改为 false，但是该变量的改动尚未同步到线程 B 的工作内存，那么线程 B 会操作一个不可用的资源，从而产生错误</p>
 <a id="more"></a>
-<ul>
-<li>泛型的类型参数必须是引用数据类型（出于兼容之前版本）</li>
-<li>泛型类型实例化时，两边的实际类型参数必须完全一致，或者一边带实际类型参数，一边不带(&lt;&gt;: the diamond)</li>
-<li>泛型是提供给编译器使用的，它用于<strong>限定集合的输入类型；让编译器在源码级别上即可防止非法数据的插入</strong>，但是编译生成 class 文件后，将不再存在泛型信息(在类的元数据中通过反射还可以取到泛型信息)，这个过程叫做<strong>擦除</strong>(所以我们可以通过反射来绕过泛型)　</li>
-<li>泛型在编译阶段保证了输入类型的安全性，在后面的使用中也避免了强制类型转换，但也牺牲了代码简洁性</li>
+<p>上面的例子，为了能够保证变量的修改对其他线程可见，需要使用 volatile 关键字。volatile 关键字保证可见性的原理是在每次访问volatile修饰的变量时都会强制从主内存获取最新的值，因此每次访问的都是主内存的最新版本</p>
+<h3 id="指令重排序"><a href="#指令重排序" class="headerlink" title="指令重排序"></a>指令重排序</h3><p>指令重排序是比较复杂的一块儿内容，涉及到处理器，编译器等指令的优化，包括计算机处理器架构等硬件知识，这里抛砖引玉，文章结尾会给出推荐文章的链接</p>
+<blockquote>
+<p>大多数现代微处理器都会采用将指令乱序执行（out-of-order execution，简称OoOE或OOE）的方法，在条件允许的情况下，直接运行当前有能力立即执行的后续指令，避开获取下一条指令所需数据时造成的等待。通过乱序执行的技术，处理器可以大大提高执行效率。<br>除了处理器，<strong>常见的Java运行时环境的JIT编译器也会做指令重排序操作，即生成的机器指令与字节码指令顺序不一致。</strong></p>
+</blockquote>
+<p>简单说指令重排序的目的是为了优化指令，提高运行效率，在不影响单线程程序执行结果的前提下，尽可能的提高并行度。</p>
+<p>举个例子：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">double</span> r = <span class="number">2.3</span>;</span><br><span class="line"><span class="keyword">double</span> pi = <span class="number">3.14</span>;</span><br><span class="line"><span class="keyword">double</span> area = pi * r * r;</span><br></pre></td></tr></table></figure>
+<p>上面代码中，第三行依赖于前两行代码，但是前两行之间没有顺序，可以先执行任何一行代码</p>
+<p><strong>as-if-serial 语义</strong></p>
+<blockquote>
+<p>As-if-serial语义的意思是，所有的动作(Action)都可以为了优化而被重排序，但是必须保证它们重排序后的结果和程序代码本身的应有结果是一致的。Java编译器、运行时和处理器都会保证单线程下的as-if-serial语义</p>
+</blockquote>
+<p>指令重排序在多线程下带来的问题：如果一个操作不是原子的，就会给 JVM 留下重排序的机会，最经典的例子就是double checked 的单例模式，代码如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Singleton</span> </span>&#123;</span><br><span class="line">	<span class="keyword">private</span> <span class="keyword">static</span> Singleton instance = <span class="keyword">null</span>;</span><br><span class="line">	<span class="function"><span class="keyword">private</span> <span class="title">Singleton</span><span class="params">()</span> </span>&#123;&#125;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> Singleton <span class="title">getInstance</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		<span class="keyword">if</span> (instance == <span class="keyword">null</span>) &#123;</span><br><span class="line">			<span class="keyword">synchronized</span> (Singleton.class) &#123;</span><br><span class="line">				<span class="keyword">if</span> (instance == <span class="keyword">null</span>) &#123;</span><br><span class="line">					instance = <span class="keyword">new</span> Singleton(); <span class="comment">// 非原子操作，可能会被重排序</span></span><br><span class="line">				&#125;</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>上述代码中，<code>instance = new Singleton()</code> 并不是一个原子操作，在 JVM 中可以抽象为三条指令：</p>
+<blockquote>
+<p>memory = allocate(); // 1:分配对象的内存空间<br><br>ctorInstnace(memory); // 2:初始化对象<br><br>instance = memory; // 3:设置instance指向刚分配的内存地址</p>
+</blockquote>
+<p>上面三条指令中 2 依赖于 1，但是 3 并不依赖于 2，所以实际执行时可能是 <code>1 - 3 - 2</code>；那么线程 A 在执行完 3 时，对象还没有初始化就已经赋值给 instance，这时线程 B 进入方法判断 instance 引用不为 null，然后返回一个没有被初始化好的对象，导致出错</p>
+<p>在 JDK5 之后可以使用 <code>private static volatile Singleton instance;</code> 来防止指令重排序。原理是为了实现 volatile 的内存语义，编译器在生成字节码时，会在指令序列中插入内存屏障来禁止特定类型的处理器重排序</p>
+<h2 id="final-关键字"><a href="#final-关键字" class="headerlink" title="final 关键字"></a>final 关键字</h2><h3 id="final-表示不可变"><a href="#final-表示不可变" class="headerlink" title="final 表示不可变"></a>final 表示不可变</h3><p>final 关键字的第一种用法很常见了，就是控制可变性；final 修饰的基本类型，其值是不允许被修改的，final 修饰的对象引用，该引用不可以指向别的对象，但是该引用指向的对象本身是可以变化的</p>
+<p>控制代码的可访问性和可变性是一个工程师应该有的习惯，也就是说<strong>代码中使用 private 和 final 不需要理由，不使用才需要理由</strong></p>
+<h3 id="final-的内存语义"><a href="#final-的内存语义" class="headerlink" title="final 的内存语义"></a>final 的内存语义</h3><blockquote>
+<p>Java内存模型对 volatile 和 final 的语义做了扩展。对volatile语义的扩展保证了volatile变量在一些情况下不会重排序，volatile的64位变量double和long的读取和赋值操作都是原子的。对final语义的扩展保证一个对象的构建方法结束前，所有final成员变量都必须完成初始化</p>
+</blockquote>
+<p>关于final的具体语义，建议去看 JLS 文档，链接最后会给出</p>
+<p>具体的使用方式如下，来自 Stack Overflow，写的很清楚不需要翻译，链接最后给出：</p>
+<blockquote>
+<p>Marking a field as final forces the compiler to complete initialization of the field before the constructor completes. There is no such guarantee however for non-final fields. This might seem weird, however there are many things done by the compiler and JVM for optimization purposes such as reordering instructions, that cause such stuff to occur.<br><br>The usage model for final fields is a simple one: Set the final fields for an object in that object’s constructor; and do not write a reference to the object being constructed in a place where another thread can see it before the object’s constructor is finished. If this is followed, then when the object is seen by another thread, that thread will always see the correctly constructed version of that object’s final fields. </p>
+</blockquote>
+<hr>
+<h3 id="参考文章："><a href="#参考文章：" class="headerlink" title="参考文章："></a>参考文章：</h3><ul>
+<li><a href="https://tech.meituan.com/java-memory-reordering.html" target="_blank" rel="noopener">Java内存访问重排序的研究</a></li>
+<li><a href="https://docs.oracle.com/javase/specs/jls/se8/html/jls-17.html#jls-17.5" target="_blank" rel="noopener">17.5. final Field Semantics</a></li>
+<li><a href="https://stackoverflow.com/questions/27254152/what-exactly-does-the-final-keyword-guarantee-regarding-concurrency" target="_blank" rel="noopener">What exactly does the final keyword guarantee regarding concurrency?</a></li>
 </ul>
-<p><strong>自定义泛型方法和泛型类</strong></p>
-<p>使用场景：需要传入或返回一个<strong>暂时未知</strong>的类型，而 Java 中遵循<strong>先定义再使用</strong>，可以通过泛型类来解决这个问题</p>
-<p>使用自定义的泛型方法可以接收不同类型的参数，返回值不需要强转</p>
-<ul>
-<li>泛型方法</li>
-</ul>
-<p>Java 程序中，普通方法，构造方法和静态方法都可以使用泛型。方法使用泛型前，必须对泛型进行声明，语法为：<code>&lt;T&gt;</code>,T 可以是任意的字母，但通常大写，<code>&lt;T&gt;</code>通常需要放在方法的返回值声明之前，如：<code>public &lt;T&gt; T a(T t) { return t; }</code>,这样在调用该方法时，比如<code>a(&quot;aaa&quot;)</code>，返回值的类型就是 <code>String</code>，不需强转</p>
-<ul>
-<li>泛型类</li>
-</ul>
-<p>如果在一个类中多次用到同一个泛型参数，就可以把该参数提取到类的定义上来，使用泛型类，比如 jdk 中的 Map 接口:</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">Map</span>&lt;<span class="title">K</span>,<span class="title">V</span>&gt; </span>&#123;</span><br><span class="line">...</span><br><span class="line"><span class="function">Set&lt;K&gt; <span class="title">keySet</span><span class="params">()</span></span>;</span><br><span class="line">Set&lt;Map.Entry&lt;K,V&gt;&gt; entrySet();</span><br><span class="line">...</span><br><span class="line"><span class="comment">// A map entry(key-value pair). The Map.entrySet method returns a collection-view of the map, whose elements are of this class.</span></span><br><span class="line"><span class="class"><span class="keyword">interface</span> <span class="title">Entry</span>&lt;<span class="title">K</span>,<span class="title">V</span>&gt; </span>&#123;</span><br><span class="line">		<span class="function">K <span class="title">getKey</span><span class="params">()</span></span>;</span><br><span class="line">		<span class="function">V <span class="title">getValue</span><span class="params">()</span></span>;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
-<ul>
-<li>举个实际中的例子(遍历带泛型的Map)：</li>
-</ul>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">Map&lt;Integer, String&gt; map = <span class="keyword">new</span> HashMap&lt;&gt;();</span><br><span class="line">map.put(<span class="number">1</span>, <span class="string">"first"</span>);</span><br><span class="line">map.put(<span class="number">2</span>, <span class="string">"second"</span>);</span><br><span class="line"></span><br><span class="line">Set&lt;Map.Entry&gt; set = map.entrySet();</span><br><span class="line">Iterator&lt;Map.Entry&gt; it = set.iterator();</span><br><span class="line"><span class="keyword">while</span>(it.hasNext()) &#123;</span><br><span class="line">    Map.Entry&lt;Integer, String&gt; entry = it.next();</span><br><span class="line">    <span class="keyword">int</span> key = entry.getKey();</span><br><span class="line">    String value = entry.getValue();</span><br><span class="line">    System.out.println(key + <span class="string">"="</span> + value);</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 使用增强for循环，简化代码</span></span><br><span class="line"><span class="keyword">for</span> (Map.Entry&lt;Integer, String&gt; entry : map.entrySet()) &#123;</span><br><span class="line">	<span class="keyword">int</span> key = entry.getKey();</span><br><span class="line">	String value = entry.getValue();</span><br><span class="line">	System.out.println(key + <span class="string">"="</span> + value);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h2 id="为什么要引入泛型"><a href="#为什么要引入泛型" class="headerlink" title="为什么要引入泛型"></a>为什么要引入泛型</h2><p>主要有两方面原因：</p>
-<ul>
-<li>在编译期控制类中成员的类型，比如 <code>ArrayList&lt;Integer&gt;</code> 只能插入 Integer 类型的数据，同时在使用时可以省去强制类型的转换的麻烦（<strong>Stronger type checks at compile time.</strong>）</li>
-<li>更重要的是提供了对于泛型范式的支持，对于一个方法，我们可以抽象出方法的算法骨架，通过泛型的支持，使同一个算法应用到不同的数据类型，增强了方法的普适性，举个例子：</li>
-</ul>
-<p>颠倒数组中的元素(数组的元素可以是字符串类型，是 Integer 类型等，思路：定义首位两个指针，然后同时移动)</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 编写一个泛型方法，接收任意一个数组，并颠倒数组中的所有元素</span></span><br><span class="line"><span class="keyword">public</span> &lt;T&gt; <span class="function"><span class="keyword">void</span> <span class="title">reverse</span><span class="params">(T[] arr)</span> </span>&#123;</span><br><span class="line">	<span class="keyword">if</span> (T == <span class="keyword">null</span>) &#123;</span><br><span class="line">		<span class="keyword">throw</span> <span class="keyword">new</span> NullPointerException(<span class="string">"arr is null!"</span>);</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">int</span> start = <span class="number">0</span>;</span><br><span class="line">	<span class="keyword">int</span> end = arr.length - <span class="number">1</span>;</span><br><span class="line">	<span class="keyword">while</span> (start &lt; end) &#123;</span><br><span class="line">		T temp = arr[start];</span><br><span class="line">		arr[start] = arr[end];</span><br><span class="line">		arr[end] = temp;</span><br><span class="line">		start++;</span><br><span class="line">		end--;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h2 id="Java泛型的问题"><a href="#Java泛型的问题" class="headerlink" title="Java泛型的问题"></a>Java泛型的问题</h2><p>Java 泛型是在 jdk5 中新增的语言特性，为了兼容之前的类库，采用了类型擦除(non-reifiable type)的方式实现，(个人觉得这样实现改动最小也是很重要的一个原因，在泛型之前，通过使用共同父类 Object 来实现的容器类运行良好，采用泛型擦除只需要编译器提供自动转换和类型检查的语法糖即可，runtime根本不用改)因此外界对于 Java 的泛型也一直存在批判</p>
-<p>因为采用类型擦除的方式实现，那么一个类的类型参数 E 的实际类型在运行期是无法得到的(全部为 Object类型，这也是为什么泛型类型参数必须是引用数据类型)，这对于Java泛型的使用带来了一定的制约，比如：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MyClass</span>&lt;<span class="title">E</span>&gt; </span>&#123;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">myMethond</span><span class="params">(Object item)</span> </span>&#123;</span><br><span class="line">		<span class="keyword">if</span> (item <span class="keyword">instanceof</span> E) &#123; <span class="comment">// Compiler error</span></span><br><span class="line">		...</span><br><span class="line">		&#125;</span><br><span class="line">		E item2 = <span class="keyword">new</span> E(); <span class="comment">// Compiler error</span></span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>因此泛型类也不能继承 Throwable 类，因为 catch 语句无法确定该执行哪个，如：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">GenericException</span>&lt;<span class="title">T</span>&gt; <span class="keyword">extends</span> <span class="title">Exception</span></span></span><br><span class="line"><span class="class">...</span></span><br><span class="line"><span class="class"><span class="title">try</span> </span>&#123;</span><br><span class="line">	<span class="keyword">throw</span> <span class="keyword">new</span> GenericException&lt;Integer&gt;();</span><br><span class="line">&#125; <span class="keyword">catch</span>(GenericException&lt;Integer&gt; e) &#123;</span><br><span class="line">...</span><br><span class="line">&#125; <span class="keyword">catch</span>(GenericException&lt;String&gt; e) &#123;</span><br><span class="line">...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>类型参数也不能用于类中的静态变量，因为每一个泛型类的类型参数在运行期只有一个确定的类型，而静态变量是一个类的所有实例共享的</p>
-<p>也不能创建参数化类型的数组，更过具体内容参见 oracle 官方文档：<a href="https://docs.oracle.com/javase/tutorial/java/generics/restrictions.html" target="_blank" rel="noopener">Restrictions on Generics</a></p>
-<p>针对Java泛型实现带来的问题，Project Valhalla会进行进一步的改进，这一个语言特性可能会在 Java10 中推出。</p>
 
       
 
@@ -299,8 +299,8 @@ div.article-footer-copyright{
 </style>
 
 <div class="article-footer-copyright">
-	<p>本文标题: <a href="/2017/01/08/tan-tan-java-fan-xing/" target="_blank" title="谈谈 Java 泛型">谈谈 Java 泛型</a></p>
-	<p>本文链接: <a href="/2017/01/08/tan-tan-java-fan-xing/" target="_blank" title="谈谈 Java 泛型">https://ryan-hou.github.io/2017/01/08/tan-tan-java-fan-xing/</a></p>
+	<p>本文标题: <a href="/2017/07/07/volatileyu-finalguan-jian-zi-jie-xi/" target="_blank" title="volatile与final关键字解析">volatile与final关键字解析</a></p>
+	<p>本文链接: <a href="/2017/07/07/volatileyu-finalguan-jian-zi-jie-xi/" target="_blank" title="volatile与final关键字解析">https://ryan-hou.github.io/2017/07/07/volatileyu-finalguan-jian-zi-jie-xi/</a></p>
 	<p>转载请注明本文链接~~</p>
 </div>
 
@@ -369,7 +369,7 @@ div.article-footer-copyright{
     <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
     <p>扫一扫，分享到微信</p>
     <div class="wx-qrcode">
-      <img src="//pan.baidu.com/share/qrcode?url=https://ryan-hou.github.io/2017/01/08/tan-tan-java-fan-xing/" alt="微信分享二维码">
+      <img src="//pan.baidu.com/share/qrcode?url=https://ryan-hou.github.io/2017/07/07/volatileyu-finalguan-jian-zi-jie-xi/" alt="微信分享二维码">
     </div>
 </div>
 
@@ -383,18 +383,18 @@ div.article-footer-copyright{
   
 <nav id="article-nav">
   
-    <a href="/2017/01/09/javafan-xing-yu-tong-pei-fu/" id="article-nav-newer" class="article-nav-link-wrap">
+    <a href="/2017/09/23/visitor-pattern/" id="article-nav-newer" class="article-nav-link-wrap">
       <i class="icon-circle-left"></i>
       <div class="article-nav-title">
         
-          Java泛型与通配符
+          Visitor pattern
         
       </div>
     </a>
   
   
-    <a href="/2016/06/17/shi-pei-qi-mo-shi/" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">适配器模式</div>
+    <a href="/2017/04/03/threadlocaljie-xi/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">ThreadLocal解析</div>
       <i class="icon-circle-right"></i>
     </a>
   
@@ -433,7 +433,7 @@ div.article-footer-copyright{
 <script src="https://billts.site/js/gitment.js"></script>
 <script>
 var gitment = new Gitment({
-  id: '谈谈 Java 泛型',
+  id: 'volatile与final关键字解析',
   owner: 'Ryan-hou',
   repo: 'Ryan-hou.github.io',
   oauth: {

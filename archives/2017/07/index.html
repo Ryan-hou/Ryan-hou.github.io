@@ -6,20 +6,15 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="https://ryan-hou.github.io">
-  <title>谈谈 Java 泛型 | 0x08 0x17</title>
+  <title>Archives: 2017/7 | 0x08 0x17</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="相关术语和入门使用关于泛型的几个术语  ArrayList 中的 &amp;lt;&amp;gt; 念作 typeof，E 称为类型参数变量 ArrayList&amp;lt;Integer&amp;gt; 中的 Integer 称为实际类型参数 整个 ArrayList&amp;lt;E&amp;gt; 称为泛型类型；整个 ArrayList&amp;lt;Integer&amp;gt; 称为参数化的类型  关于泛型几个需要注意的点(由于Java的泛型采用类">
-<meta name="keywords" content="Java">
-<meta property="og:type" content="article">
-<meta property="og:title" content="谈谈 Java 泛型">
-<meta property="og:url" content="https://ryan-hou.github.io/2017/01/08/tan-tan-java-fan-xing/index.html">
+  <meta property="og:type" content="website">
+<meta property="og:title" content="0x08 0x17">
+<meta property="og:url" content="https://ryan-hou.github.io/archives/2017/07/index.html">
 <meta property="og:site_name" content="0x08 0x17">
-<meta property="og:description" content="相关术语和入门使用关于泛型的几个术语  ArrayList 中的 &amp;lt;&amp;gt; 念作 typeof，E 称为类型参数变量 ArrayList&amp;lt;Integer&amp;gt; 中的 Integer 称为实际类型参数 整个 ArrayList&amp;lt;E&amp;gt; 称为泛型类型；整个 ArrayList&amp;lt;Integer&amp;gt; 称为参数化的类型  关于泛型几个需要注意的点(由于Java的泛型采用类">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2018-05-18T02:16:58.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="谈谈 Java 泛型">
-<meta name="twitter:description" content="相关术语和入门使用关于泛型的几个术语  ArrayList 中的 &amp;lt;&amp;gt; 念作 typeof，E 称为类型参数变量 ArrayList&amp;lt;Integer&amp;gt; 中的 Integer 称为实际类型参数 整个 ArrayList&amp;lt;E&amp;gt; 称为泛型类型；整个 ArrayList&amp;lt;Integer&amp;gt; 称为参数化的类型  关于泛型几个需要注意的点(由于Java的泛型采用类">
+<meta name="twitter:title" content="0x08 0x17">
   
     <link rel="alternative" href="/atom.xml" title="0x08 0x17" type="application/atom+xml">
   
@@ -151,163 +146,36 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            <article id="post-tan-tan-java-fan-xing" class="article article-type-post " itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
+            
   
-    <h1 class="article-title" itemprop="name">
-      谈谈 Java 泛型
+  
+    
+    
+      
+      
+      <section class="archives-wrap">
+        <div class="archive-year-wrap">
+          <a href="/archives/2017" class="archive-year">2017</a>
+        </div>
+        <div class="archives">
+    
+    <article class="archive-article archive-type-post">
+  <div class="archive-article-inner">
+    <header class="archive-article-header">
+      	<div class="article-meta">
+	      	<a href="/2017/07/07/volatileyu-finalguan-jian-zi-jie-xi/" class="archive-article-date">
+  	<time datetime="2017-07-07T07:25:57.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-07-07</time>
+</a>
+        </div>
+    	 
+  
+    <h1 itemprop="name">
+      <a class="archive-article-title" href="/2017/07/07/volatileyu-finalguan-jian-zi-jie-xi/">volatile与final关键字解析</a>
     </h1>
   
 
-        
-        <a href="/2017/01/08/tan-tan-java-fan-xing/" class="archive-article-date">
-  	<time datetime="2017-01-08T13:09:25.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-01-08</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="相关术语和入门使用"><a href="#相关术语和入门使用" class="headerlink" title="相关术语和入门使用"></a>相关术语和入门使用</h2><p><strong>关于泛型的几个术语</strong></p>
-<ul>
-<li>ArrayList<e> 中的 <code>&lt;&gt;</code> 念作 <code>typeof</code>，E 称为类型参数变量</e></li>
-<li><code>ArrayList&lt;Integer&gt;</code> 中的 Integer 称为实际类型参数</li>
-<li>整个 <code>ArrayList&lt;E&gt;</code> 称为泛型类型；整个 <code>ArrayList&lt;Integer&gt;</code> 称为参数化的类型</li>
-</ul>
-<p><strong>关于泛型几个需要注意的点(由于Java的泛型采用类型擦除来现实，存在相关问题，后面会继续讨论)</strong></p>
-<a id="more"></a>
-<ul>
-<li>泛型的类型参数必须是引用数据类型（出于兼容之前版本）</li>
-<li>泛型类型实例化时，两边的实际类型参数必须完全一致，或者一边带实际类型参数，一边不带(&lt;&gt;: the diamond)</li>
-<li>泛型是提供给编译器使用的，它用于<strong>限定集合的输入类型；让编译器在源码级别上即可防止非法数据的插入</strong>，但是编译生成 class 文件后，将不再存在泛型信息(在类的元数据中通过反射还可以取到泛型信息)，这个过程叫做<strong>擦除</strong>(所以我们可以通过反射来绕过泛型)　</li>
-<li>泛型在编译阶段保证了输入类型的安全性，在后面的使用中也避免了强制类型转换，但也牺牲了代码简洁性</li>
-</ul>
-<p><strong>自定义泛型方法和泛型类</strong></p>
-<p>使用场景：需要传入或返回一个<strong>暂时未知</strong>的类型，而 Java 中遵循<strong>先定义再使用</strong>，可以通过泛型类来解决这个问题</p>
-<p>使用自定义的泛型方法可以接收不同类型的参数，返回值不需要强转</p>
-<ul>
-<li>泛型方法</li>
-</ul>
-<p>Java 程序中，普通方法，构造方法和静态方法都可以使用泛型。方法使用泛型前，必须对泛型进行声明，语法为：<code>&lt;T&gt;</code>,T 可以是任意的字母，但通常大写，<code>&lt;T&gt;</code>通常需要放在方法的返回值声明之前，如：<code>public &lt;T&gt; T a(T t) { return t; }</code>,这样在调用该方法时，比如<code>a(&quot;aaa&quot;)</code>，返回值的类型就是 <code>String</code>，不需强转</p>
-<ul>
-<li>泛型类</li>
-</ul>
-<p>如果在一个类中多次用到同一个泛型参数，就可以把该参数提取到类的定义上来，使用泛型类，比如 jdk 中的 Map 接口:</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">Map</span>&lt;<span class="title">K</span>,<span class="title">V</span>&gt; </span>&#123;</span><br><span class="line">...</span><br><span class="line"><span class="function">Set&lt;K&gt; <span class="title">keySet</span><span class="params">()</span></span>;</span><br><span class="line">Set&lt;Map.Entry&lt;K,V&gt;&gt; entrySet();</span><br><span class="line">...</span><br><span class="line"><span class="comment">// A map entry(key-value pair). The Map.entrySet method returns a collection-view of the map, whose elements are of this class.</span></span><br><span class="line"><span class="class"><span class="keyword">interface</span> <span class="title">Entry</span>&lt;<span class="title">K</span>,<span class="title">V</span>&gt; </span>&#123;</span><br><span class="line">		<span class="function">K <span class="title">getKey</span><span class="params">()</span></span>;</span><br><span class="line">		<span class="function">V <span class="title">getValue</span><span class="params">()</span></span>;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
-<ul>
-<li>举个实际中的例子(遍历带泛型的Map)：</li>
-</ul>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">Map&lt;Integer, String&gt; map = <span class="keyword">new</span> HashMap&lt;&gt;();</span><br><span class="line">map.put(<span class="number">1</span>, <span class="string">"first"</span>);</span><br><span class="line">map.put(<span class="number">2</span>, <span class="string">"second"</span>);</span><br><span class="line"></span><br><span class="line">Set&lt;Map.Entry&gt; set = map.entrySet();</span><br><span class="line">Iterator&lt;Map.Entry&gt; it = set.iterator();</span><br><span class="line"><span class="keyword">while</span>(it.hasNext()) &#123;</span><br><span class="line">    Map.Entry&lt;Integer, String&gt; entry = it.next();</span><br><span class="line">    <span class="keyword">int</span> key = entry.getKey();</span><br><span class="line">    String value = entry.getValue();</span><br><span class="line">    System.out.println(key + <span class="string">"="</span> + value);</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 使用增强for循环，简化代码</span></span><br><span class="line"><span class="keyword">for</span> (Map.Entry&lt;Integer, String&gt; entry : map.entrySet()) &#123;</span><br><span class="line">	<span class="keyword">int</span> key = entry.getKey();</span><br><span class="line">	String value = entry.getValue();</span><br><span class="line">	System.out.println(key + <span class="string">"="</span> + value);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h2 id="为什么要引入泛型"><a href="#为什么要引入泛型" class="headerlink" title="为什么要引入泛型"></a>为什么要引入泛型</h2><p>主要有两方面原因：</p>
-<ul>
-<li>在编译期控制类中成员的类型，比如 <code>ArrayList&lt;Integer&gt;</code> 只能插入 Integer 类型的数据，同时在使用时可以省去强制类型的转换的麻烦（<strong>Stronger type checks at compile time.</strong>）</li>
-<li>更重要的是提供了对于泛型范式的支持，对于一个方法，我们可以抽象出方法的算法骨架，通过泛型的支持，使同一个算法应用到不同的数据类型，增强了方法的普适性，举个例子：</li>
-</ul>
-<p>颠倒数组中的元素(数组的元素可以是字符串类型，是 Integer 类型等，思路：定义首位两个指针，然后同时移动)</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 编写一个泛型方法，接收任意一个数组，并颠倒数组中的所有元素</span></span><br><span class="line"><span class="keyword">public</span> &lt;T&gt; <span class="function"><span class="keyword">void</span> <span class="title">reverse</span><span class="params">(T[] arr)</span> </span>&#123;</span><br><span class="line">	<span class="keyword">if</span> (T == <span class="keyword">null</span>) &#123;</span><br><span class="line">		<span class="keyword">throw</span> <span class="keyword">new</span> NullPointerException(<span class="string">"arr is null!"</span>);</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">int</span> start = <span class="number">0</span>;</span><br><span class="line">	<span class="keyword">int</span> end = arr.length - <span class="number">1</span>;</span><br><span class="line">	<span class="keyword">while</span> (start &lt; end) &#123;</span><br><span class="line">		T temp = arr[start];</span><br><span class="line">		arr[start] = arr[end];</span><br><span class="line">		arr[end] = temp;</span><br><span class="line">		start++;</span><br><span class="line">		end--;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h2 id="Java泛型的问题"><a href="#Java泛型的问题" class="headerlink" title="Java泛型的问题"></a>Java泛型的问题</h2><p>Java 泛型是在 jdk5 中新增的语言特性，为了兼容之前的类库，采用了类型擦除(non-reifiable type)的方式实现，(个人觉得这样实现改动最小也是很重要的一个原因，在泛型之前，通过使用共同父类 Object 来实现的容器类运行良好，采用泛型擦除只需要编译器提供自动转换和类型检查的语法糖即可，runtime根本不用改)因此外界对于 Java 的泛型也一直存在批判</p>
-<p>因为采用类型擦除的方式实现，那么一个类的类型参数 E 的实际类型在运行期是无法得到的(全部为 Object类型，这也是为什么泛型类型参数必须是引用数据类型)，这对于Java泛型的使用带来了一定的制约，比如：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MyClass</span>&lt;<span class="title">E</span>&gt; </span>&#123;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">myMethond</span><span class="params">(Object item)</span> </span>&#123;</span><br><span class="line">		<span class="keyword">if</span> (item <span class="keyword">instanceof</span> E) &#123; <span class="comment">// Compiler error</span></span><br><span class="line">		...</span><br><span class="line">		&#125;</span><br><span class="line">		E item2 = <span class="keyword">new</span> E(); <span class="comment">// Compiler error</span></span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>因此泛型类也不能继承 Throwable 类，因为 catch 语句无法确定该执行哪个，如：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">GenericException</span>&lt;<span class="title">T</span>&gt; <span class="keyword">extends</span> <span class="title">Exception</span></span></span><br><span class="line"><span class="class">...</span></span><br><span class="line"><span class="class"><span class="title">try</span> </span>&#123;</span><br><span class="line">	<span class="keyword">throw</span> <span class="keyword">new</span> GenericException&lt;Integer&gt;();</span><br><span class="line">&#125; <span class="keyword">catch</span>(GenericException&lt;Integer&gt; e) &#123;</span><br><span class="line">...</span><br><span class="line">&#125; <span class="keyword">catch</span>(GenericException&lt;String&gt; e) &#123;</span><br><span class="line">...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>类型参数也不能用于类中的静态变量，因为每一个泛型类的类型参数在运行期只有一个确定的类型，而静态变量是一个类的所有实例共享的</p>
-<p>也不能创建参数化类型的数组，更过具体内容参见 oracle 官方文档：<a href="https://docs.oracle.com/javase/tutorial/java/generics/restrictions.html" target="_blank" rel="noopener">Restrictions on Generics</a></p>
-<p>针对Java泛型实现带来的问题，Project Valhalla会进行进一步的改进，这一个语言特性可能会在 Java10 中推出。</p>
-
-      
-
-      
-        <div class="page-reward">
-          <a href="javascript:;" class="page-reward-btn tooltip-top">
-            <div class="tooltip tooltip-east">
-            <span class="tooltip-item">
-              赏
-            </span>
-            <span class="tooltip-content">
-              <span class="tooltip-text">
-                <span class="tooltip-inner">
-                  <p class="reward-p"><i class="icon icon-quo-left"></i>谢谢你支持我创作！<i class="icon icon-quo-right"></i></p>
-                  <div class="reward-box">
-                    
-                    <div class="reward-box-item">
-                      <img class="reward-img" src="/assets/img/alipay.png">
-                      <span class="reward-type">支付宝</span>
-                    </div>
-                    
-                    
-                  </div>
-                </span>
-              </span>
-            </span>
-          </div>
-          </a>
-        </div>
-      
-    </div>
-	<!-- 版权内容 -->
-	
-		<style type="text/css">
-	.article-footer-copyright{
-   border-top:1px solid #d3d3d3;
-   margin: 20px auto;     
-   padding-left:2em;
-   width: 80%;
-}
-.article-footer-copyright p{
-  font-size:1.2em;
-}
-.article-footer-copyright span,.copyright abbr{
-  color:#3d3d3d;
-}
-div.copyright{
-    
-       font-weight:bold;
-       color:#FCB297;
-       padding:0.3em 0.5em;
-       margin:0 0 1em 0;
-       border-bottom:none;
-       background-color:#AAD2F0;
-       -moz-border-radius: 1em;
-       -webkit-border-radius:1em;
-       border-radius: 1em;
-  -moz-box-shadow:inset 0px 1px 0px 0px #eeeeee;
-  -webkit-box-shadow:inset 0px 1px 0px 0px #eeeeee;
-  box-shadow:inset 0px 1px 0px 0px #eeeeee;
-  background:-webkit-gradient( linear, left top, left bottom, color-stop(0.05, #aad2f0), color-stop(1, #8bc1ed) );
-  background:-moz-linear-gradient( center top, #aad2f0 5%, #8bc1ed 100% );
-  /* filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#aad2f0', endColorstr='#8bc1ed'); */
-  background-color:#aad2f0;
-  border:1px solid #dcdcdc;
-  text-shadow:1px 1px 0px #eeeeee;
-  
-}
-div.article-footer-copyright{
-    margin:0em 0em 0em 5em;
-	margin-top:2em;
-    padding:0.5em 1em;
-    border-left:3px solid #ff1700;
-    background-color:#f9f9f9;
-}
-.article-footer-copyright p{
-    line-height: 160%;
-    margin: 10px;
-    font-size: 100%;
-}
-</style>
-
-<div class="article-footer-copyright">
-	<p>本文标题: <a href="/2017/01/08/tan-tan-java-fan-xing/" target="_blank" title="谈谈 Java 泛型">谈谈 Java 泛型</a></p>
-	<p>本文链接: <a href="/2017/01/08/tan-tan-java-fan-xing/" target="_blank" title="谈谈 Java 泛型">https://ryan-hou.github.io/2017/01/08/tan-tan-java-fan-xing/</a></p>
-	<p>转载请注明本文链接~~</p>
-</div>
-
-	
-    <div class="article-info article-info-index">
-      
-      
+        <div class="article-info info-on-right">
+          
 	<div class="article-tag tagcloud">
 		<i class="icon-price-tags icon"></i>
 		<ul class="article-tag-list">
@@ -319,133 +187,19 @@ div.article-footer-copyright{
 		</ul>
 	</div>
 
-      
+          
 
-      
-
-      
-        
-<div class="share-btn share-icons tooltip-left">
-  <div class="tooltip tooltip-east">
-    <span class="tooltip-item">
-      <a href="javascript:;" class="share-sns share-outer">
-        <i class="icon icon-share"></i>
-      </a>
-    </span>
-    <span class="tooltip-content">
-      <div class="share-wrap">
-        <div class="share-icons">
-          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
-            <i class="icon icon-weibo"></i>
-          </a>
-          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
-            <i class="icon icon-weixin"></i>
-          </a>
-          <a class="qq share-sns" href="javascript:;" data-type="qq">
-            <i class="icon icon-qq"></i>
-          </a>
-          <a class="douban share-sns" href="javascript:;" data-type="douban">
-            <i class="icon icon-douban"></i>
-          </a>
-          <a class="qzone share-sns" href="javascript:;" data-type="qzone">
-            <i class="icon icon-qzone"></i>
-          </a>
-          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
-            <i class="icon icon-facebook"></i>
-          </a>
-          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
-            <i class="icon icon-twitter"></i>
-          </a>
-          <a class="google share-sns" href="javascript:;" data-type="google">
-            <i class="icon icon-google"></i>
-          </a>
         </div>
-      </div>
-    </span>
-  </div>
-</div>
-
-<div class="page-modal wx-share js-wx-box">
-    <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
-    <p>扫一扫，分享到微信</p>
-    <div class="wx-qrcode">
-      <img src="//pan.baidu.com/share/qrcode?url=https://ryan-hou.github.io/2017/01/08/tan-tan-java-fan-xing/" alt="微信分享二维码">
-    </div>
-</div>
-
-<div class="mask js-mask"></div>
-      
-      <div class="clearfix"></div>
-    </div>
+        <div class="clearfix"></div>
+    </header>
   </div>
 </article>
-
-  
-<nav id="article-nav">
-  
-    <a href="/2017/01/09/javafan-xing-yu-tong-pei-fu/" id="article-nav-newer" class="article-nav-link-wrap">
-      <i class="icon-circle-left"></i>
-      <div class="article-nav-title">
-        
-          Java泛型与通配符
-        
-      </div>
-    </a>
   
   
-    <a href="/2016/06/17/shi-pei-qi-mo-shi/" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">适配器模式</div>
-      <i class="icon-circle-right"></i>
-    </a>
-  
-</nav>
-
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-  
-  
+    </div></section>
   
 
-  
-
-  
-
-  
-  <div id="gitment-ctn"></div> 
-<link rel="stylesheet" href="https://billts.site/extra_css/gitment.css">
-<script src="https://billts.site/js/gitment.js"></script>
-<script>
-var gitment = new Gitment({
-  id: '谈谈 Java 泛型',
-  owner: 'Ryan-hou',
-  repo: 'Ryan-hou.github.io',
-  oauth: {
-    client_id: '10b94f286862e039846e',
-    client_secret: '51c6b587d0a58d70f6da2e9c5641e66a431751d9',
-  },
-})
-gitment.render('gitment-ctn')
-</script>
-
-  
-
+    
 
 
           </div>
@@ -468,8 +222,8 @@ gitment.render('gitment-ctn')
 	var yiliaConfig = {
 		mathjax: false,
 		isHome: false,
-		isPost: true,
-		isArchive: false,
+		isPost: false,
+		isArchive: true,
 		isTag: false,
 		isCategory: false,
 		open_in_new: true,
