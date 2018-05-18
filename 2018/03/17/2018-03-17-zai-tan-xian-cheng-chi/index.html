@@ -6,20 +6,20 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="https://ryan-hou.github.io">
-  <title>Java泛型与通配符 | 0x08 0x17</title>
+  <title>再谈线程池 | 0x08 0x17</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="从一个问题说起String 是 Object 的 subtype，但是List&amp;lt;String&amp;gt;不是List&amp;lt;Object&amp;gt;的subtype，为什么？ 最核心的原因是：不满足里氏替换原则(LSP)，这里就引出了里氏替换原则的定义，简单来说，A 是 B 的子类型当且仅当一个有效的使用了 B 类型的程序，把其中所有的 B 类型换成 A 类型，程序的有效性依然存在，那么A就是B的子">
+  <meta name="description" content="之前写过一篇关于线程池的文章，Java线程池实现原理，侧重于从代码的角度(主要是execute方法的实现)来解释线程池的实现，本文将结合一些例子来谈谈实际使用中遇到的问题，侧重于从使用层面看待线程池 线程池使用中涉及的重要问题还是再强调一下，Executor 和 ThreadPoolExecutor 这两个接口/类，一定去认真读一下jdk文档，写的很好 先从ThreadPoolExecutor实现">
 <meta name="keywords" content="Java">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Java泛型与通配符">
-<meta property="og:url" content="https://ryan-hou.github.io/2017/01/09/javafan-xing-yu-tong-pei-fu/index.html">
+<meta property="og:title" content="再谈线程池">
+<meta property="og:url" content="https://ryan-hou.github.io/2018/03/17/2018-03-17-zai-tan-xian-cheng-chi/index.html">
 <meta property="og:site_name" content="0x08 0x17">
-<meta property="og:description" content="从一个问题说起String 是 Object 的 subtype，但是List&amp;lt;String&amp;gt;不是List&amp;lt;Object&amp;gt;的subtype，为什么？ 最核心的原因是：不满足里氏替换原则(LSP)，这里就引出了里氏替换原则的定义，简单来说，A 是 B 的子类型当且仅当一个有效的使用了 B 类型的程序，把其中所有的 B 类型换成 A 类型，程序的有效性依然存在，那么A就是B的子">
+<meta property="og:description" content="之前写过一篇关于线程池的文章，Java线程池实现原理，侧重于从代码的角度(主要是execute方法的实现)来解释线程池的实现，本文将结合一些例子来谈谈实际使用中遇到的问题，侧重于从使用层面看待线程池 线程池使用中涉及的重要问题还是再强调一下，Executor 和 ThreadPoolExecutor 这两个接口/类，一定去认真读一下jdk文档，写的很好 先从ThreadPoolExecutor实现">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2018-05-18T02:39:36.000Z">
+<meta property="og:updated_time" content="2018-05-18T06:52:08.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Java泛型与通配符">
-<meta name="twitter:description" content="从一个问题说起String 是 Object 的 subtype，但是List&amp;lt;String&amp;gt;不是List&amp;lt;Object&amp;gt;的subtype，为什么？ 最核心的原因是：不满足里氏替换原则(LSP)，这里就引出了里氏替换原则的定义，简单来说，A 是 B 的子类型当且仅当一个有效的使用了 B 类型的程序，把其中所有的 B 类型换成 A 类型，程序的有效性依然存在，那么A就是B的子">
+<meta name="twitter:title" content="再谈线程池">
+<meta name="twitter:description" content="之前写过一篇关于线程池的文章，Java线程池实现原理，侧重于从代码的角度(主要是execute方法的实现)来解释线程池的实现，本文将结合一些例子来谈谈实际使用中遇到的问题，侧重于从使用层面看待线程池 线程池使用中涉及的重要问题还是再强调一下，Executor 和 ThreadPoolExecutor 这两个接口/类，一定去认真读一下jdk文档，写的很好 先从ThreadPoolExecutor实现">
   
     <link rel="alternative" href="/atom.xml" title="0x08 0x17" type="application/atom+xml">
   
@@ -151,59 +151,67 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            <article id="post-javafan-xing-yu-tong-pei-fu" class="article article-type-post " itemscope itemprop="blogPost">
+            <article id="post-2018-03-17-zai-tan-xian-cheng-chi" class="article article-type-post " itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
         
   
     <h1 class="article-title" itemprop="name">
-      Java泛型与通配符
+      再谈线程池
     </h1>
   
 
         
-        <a href="/2017/01/09/javafan-xing-yu-tong-pei-fu/" class="archive-article-date">
-  	<time datetime="2017-01-09T13:34:50.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-01-09</time>
+        <a href="/2018/03/17/2018-03-17-zai-tan-xian-cheng-chi/" class="archive-article-date">
+  	<time datetime="2018-03-17T08:21:43.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-03-17</time>
 </a>
         
       </header>
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h2 id="从一个问题说起"><a href="#从一个问题说起" class="headerlink" title="从一个问题说起"></a>从一个问题说起</h2><p>String 是 Object 的 subtype，但是<code>List&lt;String&gt;</code>不是<code>List&lt;Object&gt;</code>的subtype，为什么？</p>
-<p>最核心的原因是：<strong>不满足里氏替换原则(LSP)</strong>，这里就引出了里氏替换原则的定义，简单来说，A 是 B 的子类型当且仅当一个有效的使用了 B 类型的程序，把其中所有的 B 类型换成 A 类型，程序的有效性依然存在，那么A就是B的子类型(也就是<strong>所有使用supertype的地方都可以透明的使用其subtype</strong>)</p>
+        <p>之前写过一篇关于线程池的文章，<a href="https://ryan-hou.github.io/2017/03/15/javaxian-cheng-chi-shi-xian-yuan-li/">Java线程池实现原理</a>，侧重于从代码的角度(主要是execute方法的实现)来解释线程池的实现，本文将结合一些例子来谈谈实际使用中遇到的问题，侧重于从使用层面看待线程池</p>
+<h2 id="线程池使用中涉及的重要问题"><a href="#线程池使用中涉及的重要问题" class="headerlink" title="线程池使用中涉及的重要问题"></a>线程池使用中涉及的重要问题</h2><p>还是再强调一下，Executor 和 ThreadPoolExecutor 这两个接口/类，一定去认真读一下jdk文档，写的很好</p>
+<p>先从<code>ThreadPoolExecutor</code>实现的顶层接口<code>Executor</code>来说，该接口设计的目的是为了实现任务提交和任务执行解耦，线程池类ThreadPoolExecutor实现了该接口，因此能将任务的提交与执行进行解耦，不仅如此，通过池化技术，可以控制线程的创建销毁，可以复用线程资源，减少开销，同时提供对于线程等资源的管理</p>
 <a id="more"></a>
-<p>根据里氏替换原则，下面这个有效(可以正确编译)的程序：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">doThing</span><span class="params">(List&lt;Object&gt; x)</span> </span>&#123;</span><br><span class="line">	x.add(<span class="keyword">new</span> Object());</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>如果 <code>List&lt;Object&gt;</code> 可以正确的被替换为 <code>List&lt;String&gt;</code>,那么<code>List&lt;String&gt;</code> 就是 <code>List&lt;Object&gt;</code> 的子类型，即：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">doThing</span><span class="params">(List&lt;String&gt; y)</span> </span>&#123;</span><br><span class="line">	y.add(<span class="keyword">new</span> Object());</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>显然上面的代码不能编译通过，也就是说<code>List&lt;String&gt;</code>就不是<code>List&lt;Object&gt;</code>的子类型，那么问题来了，各种参数化类型集合的超类是谁呢？答案是 <code>Collection&lt;?&gt;</code> 念做 <strong>collection of unknow</strong> 其中 <code>?</code> 是一个泛型通配符，可以匹配任何类型，下面会展开讲述</p>
-<h2 id="泛型通配符"><a href="#泛型通配符" class="headerlink" title="泛型通配符"></a>泛型通配符</h2><p><strong>提前声明：任何关于Java语言的概念，最权威的参考一定是 JLS，这里给出链接<a href="https://docs.oracle.com/javase/tutorial/extra/generics/wildcards.html" target="_blank" rel="noopener">Wildcards</a>，下面的内容会参考 JSL 来做说明。</strong></p>
-<p>由上面我们知道了，各种参数化类型集合的超类是 <code>Collection&lt;?&gt;</code>，<strong>?</strong>就是我们说的通配符，有了这个超类，我们就可以构造一个方法来接收任何参数实例化的 Collection了，如下：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">printCollection</span><span class="params">(Collection&lt;?&gt; c)</span> </span>&#123;</span><br><span class="line">	<span class="keyword">for</span> (Object e : c) &#123;</span><br><span class="line">		System.out.println(e);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>上面例子中我们读取集合中的每一个元素时都转为 Object，这样做总是安全的，因为 Object 是任何一个元素类型的超类。但是像下面这样就是错误的：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Collection&lt;?&gt; c = <span class="keyword">new</span> ArrayList&lt;String&gt;();</span><br><span class="line">c.add(<span class="keyword">new</span> Object()); <span class="comment">// Complie time error</span></span><br></pre></td></tr></table></figure>
-<p>因为当实际类型参数是<strong>?</strong>，代表一个未知的类型，所以我们不能向其传入任何类型的参数，只有一个例外，那就是<code>null</code>(任何类型的一个成员)，这里后面在说 <strong>&lt;? extends T&gt; vs &lt;? super T&gt;</strong>时会再谈到</p>
-<h3 id="受限的类型参数"><a href="#受限的类型参数" class="headerlink" title="受限的类型参数"></a>受限的类型参数</h3><p>在实际使用中，我们可能需要限制泛型的类型参数，比如，一个方法接收数字类型的参数，那么就可以把泛型的类型参数限定为 Number 类型或者他的子类型，使用的语法是：<strong>列出该参数的名字，然后跟上 extends 关键字，再跟上 upper bound</strong>，比如： <code>List&lt;T extends Number&gt;</code></p>
-<p><strong>注意，在上面的上下文语境中，extends 既代表类中的 extends，也代表接口中的 implements</strong></p>
-<p>一个类型参数可以同时存在有多个上界，比如：<code>&lt;T extends B1 &amp; B2 &amp; B3&gt;</code>, 该类型参数就是 B1，B2和B3的子类型，B1，B2，B3中只能存在一个 class，且该class必须放在第一个位置上</p>
-<p>这里 <code>&amp;</code> 还可以用于返回值中，也只能存在一个 class，比如：<br><code>return (Comparator&lt;T&gt; &amp; Serializable) a</code> 表示 a 被转型为 Comparator <strong>and</strong> Serializable(也就是一个可序列化的比较器)</p>
-<h2 id="lt-T-extends-Comparable-lt-super-T-gt-gt-怎么理解"><a href="#lt-T-extends-Comparable-lt-super-T-gt-gt-怎么理解" class="headerlink" title="&lt;T extends Comparable&lt;? super T&gt;&gt;怎么理解"></a><code>&lt;T extends Comparable&lt;? super T&gt;&gt;</code>怎么理解</h2><p>在 <code>Collections.sort</code> 的 javadoc 中我们可以看到这样的签名：<code>public static &lt;T extends Comparable&lt;? super T&gt;&gt; void sort(List&lt;T&gt; list)</code>，可能会有这样的疑问，为什么不写成<code>&lt;T implements Comparable&lt;T&gt;&gt;</code>?</p>
-<p>首先我们在上面受限的泛型参数中说到 extends 既可以表示 extends 也可以表示 implements；其次，javadoc 中的方法签名表示 T 能够实现 <code>Comparable&lt;? super T&gt;</code> 而不仅仅是 <code>Comparable&lt;T&gt;</code>,举个例子，一个 Student 类可以实现 Comparable<person>，其中 Student 是 Person 的子类，如下：</person></p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Person</span> </span>&#123;&#125;</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Student</span> <span class="keyword">extends</span> <span class="title">Person</span> <span class="keyword">implements</span> <span class="title">Comparable</span>&lt;<span class="title">Person</span>&gt; </span>&#123;</span><br><span class="line">	<span class="meta">@Override</span> </span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">compareTo</span><span class="params">(Person that)</span> </span>&#123;</span><br><span class="line">		<span class="comment">// ...</span></span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>在上面的例子中，一个List<student> 可以被 Collections.sort() 方法进行排序，但是<strong>只能根据 Person 类的属性</strong>，因为把 Student 实例传入 compareTo 方法中是按照超类型 Person 来处理的(除非你自己 downcast)</student></p>
-<p>在实际使用中，我们不会用 Student 类来实现 <code>Comparable&lt;Person&gt;</code>，因为 Person 类很可能已经实现了 <code>Comparable&lt;Person&gt;</code> 接口，Student 类会继承该实现，但是结果是一样的，你可以把 <code>List&lt;Student&gt;</code> 传给 Collections.sort() 调用，但还是根据Person 的属性来调用的</p>
-<h2 id="lt-extends-T-gt-vs-lt-super-T-gt"><a href="#lt-extends-T-gt-vs-lt-super-T-gt" class="headerlink" title="&lt;? extends T&gt; vs &lt;? super T&gt;"></a><code>&lt;? extends T&gt; vs &lt;? super T&gt;</code></h2><p>解释这种用法的最佳例子就是 <code>Collections.copy()</code> 方法:<br><code>public static &lt;T&gt; void copy(List&lt;? super T&gt; dest, List&lt;? extends T&gt; src)</code></p>
-<p>注意到在这个方法签名中，src list 声明为 extends，允许我传入相关的 List 类型的 family，仍然保证会产生类型T或者他的子类型，但是不能向 src list 中添加新的元素，因为我们无法确定元素的类型</p>
-<p>dest list 声明为 super, 允许我们传入相关的List类型的family(类型T或者其超类)，仍然保证我可以写入一个 T 类型元素到该 list 中。但是不能保证从该list中读出的元素是T类型的元素</p>
-<p>所以，由于上面的泛型通配符，我们可以用上面一个方法签名，满足下面不同方法的调用，大大增强了算法的普适性：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// copy(dest, src)</span></span><br><span class="line">Collections.copy(<span class="keyword">new</span> ArrayList&lt;Number&gt;(), <span class="keyword">new</span> ArrayList&lt;Number&gt;());</span><br><span class="line">Collections.copy(<span class="keyword">new</span> ArrayList&lt;Number&gt;(), <span class="keyword">new</span> ArrayList&lt;Integer&gt;());</span><br><span class="line">Collections.copy(<span class="keyword">new</span> ArrayList&lt;Object&gt;(), <span class="keyword">new</span> ArrayList&lt;Number&gt;());</span><br><span class="line">Collections.copy(<span class="keyword">new</span> ArrayList&lt;Object&gt;(), <span class="keyword">new</span> ArrayList&lt;Double&gt;());</span><br></pre></td></tr></table></figure>
-<p>总结起来就是：<strong>PECS（Producer Extends, Consumer Super</strong></p>
+<p><strong>ThreadPoolExecutor构造方法的每一个参数都要清楚的知道他的含义</strong>：<br><code>int corePoolSize, int maximumPoolSize, long keepAliveTime,
+TimeUnit unit,BlockingQueue&lt;Runnable&gt; workQueue,ThreadFactory threadFactory,RejectedExecutionHandler handler</code> </p>
+<p>前面四个参数的含义不多说了，可以参考之前那篇文章，重点说一下后面几个：</p>
+<h3 id="BlockingQueue"><a href="#BlockingQueue" class="headerlink" title="BlockingQueue"></a>BlockingQueue</h3><p>任务队列（阻塞队列，关于阻塞队列及几个常见的实现类，建议去阅读jdk文档并动手实践下），我们知道当运行的线程大于等于 corePoolSize 时，Executor始终首选将请求加入队列，而不添加新的线程。 在线程池中我们用到的任务队列主要是三类（使用任务队列时要结合线程池的corePoolSize和maximumPoolSize）：</p>
 <ul>
-<li>Producer Extends: 如果你需要一个List来产生T类型的值(也就是说你想从List中读取T类型的值)，你需要使用 <code>? extends T</code>,即<code>List&lt;? extends T&gt;</code>。但是你不可以往该list中添加元素</li>
-<li>Consumer Super: 如果你需要一个List来消费T类型的值(也就是说你想把T类型的值写入到list中)，你需要使用<code>？ super T</code>，即<code>List&lt;? super T&gt;</code>。但是不能保证你从list中读取的值的类型是T</li>
-<li>如果你需要同时从list中进行读和写，那么就不要使用通配符，即<code>List&lt;T&gt;</code></li>
+<li>无界队列：比如不指定大小的LinkedBlockingQueue，有坑，后面再说</li>
+<li>有界队列: 比如ArrayBlockingQueue(FIFO),PriorityBlockingQueue(使用堆实现的经典数据结构)，该类队列的大小需要和最大线程数进行trade-off,阅读jdk文档！</li>
+<li>同步队列：direct handoffs，非常适合用来做要求高响应并且线程数不固定的线程池的Queue</li>
+</ul>
+<h3 id="ThreadFactory"><a href="#ThreadFactory" class="headerlink" title="ThreadFactory"></a>ThreadFactory</h3><p>默认采用 Executors.defaultThreadFactory() ，但是建议自己基于该实现类重新实现ThreadFactory接口，支持自定义线程池名字，这样在出了问题时方便排查问题，而不是一堆类似pool-x-thread-y的线程名字（<strong>虽然看似是个小改动，背后涉及的思想是很根本的，比如命名问题，编程里命名是一件根本的问题，每一个名字都是对一个事物的抽象，要清晰有意义；出了问题如何快速排查，日志怎么打印都是很讲究的</strong>）</p>
+<h3 id="RejectedExecutionHandler"><a href="#RejectedExecutionHandler" class="headerlink" title="RejectedExecutionHandler"></a>RejectedExecutionHandler</h3><p>触发场景<code>when  Executor has been shut down, and also when the Executor uses finite bounds for both maximum threads and work queue capacity, and is saturated.</code>，jdk提供了4种策略：</p>
+<ul>
+<li>默认的ThreadPoolExecutor.AbortPolicy策略，直接抛出 RejectedExecutionException</li>
+<li>CallerRunsPolicy，执行execute方法的线程自己执行该任务，<code>This provides a simple feedback control mechanism that will slow down the rate that new tasks are submitted.</code></li>
+<li>DiscardPolicy：直接丢弃任务</li>
+<li>DiscardOldestPolicy：丢弃队首的任务，重新尝试执行</li>
+</ul>
+<h3 id="Hook-method"><a href="#Hook-method" class="headerlink" title="Hook method"></a>Hook method</h3><p>线程池提供了几个Hook方法（<strong>模版方法模式</strong>的典型使用），方便我们自己定义线程执行任务前后进行一些自定义的操作，比如：<code>These can be used to manipulate the execution environment; for example, reinitializing ThreadLocals, gathering statistics, or adding log entries.</code></p>
+<h2 id="实际使用的一些坑"><a href="#实际使用的一些坑" class="headerlink" title="实际使用的一些坑"></a>实际使用的一些坑</h2><h3 id="错误使用Executors的newFixedThreadPool方法导致OOM"><a href="#错误使用Executors的newFixedThreadPool方法导致OOM" class="headerlink" title="错误使用Executors的newFixedThreadPool方法导致OOM"></a>错误使用Executors的newFixedThreadPool方法导致OOM</h3><p>项目代码里使用newFixedThreadPool方法创建线程池来执行任务，因为该方法采用了无界的队列，当任务执行时间过长或者QPS很高导致任务堆积过快，不停地阻塞到队列里，最终导致了OOM。<strong>这其实不仅仅是线程池使用的问题，而是一件更根本的问题，在使用任何有限的资源时，都要有控制资源使用量的意识，比如线程数，队列大小，缓存大小等</strong></p>
+<p>所以阿里的规范手册里有这样一条：</p>
+<blockquote>
+<p>【强制】线程池不允许使用 Executors 去创建,而是通过 ThreadPoolExecutor 的方式,这样的处理方式让写的同学更加明确线程池的运行规则,规避资源耗尽的风险。</p>
+</blockquote>
+<h3 id="错误使用BlockQueue导致长时间阻塞"><a href="#错误使用BlockQueue导致长时间阻塞" class="headerlink" title="错误使用BlockQueue导致长时间阻塞"></a>错误使用BlockQueue导致长时间阻塞</h3><p>使用BlockQueue既要对容量敏感(不然OOM了就悲剧了)，还要对阻塞操作敏感（下面引用之前看到的一篇文章，文章的出处在结尾给出）:</p>
+<blockquote>
+</blockquote>
+<p>对于在线业务场景而言，所有的并发，外部访问阻塞的地方的一个真理就是一定要有<strong>超时机制</strong>。我不知道见过多少次由于没有超时造成的在线业务的严重故障，在线业务最强调的是快速处理掉一次请求，所以<strong>fail fast是在线业务系统设计，代码编写中的最重要原则，</strong>按照这个原则上面的代码最起码明显犯的错误就是用put而不是带超时机制的offer，或者说如果是不重要的场景，完全就应该直接用offer，false了直接抛异常或记录下异常即可。</p>
+<p>Java的ThreadPoolExecutor中有个参数是BlockingQueue，如果这个地方用的是ArrayBlockingQueue或LinkedBlockingQueue，而线程池的coreSize和poolSize不一样的话，在coreSize线程满了后，这个时候线程池首先会做的是offer到BlockingQueue，成功的话就结束，这种场景同样不符合在线业务的需求，在线业务更希望的是快速处理，而不是先排队，而且其实在线业务最好是不要让请求堆在排队队列里，在线业务这样做很容易引发雪崩，超出处理能力范围直接拒绝抛错是相对比较好的做法，至于在前面页面上排队什么这个是可以的，那是另外一种限流机制。</p>
+<p>所以说在写高并发、分布式的代码时，除了系统设计外，代码细节的功力是非常非常重要的。</p>
+<blockquote>
+</blockquote>
+<h3 id="在与ThreadLocal结合使用时也有坑-在后续介绍ThreadLocal的坑时在说明"><a href="#在与ThreadLocal结合使用时也有坑-在后续介绍ThreadLocal的坑时在说明" class="headerlink" title="在与ThreadLocal结合使用时也有坑(在后续介绍ThreadLocal的坑时在说明)"></a>在与ThreadLocal结合使用时也有坑(在后续介绍ThreadLocal的坑时在说明)</h3><hr>
+<p><strong>推荐阅读：</strong></p>
+<ul>
+<li><a href="http://mp.weixin.qq.com/s/7bqeJGPfwylpbhJEeHC1OA" target="_blank" rel="noopener">从一个故障说说Java的三个BlockingQueue</a></li>
+<li><a href="http://mp.weixin.qq.com/mp/appmsg/show?__biz=MjM5MzYzMzkyMQ==&amp;appmsgid=10000009&amp;itemidx=1&amp;mpshare=1&amp;scene=24&amp;srcid=1213QacIuA7Meq7epXgmCBmR#wechat_redirect" target="_blank" rel="noopener">Java中容易踩到的“坑”系列之线程池篇</a></li>
+<li><a href="https://zhuanlan.zhihu.com/p/32867181" target="_blank" rel="noopener">一次Java线程池误用引发的血案和总结</a></li>
 </ul>
 
       
@@ -288,8 +296,8 @@ div.article-footer-copyright{
 </style>
 
 <div class="article-footer-copyright">
-	<p>本文标题: <a href="/2017/01/09/javafan-xing-yu-tong-pei-fu/" target="_blank" title="Java泛型与通配符">Java泛型与通配符</a></p>
-	<p>本文链接: <a href="/2017/01/09/javafan-xing-yu-tong-pei-fu/" target="_blank" title="Java泛型与通配符">https://ryan-hou.github.io/2017/01/09/javafan-xing-yu-tong-pei-fu/</a></p>
+	<p>本文标题: <a href="/2018/03/17/2018-03-17-zai-tan-xian-cheng-chi/" target="_blank" title="再谈线程池">再谈线程池</a></p>
+	<p>本文链接: <a href="/2018/03/17/2018-03-17-zai-tan-xian-cheng-chi/" target="_blank" title="再谈线程池">https://ryan-hou.github.io/2018/03/17/2018-03-17-zai-tan-xian-cheng-chi/</a></p>
 	<p>转载请注明本文链接~~</p>
 </div>
 
@@ -358,7 +366,7 @@ div.article-footer-copyright{
     <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
     <p>扫一扫，分享到微信</p>
     <div class="wx-qrcode">
-      <img src="//pan.baidu.com/share/qrcode?url=https://ryan-hou.github.io/2017/01/09/javafan-xing-yu-tong-pei-fu/" alt="微信分享二维码">
+      <img src="//pan.baidu.com/share/qrcode?url=https://ryan-hou.github.io/2018/03/17/2018-03-17-zai-tan-xian-cheng-chi/" alt="微信分享二维码">
     </div>
 </div>
 
@@ -372,18 +380,18 @@ div.article-footer-copyright{
   
 <nav id="article-nav">
   
-    <a href="/2017/03/10/mo-ban-fang-fa-mo-shi-vsce-lue-mo-shi/" id="article-nav-newer" class="article-nav-link-wrap">
+    <a href="/2018/04/01/dan-li-mo-shi-de-ge-chong-zi-shi/" id="article-nav-newer" class="article-nav-link-wrap">
       <i class="icon-circle-left"></i>
       <div class="article-nav-title">
         
-          模版方法模式vs策略模式
+          单例模式的各种姿势
         
       </div>
     </a>
   
   
-    <a href="/2017/01/08/tan-tan-java-fan-xing/" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">谈谈 Java 泛型</div>
+    <a href="/2018/02/20/2018-02-20-phantom-types-in-java/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">Phantom types in Java</div>
       <i class="icon-circle-right"></i>
     </a>
   
@@ -422,7 +430,7 @@ div.article-footer-copyright{
 <script src="https://billts.site/js/gitment.js"></script>
 <script>
 var gitment = new Gitment({
-  id: 'Java泛型与通配符',
+  id: '再谈线程池',
   owner: 'Ryan-hou',
   repo: 'Ryan-hou.github.io',
   oauth: {
