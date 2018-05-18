@@ -6,15 +6,20 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="https://ryan-hou.github.io">
-  <title>Archives: 2018 | 0x08 0x17</title>
+  <title>创建一个对象的思考 | 0x08 0x17</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta property="og:type" content="website">
-<meta property="og:title" content="0x08 0x17">
-<meta property="og:url" content="https://ryan-hou.github.io/archives/2018/index.html">
+  <meta name="description" content="事情可能没有看起来那么简单Java作为OOP的语言，对象的创建自然是最基本不过的，然而如何创建对象这件事，并没有那么简单，不是 new 关键字加构造器这么容易。那么创建一个对象，我们可能要思考哪些问题呢？  创建方式，是使用构造器，用工厂类，用Builder，用反射，克隆，还是反序列化呢？ 数量，是构造单例，还是通过对象池构造有限个对象，还是不加限制？ 时间，是立即构建，还是延迟构建呢？ 形式，是">
+<meta name="keywords" content="Java,设计">
+<meta property="og:type" content="article">
+<meta property="og:title" content="创建一个对象的思考">
+<meta property="og:url" content="https://ryan-hou.github.io/2018/03/08/chuang-jian-[">
 <meta property="og:site_name" content="0x08 0x17">
+<meta property="og:description" content="事情可能没有看起来那么简单Java作为OOP的语言，对象的创建自然是最基本不过的，然而如何创建对象这件事，并没有那么简单，不是 new 关键字加构造器这么容易。那么创建一个对象，我们可能要思考哪些问题呢？  创建方式，是使用构造器，用工厂类，用Builder，用反射，克隆，还是反序列化呢？ 数量，是构造单例，还是通过对象池构造有限个对象，还是不加限制？ 时间，是立即构建，还是延迟构建呢？ 形式，是">
 <meta property="og:locale" content="default">
+<meta property="og:updated_time" content="2018-05-18T09:17:14.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="0x08 0x17">
+<meta name="twitter:title" content="创建一个对象的思考">
+<meta name="twitter:description" content="事情可能没有看起来那么简单Java作为OOP的语言，对象的创建自然是最基本不过的，然而如何创建对象这件事，并没有那么简单，不是 new 关键字加构造器这么容易。那么创建一个对象，我们可能要思考哪些问题呢？  创建方式，是使用构造器，用工厂类，用Builder，用反射，克隆，还是反序列化呢？ 数量，是构造单例，还是通过对象池构造有限个对象，还是不加限制？ 时间，是立即构建，还是延迟构建呢？ 形式，是">
   
     <link rel="alternative" href="/atom.xml" title="0x08 0x17" type="application/atom+xml">
   
@@ -146,154 +151,142 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            
-  
-  
+            <article id="post-chuang-jian-[?]-ge-dui-xiang-de-si-kao" class="article article-type-post " itemscope itemprop="blogPost">
+  <div class="article-inner">
     
-    
-      
-      
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2018" class="archive-year">2018</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2018/04/01/dan-li-mo-shi-de-ge-chong-zi-shi/" class="archive-article-date">
-  	<time datetime="2018-04-01T02:58:05.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-04-01</time>
-</a>
-        </div>
-    	 
+      <header class="article-header">
+        
   
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2018/04/01/dan-li-mo-shi-de-ge-chong-zi-shi/">单例模式的各种姿势</a>
+    <h1 class="article-title" itemprop="name">
+      创建一个对象的思考
     </h1>
   
 
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">Java</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">设计</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2018/03/23/zai-tan-threadlocal/" class="archive-article-date">
-  	<time datetime="2018-03-23T06:20:44.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-03-23</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2018/03/23/zai-tan-threadlocal/">再谈ThreadLocal</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">Java</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2018/03/17/zai-tan-xian-cheng-chi/" class="archive-article-date">
-  	<time datetime="2018-03-17T08:21:43.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-03-17</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2018/03/17/zai-tan-xian-cheng-chi/">再谈线程池</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">Java</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2018/03/08/chuang-jian-[?]-ge-dui-xiang-de-si-kao/" class="archive-article-date">
+        
+        <a href="/2018/03/08/chuang-jian-[?]-ge-dui-xiang-de-si-kao/" class="archive-article-date">
   	<time datetime="2018-03-08T05:59:25.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-03-08</time>
 </a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2018/03/08/chuang-jian-[?]-ge-dui-xiang-de-si-kao/">创建一个对象的思考</a>
-    </h1>
-  
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="事情可能没有看起来那么简单"><a href="#事情可能没有看起来那么简单" class="headerlink" title="事情可能没有看起来那么简单"></a>事情可能没有看起来那么简单</h2><p>Java作为OOP的语言，对象的创建自然是最基本不过的，然而如何创建对象这件事，并没有那么简单，不是 new 关键字加构造器这么容易。那么创建一个对象，我们可能要思考哪些问题呢？</p>
+<ul>
+<li>创建方式，是使用构造器，用工厂类，用Builder，用反射，克隆，还是反序列化呢？</li>
+<li>数量，是构造单例，还是通过对象池构造有限个对象，还是不加限制？</li>
+<li>时间，是立即构建，还是延迟构建呢？</li>
+<li>形式，是构造实际对象，还是构造代理对象？是本地对象，还是远程对象？</li>
+</ul>
+<a id="more"></a>
+<p>以上这些，在不同的场景下，我们都需要做不同的思考，本文从构造器的弊端来谈一下静态工厂方法，工厂方法模式，抽象工厂模式和Builder模式</p>
+<h2 id="构造器的问题在哪里"><a href="#构造器的问题在哪里" class="headerlink" title="构造器的问题在哪里"></a>构造器的问题在哪里</h2><p>用构造器来创建对象，是很自然也很简单的，但是存在一定的问题，下面具体谈一下</p>
+<h3 id="构造器缺乏表现力"><a href="#构造器缺乏表现力" class="headerlink" title="构造器缺乏表现力"></a>构造器缺乏表现力</h3><p><strong>构造器的名字必须和类名保持一致，缺乏表现力。</strong>而且在构造器参数除了名字不同外，会使构造器的方法签名重复，比如，很经典的一个例子就是用 Point 类代表平面坐标系的点，通过构造器提供直角坐标和极坐标的创建方式，代码会出现：<code>Point(double x, double y) 和 Point(double r, double theta)</code> 不仅表现力不足，而且方法签名冲突，我们可以使用<strong>静态工厂方法</strong>来处理：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Point</span> </span>&#123;</span><br><span class="line">	<span class="keyword">private</span> <span class="keyword">double</span> x;</span><br><span class="line">	<span class="keyword">private</span> <span class="keyword">double</span> y;</span><br><span class="line">	</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> Point <span class="title">cartesian</span><span class="params">(<span class="keyword">double</span> x, doubly y)</span> </span>&#123;</span><br><span class="line">		<span class="keyword">return</span> <span class="keyword">new</span> Point(x, y);</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> Point <span class="title">polar</span><span class="params">(doule r, <span class="keyword">double</span> theta)</span> </span>&#123;</span><br><span class="line">		<span class="keyword">return</span> <span class="keyword">new</span> Point(r * Math.cos(theta), r * Math.sin(theta));</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	<span class="function"><span class="keyword">private</span> <span class="title">Point</span><span class="params">(<span class="keyword">double</span> x, <span class="keyword">double</span> y)</span> </span>&#123;</span><br><span class="line">		<span class="keyword">this</span>.x = x;</span><br><span class="line">		<span class="keyword">this</span>.y = y;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>修改后的代码可读性和直观性都要好很多</p>
+<h3 id="构造器的每次调用都会创建对象"><a href="#构造器的每次调用都会创建对象" class="headerlink" title="构造器的每次调用都会创建对象"></a>构造器的每次调用都会创建对象</h3><p>每次调用构造器都会创建对象，这并总是合适的。不公开构造器而是借助静态方法创建对象，还可以控制对象的个数。不管是出于管理的原因，如单例模式，还是处于性能的考虑，如对象池技术，这都是单纯使用构造器做不到的。典型的代表就是 jdk 中 Boolean 类提供的 <code>valueOf</code> 方法，但是该方法提出的比较晚，Boolean 类还是可以用构造器创建多余的对象，因此在 <code>valueOf</code> 的文档中说明了用该方法替代构造器</p>
+<h3 id="构造器无法被继承，也就无法提供多态"><a href="#构造器无法被继承，也就无法提供多态" class="headerlink" title="构造器无法被继承，也就无法提供多态"></a>构造器无法被继承，也就无法提供多态</h3><p><strong>要使用构造器，就要知道具体的类型，这违背了针对接口编程的原则，同时也违背了依赖倒置原则，当然了这里不能一概而论，如果是依赖像 String 这样稳定的类，也是无可厚非，但是在实际编程中，考虑减少对具体类的依赖是好的习惯</strong>，这里就可以引出工厂方法模式了</p>
+<p>我们把创建对象的过程封装到工厂中，这实际上就是一种<strong>保变原则</strong>的使用，也提供了一种<strong>间接层</strong>，我们的客户端代码不需要知道对象如何创建，只需要知道我去工厂里拿就可以了，这样将来创建对象的代码发生变化也不会波及客户端代码。同时<strong>工厂方法一般是一个抽象的方法，由工厂的实现类来决定要实例化的具体类是哪个，而且经常结合模版方法模式一起使用</strong>，下面是一段示例代码：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="class"><span class="keyword">class</span> <span class="title">PizzaStore</span> </span>&#123;</span><br><span class="line">	 <span class="comment">//这里经常结合模版方法模式提供一个骨架，把可扩展的部分也就是创建对象的代码交由子类实现</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Pizza <span class="title">orderPizza</span><span class="params">(String type)</span> </span>&#123;</span><br><span class="line">        Pizza pizza;</span><br><span class="line">        pizza  = createPizza(type);</span><br><span class="line"></span><br><span class="line">        pizza.prepare();</span><br><span class="line">        pizza.bake();</span><br><span class="line">        pizza.cut();</span><br><span class="line">        pizza.box();</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> pizza;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 工厂方法,由子类来具体实现</span></span><br><span class="line">    <span class="function"><span class="keyword">protected</span> <span class="keyword">abstract</span> Pizza <span class="title">createPizza</span><span class="params">(String type)</span></span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="工厂方法模式-抽象工厂模式与构造者模式"><a href="#工厂方法模式-抽象工厂模式与构造者模式" class="headerlink" title="工厂方法模式/抽象工厂模式与构造者模式"></a>工厂方法模式/抽象工厂模式与构造者模式</h2><p>有时候我们要创建的对象需要各种组件来构成，这些组件构成一个系列，这里我们可以使用抽象工厂模式来定义一套接口。<strong>抽象工厂模式提供一个接口,用于创建相关或依赖对象的家族,而不需要明确指定具体类</strong></p>
+<p>与工厂方法模式相比，两种模式都能将对象的创建封装起来,使应用程序解耦,并降低其对特定实现的依赖；但是，<strong>工厂方法使用继承</strong>: 把对象的创建委托给子类,子类实现工厂方法来创建对象；<strong>抽象工厂使用对象组合</strong>:对象的创建被实现在工厂接口所暴露出得方法中;抽象工厂提供创建一个产品家族的抽象类型,这个类型的子类定义了产品被产生的方法,要使用这个工厂,必须先实例化它,然后将它传入一些针对抽象类型所写的代码中，部分示例代码如下；</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//  抽象工厂接口</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">PizzaIngredientFactory</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="function">Dough <span class="title">createDough</span><span class="params">()</span></span>;</span><br><span class="line">    <span class="function">Sauce <span class="title">createSauce</span><span class="params">()</span></span>;</span><br><span class="line">    <span class="function">Cheese <span class="title">createCheese</span><span class="params">()</span></span>;</span><br><span class="line">    Veggies[] createVeggies();</span><br><span class="line">    <span class="function">Clams <span class="title">createClam</span><span class="params">()</span></span>;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 具体对象的创建通过组合的具体工厂类来实现</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">CheesePizza</span> <span class="keyword">extends</span> <span class="title">Pizza</span> </span>&#123;</span><br><span class="line">    PizzaIngredientFactory ingredientFactory;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">CheesePizza</span><span class="params">(PizzaIngredientFactory pizzaIngredientFactory)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.ingredientFactory = pizzaIngredientFactory;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 使用原料工厂生产pizza原料,代码中使用抽象类型的接口,把客户从使用的实际具体产品中解耦</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">prepare</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">"Preparing "</span> + name);</span><br><span class="line">        dough = ingredientFactory.createDough();</span><br><span class="line">        sauce = ingredientFactory.createSauce();</span><br><span class="line">        cheese = ingredientFactory.createCheese();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>抽象工厂模式是把一个对象的创建分成不同的组件，而Builder模式则是把创建对象分为一系列步骤，两者经常结合使用；Builder模式不关心中间的过程，只关心最后得到的对象，符合<strong>最少知识原则</strong>，而且可以结合链式调用构造复杂的对象，Builder模式的基本思路如下：</p>
+<p>定义一个<strong>静态内部类</strong>，并且<strong>静态内部类的内部属性就是我们要赋值的属性</strong>。通过各个方法把我们要赋的值封装到静态内部类对象中，返回 <strong>this</strong>，目的是要使用链式的结构;定义一个方法，创建目标对象，并且传入已经封装了各个参数的静态内部类对象。目标类定义一个参数为静态内部类的构造函数；完成创建目标对象，示例代码如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ComplexObj</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> String s1;</span><br><span class="line">    <span class="keyword">private</span> String s2;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span> n1;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span> n2;</span><br><span class="line">    <span class="comment">// ...</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="title">ComplexObj</span><span class="params">(Builder builder)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.s1 = builder.s1;</span><br><span class="line">        <span class="keyword">this</span>.s2 = builder.s2;</span><br><span class="line">        <span class="keyword">this</span>.n1 = builder.n1;</span><br><span class="line">        <span class="keyword">this</span>.n2 = builder.n2;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="class"><span class="keyword">class</span> <span class="title">Builder</span> </span>&#123;</span><br><span class="line">        <span class="keyword">private</span> String s1;</span><br><span class="line">        <span class="keyword">private</span> String s2;</span><br><span class="line">        <span class="keyword">private</span> <span class="keyword">int</span> n1;</span><br><span class="line">        <span class="keyword">private</span> <span class="keyword">int</span> n2;</span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">public</span> Builder <span class="title">s1</span><span class="params">(String s1)</span> </span>&#123;</span><br><span class="line">            <span class="keyword">this</span>.s1 = s1;</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">this</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">public</span> Builder <span class="title">s2</span><span class="params">(String s2)</span> </span>&#123;</span><br><span class="line">            <span class="keyword">this</span>.s2 = s2;</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">this</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">public</span> Builder <span class="title">n1</span><span class="params">(<span class="keyword">int</span> n1)</span> </span>&#123;</span><br><span class="line">            <span class="keyword">this</span>.n1 = n1;</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">this</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">public</span> Builder <span class="title">n2</span><span class="params">(<span class="keyword">int</span> n2)</span> </span>&#123;</span><br><span class="line">            <span class="keyword">this</span>.n2 = n2;</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">this</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">public</span> ComplexObj <span class="title">build</span><span class="params">()</span> </span>&#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">new</span> ComplexObj(<span class="keyword">this</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 在实际调用时就可以通过链式调用，使代码更清晰</span></span><br><span class="line">ComplexObj test = <span class="keyword">new</span> ComplexObj.Builder()</span><br><span class="line">                			.s1(<span class="string">"test"</span>)</span><br><span class="line">                			.s2(<span class="string">"ff"</span>)</span><br><span class="line">                			.n2(<span class="number">2</span>)</span><br><span class="line">                			.build();</span><br></pre></td></tr></table></figure>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>以上就是关于使用构造器创建对象可能需要思考的各种问题，以及引出的几种设计模式，这里只是做一个介绍，并不是教条；面对不同的使用场景，需要有不同的考量，要做不同的取舍，程序设计也是设计，<strong>做设计就要懂得取舍</strong>，这需要经验，思考和功夫，共勉。</p>
 
-        <div class="article-info info-on-right">
-          
+      
+
+      
+        <div class="page-reward">
+          <a href="javascript:;" class="page-reward-btn tooltip-top">
+            <div class="tooltip tooltip-east">
+            <span class="tooltip-item">
+              赏
+            </span>
+            <span class="tooltip-content">
+              <span class="tooltip-text">
+                <span class="tooltip-inner">
+                  <p class="reward-p"><i class="icon icon-quo-left"></i>谢谢你支持我创作！<i class="icon icon-quo-right"></i></p>
+                  <div class="reward-box">
+                    
+                    <div class="reward-box-item">
+                      <img class="reward-img" src="/assets/img/alipay.png">
+                      <span class="reward-type">支付宝</span>
+                    </div>
+                    
+                    
+                  </div>
+                </span>
+              </span>
+            </span>
+          </div>
+          </a>
+        </div>
+      
+    </div>
+	<!-- 版权内容 -->
+	
+		<style type="text/css">
+	.article-footer-copyright{
+   border-top:1px solid #d3d3d3;
+   margin: 20px auto;     
+   padding-left:2em;
+   width: 80%;
+}
+.article-footer-copyright p{
+  font-size:1.2em;
+}
+.article-footer-copyright span,.copyright abbr{
+  color:#3d3d3d;
+}
+div.copyright{
+    
+       font-weight:bold;
+       color:#FCB297;
+       padding:0.3em 0.5em;
+       margin:0 0 1em 0;
+       border-bottom:none;
+       background-color:#AAD2F0;
+       -moz-border-radius: 1em;
+       -webkit-border-radius:1em;
+       border-radius: 1em;
+  -moz-box-shadow:inset 0px 1px 0px 0px #eeeeee;
+  -webkit-box-shadow:inset 0px 1px 0px 0px #eeeeee;
+  box-shadow:inset 0px 1px 0px 0px #eeeeee;
+  background:-webkit-gradient( linear, left top, left bottom, color-stop(0.05, #aad2f0), color-stop(1, #8bc1ed) );
+  background:-moz-linear-gradient( center top, #aad2f0 5%, #8bc1ed 100% );
+  /* filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#aad2f0', endColorstr='#8bc1ed'); */
+  background-color:#aad2f0;
+  border:1px solid #dcdcdc;
+  text-shadow:1px 1px 0px #eeeeee;
+  
+}
+div.article-footer-copyright{
+    margin:0em 0em 0em 5em;
+	margin-top:2em;
+    padding:0.5em 1em;
+    border-left:3px solid #ff1700;
+    background-color:#f9f9f9;
+}
+.article-footer-copyright p{
+    line-height: 160%;
+    margin: 10px;
+    font-size: 100%;
+}
+</style>
+
+<div class="article-footer-copyright">
+	<p>本文标题: <a href="/2018/03/08/chuang-jian-[?]-ge-dui-xiang-de-si-kao/" target="_blank" title="创建一个对象的思考">创建一个对象的思考</a></p>
+	<p>本文链接: <a href="/2018/03/08/chuang-jian-[?]-ge-dui-xiang-de-si-kao/" target="_blank" title="创建一个对象的思考">https://ryan-hou.github.io/2018/03/08/chuang-jian-[?]-ge-dui-xiang-de-si-kao/</a></p>
+	<p>转载请注明本文链接~~</p>
+</div>
+
+	
+    <div class="article-info article-info-index">
+      
+      
 	<div class="article-tag tagcloud">
 		<i class="icon-price-tags icon"></i>
 		<ul class="article-tag-list">
@@ -309,61 +302,133 @@
 		</ul>
 	</div>
 
-          
+      
 
+      
+
+      
+        
+<div class="share-btn share-icons tooltip-left">
+  <div class="tooltip tooltip-east">
+    <span class="tooltip-item">
+      <a href="javascript:;" class="share-sns share-outer">
+        <i class="icon icon-share"></i>
+      </a>
+    </span>
+    <span class="tooltip-content">
+      <div class="share-wrap">
+        <div class="share-icons">
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="icon icon-weibo"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="icon icon-weixin"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="icon icon-qq"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="icon icon-douban"></i>
+          </a>
+          <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a>
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="icon icon-facebook"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="icon icon-twitter"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="icon icon-google"></i>
+          </a>
         </div>
-        <div class="clearfix"></div>
-    </header>
+      </div>
+    </span>
+  </div>
+</div>
+
+<div class="page-modal wx-share js-wx-box">
+    <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+      <img src="//pan.baidu.com/share/qrcode?url=https://ryan-hou.github.io/2018/03/08/chuang-jian-[" alt="微信分享二维码">
+    </div>
+</div>
+
+<div class="mask js-mask"></div>
+      
+      <div class="clearfix"></div>
+    </div>
   </div>
 </article>
+
   
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2018/02/20/phantom-types-in-java/" class="archive-article-date">
-  	<time datetime="2018-02-20T04:12:36.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-02-20</time>
-</a>
+<nav id="article-nav">
+  
+    <a href="/2018/03/17/zai-tan-xian-cheng-chi/" id="article-nav-newer" class="article-nav-link-wrap">
+      <i class="icon-circle-left"></i>
+      <div class="article-nav-title">
+        
+          再谈线程池
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2018/02/20/phantom-types-in-java/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">Phantom types in Java</div>
+      <i class="icon-circle-right"></i>
+    </a>
+  
+</nav>
+
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
         </div>
-    	 
+        
+        
+    </div>
+</aside>
+
+
+
   
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2018/02/20/phantom-types-in-java/">Phantom types in Java</a>
-    </h1>
+  
   
 
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">Java</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">翻译</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-  
-    </div></section>
   
 
-    
+  
+
+  
+  <div id="gitment-ctn"></div> 
+<link rel="stylesheet" href="https://billts.site/extra_css/gitment.css">
+<script src="https://billts.site/js/gitment.js"></script>
+<script>
+var gitment = new Gitment({
+  id: '创建一个对象的思考',
+  owner: 'Ryan-hou',
+  repo: 'Ryan-hou.github.io',
+  oauth: {
+    client_id: '10b94f286862e039846e',
+    client_secret: '51c6b587d0a58d70f6da2e9c5641e66a431751d9',
+  },
+})
+gitment.render('gitment-ctn')
+</script>
+
+  
+
 
 
           </div>
@@ -386,8 +451,8 @@
 	var yiliaConfig = {
 		mathjax: false,
 		isHome: false,
-		isPost: false,
-		isArchive: true,
+		isPost: true,
+		isArchive: false,
 		isTag: false,
 		isCategory: false,
 		open_in_new: true,
