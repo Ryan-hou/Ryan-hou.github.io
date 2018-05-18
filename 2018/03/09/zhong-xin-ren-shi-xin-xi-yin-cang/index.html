@@ -6,15 +6,20 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="https://ryan-hou.github.io">
-  <title>Tag: 设计 | 0x08 0x17</title>
+  <title>重新认识信息隐藏 | 0x08 0x17</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta property="og:type" content="website">
-<meta property="og:title" content="0x08 0x17">
-<meta property="og:url" content="https://ryan-hou.github.io/tags/设计/index.html">
+  <meta name="description" content="一个重要却容易忽略的问题在谈到 OOP 的特征时，大家都会想到封装，继承和多态，所谓封装，就是将数据与相关行为包装在一起以实现信息隐藏，更准确来说，信息隐藏是我们编程时的原则，而封装是实现信息隐藏的一种方式。那么信息隐藏为什么重要？ 引用一段Effective Java中的话：  要区别设计良好的模块和设计不好的模块，重要的标志在于，这个模块对于外部其他模块而言，是否隐藏其内部数据和实现细节。设计">
+<meta name="keywords" content="Java,设计">
+<meta property="og:type" content="article">
+<meta property="og:title" content="重新认识信息隐藏">
+<meta property="og:url" content="https://ryan-hou.github.io/2018/03/09/zhong-xin-ren-shi-xin-xi-yin-cang/index.html">
 <meta property="og:site_name" content="0x08 0x17">
+<meta property="og:description" content="一个重要却容易忽略的问题在谈到 OOP 的特征时，大家都会想到封装，继承和多态，所谓封装，就是将数据与相关行为包装在一起以实现信息隐藏，更准确来说，信息隐藏是我们编程时的原则，而封装是实现信息隐藏的一种方式。那么信息隐藏为什么重要？ 引用一段Effective Java中的话：  要区别设计良好的模块和设计不好的模块，重要的标志在于，这个模块对于外部其他模块而言，是否隐藏其内部数据和实现细节。设计">
 <meta property="og:locale" content="default">
+<meta property="og:updated_time" content="2018-05-18T09:27:30.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="0x08 0x17">
+<meta name="twitter:title" content="重新认识信息隐藏">
+<meta name="twitter:description" content="一个重要却容易忽略的问题在谈到 OOP 的特征时，大家都会想到封装，继承和多态，所谓封装，就是将数据与相关行为包装在一起以实现信息隐藏，更准确来说，信息隐藏是我们编程时的原则，而封装是实现信息隐藏的一种方式。那么信息隐藏为什么重要？ 引用一段Effective Java中的话：  要区别设计良好的模块和设计不好的模块，重要的标志在于，这个模块对于外部其他模块而言，是否隐藏其内部数据和实现细节。设计">
   
     <link rel="alternative" href="/atom.xml" title="0x08 0x17" type="application/atom+xml">
   
@@ -146,78 +151,151 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            
-  
-  
+            <article id="post-zhong-xin-ren-shi-xin-xi-yin-cang" class="article article-type-post " itemscope itemprop="blogPost">
+  <div class="article-inner">
     
-    
-      
-      
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2018" class="archive-year">2018</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2018/04/01/dan-li-mo-shi-de-ge-chong-zi-shi/" class="archive-article-date">
-  	<time datetime="2018-04-01T02:58:05.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-04-01</time>
-</a>
-        </div>
-    	 
+      <header class="article-header">
+        
   
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2018/04/01/dan-li-mo-shi-de-ge-chong-zi-shi/">单例模式的各种姿势</a>
+    <h1 class="article-title" itemprop="name">
+      重新认识信息隐藏
     </h1>
   
 
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">Java</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">设计</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2018/03/09/zhong-xin-ren-shi-xin-xi-yin-cang/" class="archive-article-date">
+        
+        <a href="/2018/03/09/zhong-xin-ren-shi-xin-xi-yin-cang/" class="archive-article-date">
   	<time datetime="2018-03-09T11:25:51.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-03-09</time>
 </a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2018/03/09/zhong-xin-ren-shi-xin-xi-yin-cang/">重新认识信息隐藏</a>
-    </h1>
-  
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="一个重要却容易忽略的问题"><a href="#一个重要却容易忽略的问题" class="headerlink" title="一个重要却容易忽略的问题"></a>一个重要却容易忽略的问题</h2><p>在谈到 OOP 的特征时，大家都会想到<strong>封装，继承和多态</strong>，所谓封装，<strong>就是将数据与相关行为包装在一起以实现信息隐藏</strong>，更准确来说，信息隐藏是我们编程时的原则，而封装是实现信息隐藏的一种方式。那么信息隐藏为什么重要？</p>
+<p>引用一段<code>Effective Java</code>中的话：</p>
+<blockquote>
+<p>要区别设计良好的模块和设计不好的模块，重要的标志在于，这个模块对于外部其他模块而言，是否隐藏其内部数据和实现细节。设计良好的模块会隐藏所有的实现细节，模块间仅通过API进行通信</p>
+</blockquote>
+<a id="more"></a>
+<p>除了设计好的需要公开的API外，其他的成员原则上都要隐藏，<strong>在写代码时要保持有意识的状态，我们写的每一行代码都是一种“承诺”</strong>，如果不能很好的实现信息隐藏，被客户进行操作会导致对象状态的不可控，<strong>轻诺者，必寡信</strong></p>
+<h2 id="封装与访问控制"><a href="#封装与访问控制" class="headerlink" title="封装与访问控制"></a>封装与访问控制</h2><p>谈信息隐藏，自然避不开封装。广义上的封装仅仅只是打包，把一些数据和行为封闭到一个盒子，这个盒子可能是黑盒子也可能是白盒子。相比c语言，Java的封装引入了一种<strong>模块机制</strong>，<strong>把相关的数据和作用在其上的运算捆绑为称为类的模块，从而为域和函数(准确的说应该是成员方法)提供一个上下文。</strong></p>
+<p>我们通常所说的狭义的封装是<strong>指在打包的基础上加上访问控制，以实现信息隐藏</strong>，<strong>访问控制不仅仅是语法的限制，也是语义上的规范</strong>，标有 public 的是接口，标有 private 的是实现；这种语义显然比文档注释更加直观。访问控制是对静态代码的控制，也并非牢不可破，通过反射机制一样可以访问到private成员，这里也引出一个常见的误区，信息隐藏是为了安全性。然而并不是，<strong>信息隐藏通过屏蔽一个模块中非本质，容易变化的部分，从而保证了内部的修改不会波及客户，他的目的是为了提高应变性和灵活性</strong>，通过信息隐藏，一个类也相当于被划分为阴阳两面，阴面的实现对于阳面来说是透明的</p>
+<h2 id="如何更好的隐藏信息"><a href="#如何更好的隐藏信息" class="headerlink" title="如何更好的隐藏信息"></a>如何更好的隐藏信息</h2><h3 id="使类和成员的可访问性最小化"><a href="#使类和成员的可访问性最小化" class="headerlink" title="使类和成员的可访问性最小化"></a>使类和成员的可访问性最小化</h3><p>这个很好理解，举个简单例子，把一个类的<code>private</code>成员改为<code>public</code>不会产生问题，如果反过来那就不一定了。访问范围越大，越不容易控制，一旦变动影响的面也会更广</p>
+<ul>
+<li>顶层类如果可以包级私有，那就包级私有</li>
+</ul>
+<p>我们通过IDE生成类时，一般会默认用public修饰类，然而这并不合理，一个包中的类大部分都是为本包提供服务的，没有必要作为包的API导出，因为一旦导出，你就要负责一直维护他</p>
+<ul>
+<li>在公有类中使用访问方法而非公有域</li>
+</ul>
+<p><strong>公有类永远都不应该暴露可变的域</strong>。在特殊情况下，暴露公有的静态final域是可以接受的，但是这里的域要么是基本类型，要么是不可变的。很常见的错误就是：<code>public Date getBirthday() { return birthday }</code> 这样即使birthday使用<code>private</code>的访问修饰符，仍然没有用，因为 Date 类不是不可变的，当然了这也是类库设计的缺陷，这里应该提供防御性复制</p>
+<ul>
+<li>警惕长度不为0的数组</li>
+</ul>
+<p><strong>长度不为0的数组总是可变的，类具有公有的静态final数组域或者返回这种域的访问方法，几乎总是错误的</strong>。可以通过把数组域私有，并添加一个公有方法，返回私有数组域的一个备份:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> Thing[] PRIVATE_VALUES = &#123;.....&#125;</span><br><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> Thing[] values() &#123;</span><br><span class="line">	<span class="keyword">return</span> PRIVATE_VALUES.clone();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>或者有的时候，并不需要一次返回一个数组，而是返回数组的某一个元素，提供这样细粒度的API可能会更方便，而且效率更好</p>
+<ul>
+<li>不要追求get/set对称的教条，set方法能不用就不用</li>
+<li>信息隐藏不仅要隐藏数据结构，还包括实现方式和策略，如<code>public int computeAge()</code> 这样的API实际上暴露了实现方式即年龄是计算出来的，不符合信息隐藏</li>
+<li><strong>使用private不需要理由，不使用才需要理由</strong>，这也是为什么如C#之类的语言默认的访问修饰符是 private（Java默认是包级私有）</li>
+<li>使可变性最小化</li>
+</ul>
+<p>除非有很好的理由使类成为可变的，不然就应该是不可变的类。构造一个不可变的类遵循相应的规则即可(参考<code>Effective Java</code>)。不可变的类只有一种状态，那就是被创建时的状态；而且不可变的类本质上是线程安全的，不需要同步，可以被自由的共享而不用进行保护性拷贝。对于频繁用到的值，可以使用公有静态final常量，或者使用静态工厂替换构造器提供缓存功能。但是不可变类也有缺点，那就是每一个值都是一个对象，有时为了性能需要提供可变的配套类，如<code>StringBuilder</code></p>
+<p>如果类不能做成不可变的，那也要尽可能的降低它的可变性，降低对象可以存在的状态，可以更容易的分析它的行为，减少出错的几率。<strong>除非有令人信服的理由，不然所有的域都应该是final的</strong></p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>以上就是关于信息隐藏的一些重要知识，很基础但是也很容易被忽略，通过合理的信息隐藏，我们才能构建稳健的类和包，<strong>使他们提供尽可能少的开口，以更好的面对变化，不至于失控</strong></p>
 
-        <div class="article-info info-on-right">
-          
+      
+
+      
+        <div class="page-reward">
+          <a href="javascript:;" class="page-reward-btn tooltip-top">
+            <div class="tooltip tooltip-east">
+            <span class="tooltip-item">
+              赏
+            </span>
+            <span class="tooltip-content">
+              <span class="tooltip-text">
+                <span class="tooltip-inner">
+                  <p class="reward-p"><i class="icon icon-quo-left"></i>谢谢你支持我创作！<i class="icon icon-quo-right"></i></p>
+                  <div class="reward-box">
+                    
+                    <div class="reward-box-item">
+                      <img class="reward-img" src="/assets/img/alipay.png">
+                      <span class="reward-type">支付宝</span>
+                    </div>
+                    
+                    
+                  </div>
+                </span>
+              </span>
+            </span>
+          </div>
+          </a>
+        </div>
+      
+    </div>
+	<!-- 版权内容 -->
+	
+		<style type="text/css">
+	.article-footer-copyright{
+   border-top:1px solid #d3d3d3;
+   margin: 20px auto;     
+   padding-left:2em;
+   width: 80%;
+}
+.article-footer-copyright p{
+  font-size:1.2em;
+}
+.article-footer-copyright span,.copyright abbr{
+  color:#3d3d3d;
+}
+div.copyright{
+    
+       font-weight:bold;
+       color:#FCB297;
+       padding:0.3em 0.5em;
+       margin:0 0 1em 0;
+       border-bottom:none;
+       background-color:#AAD2F0;
+       -moz-border-radius: 1em;
+       -webkit-border-radius:1em;
+       border-radius: 1em;
+  -moz-box-shadow:inset 0px 1px 0px 0px #eeeeee;
+  -webkit-box-shadow:inset 0px 1px 0px 0px #eeeeee;
+  box-shadow:inset 0px 1px 0px 0px #eeeeee;
+  background:-webkit-gradient( linear, left top, left bottom, color-stop(0.05, #aad2f0), color-stop(1, #8bc1ed) );
+  background:-moz-linear-gradient( center top, #aad2f0 5%, #8bc1ed 100% );
+  /* filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#aad2f0', endColorstr='#8bc1ed'); */
+  background-color:#aad2f0;
+  border:1px solid #dcdcdc;
+  text-shadow:1px 1px 0px #eeeeee;
+  
+}
+div.article-footer-copyright{
+    margin:0em 0em 0em 5em;
+	margin-top:2em;
+    padding:0.5em 1em;
+    border-left:3px solid #ff1700;
+    background-color:#f9f9f9;
+}
+.article-footer-copyright p{
+    line-height: 160%;
+    margin: 10px;
+    font-size: 100%;
+}
+</style>
+
+<div class="article-footer-copyright">
+	<p>本文标题: <a href="/2018/03/09/zhong-xin-ren-shi-xin-xi-yin-cang/" target="_blank" title="重新认识信息隐藏">重新认识信息隐藏</a></p>
+	<p>本文链接: <a href="/2018/03/09/zhong-xin-ren-shi-xin-xi-yin-cang/" target="_blank" title="重新认识信息隐藏">https://ryan-hou.github.io/2018/03/09/zhong-xin-ren-shi-xin-xi-yin-cang/</a></p>
+	<p>转载请注明本文链接~~</p>
+</div>
+
+	
+    <div class="article-info article-info-index">
+      
+      
 	<div class="article-tag tagcloud">
 		<i class="icon-price-tags icon"></i>
 		<ul class="article-tag-list">
@@ -233,211 +311,133 @@
 		</ul>
 	</div>
 
-          
+      
 
+      
+
+      
+        
+<div class="share-btn share-icons tooltip-left">
+  <div class="tooltip tooltip-east">
+    <span class="tooltip-item">
+      <a href="javascript:;" class="share-sns share-outer">
+        <i class="icon icon-share"></i>
+      </a>
+    </span>
+    <span class="tooltip-content">
+      <div class="share-wrap">
+        <div class="share-icons">
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="icon icon-weibo"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="icon icon-weixin"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="icon icon-qq"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="icon icon-douban"></i>
+          </a>
+          <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a>
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="icon icon-facebook"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="icon icon-twitter"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="icon icon-google"></i>
+          </a>
         </div>
-        <div class="clearfix"></div>
-    </header>
+      </div>
+    </span>
+  </div>
+</div>
+
+<div class="page-modal wx-share js-wx-box">
+    <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+      <img src="//pan.baidu.com/share/qrcode?url=https://ryan-hou.github.io/2018/03/09/zhong-xin-ren-shi-xin-xi-yin-cang/" alt="微信分享二维码">
+    </div>
+</div>
+
+<div class="mask js-mask"></div>
+      
+      <div class="clearfix"></div>
+    </div>
   </div>
 </article>
+
   
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2018/03/08/chuang-jian-[?]-ge-dui-xiang-de-si-kao/" class="archive-article-date">
-  	<time datetime="2018-03-08T05:59:25.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-03-08</time>
-</a>
+<nav id="article-nav">
+  
+    <a href="/2018/03/17/zai-tan-xian-cheng-chi/" id="article-nav-newer" class="article-nav-link-wrap">
+      <i class="icon-circle-left"></i>
+      <div class="article-nav-title">
+        
+          再谈线程池
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2018/03/08/chuang-jian-[?]-ge-dui-xiang-de-si-kao/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">创建一个对象的思考</div>
+      <i class="icon-circle-right"></i>
+    </a>
+  
+</nav>
+
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
         </div>
-    	 
+        
+        
+    </div>
+</aside>
+
+
+
   
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2018/03/08/chuang-jian-[?]-ge-dui-xiang-de-si-kao/">创建一个对象的思考</a>
-    </h1>
+  
   
 
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">Java</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">设计</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-      
-        </div></section>
-      
-      
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2017" class="archive-year">2017</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2017/09/23/visitor-pattern/" class="archive-article-date">
-  	<time datetime="2017-09-23T07:48:14.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-09-23</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2017/09/23/visitor-pattern/">Visitor pattern</a>
-    </h1>
   
 
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">Java</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">设计</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">翻译</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2017/03/10/mo-ban-fang-fa-mo-shi-vsce-lue-mo-shi/" class="archive-article-date">
-  	<time datetime="2017-03-10T14:58:32.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-03-10</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2017/03/10/mo-ban-fang-fa-mo-shi-vsce-lue-mo-shi/">模版方法模式vs策略模式</a>
-    </h1>
   
 
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">Java</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">设计</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
   
-    
-    
-      
-        </div></section>
-      
-      
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2016" class="archive-year">2016</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2016/06/17/shi-pei-qi-mo-shi/" class="archive-article-date">
-  	<time datetime="2016-06-17T03:01:39.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2016-06-17</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2016/06/17/shi-pei-qi-mo-shi/">适配器模式</a>
-    </h1>
+  <div id="gitment-ctn"></div> 
+<link rel="stylesheet" href="https://billts.site/extra_css/gitment.css">
+<script src="https://billts.site/js/gitment.js"></script>
+<script>
+var gitment = new Gitment({
+  id: '重新认识信息隐藏',
+  owner: 'Ryan-hou',
+  repo: 'Ryan-hou.github.io',
+  oauth: {
+    client_id: '10b94f286862e039846e',
+    client_secret: '51c6b587d0a58d70f6da2e9c5641e66a431751d9',
+  },
+})
+gitment.render('gitment-ctn')
+</script>
+
   
 
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">Java</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">设计</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-  
-    </div></section>
-  
-
-    
 
 
           </div>
@@ -460,9 +460,9 @@
 	var yiliaConfig = {
 		mathjax: false,
 		isHome: false,
-		isPost: false,
+		isPost: true,
 		isArchive: false,
-		isTag: true,
+		isTag: false,
 		isCategory: false,
 		open_in_new: true,
 		toc_hide_index: true,

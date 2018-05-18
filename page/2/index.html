@@ -148,6 +148,90 @@
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-threadlocaljie-xi" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/04/03/threadlocaljie-xi/">ThreadLocal解析</a>
+    </h1>
+  
+
+        
+        <a href="/2017/04/03/threadlocaljie-xi/" class="archive-article-date">
+  	<time datetime="2017-04-03T06:26:58.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-04-03</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="是什么"><a href="#是什么" class="headerlink" title="是什么"></a>是什么</h2><p>这个类的名字已经很清楚的告诉我们该类的作用了，即<code>线程局部变量</code>，可以类比一般的局部变量，<code>ThreadLocal</code>说明了该局部变量的上下文环境为<code>Thread</code>，即每个线程都有一个互不影响的变量，可以通过<code>get()</code>或者<code>set(T value)</code>等方法分别操作自己的变量副本，而对其他的线程操作保持封闭</p>
+<h2 id="为什么"><a href="#为什么" class="headerlink" title="为什么"></a>为什么</h2><p>那么为什么需要使用ThreadLocal呢？可以考虑这样两个场景：</p>
+<ul>
+<li>在同一个线程中的多个函数需要操作相同的数据，怎么处理？一种比较直接的方式就是通过在多个函数之间进行参数的传递，但是这种方式需要给每个参与的方法都增加一个参数，这并不优雅</li>
+<li>针对上面的问题，我们可以提供一个全局变量供所有的函数访问，但是在多线程环境下，需要进行同步处理</li>
+</ul>
+        
+          <a class="article-more-a" href="/2017/04/03/threadlocaljie-xi/#more">more >></a>
+        
+      
+
+      
+    </div>
+	<!-- 版权内容 -->
+	
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">Java</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2017/04/03/threadlocaljie-xi/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+
+  
     <article id="post-javaxian-cheng-chi-shi-xian-yuan-li" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
