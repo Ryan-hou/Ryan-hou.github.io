@@ -6,20 +6,20 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="https://ryan-hou.github.io">
-  <title>Java泛型与通配符 | 0x08 0x17</title>
+  <title>Java线程池实现原理 | 0x08 0x17</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="从一个问题说起String 是 Object 的 subtype，但是List&amp;lt;String&amp;gt;不是List&amp;lt;Object&amp;gt;的subtype，为什么？ 最核心的原因是：不满足里氏替换原则(LSP)，这里就引出了里氏替换原则的定义，简单来说，A 是 B 的子类型当且仅当一个有效的使用了 B 类型的程序，把其中所有的 B 类型换成 A 类型，程序的有效性依然存在，那么A就是B的子">
+  <meta name="description" content="为什么要使用线程池在开发中，我们使用多线程来处理多个任务，一般是先编写实现任务的代码(任务类一般实现Runnable接口)，然后为每个任务启动一个线程(Thread类)，接下来由系统负责完成线程间的调度。假设任务很多，而且执行时间不长，为每个任务都创建一个对应的线程，会使线程频繁的创建和销毁，所以我们引入线程池，控制线程创建的数目，尽量的使线程可以复用 实现线程池要考虑的问题 线程池自身的状态如何">
 <meta name="keywords" content="Java">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Java泛型与通配符">
-<meta property="og:url" content="https://ryan-hou.github.io/2017/01/09/javafan-xing-yu-tong-pei-fu/index.html">
+<meta property="og:title" content="Java线程池实现原理">
+<meta property="og:url" content="https://ryan-hou.github.io/2017/03/15/javaxian-cheng-chi-shi-xian-yuan-li/index.html">
 <meta property="og:site_name" content="0x08 0x17">
-<meta property="og:description" content="从一个问题说起String 是 Object 的 subtype，但是List&amp;lt;String&amp;gt;不是List&amp;lt;Object&amp;gt;的subtype，为什么？ 最核心的原因是：不满足里氏替换原则(LSP)，这里就引出了里氏替换原则的定义，简单来说，A 是 B 的子类型当且仅当一个有效的使用了 B 类型的程序，把其中所有的 B 类型换成 A 类型，程序的有效性依然存在，那么A就是B的子">
+<meta property="og:description" content="为什么要使用线程池在开发中，我们使用多线程来处理多个任务，一般是先编写实现任务的代码(任务类一般实现Runnable接口)，然后为每个任务启动一个线程(Thread类)，接下来由系统负责完成线程间的调度。假设任务很多，而且执行时间不长，为每个任务都创建一个对应的线程，会使线程频繁的创建和销毁，所以我们引入线程池，控制线程创建的数目，尽量的使线程可以复用 实现线程池要考虑的问题 线程池自身的状态如何">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2018-05-18T02:39:36.000Z">
+<meta property="og:updated_time" content="2018-05-18T06:32:33.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Java泛型与通配符">
-<meta name="twitter:description" content="从一个问题说起String 是 Object 的 subtype，但是List&amp;lt;String&amp;gt;不是List&amp;lt;Object&amp;gt;的subtype，为什么？ 最核心的原因是：不满足里氏替换原则(LSP)，这里就引出了里氏替换原则的定义，简单来说，A 是 B 的子类型当且仅当一个有效的使用了 B 类型的程序，把其中所有的 B 类型换成 A 类型，程序的有效性依然存在，那么A就是B的子">
+<meta name="twitter:title" content="Java线程池实现原理">
+<meta name="twitter:description" content="为什么要使用线程池在开发中，我们使用多线程来处理多个任务，一般是先编写实现任务的代码(任务类一般实现Runnable接口)，然后为每个任务启动一个线程(Thread类)，接下来由系统负责完成线程间的调度。假设任务很多，而且执行时间不长，为每个任务都创建一个对应的线程，会使线程频繁的创建和销毁，所以我们引入线程池，控制线程创建的数目，尽量的使线程可以复用 实现线程池要考虑的问题 线程池自身的状态如何">
   
     <link rel="alternative" href="/atom.xml" title="0x08 0x17" type="application/atom+xml">
   
@@ -151,59 +151,90 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            <article id="post-javafan-xing-yu-tong-pei-fu" class="article article-type-post " itemscope itemprop="blogPost">
+            <article id="post-javaxian-cheng-chi-shi-xian-yuan-li" class="article article-type-post " itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
         
   
     <h1 class="article-title" itemprop="name">
-      Java泛型与通配符
+      Java线程池实现原理
     </h1>
   
 
         
-        <a href="/2017/01/09/javafan-xing-yu-tong-pei-fu/" class="archive-article-date">
-  	<time datetime="2017-01-09T13:34:50.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-01-09</time>
+        <a href="/2017/03/15/javaxian-cheng-chi-shi-xian-yuan-li/" class="archive-article-date">
+  	<time datetime="2017-03-15T09:17:03.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-03-15</time>
 </a>
         
       </header>
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h2 id="从一个问题说起"><a href="#从一个问题说起" class="headerlink" title="从一个问题说起"></a>从一个问题说起</h2><p>String 是 Object 的 subtype，但是<code>List&lt;String&gt;</code>不是<code>List&lt;Object&gt;</code>的subtype，为什么？</p>
-<p>最核心的原因是：<strong>不满足里氏替换原则(LSP)</strong>，这里就引出了里氏替换原则的定义，简单来说，A 是 B 的子类型当且仅当一个有效的使用了 B 类型的程序，把其中所有的 B 类型换成 A 类型，程序的有效性依然存在，那么A就是B的子类型(也就是<strong>所有使用supertype的地方都可以透明的使用其subtype</strong>)</p>
+        <h2 id="为什么要使用线程池"><a href="#为什么要使用线程池" class="headerlink" title="为什么要使用线程池"></a>为什么要使用线程池</h2><p>在开发中，我们使用多线程来处理多个任务，一般是先编写实现任务的代码(任务类一般实现<code>Runnable</code>接口)，然后为每个任务启动一个线程(<code>Thread</code>类)，接下来由系统负责完成线程间的调度。假设任务很多，而且执行时间不长，为每个任务都创建一个对应的线程，<strong>会使线程频繁的创建和销毁，所以我们引入线程池，控制线程创建的数目，尽量的使线程可以复用</strong></p>
+<h2 id="实现线程池要考虑的问题"><a href="#实现线程池要考虑的问题" class="headerlink" title="实现线程池要考虑的问题"></a>实现线程池要考虑的问题</h2><ul>
+<li>线程池自身的状态如何管理？比如 running, shutdown 等</li>
+<li>如何控制线程池的线程数目？</li>
+<li>线程池如何执行待处理的任务？</li>
+<li>如何控制待执行的任务和线程之间的关系？</li>
+</ul>
 <a id="more"></a>
-<p>根据里氏替换原则，下面这个有效(可以正确编译)的程序：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">doThing</span><span class="params">(List&lt;Object&gt; x)</span> </span>&#123;</span><br><span class="line">	x.add(<span class="keyword">new</span> Object());</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>如果 <code>List&lt;Object&gt;</code> 可以正确的被替换为 <code>List&lt;String&gt;</code>,那么<code>List&lt;String&gt;</code> 就是 <code>List&lt;Object&gt;</code> 的子类型，即：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">doThing</span><span class="params">(List&lt;String&gt; y)</span> </span>&#123;</span><br><span class="line">	y.add(<span class="keyword">new</span> Object());</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>显然上面的代码不能编译通过，也就是说<code>List&lt;String&gt;</code>就不是<code>List&lt;Object&gt;</code>的子类型，那么问题来了，各种参数化类型集合的超类是谁呢？答案是 <code>Collection&lt;?&gt;</code> 念做 <strong>collection of unknow</strong> 其中 <code>?</code> 是一个泛型通配符，可以匹配任何类型，下面会展开讲述</p>
-<h2 id="泛型通配符"><a href="#泛型通配符" class="headerlink" title="泛型通配符"></a>泛型通配符</h2><p><strong>提前声明：任何关于Java语言的概念，最权威的参考一定是 JLS，这里给出链接<a href="https://docs.oracle.com/javase/tutorial/extra/generics/wildcards.html" target="_blank" rel="noopener">Wildcards</a>，下面的内容会参考 JSL 来做说明。</strong></p>
-<p>由上面我们知道了，各种参数化类型集合的超类是 <code>Collection&lt;?&gt;</code>，<strong>?</strong>就是我们说的通配符，有了这个超类，我们就可以构造一个方法来接收任何参数实例化的 Collection了，如下：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">printCollection</span><span class="params">(Collection&lt;?&gt; c)</span> </span>&#123;</span><br><span class="line">	<span class="keyword">for</span> (Object e : c) &#123;</span><br><span class="line">		System.out.println(e);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>上面例子中我们读取集合中的每一个元素时都转为 Object，这样做总是安全的，因为 Object 是任何一个元素类型的超类。但是像下面这样就是错误的：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Collection&lt;?&gt; c = <span class="keyword">new</span> ArrayList&lt;String&gt;();</span><br><span class="line">c.add(<span class="keyword">new</span> Object()); <span class="comment">// Complie time error</span></span><br></pre></td></tr></table></figure>
-<p>因为当实际类型参数是<strong>?</strong>，代表一个未知的类型，所以我们不能向其传入任何类型的参数，只有一个例外，那就是<code>null</code>(任何类型的一个成员)，这里后面在说 <strong>&lt;? extends T&gt; vs &lt;? super T&gt;</strong>时会再谈到</p>
-<h3 id="受限的类型参数"><a href="#受限的类型参数" class="headerlink" title="受限的类型参数"></a>受限的类型参数</h3><p>在实际使用中，我们可能需要限制泛型的类型参数，比如，一个方法接收数字类型的参数，那么就可以把泛型的类型参数限定为 Number 类型或者他的子类型，使用的语法是：<strong>列出该参数的名字，然后跟上 extends 关键字，再跟上 upper bound</strong>，比如： <code>List&lt;T extends Number&gt;</code></p>
-<p><strong>注意，在上面的上下文语境中，extends 既代表类中的 extends，也代表接口中的 implements</strong></p>
-<p>一个类型参数可以同时存在有多个上界，比如：<code>&lt;T extends B1 &amp; B2 &amp; B3&gt;</code>, 该类型参数就是 B1，B2和B3的子类型，B1，B2，B3中只能存在一个 class，且该class必须放在第一个位置上</p>
-<p>这里 <code>&amp;</code> 还可以用于返回值中，也只能存在一个 class，比如：<br><code>return (Comparator&lt;T&gt; &amp; Serializable) a</code> 表示 a 被转型为 Comparator <strong>and</strong> Serializable(也就是一个可序列化的比较器)</p>
-<h2 id="lt-T-extends-Comparable-lt-super-T-gt-gt-怎么理解"><a href="#lt-T-extends-Comparable-lt-super-T-gt-gt-怎么理解" class="headerlink" title="&lt;T extends Comparable&lt;? super T&gt;&gt;怎么理解"></a><code>&lt;T extends Comparable&lt;? super T&gt;&gt;</code>怎么理解</h2><p>在 <code>Collections.sort</code> 的 javadoc 中我们可以看到这样的签名：<code>public static &lt;T extends Comparable&lt;? super T&gt;&gt; void sort(List&lt;T&gt; list)</code>，可能会有这样的疑问，为什么不写成<code>&lt;T implements Comparable&lt;T&gt;&gt;</code>?</p>
-<p>首先我们在上面受限的泛型参数中说到 extends 既可以表示 extends 也可以表示 implements；其次，javadoc 中的方法签名表示 T 能够实现 <code>Comparable&lt;? super T&gt;</code> 而不仅仅是 <code>Comparable&lt;T&gt;</code>,举个例子，一个 Student 类可以实现 Comparable<person>，其中 Student 是 Person 的子类，如下：</person></p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Person</span> </span>&#123;&#125;</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Student</span> <span class="keyword">extends</span> <span class="title">Person</span> <span class="keyword">implements</span> <span class="title">Comparable</span>&lt;<span class="title">Person</span>&gt; </span>&#123;</span><br><span class="line">	<span class="meta">@Override</span> </span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">compareTo</span><span class="params">(Person that)</span> </span>&#123;</span><br><span class="line">		<span class="comment">// ...</span></span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>在上面的例子中，一个List<student> 可以被 Collections.sort() 方法进行排序，但是<strong>只能根据 Person 类的属性</strong>，因为把 Student 实例传入 compareTo 方法中是按照超类型 Person 来处理的(除非你自己 downcast)</student></p>
-<p>在实际使用中，我们不会用 Student 类来实现 <code>Comparable&lt;Person&gt;</code>，因为 Person 类很可能已经实现了 <code>Comparable&lt;Person&gt;</code> 接口，Student 类会继承该实现，但是结果是一样的，你可以把 <code>List&lt;Student&gt;</code> 传给 Collections.sort() 调用，但还是根据Person 的属性来调用的</p>
-<h2 id="lt-extends-T-gt-vs-lt-super-T-gt"><a href="#lt-extends-T-gt-vs-lt-super-T-gt" class="headerlink" title="&lt;? extends T&gt; vs &lt;? super T&gt;"></a><code>&lt;? extends T&gt; vs &lt;? super T&gt;</code></h2><p>解释这种用法的最佳例子就是 <code>Collections.copy()</code> 方法:<br><code>public static &lt;T&gt; void copy(List&lt;? super T&gt; dest, List&lt;? extends T&gt; src)</code></p>
-<p>注意到在这个方法签名中，src list 声明为 extends，允许我传入相关的 List 类型的 family，仍然保证会产生类型T或者他的子类型，但是不能向 src list 中添加新的元素，因为我们无法确定元素的类型</p>
-<p>dest list 声明为 super, 允许我们传入相关的List类型的family(类型T或者其超类)，仍然保证我可以写入一个 T 类型元素到该 list 中。但是不能保证从该list中读出的元素是T类型的元素</p>
-<p>所以，由于上面的泛型通配符，我们可以用上面一个方法签名，满足下面不同方法的调用，大大增强了算法的普适性：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// copy(dest, src)</span></span><br><span class="line">Collections.copy(<span class="keyword">new</span> ArrayList&lt;Number&gt;(), <span class="keyword">new</span> ArrayList&lt;Number&gt;());</span><br><span class="line">Collections.copy(<span class="keyword">new</span> ArrayList&lt;Number&gt;(), <span class="keyword">new</span> ArrayList&lt;Integer&gt;());</span><br><span class="line">Collections.copy(<span class="keyword">new</span> ArrayList&lt;Object&gt;(), <span class="keyword">new</span> ArrayList&lt;Number&gt;());</span><br><span class="line">Collections.copy(<span class="keyword">new</span> ArrayList&lt;Object&gt;(), <span class="keyword">new</span> ArrayList&lt;Double&gt;());</span><br></pre></td></tr></table></figure>
-<p>总结起来就是：<strong>PECS（Producer Extends, Consumer Super</strong></p>
+<h2 id="ThreadPoolExecutor的代码分析"><a href="#ThreadPoolExecutor的代码分析" class="headerlink" title="ThreadPoolExecutor的代码分析"></a>ThreadPoolExecutor的代码分析</h2><p>关于一个线程池的实现，在上面给出了几个需要重点关注的地方，下面结合源码进行解析</p>
+<h3 id="Executor接口"><a href="#Executor接口" class="headerlink" title="Executor接口"></a>Executor接口</h3><blockquote>
+<p>An object that executes submitted Runnable tasks. This interface provides a way of decoupling task submission from the mechanics of how each task will be run, including details of thread use, scheduling, etc. An Executor is normally used instead of explicitly creating threads.</p>
+</blockquote>
+<p>该接口把任务的提交和任务的执行进行解耦，至于如何执行提交的任务，可以有很多不同的实现，在 Oracle 提供的 API 文档中，有详细的描述。后面我们会详细了解 <code>ThreadPoolExecutor</code> 是如何实现该接口的 <code>execute(Runnable command)</code>方法的</p>
+<h3 id="线程池的状态管理"><a href="#线程池的状态管理" class="headerlink" title="线程池的状态管理"></a>线程池的状态管理</h3><p>在 <code>ThreadPoolExecutor</code>类中定义了一个线程池的状态，并且提供了对应的锁，来保证状态修改的同步，同时还有与线程池状态相关的操作，比如<code>shutdown(), shutdownNow()</code>等；在执行线程池中的任务时，也需要对线程池的状态进行判断，一些重要的字段如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// runState is stored in the high-order bits</span></span><br><span class="line">   <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> RUNNING    = -<span class="number">1</span> &lt;&lt; COUNT_BITS;</span><br><span class="line">   <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> SHUTDOWN   =  <span class="number">0</span> &lt;&lt; COUNT_BITS;</span><br><span class="line">   <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> STOP       =  <span class="number">1</span> &lt;&lt; COUNT_BITS;</span><br><span class="line">   <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> TIDYING    =  <span class="number">2</span> &lt;&lt; COUNT_BITS;</span><br><span class="line">   <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> TERMINATED =  <span class="number">3</span> &lt;&lt; COUNT_BITS;</span><br><span class="line">   ...</span><br><span class="line">   <span class="keyword">private</span> <span class="keyword">final</span> ReentrantLock mainLock = <span class="keyword">new</span> ReentrantLock();</span><br></pre></td></tr></table></figure>
+<h3 id="如何控制线程池的线程数"><a href="#如何控制线程池的线程数" class="headerlink" title="如何控制线程池的线程数"></a>如何控制线程池的线程数</h3><p>首先要关注几个重要的字段：</p>
 <ul>
-<li>Producer Extends: 如果你需要一个List来产生T类型的值(也就是说你想从List中读取T类型的值)，你需要使用 <code>? extends T</code>,即<code>List&lt;? extends T&gt;</code>。但是你不可以往该list中添加元素</li>
-<li>Consumer Super: 如果你需要一个List来消费T类型的值(也就是说你想把T类型的值写入到list中)，你需要使用<code>？ super T</code>，即<code>List&lt;? super T&gt;</code>。但是不能保证你从list中读取的值的类型是T</li>
-<li>如果你需要同时从list中进行读和写，那么就不要使用通配符，即<code>List&lt;T&gt;</code></li>
+<li><code>private volatile int corePoolSize; // 核心池的大小</code>,在创建了线程池后，默认情况下，线程池中并没有任何线程，而是等待有任务到来才创建线程去执行任务，除非调用了prestartAllCoreThreads()或者prestartCoreThread()方法，从这2个方法的名字就可以看出，是预创建线程的意思，即在没有任务到来之前就创建corePoolSize个线程或者一个线程。默认情况下，在创建了线程池后，线程池中的线程数为0，当有任务来之后，就会创建一个线程去执行任务，当线程池中的线程数目达到corePoolSize后，就会把到达的任务放到缓存队列当中</li>
+<li><code>private volatile int maxinumPoolSize; // 线程池最大线程数</code></li>
+<li><code>private final BlockingQueue&lt;Runnable&gt; workQueue; // 任务缓存队列，用存放等待执行的任务</code></li>
+<li><code>private final HashSet&lt;Worker&gt; workers = new HashSet&lt;Worker&gt;();</code> // Set containing all worker threads in pool. Accessed only when holding mainLock.（其中Worker 包装了具体要执行的任务和执行该任务的线程）</li>
+</ul>
+<p><code>ThreadPoolExecutor</code> 类大体实现的思路：当线程池中的线程数小于核心池<strong>corePoolSize</strong>时，直接创建线程(通过Worker)执行该任务，方法为 <code>addIfUnderCorePoolSize(command)</code>; 当线程池中的线程数大于核心池corePoolSize时，把任务加入到缓存队列<code>workQueue.offer(command)</code>，队列中的任务会通过<code>getTask()</code> 方法获取</p>
+<h3 id="execute方法的实现"><a href="#execute方法的实现" class="headerlink" title="execute方法的实现"></a>execute方法的实现</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">execute</span><span class="params">(Runnable command)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (command == <span class="keyword">null</span>)</span><br><span class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> NullPointerException();</span><br><span class="line">    <span class="keyword">if</span> (poolSize &gt;= corePoolSize || !addIfUnderCorePoolSize(command)) &#123;</span><br><span class="line">        <span class="keyword">if</span> (runState == RUNNING &amp;&amp; workQueue.offer(command)) &#123;</span><br><span class="line">            <span class="keyword">if</span> (runState != RUNNING || poolSize == <span class="number">0</span>)</span><br><span class="line">                ensureQueuedTaskHandled(command);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">else</span> <span class="keyword">if</span> (!addIfUnderMaximumPoolSize(command))</span><br><span class="line">            reject(command); <span class="comment">// is shutdown or saturated</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>首先，判断提交的任务command是否为null，若是null，则抛出空指针异常</p>
+</blockquote>
+<blockquote>
+<p>接着是这句，这句要好好理解一下：<code>if (poolSize &gt;= corePoolSize || !addIfUnderCorePoolSize(command))</code>由于是或条件运算符，所以先计算前半部分的值，如果线程池中当前线程数不小于核心池大小，那么就会直接进入下面的if语句块了</p>
+</blockquote>
+<blockquote>
+<p>如果线程池中<strong>当前线程数小于核心池大小</strong>，则接着执行后半部分，也就是执行<code>addIfUnderCorePoolSize(command)</code>如果执行完<code>addIfUnderCorePoolSize</code>这个方法返回false，则继续执行下面的if语句块，否则整个方法就直接执行完毕了</p>
+</blockquote>
+<blockquote>
+<p>如果执行完<code>addIfUnderCorePoolSize</code>这个方法返回false，然后接着判断：<code>if (runState == RUNNING &amp;&amp; workQueue.offer(command))</code>如果当前线程池处于RUNNING状态，则将任务放入任务缓存队列；如果当前线程池不处于RUNNING状态或者任务放入缓存队列失败，则执行：<code>addIfUnderMaximumPoolSize(command)</code>如果执行<code>addIfUnderMaximumPoolSize</code>方法失败，则执行<code>reject()</code>方法进行任务拒绝处理</p>
+</blockquote>
+<blockquote>
+<p>回到前面 <code>if (runState == RUNNING &amp;&amp; workQueue.offer(command))</code>这句的执行，如果说当前线程池处于RUNNING状态且将任务放入任务缓存队列成功，则继续进行判断：<br><code>if (runState != RUNNING || poolSize == 0)</code><br>这句判断是为了防止在将此任务添加进任务缓存队列的同时其他线程突然调用shutdown或者shutdownNow方法关闭了线程池的一种应急措施。如果是这样就执行：<code>ensureQueuedTaskHandled(command)</code>进行应急处理，从名字可以看出是保证 添加到任务缓存队列中的任务得到处理。</p>
+</blockquote>
+<p>接下里重点关注 <code>addIfUnderCorePoolSize(Runnable firstTask)</code> 方法</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">boolean</span> <span class="title">addIfUnderCorePoolSize</span><span class="params">(Runnable firstTask)</span> </span>&#123;</span><br><span class="line">    Thread t = <span class="keyword">null</span>;</span><br><span class="line">    <span class="keyword">final</span> ReentrantLock mainLock = <span class="keyword">this</span>.mainLock;</span><br><span class="line">    mainLock.lock();</span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">        <span class="keyword">if</span> (poolSize &lt; corePoolSize &amp;&amp; runState == RUNNING)</span><br><span class="line">            t = addThread(firstTask);   </span><br><span class="line">        &#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">        mainLock.unlock();</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span> (t == <span class="keyword">null</span>)</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">    t.start();</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>在该方法中通过 addThread(firstTask) 把待执行的任务交给 Thread 对象，然后通过 <code>t.start()</code> 启动线程，等待任务执行</p>
+<p>那么顺着代码执行，下面关注一下<code>addThread(Runnable command)</code> 方法：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> Thread <span class="title">addThread</span><span class="params">(Runnable firstTask)</span> </span>&#123;</span><br><span class="line">    Worker w = <span class="keyword">new</span> Worker(firstTask);</span><br><span class="line">    Thread t = threadFactory.newThread(w);  <span class="comment">//创建一个线程，执行任务   </span></span><br><span class="line">    <span class="keyword">if</span> (t != <span class="keyword">null</span>) &#123;</span><br><span class="line">        w.thread = t;            <span class="comment">//将创建的线程的引用赋值为w的成员变量       </span></span><br><span class="line">        workers.add(w);</span><br><span class="line">        <span class="keyword">int</span> nt = ++poolSize;     <span class="comment">//当前线程数加1       </span></span><br><span class="line">        <span class="keyword">if</span> (nt &gt; largestPoolSize)</span><br><span class="line">            largestPoolSize = nt;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> t;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>通过该方法，我们知道了执行任务的线程和线程池是通过 <code>Worker</code> 和 <code>HashSet&lt;Worker&gt;</code> 来封装执行，所以接下关注 <code>Worker</code> 的<code>run</code>方法:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            Runnable task = firstTask;</span><br><span class="line">            firstTask = <span class="keyword">null</span>;</span><br><span class="line">            <span class="keyword">while</span> (task != <span class="keyword">null</span> || (task = getTask()) != <span class="keyword">null</span>) &#123;</span><br><span class="line">                runTask(task);</span><br><span class="line">                task = <span class="keyword">null</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">            workerDone(<span class="keyword">this</span>);          </span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<p>从run方法的实现可以看出，它首先执行的是通过构造器传进来的任务firstTask，在调用runTask()执行完firstTask之后，在while循环里面不断通过<code>getTask()</code>去取新的任务来执行，那么去哪里取呢？自然是从任务缓存队列里面去取。这里有一个非常巧妙的设计，假如我们来设计线程池，可能会有一个任务分派线程，当发现有线程空闲时，就从任务缓存队列中取一个任务交给空闲线程执行。但是在这里，并没有采用这样的方式，因为这样会要额外地对任务分派线程进行管理，无形地会增加难度和复杂度，这里<strong>直接让执行完任务的线程去任务缓存队列里面取任务来执行</strong></p>
+<p>Worker 的 run 方法调用了 <code>runTask(task)</code> 方法来最终执行任务，所以我们再看下该方法的代码：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">runTask</span><span class="params">(Runnable task)</span> </span>&#123;</span><br><span class="line">       <span class="keyword">final</span> ReentrantLock runLock = <span class="keyword">this</span>.runLock;</span><br><span class="line">       runLock.lock();</span><br><span class="line">       <span class="keyword">try</span> &#123;</span><br><span class="line">           <span class="keyword">if</span> (runState &lt; STOP &amp;&amp;</span><br><span class="line">               Thread.interrupted() &amp;&amp;</span><br><span class="line">               runState &gt;= STOP)</span><br><span class="line">           <span class="keyword">boolean</span> ran = <span class="keyword">false</span>;</span><br><span class="line">           beforeExecute(thread, task);         </span><br><span class="line">           <span class="keyword">try</span> &#123;</span><br><span class="line">               task.run();</span><br><span class="line">               ran = <span class="keyword">true</span>;</span><br><span class="line">               afterExecute(task, <span class="keyword">null</span>);</span><br><span class="line">               ++completedTasks;</span><br><span class="line">           &#125; <span class="keyword">catch</span> (RuntimeException ex) &#123;</span><br><span class="line">               <span class="keyword">if</span> (!ran)</span><br><span class="line">                   afterExecute(task, ex);</span><br><span class="line">               <span class="keyword">throw</span> ex;</span><br><span class="line">           &#125;</span><br><span class="line">       &#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">           runLock.unlock();</span><br><span class="line">       &#125;</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
+<p>看到代码里的 <code>task.run()</code> 我们总算可以松一口气了，这就是我们的任务实际要执行的代码</p>
+<p>总结一下一个任务的执行顺序：通过把任务提交给 ThreadPoolExecutor 的 execute(Runnable) 方法，为每个任务创建一个对应的 Worker 对象，该对象封装了执行该任务的线程，通过在该对象 <code>run()</code> 方法获取要执行的任务(包括通过 <code>getTask()</code> 方法从队列中去取)，并最终调用 <code>runTask(task)</code>来执行任务的代码(task.run())</p>
+<h3 id="创建线程池"><a href="#创建线程池" class="headerlink" title="创建线程池"></a>创建线程池</h3><p>提倡直接使用ThreadPoolExecutor的构造函数，而不是使用<code>Executors</code>类中提供的几个静态方法来创建线程池（Executors 方法用起来方便，但是有坑，后面会专门介绍）</p>
+<h3 id="workQueue的排队策略"><a href="#workQueue的排队策略" class="headerlink" title="workQueue的排队策略"></a>workQueue的排队策略</h3><p>workQueue的类型为BlockingQueue<runnable>，通常可以取下面三种类型：</runnable></p>
+<ul>
+<li>ArrayBlockingQueue：基于数组的先进先出队列，此队列创建时必须指定大小</li>
+<li>LinkedBlockingQueue：基于链表的先进先出队列，如果创建时没有指定此队列大小，则默认为Integer.MAX_VALUE</li>
+<li>synchronousQueue：这个队列比较特殊，它不会保存提交的任务，而是将直接新建一个线程来执行新来的任务。</li>
+</ul>
+<p><strong>具体的内容在 java.util.concurrent.ThreadPoolExecutor API 文档中说的很清楚，比如使用 ArrayBlockingQueue 时，如何在 queue size 和 maximum pool size 之间作 trade off，建议去仔细看一下</strong></p>
+<p>以上就是关于一个线程池实现原理的主要讲述，当然还有很多细节没有说，比如如何通过锁处理线程并发，建议去看源码和注释</p>
+<hr>
+<p><strong>推荐阅读：</strong></p>
+<ul>
+<li><a href="http://www.cnblogs.com/dolphin0520/p/3932921.html" target="_blank" rel="noopener">Java并发编程：线程池的使用</a></li>
 </ul>
 
       
@@ -288,8 +319,8 @@ div.article-footer-copyright{
 </style>
 
 <div class="article-footer-copyright">
-	<p>本文标题: <a href="/2017/01/09/javafan-xing-yu-tong-pei-fu/" target="_blank" title="Java泛型与通配符">Java泛型与通配符</a></p>
-	<p>本文链接: <a href="/2017/01/09/javafan-xing-yu-tong-pei-fu/" target="_blank" title="Java泛型与通配符">https://ryan-hou.github.io/2017/01/09/javafan-xing-yu-tong-pei-fu/</a></p>
+	<p>本文标题: <a href="/2017/03/15/javaxian-cheng-chi-shi-xian-yuan-li/" target="_blank" title="Java线程池实现原理">Java线程池实现原理</a></p>
+	<p>本文链接: <a href="/2017/03/15/javaxian-cheng-chi-shi-xian-yuan-li/" target="_blank" title="Java线程池实现原理">https://ryan-hou.github.io/2017/03/15/javaxian-cheng-chi-shi-xian-yuan-li/</a></p>
 	<p>转载请注明本文链接~~</p>
 </div>
 
@@ -358,7 +389,7 @@ div.article-footer-copyright{
     <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
     <p>扫一扫，分享到微信</p>
     <div class="wx-qrcode">
-      <img src="//pan.baidu.com/share/qrcode?url=https://ryan-hou.github.io/2017/01/09/javafan-xing-yu-tong-pei-fu/" alt="微信分享二维码">
+      <img src="//pan.baidu.com/share/qrcode?url=https://ryan-hou.github.io/2017/03/15/javaxian-cheng-chi-shi-xian-yuan-li/" alt="微信分享二维码">
     </div>
 </div>
 
@@ -372,18 +403,18 @@ div.article-footer-copyright{
   
 <nav id="article-nav">
   
-    <a href="/2017/03/10/mo-ban-fang-fa-mo-shi-vsce-lue-mo-shi/" id="article-nav-newer" class="article-nav-link-wrap">
+    <a href="/2017/09/23/visitor-pattern/" id="article-nav-newer" class="article-nav-link-wrap">
       <i class="icon-circle-left"></i>
       <div class="article-nav-title">
         
-          模版方法模式vs策略模式
+          Visitor pattern
         
       </div>
     </a>
   
   
-    <a href="/2017/01/08/tan-tan-java-fan-xing/" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">谈谈 Java 泛型</div>
+    <a href="/2017/03/10/mo-ban-fang-fa-mo-shi-vsce-lue-mo-shi/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">模版方法模式vs策略模式</div>
       <i class="icon-circle-right"></i>
     </a>
   
@@ -422,7 +453,7 @@ div.article-footer-copyright{
 <script src="https://billts.site/js/gitment.js"></script>
 <script>
 var gitment = new Gitment({
-  id: 'Java泛型与通配符',
+  id: 'Java线程池实现原理',
   owner: 'Ryan-hou',
   repo: 'Ryan-hou.github.io',
   oauth: {
