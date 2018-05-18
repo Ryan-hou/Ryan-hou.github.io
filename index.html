@@ -664,6 +664,92 @@
 
 
   
+    <article id="post-efficient-data-transfer-through-zero-copy" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/11/27/efficient-data-transfer-through-zero-copy/">Efficient data transfer through zero copy</a>
+    </h1>
+  
+
+        
+        <a href="/2017/11/27/efficient-data-transfer-through-zero-copy/" class="archive-article-date">
+  	<time datetime="2017-11-27T09:03:56.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-11-27</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>本文为翻译文章，原文链接为:<a href="https://www.ibm.com/developerworks/library/j-zerocopy/" target="_blank" rel="noopener">Efficient data transfer through zero copy</a></p>
+<p>许多web应用都会提供从磁盘读取大量的静态数据，然后再把这些数据写到 response socket 中。这种服务看起来几乎不会用到 cpu 计算，但是这里却存在不高效的情况：内核从磁盘读取数据后，会把它通过kernel-user边界push到应用，然后再通过kernel-user边界push回socket buffer供socket写出。实际上，这里应用层成了磁盘和socket之间一个低效的中间介质</p>
+<p>每次数据通过kernel-user边界时，必须被复制，这就会消耗cpu cycles 和内存带宽。幸运的是，我们可以通过<code>zero copy</code>技术来消除这些拷贝。<strong>使用 zero copy技术，应用可以直接把磁盘数据移动到socket，不需要经过应用</strong>。zero copy 技术很大的提升了应用性能并且减少了kernel和user模式的切换</p>
+<p>Java 类库通过 <code>java.nio.channels.FileChannel</code>类的<code>transferTo()</code>方法支持在 Linux 和 Unix操作系统上的zero copy技术。你可以使用 transferTo() 方法把字节流从调用这个方法的 channel直接移动到另一个可写的字节channel，不需要数据经由应用。本文首先会证明使用传统的复制语义会带来 overhead，然后展示使用zero copy技术的transferTo()方法如何实现更好的性能</p>
+        
+          <a class="article-more-a" href="/2017/11/27/efficient-data-transfer-through-zero-copy/#more">more >></a>
+        
+      
+
+      
+    </div>
+	<!-- 版权内容 -->
+	
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">OS</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">优化</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2017/11/27/efficient-data-transfer-through-zero-copy/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+
+  
     <article id="post-fan-zhuan-dan-lian-biao-de-ji-chong-zi-shi" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -926,91 +1012,6 @@
 
 
   
-    <article id="post-volatileyu-finalguan-jian-zi-jie-xi" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/07/07/volatileyu-finalguan-jian-zi-jie-xi/">volatile与final关键字解析</a>
-    </h1>
-  
-
-        
-        <a href="/2017/07/07/volatileyu-finalguan-jian-zi-jie-xi/" class="archive-article-date">
-  	<time datetime="2017-07-07T07:25:57.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-07-07</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="volatile关键字"><a href="#volatile关键字" class="headerlink" title="volatile关键字"></a>volatile关键字</h2><h3 id="作用"><a href="#作用" class="headerlink" title="作用"></a>作用</h3><ul>
-<li>保证内存可见性</li>
-<li>防止指令重排序</li>
-</ul>
-<p>此外需注意volatile并不保证操作的原子性</p>
-<h3 id="内存可见性"><a href="#内存可见性" class="headerlink" title="内存可见性"></a>内存可见性</h3><p>Java内存模型规定，对于多个线程共享的变量，存储在主内存当中，每个线程都有自己的工作内存(比如CPU寄存器)，<strong>工作内存中保存了主内存共享变量的副本。线程只能访问自己的工作内存，不可以访问其他线程的工作内存</strong>。这就导致了<strong>各个线程的工作内存与主内存的数据可能并不是完全一致的</strong>，即共享变量的改变在不同的线程间是不可见的</p>
-<p>内存不可见会带来一些问题，比如有一个共享变量<code>boolean open = true;</code> 描述一个资源的状态，true 表示可用。现在线程 A 进行操作后，把该变量值改为 false，但是该变量的改动尚未同步到线程 B 的工作内存，那么线程 B 会操作一个不可用的资源，从而产生错误</p>
-        
-          <a class="article-more-a" href="/2017/07/07/volatileyu-finalguan-jian-zi-jie-xi/#more">more >></a>
-        
-      
-
-      
-    </div>
-	<!-- 版权内容 -->
-	
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">Java</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2017/07/07/volatileyu-finalguan-jian-zi-jie-xi/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-
-  
   
     <nav id="page-nav">
       <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="extend next" rel="next" href="/page/2/">Next &raquo;</a>
@@ -1109,6 +1110,14 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">算法</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">OS</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">优化</a>
               </li>
              
               <li class="article-tag-list-item">

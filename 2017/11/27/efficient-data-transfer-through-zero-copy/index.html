@@ -6,22 +6,26 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="https://ryan-hou.github.io">
-  <title>ThreadLocal解析 | 0x08 0x17</title>
+  <title>Efficient data transfer through zero copy | 0x08 0x17</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="是什么这个类的名字已经很清楚的告诉我们该类的作用了，即线程局部变量，可以类比一般的局部变量，ThreadLocal说明了该局部变量的上下文环境为Thread，即每个线程都有一个互不影响的变量，可以通过get()或者set(T value)等方法分别操作自己的变量副本，而对其他的线程操作保持封闭 为什么那么为什么需要使用ThreadLocal呢？可以考虑这样两个场景：  在同一个线程中的多个函数需要">
-<meta name="keywords" content="Java">
+  <meta name="description" content="本文为翻译文章，原文链接为:Efficient data transfer through zero copy 许多web应用都会提供从磁盘读取大量的静态数据，然后再把这些数据写到 response socket 中。这种服务看起来几乎不会用到 cpu 计算，但是这里却存在不高效的情况：内核从磁盘读取数据后，会把它通过kernel-user边界push到应用，然后再通过kernel-user边界p">
+<meta name="keywords" content="OS,优化">
 <meta property="og:type" content="article">
-<meta property="og:title" content="ThreadLocal解析">
-<meta property="og:url" content="https://ryan-hou.github.io/2017/04/03/threadlocaljie-xi/index.html">
+<meta property="og:title" content="Efficient data transfer through zero copy">
+<meta property="og:url" content="https://ryan-hou.github.io/2017/11/27/efficient-data-transfer-through-zero-copy/index.html">
 <meta property="og:site_name" content="0x08 0x17">
-<meta property="og:description" content="是什么这个类的名字已经很清楚的告诉我们该类的作用了，即线程局部变量，可以类比一般的局部变量，ThreadLocal说明了该局部变量的上下文环境为Thread，即每个线程都有一个互不影响的变量，可以通过get()或者set(T value)等方法分别操作自己的变量副本，而对其他的线程操作保持封闭 为什么那么为什么需要使用ThreadLocal呢？可以考虑这样两个场景：  在同一个线程中的多个函数需要">
+<meta property="og:description" content="本文为翻译文章，原文链接为:Efficient data transfer through zero copy 许多web应用都会提供从磁盘读取大量的静态数据，然后再把这些数据写到 response socket 中。这种服务看起来几乎不会用到 cpu 计算，但是这里却存在不高效的情况：内核从磁盘读取数据后，会把它通过kernel-user边界push到应用，然后再通过kernel-user边界p">
 <meta property="og:locale" content="default">
-<meta property="og:image" content="http://ryan-hou.github.io/assets/img/blogPic/threadLocal.png">
-<meta property="og:updated_time" content="2018-05-18T08:22:01.000Z">
+<meta property="og:image" content="http://Ryan-hou.github.io/assets/img/blogPic/zeroCopy/figure1.png">
+<meta property="og:image" content="http://Ryan-hou.github.io/assets/img/blogPic/zeroCopy/figure2.png">
+<meta property="og:image" content="http://Ryan-hou.github.io/assets/img/blogPic/zeroCopy/figure3.png">
+<meta property="og:image" content="http://Ryan-hou.github.io/assets/img/blogPic/zeroCopy/figure4.png">
+<meta property="og:image" content="http://Ryan-hou.github.io/assets/img/blogPic/zeroCopy/figure5.png">
+<meta property="og:updated_time" content="2018-05-18T15:21:09.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="ThreadLocal解析">
-<meta name="twitter:description" content="是什么这个类的名字已经很清楚的告诉我们该类的作用了，即线程局部变量，可以类比一般的局部变量，ThreadLocal说明了该局部变量的上下文环境为Thread，即每个线程都有一个互不影响的变量，可以通过get()或者set(T value)等方法分别操作自己的变量副本，而对其他的线程操作保持封闭 为什么那么为什么需要使用ThreadLocal呢？可以考虑这样两个场景：  在同一个线程中的多个函数需要">
-<meta name="twitter:image" content="http://ryan-hou.github.io/assets/img/blogPic/threadLocal.png">
+<meta name="twitter:title" content="Efficient data transfer through zero copy">
+<meta name="twitter:description" content="本文为翻译文章，原文链接为:Efficient data transfer through zero copy 许多web应用都会提供从磁盘读取大量的静态数据，然后再把这些数据写到 response socket 中。这种服务看起来几乎不会用到 cpu 计算，但是这里却存在不高效的情况：内核从磁盘读取数据后，会把它通过kernel-user边界push到应用，然后再通过kernel-user边界p">
+<meta name="twitter:image" content="http://Ryan-hou.github.io/assets/img/blogPic/zeroCopy/figure1.png">
   
     <link rel="alternative" href="/atom.xml" title="0x08 0x17" type="application/atom+xml">
   
@@ -153,70 +157,74 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            <article id="post-threadlocaljie-xi" class="article article-type-post " itemscope itemprop="blogPost">
+            <article id="post-efficient-data-transfer-through-zero-copy" class="article article-type-post " itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
         
   
     <h1 class="article-title" itemprop="name">
-      ThreadLocal解析
+      Efficient data transfer through zero copy
     </h1>
   
 
         
-        <a href="/2017/04/03/threadlocaljie-xi/" class="archive-article-date">
-  	<time datetime="2017-04-03T06:26:58.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-04-03</time>
+        <a href="/2017/11/27/efficient-data-transfer-through-zero-copy/" class="archive-article-date">
+  	<time datetime="2017-11-27T09:03:56.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-11-27</time>
 </a>
         
       </header>
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h2 id="是什么"><a href="#是什么" class="headerlink" title="是什么"></a>是什么</h2><p>这个类的名字已经很清楚的告诉我们该类的作用了，即<code>线程局部变量</code>，可以类比一般的局部变量，<code>ThreadLocal</code>说明了该局部变量的上下文环境为<code>Thread</code>，即每个线程都有一个互不影响的变量，可以通过<code>get()</code>或者<code>set(T value)</code>等方法分别操作自己的变量副本，而对其他的线程操作保持封闭</p>
-<h2 id="为什么"><a href="#为什么" class="headerlink" title="为什么"></a>为什么</h2><p>那么为什么需要使用ThreadLocal呢？可以考虑这样两个场景：</p>
-<ul>
-<li>在同一个线程中的多个函数需要操作相同的数据，怎么处理？一种比较直接的方式就是通过在多个函数之间进行参数的传递，但是这种方式需要给每个参与的方法都增加一个参数，这并不优雅</li>
-<li>针对上面的问题，我们可以提供一个全局变量供所有的函数访问，但是在多线程环境下，需要进行同步处理</li>
-</ul>
+        <p>本文为翻译文章，原文链接为:<a href="https://www.ibm.com/developerworks/library/j-zerocopy/" target="_blank" rel="noopener">Efficient data transfer through zero copy</a></p>
+<p>许多web应用都会提供从磁盘读取大量的静态数据，然后再把这些数据写到 response socket 中。这种服务看起来几乎不会用到 cpu 计算，但是这里却存在不高效的情况：内核从磁盘读取数据后，会把它通过kernel-user边界push到应用，然后再通过kernel-user边界push回socket buffer供socket写出。实际上，这里应用层成了磁盘和socket之间一个低效的中间介质</p>
+<p>每次数据通过kernel-user边界时，必须被复制，这就会消耗cpu cycles 和内存带宽。幸运的是，我们可以通过<code>zero copy</code>技术来消除这些拷贝。<strong>使用 zero copy技术，应用可以直接把磁盘数据移动到socket，不需要经过应用</strong>。zero copy 技术很大的提升了应用性能并且减少了kernel和user模式的切换</p>
+<p>Java 类库通过 <code>java.nio.channels.FileChannel</code>类的<code>transferTo()</code>方法支持在 Linux 和 Unix操作系统上的zero copy技术。你可以使用 transferTo() 方法把字节流从调用这个方法的 channel直接移动到另一个可写的字节channel，不需要数据经由应用。本文首先会证明使用传统的复制语义会带来 overhead，然后展示使用zero copy技术的transferTo()方法如何实现更好的性能</p>
 <a id="more"></a>
-<p>综合上面两种情况，我们引入了ThreadLocal变量，提供了线程上下文环境下的局部变量</p>
-<h2 id="举个例子"><a href="#举个例子" class="headerlink" title="举个例子"></a>举个例子</h2><p>在分析<code>ThreadLocal</code>的实现原理前，我们先看一个示例代码：</p>
-<p>有三个线程，每个线程都有一个值value，初始值为0，线程运行时用一个循环往value值累加数字，最后会得到每个线程的累加值都一样。<strong>也就是说各个线程的value值是相互独立的，本线程的累加操作不会影响到其他线程的值，达到线程隔离的效果</strong></p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">TestThreadLocal</span> </span>&#123;</span><br><span class="line">	<span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> ThreadLocal&lt;Integer&gt; value = <span class="keyword">new</span> ThreadLocal&lt;&gt;() &#123;</span><br><span class="line">		<span class="meta">@Override</span></span><br><span class="line">		<span class="function"><span class="keyword">protected</span> Integer <span class="title">initialValue</span><span class="params">()</span> </span>&#123;</span><br><span class="line">			<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;;</span><br><span class="line">	</span><br><span class="line">	<span class="keyword">static</span> <span class="class"><span class="keyword">class</span> <span class="title">MyThread</span> <span class="keyword">implements</span> <span class="title">Runnable</span> </span>&#123;</span><br><span class="line">		<span class="keyword">private</span> <span class="keyword">int</span> index;</span><br><span class="line">		</span><br><span class="line">		<span class="function"><span class="keyword">public</span> <span class="title">MyThread</span><span class="params">(<span class="keyword">int</span> index)</span> </span>&#123;</span><br><span class="line">			<span class="keyword">this</span>.index = index;</span><br><span class="line">		&#125;</span><br><span class="line">		</span><br><span class="line">		<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</span><br><span class="line">			System.out.println(<span class="string">"线程"</span> ＋ index + <span class="string">"的初始value："</span> + value.get());</span><br><span class="line">			<span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">5</span>; i++) &#123;</span><br><span class="line">				value.set(value.get() + i);</span><br><span class="line">			&#125;</span><br><span class="line">			System.out.println(<span class="string">"线程"</span> + index + <span class="string">"的累加value："</span> + value.get());</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">		<span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">3</span>; i++) &#123;</span><br><span class="line">			<span class="keyword">new</span> Thread(<span class="keyword">new</span> MyThread(i)).start();</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h2 id="ThreadLocal的实现原理"><a href="#ThreadLocal的实现原理" class="headerlink" title="ThreadLocal的实现原理"></a>ThreadLocal的实现原理</h2><p>让我们自己来实现一个ThreadLocal，我们可能很容易就会想到通过封装一个Map对象来实现，Map 的key为线程的ID，value为对应的实例对象，这样就可以实现线程隔离的效果。早期的jdk版本也确实是这样实现的，但是在jdk8中，已经采用了别的实现方式，下面来具体的看一下</p>
-<h3 id="重要的API"><a href="#重要的API" class="headerlink" title="重要的API"></a>重要的API</h3><ul>
-<li><code>public T get()</code>: Returns the value in the current thread’s copy of this thread-local variable. If the variable has no value for the current thread, it is first initialized to the value returned by an invocation of the initialValue() method.</li>
-<li><code>protected T initialValue()</code>: Returns the current thread’s “initial value” for this thread-local variable. This method will be invoked the first time a thread accesses the variable with the get() method, unless the thread previously invoked the set(T) method, in which case the initialValue method will not be invoked for the thread. This implementation simply returns null; if the programmer desires thread-local variables to have an initial value other than null, ThreadLocal must be subclassed, and this method overridden. Typically, an anonymous inner class will be used.</li>
-<li><code>public void set(T value)</code>：Sets the current thread’s copy of this thread-local variable to the specified value</li>
-<li><code>public void remove()</code>：Removes the current thread’s value for this thread-local variable. If this thread-local variable is subsequently read by the current thread, its value will be reinitialized by invoking its initialValue() method, unless its value is set by the current thread in the interim.</li>
-</ul>
-<h3 id="通过-get-方法的源码分析下ThreadLocal的设计"><a href="#通过-get-方法的源码分析下ThreadLocal的设计" class="headerlink" title="通过 get() 方法的源码分析下ThreadLocal的设计"></a>通过 get() 方法的源码分析下ThreadLocal的设计</h3><ul>
-<li>public T get() 方法源码如下：</li>
-</ul>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment">    * Returns the value in the current thread's copy of this</span></span><br><span class="line"><span class="comment">    * thread-local variable.  If the variable has no value for the</span></span><br><span class="line"><span class="comment">    * current thread, it is first initialized to the value returned</span></span><br><span class="line"><span class="comment">    * by an invocation of the &#123;<span class="doctag">@link</span> #initialValue&#125; method.</span></span><br><span class="line"><span class="comment">    *</span></span><br><span class="line"><span class="comment">    * <span class="doctag">@return</span> the current thread's value of this thread-local</span></span><br><span class="line"><span class="comment">    */</span></span><br><span class="line">   <span class="function"><span class="keyword">public</span> T <span class="title">get</span><span class="params">()</span> </span>&#123;</span><br><span class="line">       Thread t = Thread.currentThread();</span><br><span class="line">       ThreadLocalMap map = getMap(t);</span><br><span class="line">       <span class="keyword">if</span> (map != <span class="keyword">null</span>) &#123;</span><br><span class="line">           ThreadLocalMap.Entry e = map.getEntry(<span class="keyword">this</span>);</span><br><span class="line">           <span class="keyword">if</span> (e != <span class="keyword">null</span>) &#123;</span><br><span class="line">               <span class="meta">@SuppressWarnings</span>(<span class="string">"unchecked"</span>)</span><br><span class="line">               T result = (T)e.value;</span><br><span class="line">               <span class="keyword">return</span> result;</span><br><span class="line">           &#125;</span><br><span class="line">       &#125;</span><br><span class="line">       <span class="keyword">return</span> setInitialValue();</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
-<p>源码和注释其实非常的清晰，我们只需要根据代码的调用来走读一下即可，首先我们先获取当前线程t，然后获取对应线程t的ThreadLocalMap变量map，我们可以具体看一下<code>getMap(t)</code>的源码如下：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment">    * Get the map associated with a ThreadLocal. Overridden in</span></span><br><span class="line"><span class="comment">    * InheritableThreadLocal.</span></span><br><span class="line"><span class="comment">    *</span></span><br><span class="line"><span class="comment">    * <span class="doctag">@param</span>  t the current thread</span></span><br><span class="line"><span class="comment">    * <span class="doctag">@return</span> the map</span></span><br><span class="line"><span class="comment">    */</span></span><br><span class="line">   <span class="function">ThreadLocalMap <span class="title">getMap</span><span class="params">(Thread t)</span> </span>&#123;</span><br><span class="line">       <span class="keyword">return</span> t.threadLocals;</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
-<p>在Thread类内部维护一个指向ThreadLocal的ThreadLocalMap包级私有静态类的字段：threadLocals，通过分析可以知道，<strong>整个ThreadLocal最核心的部分就在ThreadLocalMap类中，包括根据hash进行索引插入，通过开放地址法解决hash冲突问题等</strong>，部分代表代码如下：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ThreadLocal</span> </span>&#123;</span><br><span class="line">...</span><br><span class="line">	<span class="comment">/** ThreadLocalMap is a customized hash map suitable only for</span></span><br><span class="line"><span class="comment"> 	  * maintaining thread local values. No operations are exported</span></span><br><span class="line"><span class="comment"> 	  * outside of the ThreadLocal class. The class is package private to</span></span><br><span class="line"><span class="comment"> 	  * allow declaration of fields in class Thread.</span></span><br><span class="line"><span class="comment"> 	  * .....</span></span><br><span class="line"><span class="comment">	 /</span></span><br><span class="line"><span class="comment">	static class ThreadLocalMap &#123;</span></span><br><span class="line"><span class="comment">		static class Entry extends WeakReference&lt;ThreadLocal&lt;?&gt;&gt; &#123;</span></span><br><span class="line"><span class="comment">			Object value;</span></span><br><span class="line"><span class="comment">			...</span></span><br><span class="line"><span class="comment">		&#125;</span></span><br><span class="line"><span class="comment">		...</span></span><br><span class="line"><span class="comment">		private Entry[] table;</span></span><br><span class="line"><span class="comment">		</span></span><br><span class="line"><span class="comment">		/**</span></span><br><span class="line"><span class="comment">         * Get the entry associated with key.  This method</span></span><br><span class="line"><span class="comment">         * itself handles only the fast path: a direct hit of existing</span></span><br><span class="line"><span class="comment">         * key. It otherwise relays to getEntryAfterMiss.  This is</span></span><br><span class="line"><span class="comment">         * designed to maximize performance for direct hits, in part</span></span><br><span class="line"><span class="comment">         * by making this method readily inlinable.</span></span><br><span class="line"><span class="comment">         *</span></span><br><span class="line"><span class="comment">         * <span class="doctag">@param</span>  key the thread local object</span></span><br><span class="line"><span class="comment">         * <span class="doctag">@return</span> the entry associated with key, or null if no such</span></span><br><span class="line"><span class="comment">         */</span></span><br><span class="line">		<span class="function"><span class="keyword">private</span> Entry <span class="title">getEntry</span><span class="params">(ThreadLocal&lt;?&gt; key)</span> </span>&#123;</span><br><span class="line">			<span class="keyword">int</span> i = key.threadLocalHashCode &amp; (table.length - <span class="number">1</span>);</span><br><span class="line">			Entry e = table[i];</span><br><span class="line">			<span class="keyword">if</span> (e != <span class="keyword">null</span> &amp;&amp; e.get() == key)</span><br><span class="line">				<span class="keyword">return</span> e;</span><br><span class="line">			<span class="keyword">else</span> </span><br><span class="line">				<span class="keyword">return</span> getEntryAfterMiss(key, i, e);</span><br><span class="line">		&#125;</span><br><span class="line">		...</span><br><span class="line">		<span class="comment">/**</span></span><br><span class="line"><span class="comment">         * Version of getEntry method for use when key is not found in</span></span><br><span class="line"><span class="comment">         * its direct hash slot.</span></span><br><span class="line"><span class="comment">         *</span></span><br><span class="line"><span class="comment">         * <span class="doctag">@param</span>  key the thread local object</span></span><br><span class="line"><span class="comment">         * <span class="doctag">@param</span>  i the table index for key's hash code</span></span><br><span class="line"><span class="comment">         * <span class="doctag">@param</span>  e the entry at table[i]</span></span><br><span class="line"><span class="comment">         * <span class="doctag">@return</span> the entry associated with key, or null if no such</span></span><br><span class="line"><span class="comment">         */</span></span><br><span class="line">		<span class="function"><span class="keyword">private</span> Entry <span class="title">getEntryAfterMiss</span><span class="params">(ThreadLoca&lt;?&gt; key, <span class="keyword">int</span> i, Entry e)</span> </span>&#123;</span><br><span class="line">		...</span><br><span class="line">		&#125;</span><br><span class="line">		...</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>根据上面代码总结一下ThreadLocal的结构：<strong>首先，在每个线程Thread内部有一个ThreadLocal.ThreadLocalMap类型的成员变量threadLocals，这个threadLocals就是用来存储实际的变量副本的，内部由名为table的Entry数组维护，Entry的键值为当前ThreadLocal变量，value为变量副本（即T类型的变量)</strong></p>
-<p>ThreadLocal 的 <code>public T get()</code> 方法的执行过程如下：</p>
-<ul>
-<li>先获取当前线程： Thread.currentThread()</li>
-<li>根据当前线程获取 ThreadLocalMap(Entry 数组，Entry 继承自弱引用 WeakReference，Entry 的 key 为 ThreadLocal 值，value 为每个线程独立的值 Object): getMap(t)</li>
-<li>如果map为空，调用setInitialValue() 方法进行初始化操作</li>
-<li>map 不为空，获取threadLocal在该线程的中的value值：ThreadLocalMap.Entry e = map.getEntry(this); T result = (T) e.value;</li>
-</ul>
-<p>现在整个ThreadLocal的结构已经很清晰了，可以参考下面的图进行理解（<strong>图片的出处会在最后引用的文章链接中给出</strong>）</p>
-<p><img src="http://ryan-hou.github.io/assets/img/blogPic/threadLocal.png" alt=""></p>
-<h2 id="ThreadLocal的内存泄漏问题"><a href="#ThreadLocal的内存泄漏问题" class="headerlink" title="ThreadLocal的内存泄漏问题"></a>ThreadLocal的内存泄漏问题</h2><p>起因：ThreadLocalMap使用ThreadLocal的弱引用作为key，如果一个ThreadLocal没有外部强引用引用他，那么系统gc的时候，这个ThreadLocal势必会被回收，这样一来，ThreadLocalMap中就会出现key为null的Entry，就没有办法访问这些key为null的Entry的value，如果当前线程再迟迟不结束的话，这些key为null的Entry的value就会一直存在一条强引用链：<br><code>Thread Ref -&gt; Thread -&gt; ThreaLocalMap -&gt; Entry -&gt; value</code></p>
-<p>解决：事实上jdk在设计的时候已经考虑到了这个情况，在getEntry函数和set函数中会对key为null的Entry进行擦出，<strong>但是</strong>，上面的设计思路依赖一个前提条件：要调用ThreadLocalMap的genEntry函数或者set函数。这当然是不可能任何情况都成立的，所以很多情况下需要使用者手动调用ThreadLocal的remove函数，手动删除不再需要的ThreadLocal，防止内存泄露。<strong>所以JDK建议将ThreadLocal变量定义成private static的，这样的话ThreadLocal的生命周期就更长，由于一直存在ThreadLocal的强引用，所以ThreadLocal也就不会被回收，也就能保证任何时候都能根据ThreadLocal的弱引用访问到Entry的value值，然后remove它，防止内存泄露。
-</strong></p>
-<hr>
-<h3 id="参考文章："><a href="#参考文章：" class="headerlink" title="参考文章："></a>参考文章：</h3><ul>
-<li><a href="http://blog.decaywood.me/2016/03/15/ThreadLocal-intro/" target="_blank" rel="noopener">ThreadLocal原理分析</a></li>
-<li><a href="https://www.zhihu.com/question/23089780/answer/62097840" target="_blank" rel="noopener">ThreadLocal原理</a></li>
-</ul>
+<h2 id="Date-transfer-The-traditional-approach"><a href="#Date-transfer-The-traditional-approach" class="headerlink" title="Date transfer: The traditional approach"></a>Date transfer: The traditional approach</h2><p>考虑这样一个场景：从文件中读取数据然后通过网络把数据转移到另一个程序中(这个场景描述了很多服务应用的行为，包括提供静态内容的web应用，FTP服务器，邮件服务等)，这个操作的核心代码如下 Listing1</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Listing1.Copying bytes from a file to a socket</span></span><br><span class="line">File.read(fileDesc, buf, len);</span><br><span class="line">Socket.send(socket, buf, len);</span><br></pre></td></tr></table></figure>
+<p>尽管Listing1在概念上看起来很简单，在内部，这个copy操作需要在 user模式和kernel模式间转换4次，同时数据也需要4次。下面Figure1展示了数据是如何从文件移动到socket的：</p>
+<p>Figure1.Traditional data copying approach</p>
+<p><img src="http://Ryan-hou.github.io/assets/img/blogPic/zeroCopy/figure1.png" alt=""></p>
+<p>Figure2展示了上下文的切换：</p>
+<p>Figure2.Traditional context switches</p>
+<p><img src="http://Ryan-hou.github.io/assets/img/blogPic/zeroCopy/figure2.png" alt=""></p>
+<p>涉及到的步骤如下：</p>
+<ol>
+<li>read() 调用会导致图二中从用户模式到内核模式的切换。Figure1中的第一次复制是通过DMA（Direct Memory Access），从磁盘中读取文件内容然后保存到内核地址空间的buffer</li>
+<li>请求的数据从 read buffer被复制到user buffer，然后read() 调用返回。从call调用返回导致上下文从kernel态切换回用户态。现在数据保存在用户地址空间的buffer</li>
+<li>socket的send()方法调用使用户态再一次切换到kernel态，第三次拷贝再一次把数据复制到内核地址空间的buffer，但是这一次数据被放在了不同的buffer，这个buffer与目标socket相关联</li>
+<li>send()系统调用返回，导致第四次上下文切换，第四次拷贝发生在DMA引擎把数据从内核buffer传递到protocol引擎</li>
+</ol>
+<p>使用间接的内核buffer(而不是直接把数据转移到用户buffer)看起来是很低效的。但是内核缓存被引入进程却提高了性能，使用间接的缓存在读取数据量不大于缓存容量的数据时，可以把应用数据缓存到内核buffer作为“readahead cache”，这会很好的提高性能。同时该中间缓存允许写数据实现异步</p>
+<p>不幸的是，<strong>当请求的数据比内核buffer的容量大很多时，这种方式就变成了性能瓶颈</strong>。数据在磁盘，内核buffer，用户buffer，与应用之间被复制了多次</p>
+<p><strong>Zero copy通过消除这些冗余的数据拷贝来提升性能</strong></p>
+<h2 id="Data-transfer-The-zero-copy-approach"><a href="#Data-transfer-The-zero-copy-approach" class="headerlink" title="Data transfer: The zero-copy approach"></a>Data transfer: The zero-copy approach</h2><p>如果你再看一下上面传统的复制方式，你会注意到第二次和第三次的数据拷贝并不是必须的。应用除了缓存数据然后把数据移动到socket buffer外，什么也没有做。事实上，数据可以从read buffer直接移动到socket buffer。transferTo() 方法就是这样做的。Listing2 展示了该方法签名:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Listing2. The transferTo() method</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">transferTo</span><span class="params">(<span class="keyword">long</span> posiiton, <span class="keyword">long</span> count, WritableByteChannel target)</span></span>;</span><br></pre></td></tr></table></figure>
+<p>transferTo()方法把数据从文件 channel转移到一个可写的字节channel，他依赖于底层的操作系统支持zero copy；在Unix和各种 Linux系统中，通过 <code>sendfile()</code>方法调用来实现，在 Listing3中展示了数据从一个文件 descriptor转移到另一个：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;sys/socket.h&gt;</span></span></span><br><span class="line"><span class="keyword">ssize_t</span> sendfile(<span class="keyword">int</span> out_fd, <span class="keyword">int</span> in_fd, <span class="keyword">off_t</span> *offset, <span class="keyword">size_t</span> count);</span><br></pre></td></tr></table></figure>
+<p>在Listing1中的<code>file.read()</code>和<code>socket.send()</code>调用可以被Listing4中的一个transferTo()调用替换:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">transferTo(position, count, writableChannel);</span><br></pre></td></tr></table></figure>
+<p>Figure3展示了当transferTo()方法被调用时数据的移动：</p>
+<p>Figure3.Data copy with transferTo()</p>
+<p><img src="http://Ryan-hou.github.io/assets/img/blogPic/zeroCopy/figure3.png" alt=""></p>
+<p>Figure4展示了transferTo方法调用时上下文的切换</p>
+<p>Figure4. Context switching with transferTo()</p>
+<p><img src="http://Ryan-hou.github.io/assets/img/blogPic/zeroCopy/figure4.png" alt=""></p>
+<p>在Listing4中使用transferTo()方法时的步骤为：</p>
+<ol>
+<li>transferTo方法使文件内容通过DMA被拷贝到read buffer，然后数据再被内核拷贝到与输出socket相关的内核buffer</li>
+<li>第三次拷贝发生在DMA把数据从内核socket buffer传递到protocol引擎</li>
+</ol>
+<p>上面的操作发生了如下改进：我们把上下文切换从四次减少到了两次，把数据拷贝从四次减少到了三次（只有一次需要cpu参与）。但是这还没有到达我们zero copy的目标，我们可以进一步减少数据复制如果底层的网络接口支持<code>gather operations</code>。在Linux2.4及以后的内核版本中，socket buffer descriptor被修改用来支持该操作。这不仅减少了上下文的切换，而且消除了需要cpu参与的那次内存复制。客户端的使用保持不变，但是内在的操作发生了变化：</p>
+<ol>
+<li>transferTo() 方法使文件内容通过DMA被拷贝到内核buffer</li>
+<li>没有数据被拷贝到socket buffer。相应的，只有带有关于数据位置和数据长度信息的descriptors被append到socket buffer。DMA直接把数据从内核缓存传递到protocol引擎，因此消除了仅有的那一次cpu拷贝</li>
+</ol>
+<p>Figure5展示了使用 gather operation的transferTo方法的数据拷贝过程：</p>
+<p>Figure5. Data copies when transferTo() and gather operations are used</p>
+<p><img src="http://Ryan-hou.github.io/assets/img/blogPic/zeroCopy/figure5.png" alt=""></p>
 
       
 
@@ -300,8 +308,8 @@ div.article-footer-copyright{
 </style>
 
 <div class="article-footer-copyright">
-	<p>本文标题: <a href="/2017/04/03/threadlocaljie-xi/" target="_blank" title="ThreadLocal解析">ThreadLocal解析</a></p>
-	<p>本文链接: <a href="/2017/04/03/threadlocaljie-xi/" target="_blank" title="ThreadLocal解析">https://ryan-hou.github.io/2017/04/03/threadlocaljie-xi/</a></p>
+	<p>本文标题: <a href="/2017/11/27/efficient-data-transfer-through-zero-copy/" target="_blank" title="Efficient data transfer through zero copy">Efficient data transfer through zero copy</a></p>
+	<p>本文链接: <a href="/2017/11/27/efficient-data-transfer-through-zero-copy/" target="_blank" title="Efficient data transfer through zero copy">https://ryan-hou.github.io/2017/11/27/efficient-data-transfer-through-zero-copy/</a></p>
 	<p>转载请注明本文链接~~</p>
 </div>
 
@@ -314,7 +322,11 @@ div.article-footer-copyright{
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">Java</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">OS</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">优化</a>
         		</li>
       		
 		</ul>
@@ -370,7 +382,7 @@ div.article-footer-copyright{
     <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
     <p>扫一扫，分享到微信</p>
     <div class="wx-qrcode">
-      <img src="//pan.baidu.com/share/qrcode?url=https://ryan-hou.github.io/2017/04/03/threadlocaljie-xi/" alt="微信分享二维码">
+      <img src="//pan.baidu.com/share/qrcode?url=https://ryan-hou.github.io/2017/11/27/efficient-data-transfer-through-zero-copy/" alt="微信分享二维码">
     </div>
 </div>
 
@@ -384,18 +396,18 @@ div.article-footer-copyright{
   
 <nav id="article-nav">
   
-    <a href="/2017/07/07/volatileyu-finalguan-jian-zi-jie-xi/" id="article-nav-newer" class="article-nav-link-wrap">
+    <a href="/2018/02/20/phantom-types-in-java/" id="article-nav-newer" class="article-nav-link-wrap">
       <i class="icon-circle-left"></i>
       <div class="article-nav-title">
         
-          volatile与final关键字解析
+          Phantom types in Java
         
       </div>
     </a>
   
   
-    <a href="/2017/03/15/javaxian-cheng-chi-shi-xian-yuan-li/" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">Java线程池实现原理</div>
+    <a href="/2017/09/30/fan-zhuan-dan-lian-biao-de-ji-chong-zi-shi/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">反转单链表的几种姿势</div>
       <i class="icon-circle-right"></i>
     </a>
   
@@ -434,7 +446,7 @@ div.article-footer-copyright{
 <script src="https://billts.site/js/gitment.js"></script>
 <script>
 var gitment = new Gitment({
-  id: 'ThreadLocal解析',
+  id: 'Efficient data transfer through zero copy',
   owner: 'Ryan-hou',
   repo: 'Ryan-hou.github.io',
   oauth: {

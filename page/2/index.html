@@ -148,6 +148,91 @@
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-volatileyu-finalguan-jian-zi-jie-xi" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/07/07/volatileyu-finalguan-jian-zi-jie-xi/">volatile与final关键字解析</a>
+    </h1>
+  
+
+        
+        <a href="/2017/07/07/volatileyu-finalguan-jian-zi-jie-xi/" class="archive-article-date">
+  	<time datetime="2017-07-07T07:25:57.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-07-07</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="volatile关键字"><a href="#volatile关键字" class="headerlink" title="volatile关键字"></a>volatile关键字</h2><h3 id="作用"><a href="#作用" class="headerlink" title="作用"></a>作用</h3><ul>
+<li>保证内存可见性</li>
+<li>防止指令重排序</li>
+</ul>
+<p>此外需注意volatile并不保证操作的原子性</p>
+<h3 id="内存可见性"><a href="#内存可见性" class="headerlink" title="内存可见性"></a>内存可见性</h3><p>Java内存模型规定，对于多个线程共享的变量，存储在主内存当中，每个线程都有自己的工作内存(比如CPU寄存器)，<strong>工作内存中保存了主内存共享变量的副本。线程只能访问自己的工作内存，不可以访问其他线程的工作内存</strong>。这就导致了<strong>各个线程的工作内存与主内存的数据可能并不是完全一致的</strong>，即共享变量的改变在不同的线程间是不可见的</p>
+<p>内存不可见会带来一些问题，比如有一个共享变量<code>boolean open = true;</code> 描述一个资源的状态，true 表示可用。现在线程 A 进行操作后，把该变量值改为 false，但是该变量的改动尚未同步到线程 B 的工作内存，那么线程 B 会操作一个不可用的资源，从而产生错误</p>
+        
+          <a class="article-more-a" href="/2017/07/07/volatileyu-finalguan-jian-zi-jie-xi/#more">more >></a>
+        
+      
+
+      
+    </div>
+	<!-- 版权内容 -->
+	
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">Java</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2017/07/07/volatileyu-finalguan-jian-zi-jie-xi/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+
+  
     <article id="post-threadlocaljie-xi" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -752,6 +837,14 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">算法</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">OS</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">优化</a>
               </li>
              
               <li class="article-tag-list-item">
