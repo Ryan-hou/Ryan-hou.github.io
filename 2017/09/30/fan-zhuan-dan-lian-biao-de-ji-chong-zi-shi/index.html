@@ -6,15 +6,20 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="https://ryan-hou.github.io">
-  <title>Archives: 2017 | 0x08 0x17</title>
+  <title>反转单链表的几种姿势 | 0x08 0x17</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta property="og:type" content="website">
-<meta property="og:title" content="0x08 0x17">
-<meta property="og:url" content="https://ryan-hou.github.io/archives/2017/index.html">
+  <meta name="description" content="基础数据结构的操作，简单但是有意义，整理下几种实现思路 头插法建立单链表由头插法操作一组数据后生成逆序的单链表，利用这个性质，我们可以遍历给出的单链表，利用头插法建立新的单链表，返回链表的头节点即可。实现简单，但是需要开辟额外的空间，空间复杂度和时间复杂度都是 O(n)，代码如下： 1234567891011121314private static LinkNode reverseWithCrea">
+<meta name="keywords" content="算法">
+<meta property="og:type" content="article">
+<meta property="og:title" content="反转单链表的几种姿势">
+<meta property="og:url" content="https://ryan-hou.github.io/2017/09/30/fan-zhuan-dan-lian-biao-de-ji-chong-zi-shi/index.html">
 <meta property="og:site_name" content="0x08 0x17">
+<meta property="og:description" content="基础数据结构的操作，简单但是有意义，整理下几种实现思路 头插法建立单链表由头插法操作一组数据后生成逆序的单链表，利用这个性质，我们可以遍历给出的单链表，利用头插法建立新的单链表，返回链表的头节点即可。实现简单，但是需要开辟额外的空间，空间复杂度和时间复杂度都是 O(n)，代码如下： 1234567891011121314private static LinkNode reverseWithCrea">
 <meta property="og:locale" content="default">
+<meta property="og:updated_time" content="2018-05-17T15:07:17.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="0x08 0x17">
+<meta name="twitter:title" content="反转单链表的几种姿势">
+<meta name="twitter:description" content="基础数据结构的操作，简单但是有意义，整理下几种实现思路 头插法建立单链表由头插法操作一组数据后生成逆序的单链表，利用这个性质，我们可以遍历给出的单链表，利用头插法建立新的单链表，返回链表的头节点即可。实现简单，但是需要开辟额外的空间，空间复杂度和时间复杂度都是 O(n)，代码如下： 1234567891011121314private static LinkNode reverseWithCrea">
   
     <link rel="alternative" href="/atom.xml" title="0x08 0x17" type="application/atom+xml">
   
@@ -146,36 +151,126 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            
-  
-  
+            <article id="post-fan-zhuan-dan-lian-biao-de-ji-chong-zi-shi" class="article article-type-post " itemscope itemprop="blogPost">
+  <div class="article-inner">
     
-    
-      
-      
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2017" class="archive-year">2017</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2017/09/30/fan-zhuan-dan-lian-biao-de-ji-chong-zi-shi/" class="archive-article-date">
-  	<time datetime="2017-09-30T03:20:02.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-09-30</time>
-</a>
-        </div>
-    	 
+      <header class="article-header">
+        
   
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2017/09/30/fan-zhuan-dan-lian-biao-de-ji-chong-zi-shi/">反转单链表的几种姿势</a>
+    <h1 class="article-title" itemprop="name">
+      反转单链表的几种姿势
     </h1>
   
 
-        <div class="article-info info-on-right">
-          
+        
+        <a href="/2017/09/30/fan-zhuan-dan-lian-biao-de-ji-chong-zi-shi/" class="archive-article-date">
+  	<time datetime="2017-09-30T03:20:02.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-09-30</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>基础数据结构的操作，简单但是有意义，整理下几种实现思路</p>
+<h2 id="头插法建立单链表"><a href="#头插法建立单链表" class="headerlink" title="头插法建立单链表"></a>头插法建立单链表</h2><p>由头插法操作一组数据后生成逆序的单链表，利用这个性质，我们可以遍历给出的单链表，利用头插法建立新的单链表，返回链表的头节点即可。实现简单，但是需要开辟额外的空间，空间复杂度和时间复杂度都是 <code>O(n)</code>，代码如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">static</span> LinkNode <span class="title">reverseWithCreate</span><span class="params">(LinkNode head)</span> </span>&#123;</span><br><span class="line">        <span class="comment">// 虚拟头指针</span></span><br><span class="line">        LinkNode newHead = <span class="keyword">new</span> LinkNode(<span class="number">0</span>);</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">while</span> (head != <span class="keyword">null</span>) &#123;</span><br><span class="line">            <span class="comment">// 头插法建立单链表</span></span><br><span class="line">            LinkNode cur = <span class="keyword">new</span> LinkNode(head.val);</span><br><span class="line">            cur.next = newHead.next;</span><br><span class="line">            newHead.next = cur;</span><br><span class="line"></span><br><span class="line">            head = head.next;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> newHead.next;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<a id="more"></a>
+<h2 id="递归思想"><a href="#递归思想" class="headerlink" title="递归思想"></a>递归思想</h2><p>反转一个单链表，可以分解为，先反转单链表除了头节点之后的单链表，然后处理反转后的单链表与头节点的关系即可。递归出口是头节点为空或者头节点的下一个节点为空。使用递归这种声明式的方式使代码更加简洁，重在描述代码做什么而不是怎么做。空间复杂度为<code>O(1)</code>，时间复杂度为<code>O(n)</code>，代码如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">static</span> LinkNode <span class="title">reverseWithRecursion</span><span class="params">(LinkNode head)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (head == <span class="keyword">null</span> || head.next == <span class="keyword">null</span>) &#123;</span><br><span class="line">            <span class="keyword">return</span> head; <span class="comment">// 递归出口</span></span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        LinkNode headOfLeftNode = reverseWithRecursion(head.next);</span><br><span class="line">        head.next.next = head;</span><br><span class="line">        head.next = <span class="keyword">null</span>;</span><br><span class="line">        <span class="keyword">return</span> headOfLeftNode;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<h2 id="指针移动实现反转"><a href="#指针移动实现反转" class="headerlink" title="指针移动实现反转"></a>指针移动实现反转</h2><p>反转一个单链表还有一种很直观的解决方法就是遍历这个单链表，然后依次反转每个需要反转的节点。但是这里存在一个问题，在反转当前节点的时候，当前节点的下一个节点需要先提前保存一下，不然会存在丢失的情况。对于算法的边界，需要考虑链表为空，链表只有一个节点，有两个节点和多于两个节点这几种情况。时间复杂度为<code>O(n)</code>，空间复杂度为<code>O(1)</code>。代码如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">static</span> LinkNode <span class="title">reverseWithIter</span><span class="params">(LinkNode head)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (head == <span class="keyword">null</span>) &#123;</span><br><span class="line">            <span class="keyword">return</span> head;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        LinkNode pre = head;</span><br><span class="line">        LinkNode cur = head.next;</span><br><span class="line">        LinkNode next;</span><br><span class="line">        <span class="keyword">while</span> (cur != <span class="keyword">null</span>) &#123;</span><br><span class="line">            <span class="comment">// next 保存指针将要变化的节点原本的下一个节点</span></span><br><span class="line">            next = cur.next;</span><br><span class="line">            cur.next = pre;</span><br><span class="line">            <span class="comment">// pre,cur 同时后移一个距离</span></span><br><span class="line">            pre = cur;</span><br><span class="line">            cur = next;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        head.next = <span class="keyword">null</span>;</span><br><span class="line">        <span class="keyword">return</span> pre;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+      
+
+      
+        <div class="page-reward">
+          <a href="javascript:;" class="page-reward-btn tooltip-top">
+            <div class="tooltip tooltip-east">
+            <span class="tooltip-item">
+              赏
+            </span>
+            <span class="tooltip-content">
+              <span class="tooltip-text">
+                <span class="tooltip-inner">
+                  <p class="reward-p"><i class="icon icon-quo-left"></i>谢谢你支持我创作！<i class="icon icon-quo-right"></i></p>
+                  <div class="reward-box">
+                    
+                    <div class="reward-box-item">
+                      <img class="reward-img" src="/assets/img/alipay.png">
+                      <span class="reward-type">支付宝</span>
+                    </div>
+                    
+                    
+                  </div>
+                </span>
+              </span>
+            </span>
+          </div>
+          </a>
+        </div>
+      
+    </div>
+	<!-- 版权内容 -->
+	
+		<style type="text/css">
+	.article-footer-copyright{
+   border-top:1px solid #d3d3d3;
+   margin: 20px auto;     
+   padding-left:2em;
+   width: 80%;
+}
+.article-footer-copyright p{
+  font-size:1.2em;
+}
+.article-footer-copyright span,.copyright abbr{
+  color:#3d3d3d;
+}
+div.copyright{
+    
+       font-weight:bold;
+       color:#FCB297;
+       padding:0.3em 0.5em;
+       margin:0 0 1em 0;
+       border-bottom:none;
+       background-color:#AAD2F0;
+       -moz-border-radius: 1em;
+       -webkit-border-radius:1em;
+       border-radius: 1em;
+  -moz-box-shadow:inset 0px 1px 0px 0px #eeeeee;
+  -webkit-box-shadow:inset 0px 1px 0px 0px #eeeeee;
+  box-shadow:inset 0px 1px 0px 0px #eeeeee;
+  background:-webkit-gradient( linear, left top, left bottom, color-stop(0.05, #aad2f0), color-stop(1, #8bc1ed) );
+  background:-moz-linear-gradient( center top, #aad2f0 5%, #8bc1ed 100% );
+  /* filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#aad2f0', endColorstr='#8bc1ed'); */
+  background-color:#aad2f0;
+  border:1px solid #dcdcdc;
+  text-shadow:1px 1px 0px #eeeeee;
+  
+}
+div.article-footer-copyright{
+    margin:0em 0em 0em 5em;
+	margin-top:2em;
+    padding:0.5em 1em;
+    border-left:3px solid #ff1700;
+    background-color:#f9f9f9;
+}
+.article-footer-copyright p{
+    line-height: 160%;
+    margin: 10px;
+    font-size: 100%;
+}
+</style>
+
+<div class="article-footer-copyright">
+	<p>本文标题: <a href="/2017/09/30/fan-zhuan-dan-lian-biao-de-ji-chong-zi-shi/" target="_blank" title="反转单链表的几种姿势">反转单链表的几种姿势</a></p>
+	<p>本文链接: <a href="/2017/09/30/fan-zhuan-dan-lian-biao-de-ji-chong-zi-shi/" target="_blank" title="反转单链表的几种姿势">https://ryan-hou.github.io/2017/09/30/fan-zhuan-dan-lian-biao-de-ji-chong-zi-shi/</a></p>
+	<p>转载请注明本文链接~~</p>
+</div>
+
+	
+    <div class="article-info article-info-index">
+      
+      
 	<div class="article-tag tagcloud">
 		<i class="icon-price-tags icon"></i>
 		<ul class="article-tag-list">
@@ -187,145 +282,133 @@
 		</ul>
 	</div>
 
-          
+      
 
+      
+
+      
+        
+<div class="share-btn share-icons tooltip-left">
+  <div class="tooltip tooltip-east">
+    <span class="tooltip-item">
+      <a href="javascript:;" class="share-sns share-outer">
+        <i class="icon icon-share"></i>
+      </a>
+    </span>
+    <span class="tooltip-content">
+      <div class="share-wrap">
+        <div class="share-icons">
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="icon icon-weibo"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="icon icon-weixin"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="icon icon-qq"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="icon icon-douban"></i>
+          </a>
+          <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a>
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="icon icon-facebook"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="icon icon-twitter"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="icon icon-google"></i>
+          </a>
         </div>
-        <div class="clearfix"></div>
-    </header>
+      </div>
+    </span>
+  </div>
+</div>
+
+<div class="page-modal wx-share js-wx-box">
+    <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+      <img src="//pan.baidu.com/share/qrcode?url=https://ryan-hou.github.io/2017/09/30/fan-zhuan-dan-lian-biao-de-ji-chong-zi-shi/" alt="微信分享二维码">
+    </div>
+</div>
+
+<div class="mask js-mask"></div>
+      
+      <div class="clearfix"></div>
+    </div>
   </div>
 </article>
+
   
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2017/09/23/visitor-pattern/" class="archive-article-date">
-  	<time datetime="2017-09-23T07:48:14.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-09-23</time>
-</a>
+<nav id="article-nav">
+  
+    <a href="/2018/04/01/dan-li-mo-shi-de-ge-chong-zi-shi/" id="article-nav-newer" class="article-nav-link-wrap">
+      <i class="icon-circle-left"></i>
+      <div class="article-nav-title">
+        
+          单例模式的各种姿势
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2017/09/23/visitor-pattern/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">Visitor pattern</div>
+      <i class="icon-circle-right"></i>
+    </a>
+  
+</nav>
+
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
         </div>
-    	 
+        
+        
+    </div>
+</aside>
+
+
+
   
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2017/09/23/visitor-pattern/">Visitor pattern</a>
-    </h1>
+  
   
 
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">Java</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">设计</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">翻译</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2017/03/10/mo-ban-fang-fa-mo-shi-vsce-lue-mo-shi/" class="archive-article-date">
-  	<time datetime="2017-03-10T14:58:32.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-03-10</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2017/03/10/mo-ban-fang-fa-mo-shi-vsce-lue-mo-shi/">模版方法模式vs策略模式</a>
-    </h1>
   
 
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">Java</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">设计</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2017/01/08/2017-01-08-tan-tan-java-fan-xing/" class="archive-article-date">
-  	<time datetime="2017-01-08T13:09:25.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-01-08</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2017/01/08/2017-01-08-tan-tan-java-fan-xing/">谈谈 Java 泛型</a>
-    </h1>
   
 
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">Java</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
   
-  
-    </div></section>
+  <div id="gitment-ctn"></div> 
+<link rel="stylesheet" href="https://billts.site/extra_css/gitment.css">
+<script src="https://billts.site/js/gitment.js"></script>
+<script>
+var gitment = new Gitment({
+  id: '反转单链表的几种姿势',
+  owner: 'Ryan-hou',
+  repo: 'Ryan-hou.github.io',
+  oauth: {
+    client_id: '10b94f286862e039846e',
+    client_secret: '51c6b587d0a58d70f6da2e9c5641e66a431751d9',
+  },
+})
+gitment.render('gitment-ctn')
+</script>
+
   
 
-    
 
 
           </div>
@@ -348,8 +431,8 @@
 	var yiliaConfig = {
 		mathjax: false,
 		isHome: false,
-		isPost: false,
-		isArchive: true,
+		isPost: true,
+		isArchive: false,
 		isTag: false,
 		isCategory: false,
 		open_in_new: true,
