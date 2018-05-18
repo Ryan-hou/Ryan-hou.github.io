@@ -155,12 +155,12 @@
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2018/04/01/cjhano2510001ln51esfqv2p2/">单例模式的各种姿势</a>
+      <a class="article-title" href="/2018/04/01/cjhbbmwyc0003fh51n5u2u3mn/">单例模式的各种姿势</a>
     </h1>
   
 
         
-        <a href="/2018/04/01/cjhano2510001ln51esfqv2p2/" class="archive-article-date">
+        <a href="/2018/04/01/cjhbbmwyc0003fh51n5u2u3mn/" class="archive-article-date">
   	<time datetime="2018-04-01T02:58:05.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-04-01</time>
 </a>
         
@@ -172,7 +172,7 @@
 <h2 id="懒汉模式"><a href="#懒汉模式" class="headerlink" title="懒汉模式"></a>懒汉模式</h2><p>因为要保证一个类只有一个实例对象，所以我们要私有化类的构造器，避免应用程序代码通过new关键字来实例化对象，同时要提供一个静态的访问方法来供应用程序访问该单例，很容易想到的实现代码如下：</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Singleton</span> </span>&#123;</span><br><span class="line">	<span class="function"><span class="keyword">private</span> <span class="title">Singleton</span><span class="params">()</span> </span>&#123;&#125;</span><br><span class="line">	</span><br><span class="line">	<span class="keyword">private</span> <span class="keyword">static</span> Singleton uniqueInstance = <span class="keyword">new</span> Singleton();</span><br><span class="line">	</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> Singleton <span class="title">getInstance</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		<span class="keyword">return</span> uniqueInstance;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
         
-          <a class="article-more-a" href="/2018/04/01/cjhano2510001ln51esfqv2p2/#more">more >></a>
+          <a class="article-more-a" href="/2018/04/01/cjhbbmwyc0003fh51n5u2u3mn/#more">more >></a>
         
       
 
@@ -202,7 +202,7 @@
 
       
         <p class="article-more-link">
-          <a class="article-more-a" href="/2018/04/01/cjhano2510001ln51esfqv2p2/">展开全文 >></a>
+          <a class="article-more-a" href="/2018/04/01/cjhbbmwyc0003fh51n5u2u3mn/">展开全文 >></a>
         </p>
       
 
@@ -240,12 +240,12 @@
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2017/09/30/cjhao5mi10000s55134y8bm31/">反转单链表的几种姿势</a>
+      <a class="article-title" href="/2017/09/30/cjhbbmwxx0000fh517eberoz3/">反转单链表的几种姿势</a>
     </h1>
   
 
         
-        <a href="/2017/09/30/cjhao5mi10000s55134y8bm31/" class="archive-article-date">
+        <a href="/2017/09/30/cjhbbmwxx0000fh517eberoz3/" class="archive-article-date">
   	<time datetime="2017-09-30T03:20:02.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-09-30</time>
 </a>
         
@@ -257,7 +257,7 @@
 <h2 id="头插法建立单链表"><a href="#头插法建立单链表" class="headerlink" title="头插法建立单链表"></a>头插法建立单链表</h2><p>由头插法操作一组数据后生成逆序的单链表，利用这个性质，我们可以遍历给出的单链表，利用头插法建立新的单链表，返回链表的头节点即可。实现简单，但是需要开辟额外的空间，空间复杂度和时间复杂度都是 <code>O(n)</code>，代码如下：</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">static</span> LinkNode <span class="title">reverseWithCreate</span><span class="params">(LinkNode head)</span> </span>&#123;</span><br><span class="line">        <span class="comment">// 虚拟头指针</span></span><br><span class="line">        LinkNode newHead = <span class="keyword">new</span> LinkNode(<span class="number">0</span>);</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">while</span> (head != <span class="keyword">null</span>) &#123;</span><br><span class="line">            <span class="comment">// 头插法建立单链表</span></span><br><span class="line">            LinkNode cur = <span class="keyword">new</span> LinkNode(head.val);</span><br><span class="line">            cur.next = newHead.next;</span><br><span class="line">            newHead.next = cur;</span><br><span class="line"></span><br><span class="line">            head = head.next;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> newHead.next;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
         
-          <a class="article-more-a" href="/2017/09/30/cjhao5mi10000s55134y8bm31/#more">more >></a>
+          <a class="article-more-a" href="/2017/09/30/cjhbbmwxx0000fh517eberoz3/#more">more >></a>
         
       
 
@@ -283,7 +283,7 @@
 
       
         <p class="article-more-link">
-          <a class="article-more-a" href="/2017/09/30/cjhao5mi10000s55134y8bm31/">展开全文 >></a>
+          <a class="article-more-a" href="/2017/09/30/cjhbbmwxx0000fh517eberoz3/">展开全文 >></a>
         </p>
       
 
@@ -321,12 +321,12 @@
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2017/09/23/cjhano25l0005ln51sxpxnent/">Visitor pattern</a>
+      <a class="article-title" href="/2017/09/23/cjhbbmwym0005fh51tqak4yxl/">Visitor pattern</a>
     </h1>
   
 
         
-        <a href="/2017/09/23/cjhano25l0005ln51sxpxnent/" class="archive-article-date">
+        <a href="/2017/09/23/cjhbbmwym0005fh51tqak4yxl/" class="archive-article-date">
   	<time datetime="2017-09-23T07:48:14.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-09-23</time>
 </a>
         
@@ -340,7 +340,7 @@
 <p>其实这是一个比较难通过现实世界来解释的模式，所以接下来我们通过模式的定义和示例代码来更清楚的学习这个模式</p>
 <h2 id="The-Visitor-Pattern"><a href="#The-Visitor-Pattern" class="headerlink" title="The Visitor Pattern"></a>The Visitor Pattern</h2><p>Visitor 模式是一个行为模式，是用来管理算法，及不同对象之间的关系和责任(个人觉得<strong>Visitor模式很好的体现了单一职责原则，通过分离部分逻辑实现了解耦</strong>)。“四人帮”的 <code>Design patterns</code> 对该模式的定义为：</p>
         
-          <a class="article-more-a" href="/2017/09/23/cjhano25l0005ln51sxpxnent/#more">more >></a>
+          <a class="article-more-a" href="/2017/09/23/cjhbbmwym0005fh51tqak4yxl/#more">more >></a>
         
       
 
@@ -374,7 +374,7 @@
 
       
         <p class="article-more-link">
-          <a class="article-more-a" href="/2017/09/23/cjhano25l0005ln51sxpxnent/">展开全文 >></a>
+          <a class="article-more-a" href="/2017/09/23/cjhbbmwym0005fh51tqak4yxl/">展开全文 >></a>
         </p>
       
 
@@ -412,12 +412,12 @@
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2017/03/10/cjhano24t0000ln51xq0pb5wo/">模版方法模式vs策略模式</a>
+      <a class="article-title" href="/2017/03/10/cjhbbmwyh0004fh5139t42ej3/">模版方法模式vs策略模式</a>
     </h1>
   
 
         
-        <a href="/2017/03/10/cjhano24t0000ln51xq0pb5wo/" class="archive-article-date">
+        <a href="/2017/03/10/cjhbbmwyh0004fh5139t42ej3/" class="archive-article-date">
   	<time datetime="2017-03-10T14:58:32.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-03-10</time>
 </a>
         
@@ -430,7 +430,7 @@
 <p>在一个方法中定义算法骨架,而将一些步骤延迟到子类中。模版方法使得子类可以在不改变算法结构的情况下,重新定义算法中的某些步骤</p>
 </blockquote>
         
-          <a class="article-more-a" href="/2017/03/10/cjhano24t0000ln51xq0pb5wo/#more">more >></a>
+          <a class="article-more-a" href="/2017/03/10/cjhbbmwyh0004fh5139t42ej3/#more">more >></a>
         
       
 
@@ -460,7 +460,92 @@
 
       
         <p class="article-more-link">
-          <a class="article-more-a" href="/2017/03/10/cjhano24t0000ln51xq0pb5wo/">展开全文 >></a>
+          <a class="article-more-a" href="/2017/03/10/cjhbbmwyh0004fh5139t42ej3/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+
+  
+    <article id="post-2017-01-08-tan-tan-java-fan-xing" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/01/08/cjhbbmwy40001fh51n9uaa8l2/">谈谈 Java 泛型</a>
+    </h1>
+  
+
+        
+        <a href="/2017/01/08/cjhbbmwy40001fh51n9uaa8l2/" class="archive-article-date">
+  	<time datetime="2017-01-08T13:09:25.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-01-08</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="相关术语和入门使用"><a href="#相关术语和入门使用" class="headerlink" title="相关术语和入门使用"></a>相关术语和入门使用</h2><p><strong>关于泛型的几个术语</strong></p>
+<ul>
+<li>ArrayList<e> 中的 <code>&lt;&gt;</code> 念作 <code>typeof</code>，E 称为类型参数变量</e></li>
+<li>ArrayList<integer> 中的 Integer 称为实际类型参数</integer></li>
+<li>整个 ArrayList<e> 称为泛型类型；整个 ArrayList<integer> 称为参数化的类型</integer></e></li>
+</ul>
+<p><strong>关于泛型几个需要注意的点(由于Java的泛型采用类型擦除来现实，存在相关问题，后面会继续讨论)</strong></p>
+        
+          <a class="article-more-a" href="/2017/01/08/cjhbbmwy40001fh51n9uaa8l2/#more">more >></a>
+        
+      
+
+      
+    </div>
+	<!-- 版权内容 -->
+	
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">Java</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2017/01/08/cjhbbmwy40001fh51n9uaa8l2/">展开全文 >></a>
         </p>
       
 
@@ -498,12 +583,12 @@
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2016/06/17/cjhano25a0003ln51q1mp3adx/">适配器模式</a>
+      <a class="article-title" href="/2016/06/17/cjhbbmwyo0008fh51i3s8zdk0/">适配器模式</a>
     </h1>
   
 
         
-        <a href="/2016/06/17/cjhano25a0003ln51q1mp3adx/" class="archive-article-date">
+        <a href="/2016/06/17/cjhbbmwyo0008fh51i3s8zdk0/" class="archive-article-date">
   	<time datetime="2016-06-17T03:01:39.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2016-06-17</time>
 </a>
         
@@ -516,7 +601,7 @@
 </blockquote>
 <p>举个简单的也是最老生常谈的例子，插头与插座，通过电源适配器，可以把我们的插头与本来不相匹配的插座进行适配，这样做的好处显然易见，<strong>我既不用重新更换自己的插头，也不用更换插座，只需要使用一个适配器就可以使插头与插座适配工作</strong>，而这也就是适配器模式的设计初衷</p>
         
-          <a class="article-more-a" href="/2016/06/17/cjhano25a0003ln51q1mp3adx/#more">more >></a>
+          <a class="article-more-a" href="/2016/06/17/cjhbbmwyo0008fh51i3s8zdk0/#more">more >></a>
         
       
 
@@ -546,7 +631,7 @@
 
       
         <p class="article-more-link">
-          <a class="article-more-a" href="/2016/06/17/cjhano25a0003ln51q1mp3adx/">展开全文 >></a>
+          <a class="article-more-a" href="/2016/06/17/cjhbbmwyo0008fh51i3s8zdk0/">展开全文 >></a>
         </p>
       
 
@@ -662,15 +747,15 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
           <ul class="article-tag-list" q-show="showTags">
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">算法</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">Java</a>
               </li>
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">设计</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">算法</a>
               </li>
              
               <li class="article-tag-list-item">
