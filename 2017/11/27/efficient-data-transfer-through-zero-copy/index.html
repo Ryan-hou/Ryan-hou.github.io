@@ -9,7 +9,7 @@
   <title>Efficient data transfer through zero copy | 0x08 0x17</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <meta name="description" content="本文为翻译文章，原文链接为:Efficient data transfer through zero copy 许多web应用都会提供从磁盘读取大量的静态数据，然后再把这些数据写到 response socket 中。这种服务看起来几乎不会用到 cpu 计算，但是这里却存在不高效的情况：内核从磁盘读取数据后，会把它通过kernel-user边界push到应用，然后再通过kernel-user边界p">
-<meta name="keywords" content="OS,优化">
+<meta name="keywords" content="OS,优化,翻译">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Efficient data transfer through zero copy">
 <meta property="og:url" content="https://ryan-hou.github.io/2017/11/27/efficient-data-transfer-through-zero-copy/index.html">
@@ -21,7 +21,7 @@
 <meta property="og:image" content="http://Ryan-hou.github.io/assets/img/blogPic/zeroCopy/figure3.png">
 <meta property="og:image" content="http://Ryan-hou.github.io/assets/img/blogPic/zeroCopy/figure4.png">
 <meta property="og:image" content="http://Ryan-hou.github.io/assets/img/blogPic/zeroCopy/figure5.png">
-<meta property="og:updated_time" content="2018-05-18T15:21:09.000Z">
+<meta property="og:updated_time" content="2018-05-18T15:24:49.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Efficient data transfer through zero copy">
 <meta name="twitter:description" content="本文为翻译文章，原文链接为:Efficient data transfer through zero copy 许多web应用都会提供从磁盘读取大量的静态数据，然后再把这些数据写到 response socket 中。这种服务看起来几乎不会用到 cpu 计算，但是这里却存在不高效的情况：内核从磁盘读取数据后，会把它通过kernel-user边界push到应用，然后再通过kernel-user边界p">
@@ -328,6 +328,10 @@ div.article-footer-copyright{
         		<li class="article-tag-list-item">
         			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">优化</a>
         		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">翻译</a>
+        		</li>
       		
 		</ul>
 	</div>
@@ -551,10 +555,6 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">算法</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">OS</a>
               </li>
              
@@ -564,6 +564,10 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">翻译</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">算法</a>
               </li>
              
               <li class="article-tag-list-item">
