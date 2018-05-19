@@ -6,15 +6,20 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="https://ryan-hou.github.io">
-  <title>Archives: 2016/6 | 0x08 0x17</title>
+  <title>Debunking the Myths of RPC &amp; REST | 0x08 0x17</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta property="og:type" content="website">
-<meta property="og:title" content="0x08 0x17">
-<meta property="og:url" content="https://ryan-hou.github.io/archives/2016/06/index.html">
+  <meta name="description" content="本文为翻译文章，原文链接为:Debunking the Myths of RPC &amp;amp; REST 网上有很多关于 RPC 和 REST 的文章，博客与讨论，但是大部分都在回答某一个特定的应用下，应该选择使用 RPC 还是 REST，而这本身并不是一个正确的二分法。这些回答普遍没有解释我想要知道的问题，而是让我感觉到大部分的开发者并不懂为什么要使用 REST，而仅仅是因为觉得这个架构听起来很酷">
+<meta name="keywords" content="设计,翻译,分布式">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Debunking the Myths of RPC &amp; REST">
+<meta property="og:url" content="https://ryan-hou.github.io/2017/09/24/debunking-the-myths-of-rpc-and-rest/index.html">
 <meta property="og:site_name" content="0x08 0x17">
+<meta property="og:description" content="本文为翻译文章，原文链接为:Debunking the Myths of RPC &amp;amp; REST 网上有很多关于 RPC 和 REST 的文章，博客与讨论，但是大部分都在回答某一个特定的应用下，应该选择使用 RPC 还是 REST，而这本身并不是一个正确的二分法。这些回答普遍没有解释我想要知道的问题，而是让我感觉到大部分的开发者并不懂为什么要使用 REST，而仅仅是因为觉得这个架构听起来很酷">
 <meta property="og:locale" content="default">
+<meta property="og:updated_time" content="2018-05-19T15:18:16.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="0x08 0x17">
+<meta name="twitter:title" content="Debunking the Myths of RPC &amp; REST">
+<meta name="twitter:description" content="本文为翻译文章，原文链接为:Debunking the Myths of RPC &amp;amp; REST 网上有很多关于 RPC 和 REST 的文章，博客与讨论，但是大部分都在回答某一个特定的应用下，应该选择使用 RPC 还是 REST，而这本身并不是一个正确的二分法。这些回答普遍没有解释我想要知道的问题，而是让我感觉到大部分的开发者并不懂为什么要使用 REST，而仅仅是因为觉得这个架构听起来很酷">
   
     <link rel="alternative" href="/atom.xml" title="0x08 0x17" type="application/atom+xml">
   
@@ -146,148 +151,283 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            
-  
-  
+            <article id="post-debunking-the-myths-of-rpc-and-rest" class="article article-type-post " itemscope itemprop="blogPost">
+  <div class="article-inner">
     
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Debunking the Myths of RPC &amp; REST
+    </h1>
+  
+
+        
+        <a href="/2017/09/24/debunking-the-myths-of-rpc-and-rest/" class="archive-article-date">
+  	<time datetime="2017-09-24T14:40:00.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-09-24</time>
+</a>
+        
+      </header>
     
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>本文为翻译文章，原文链接为:<a href="http://etherealbits.com/2012/12/debunking-the-myths-of-rpc-rest/" target="_blank" rel="noopener">Debunking the Myths of RPC &amp; REST</a></p>
+<p>网上有很多关于 RPC 和 REST 的文章，博客与讨论，但是大部分都在回答某一个特定的应用下，应该选择使用 RPC 还是 REST，而这本身并不是一个正确的二分法。这些回答普遍没有解释我想要知道的问题，而是让我感觉到大部分的开发者并不懂为什么要使用 REST，而仅仅是因为觉得这个架构听起来很酷。讽刺的是<a href="https://en.wikipedia.org/wiki/Roy_Fielding" target="_blank" rel="noopener">Roy Fielding</a>在介绍REST的论文中就提到了这种<strong>“design by fad”</strong></p>
+<blockquote>
+<p>“Consider how often we see software projects begin with adoption of the latest fad in architectural design, and only later discover whether or not the system requirements call for such an architecture.”</p>
+</blockquote>
+<a id="more"></a>
+<p>如果你想深入了解REST而且只能读一篇文档，那不要阅读本文，去参考 Fielding 的论文<a href="http://www.ics.uci.edu/~fielding/pubs/dissertation/rest_arch_style.htm" target="_blank" rel="noopener">DISSERTATION</a>。如果你没有时间或者只是想在比较高的层面上了解RPC和REST，那么可以继续阅读，在开始之前，我们先来看下RPC，REST和HTTP的一些细节</p>
+<p><strong>Remote Procedure Call(RPC)</strong>是一种允许你调用其他进程的方法并且通过通信来交换数据。通常会在客户端生成方法 stub,使用 stub 使得调用看起来更像本地调用，而实际上在 stub 背后会包装请求然后把请求发送到服务端，然后服务端进程会解析这个请求并且调用客户端想要调用的方法，然后再反向的把这个调用的执行结果返回给客户端。<strong>HTTP协议有时会是底层的信息传递协议，但是RPC并不强制要求一定使用HTTP协议。</strong>远程方法调用(RMI)和RPC更相近，RMI比RPC的远程调用更进一步，它更加面向对象，可以保存远程对象的引用并且调用这个对象的相关方法</p>
+<p><strong>Representational State Transfer(REST)是一种架构方式，通过对接口进行一系列限制来实现一些目标。</strong>REST 强制使用 客户端／服务器模型，客户端获取和操作由服务端管理的各种资源，服务端通过提供各种资源的状态来告诉客户端相关资源的信息，同时提供获取资源最新状态和操作这些资源的方法。客户端和服务端所有的信息交互必须是无状态的和可缓存的。REST 架构的实现通常被称为 RESTful</p>
+<p><strong>Hypertext Transfer Protocol(HTTP)</strong>是一个 RESTful 的协议，可以在分布式环境下暴露相应的资源。在 HTTP 协议中，服务端通过 HTTP 响应的body告诉客户端这些资源的信息。如果body是HTML的话，那么后续合法的操作会给出在 A 标签里，让客户端要么通过 GET 请求获取新的资源状态，要么通过 POST/PUT 或者 DELETE 请求来操作这些资源</p>
+<p>通过以上这些定义，我们可以得出下面结论：</p>
+<ul>
+<li><strong>把 RPC 和 REST 作类比是没有道理的</strong>。事实上你可以通过在任何RPC实现的基础上构建RESTful的服务，只要创建遵守REST架构限制的方法即可。你甚至可以基于RPC的实现构建HTTP风格的REST架构，你需要做的就是通过实现相应的 GET,POST,PUT,DELETE 方法来把 HTTP 请求头和请求体的数据提取并转化到 RPC 的调用</li>
+<li><strong>HTTP和REST不是一对一的关系，HTTP是REST一种实现方式</strong>。REST 是由一组限制构成，但是并没有包括HTTP实现方面的限制。例如你的服务可以不使用HTTP协议来暴露接口仍然可以是RESTful 的</li>
+</ul>
+<p>事实上当人们在问她们是否应该用 RPC 或者 REST 时，真正想要问的是<strong>“我应该通过HTTP协议实现的RESTful服务来对外暴露我的资源，还是我应该使用像 SOAP 或者 XML－RPC 这样更个性化的方式来构建更高一层的抽象”</strong>。要回答这个问题，我们首先来看一下 REST 和 HTTP 的优点，注意，虽然我们分开来说为什么你要使服务RESTful和为什么你要使用HTTP协议，然而前者的观点对于后者也是适用的(反之则不适用)</p>
+<p>REST 架构的优点在于任何状态下合法的行为都是被服务端控制的，只需要制定很少的与客户端的约定。就 HTTP 协议实现的 REST 架构来说，服务端与客户端之间的约定仅仅是顶层的 URI，我可以使用这个 URI 来发送一个 GET 请求。从这里也可以看出，这些服务端对于客户端的限制是在运行时的。相比之下，传统的RPC实现的REST限制更为严格，服务端定义的需要被客户端消费的程序在构建时就要被明确定义好。为了方便理解，可以比较通过页面导航来找到需要的商品(通过调用服务端提供各种链接)和直接通过产品的名字来获取这个产品。在第一种方式中，API的变化完全是由服务端来控制的，但是在第二种情况下需要协同部署客户端与服务端。在这个例子中很明显的问题在于计算机并不能很好的动态消费API，所以如果你正在构建一个被其他服务消费的服务，你很难获得由服务端来控制行为的好处。</p>
+<p>使用HTTP协议来暴露资源的一个很大的好处在于，你可以使用很多专门为 HTTP 协议而开发的工具而不需要自己额外的进行开发。我们来考虑下使用缓存的例子，因为HTTP的响应的输入是被良好定义的(query string,HTTP headers,POST data)，所以我可以在我的服务前面加一个中间层<a href="http://www.squid-cache.org/" target="_blank" rel="noopener">Squid</a>。如果使用 RPC，即使 RPC 的消息传递协议使用 HTTP，我们无法保证消息和远程调用是一对一的，因为一个远程调用可能需要传入多个消息，当然RPC的输入可以通过一种标准的方式被使用或者忽略，从而使对请求和对应的响应进行缓存成为可能。而请求中也可能需要相应的信息来知道如何处理缓存(像 HTTP <a href="https://www.w3.org/Protocols/rfc2616/rfc2616-sec13.html" target="_blank" rel="noopener">dose</a>)。通过使用 HTTP 协议我们可以避免重新造一些轮子</p>
+<p>使用HTTP协议的另一个好处就是它通过一种很通用的<a href="https://www.w3.org/Protocols/rfc2616/rfc2616-sec9.html" target="_blank" rel="noopener">方式</a>，GET,POST/PUT和 DELETE 来暴露资源，这使得测试很容易进行。在实际中如果你为了将来的扩展而使用了过于窄的语义，这会导致你的方法，接口或者服务过分膨胀，并最终成为你的 SOA 的一部分。关于这一点其实就可以单独写一篇文章来解释，所以在这一篇文章中就不深入的探讨了。</p>
+
+      
+
+      
+        <div class="page-reward">
+          <a href="javascript:;" class="page-reward-btn tooltip-top">
+            <div class="tooltip tooltip-east">
+            <span class="tooltip-item">
+              赏
+            </span>
+            <span class="tooltip-content">
+              <span class="tooltip-text">
+                <span class="tooltip-inner">
+                  <p class="reward-p"><i class="icon icon-quo-left"></i>谢谢你支持我创作！<i class="icon icon-quo-right"></i></p>
+                  <div class="reward-box">
+                    
+                    <div class="reward-box-item">
+                      <img class="reward-img" src="/assets/img/alipay.png">
+                      <span class="reward-type">支付宝</span>
+                    </div>
+                    
+                    
+                  </div>
+                </span>
+              </span>
+            </span>
+          </div>
+          </a>
+        </div>
+      
+    </div>
+	<!-- 版权内容 -->
+	
+		<style type="text/css">
+	.article-footer-copyright{
+   border-top:1px solid #d3d3d3;
+   margin: 20px auto;     
+   padding-left:2em;
+   width: 80%;
+}
+.article-footer-copyright p{
+  font-size:1.2em;
+}
+.article-footer-copyright span,.copyright abbr{
+  color:#3d3d3d;
+}
+div.copyright{
+    
+       font-weight:bold;
+       color:#FCB297;
+       padding:0.3em 0.5em;
+       margin:0 0 1em 0;
+       border-bottom:none;
+       background-color:#AAD2F0;
+       -moz-border-radius: 1em;
+       -webkit-border-radius:1em;
+       border-radius: 1em;
+  -moz-box-shadow:inset 0px 1px 0px 0px #eeeeee;
+  -webkit-box-shadow:inset 0px 1px 0px 0px #eeeeee;
+  box-shadow:inset 0px 1px 0px 0px #eeeeee;
+  background:-webkit-gradient( linear, left top, left bottom, color-stop(0.05, #aad2f0), color-stop(1, #8bc1ed) );
+  background:-moz-linear-gradient( center top, #aad2f0 5%, #8bc1ed 100% );
+  /* filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#aad2f0', endColorstr='#8bc1ed'); */
+  background-color:#aad2f0;
+  border:1px solid #dcdcdc;
+  text-shadow:1px 1px 0px #eeeeee;
+  
+}
+div.article-footer-copyright{
+    margin:0em 0em 0em 5em;
+	margin-top:2em;
+    padding:0.5em 1em;
+    border-left:3px solid #ff1700;
+    background-color:#f9f9f9;
+}
+.article-footer-copyright p{
+    line-height: 160%;
+    margin: 10px;
+    font-size: 100%;
+}
+</style>
+
+<div class="article-footer-copyright">
+	<p>本文标题: <a href="/2017/09/24/debunking-the-myths-of-rpc-and-rest/" target="_blank" title="Debunking the Myths of RPC &amp; REST">Debunking the Myths of RPC &amp; REST</a></p>
+	<p>本文链接: <a href="/2017/09/24/debunking-the-myths-of-rpc-and-rest/" target="_blank" title="Debunking the Myths of RPC &amp; REST">https://ryan-hou.github.io/2017/09/24/debunking-the-myths-of-rpc-and-rest/</a></p>
+	<p>转载请注明本文链接~~</p>
+</div>
+
+	
+    <div class="article-info article-info-index">
       
       
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2016" class="archive-year">2016</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2016/06/17/shi-pei-qi-mo-shi/" class="archive-article-date">
-  	<time datetime="2016-06-17T03:01:39.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2016-06-17</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2016/06/17/shi-pei-qi-mo-shi/">适配器模式</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
 	<div class="article-tag tagcloud">
 		<i class="icon-price-tags icon"></i>
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">Java</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">设计</a>
         		</li>
       		 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">设计</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">翻译</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">分布式</a>
         		</li>
       		
 		</ul>
 	</div>
 
-          
+      
 
+      
+
+      
+        
+<div class="share-btn share-icons tooltip-left">
+  <div class="tooltip tooltip-east">
+    <span class="tooltip-item">
+      <a href="javascript:;" class="share-sns share-outer">
+        <i class="icon icon-share"></i>
+      </a>
+    </span>
+    <span class="tooltip-content">
+      <div class="share-wrap">
+        <div class="share-icons">
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="icon icon-weibo"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="icon icon-weixin"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="icon icon-qq"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="icon icon-douban"></i>
+          </a>
+          <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a>
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="icon icon-facebook"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="icon icon-twitter"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="icon icon-google"></i>
+          </a>
         </div>
-        <div class="clearfix"></div>
-    </header>
+      </div>
+    </span>
+  </div>
+</div>
+
+<div class="page-modal wx-share js-wx-box">
+    <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+      <img src="//pan.baidu.com/share/qrcode?url=https://ryan-hou.github.io/2017/09/24/debunking-the-myths-of-rpc-and-rest/" alt="微信分享二维码">
+    </div>
+</div>
+
+<div class="mask js-mask"></div>
+      
+      <div class="clearfix"></div>
+    </div>
   </div>
 </article>
+
   
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2016/06/16/die-dai-qi-fail-fast/" class="archive-article-date">
-  	<time datetime="2016-06-16T07:10:24.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2016-06-16</time>
-</a>
+<nav id="article-nav">
+  
+    <a href="/2017/09/27/sharding-and-ids-at-instagram/" id="article-nav-newer" class="article-nav-link-wrap">
+      <i class="icon-circle-left"></i>
+      <div class="article-nav-title">
+        
+          Sharding &amp; IDs at Instagram
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2017/09/23/visitor-pattern/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">Visitor pattern</div>
+      <i class="icon-circle-right"></i>
+    </a>
+  
+</nav>
+
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
         </div>
-    	 
+        
+        
+    </div>
+</aside>
+
+
+
   
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2016/06/16/die-dai-qi-fail-fast/">迭代器的fail-fast</a>
-    </h1>
+  
   
 
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">Java</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">设计</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2016/06/15/die-dai-qi-mo-shi-yu-for-eachxun-huan/" class="archive-article-date">
-  	<time datetime="2016-06-15T07:49:35.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2016-06-15</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2016/06/15/die-dai-qi-mo-shi-yu-for-eachxun-huan/">迭代器模式</a>
-    </h1>
   
 
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">Java</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">设计</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-  
-    </div></section>
   
 
-    
+  
+  <div id="gitment-ctn"></div> 
+<link rel="stylesheet" href="https://billts.site/extra_css/gitment.css">
+<script src="https://billts.site/js/gitment.js"></script>
+<script>
+var gitment = new Gitment({
+  id: 'Debunking the Myths of RPC &amp; REST',
+  owner: 'Ryan-hou',
+  repo: 'Ryan-hou.github.io',
+  oauth: {
+    client_id: '10b94f286862e039846e',
+    client_secret: '51c6b587d0a58d70f6da2e9c5641e66a431751d9',
+  },
+})
+gitment.render('gitment-ctn')
+</script>
+
+  
+
 
 
           </div>
@@ -310,8 +450,8 @@
 	var yiliaConfig = {
 		mathjax: false,
 		isHome: false,
-		isPost: false,
-		isArchive: true,
+		isPost: true,
+		isArchive: false,
 		isTag: false,
 		isCategory: false,
 		open_in_new: true,
