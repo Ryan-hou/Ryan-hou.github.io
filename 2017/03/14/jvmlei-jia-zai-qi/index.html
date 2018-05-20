@@ -6,15 +6,22 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="https://ryan-hou.github.io">
-  <title>0x08 0x17</title>
+  <title>JVM类加载器 | 0x08 0x17</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta property="og:type" content="website">
-<meta property="og:title" content="0x08 0x17">
-<meta property="og:url" content="https://ryan-hou.github.io/index.html">
+  <meta name="description" content="类加载器是什么定义摘自深入理解Java虚拟机  虚拟机设计团队把类加载阶段中的”通过一个类的全限定名获取描述此类的二进制字节流”这个动作放到Java虚拟机外部去实现，以便让应用程序自己决定如何去获取所需要的类。实现这个动作的代码模块称为“类加载器”  从上面的定义中，我们可以得到如下信息：">
+<meta name="keywords" content="Java,虚拟机">
+<meta property="og:type" content="article">
+<meta property="og:title" content="JVM类加载器">
+<meta property="og:url" content="https://ryan-hou.github.io/2017/03/14/jvmlei-jia-zai-qi/index.html">
 <meta property="og:site_name" content="0x08 0x17">
+<meta property="og:description" content="类加载器是什么定义摘自深入理解Java虚拟机  虚拟机设计团队把类加载阶段中的”通过一个类的全限定名获取描述此类的二进制字节流”这个动作放到Java虚拟机外部去实现，以便让应用程序自己决定如何去获取所需要的类。实现这个动作的代码模块称为“类加载器”  从上面的定义中，我们可以得到如下信息：">
 <meta property="og:locale" content="default">
+<meta property="og:image" content="http://ryan-hou.github.io/assets/img/blogPic/classLoader.png">
+<meta property="og:updated_time" content="2018-05-20T06:51:35.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="0x08 0x17">
+<meta name="twitter:title" content="JVM类加载器">
+<meta name="twitter:description" content="类加载器是什么定义摘自深入理解Java虚拟机  虚拟机设计团队把类加载阶段中的”通过一个类的全限定名获取描述此类的二进制字节流”这个动作放到Java虚拟机外部去实现，以便让应用程序自己决定如何去获取所需要的类。实现这个动作的代码模块称为“类加载器”  从上面的定义中，我们可以得到如下信息：">
+<meta name="twitter:image" content="http://ryan-hou.github.io/assets/img/blogPic/classLoader.png">
   
     <link rel="alternative" href="/atom.xml" title="0x08 0x17" type="application/atom+xml">
   
@@ -146,818 +153,160 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            
-  
-    <article id="post-dan-li-mo-shi-de-ge-chong-zi-shi" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+            <article id="post-jvmlei-jia-zai-qi" class="article article-type-post " itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
         
   
-    <h1 itemprop="name">
-      <a class="article-title" href="/2018/04/01/dan-li-mo-shi-de-ge-chong-zi-shi/">单例模式的各种姿势</a>
+    <h1 class="article-title" itemprop="name">
+      JVM类加载器
     </h1>
   
 
         
-        <a href="/2018/04/01/dan-li-mo-shi-de-ge-chong-zi-shi/" class="archive-article-date">
-  	<time datetime="2018-04-01T02:58:05.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-04-01</time>
+        <a href="/2017/03/14/jvmlei-jia-zai-qi/" class="archive-article-date">
+  	<time datetime="2017-03-14T07:43:17.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-03-14</time>
 </a>
         
       </header>
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>很多场景下，我们的类只允许有一个实例对象，比如线程池，注册表，缓存对象等，这时我们就需要单例模式来创建唯一的对象供程序调用，单例模式是很基础且常用的设计模式，有多种方式实现，下面总结一下</p>
-<h2 id="懒汉模式"><a href="#懒汉模式" class="headerlink" title="懒汉模式"></a>懒汉模式</h2><p>因为要保证一个类只有一个实例对象，所以我们要私有化类的构造器，避免应用程序代码通过new关键字来实例化对象，同时要提供一个静态的访问方法来供应用程序访问该单例，很容易想到的实现代码如下：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Singleton</span> </span>&#123;</span><br><span class="line">	<span class="function"><span class="keyword">private</span> <span class="title">Singleton</span><span class="params">()</span> </span>&#123;&#125;</span><br><span class="line">	</span><br><span class="line">	<span class="keyword">private</span> <span class="keyword">static</span> Singleton uniqueInstance = <span class="keyword">new</span> Singleton();</span><br><span class="line">	</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> Singleton <span class="title">getInstance</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		<span class="keyword">return</span> uniqueInstance;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-        
-          <a class="article-more-a" href="/2018/04/01/dan-li-mo-shi-de-ge-chong-zi-shi/#more">more >></a>
-        
-      
-
-      
-    </div>
-	<!-- 版权内容 -->
-	
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">Java</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">设计</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2018/04/01/dan-li-mo-shi-de-ge-chong-zi-shi/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-
-  
-    <article id="post-zai-tan-threadlocal" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2018/03/23/zai-tan-threadlocal/">再谈ThreadLocal</a>
-    </h1>
-  
-
-        
-        <a href="/2018/03/23/zai-tan-threadlocal/" class="archive-article-date">
-  	<time datetime="2018-03-23T06:20:44.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-03-23</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>之前曾写过关于ThreadLocal的文章<a href="https://ryan-hou.github.io/2017/04/03/threadlocaljie-xi/">ThreadLocal解析</a>，主要从ThreadLocal的一些基本知识和代码实现思路来整理，本文将试着从更加深入的角度来看ThreadLocal以及在使用TreadLocal 中遇到的一些坑</p>
-<h2 id="设计初衷"><a href="#设计初衷" class="headerlink" title="设计初衷"></a>设计初衷</h2><p>一句话：<strong>提供线程内部的局部变量，在本线程内随时随地可取，隔离其他线程。</strong></p>
-<p>稍微展开来说一点，ThreadLocal的作用是提供线程内的局部变量 (类比方法的局部变量)，这种变量在自身线程的生命周期内起作用（其他线程访问不到），减少同一个线程内多个函数或者组件之间一些公共变量的传递的复杂度（同时隔离了多个线程）。</p>
-<p>从上面的设计初衷，我们不难得出ThreadLocal的使用场景：</p>
-<ul>
-<li>在同一个线程中的多个函数需要操作相同的数据，使用线程局部变量(ThreadLocal)可以达到在本线程内的多个函数之间共享数据</li>
-</ul>
-        
-          <a class="article-more-a" href="/2018/03/23/zai-tan-threadlocal/#more">more >></a>
-        
-      
-
-      
-    </div>
-	<!-- 版权内容 -->
-	
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">Java</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2018/03/23/zai-tan-threadlocal/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-
-  
-    <article id="post-zai-tan-xian-cheng-chi" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2018/03/17/zai-tan-xian-cheng-chi/">再谈线程池</a>
-    </h1>
-  
-
-        
-        <a href="/2018/03/17/zai-tan-xian-cheng-chi/" class="archive-article-date">
-  	<time datetime="2018-03-17T08:21:43.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-03-17</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>之前写过一篇关于线程池的文章，<a href="https://ryan-hou.github.io/2017/03/15/javaxian-cheng-chi-shi-xian-yuan-li/">Java线程池实现原理</a>，侧重于从代码的角度(主要是execute方法的实现)来解释线程池的实现，本文将结合一些例子来谈谈实际使用中遇到的问题，侧重于从使用层面看待线程池</p>
-<h2 id="线程池使用中涉及的重要问题"><a href="#线程池使用中涉及的重要问题" class="headerlink" title="线程池使用中涉及的重要问题"></a>线程池使用中涉及的重要问题</h2><p>还是再强调一下，Executor 和 ThreadPoolExecutor 这两个接口/类，一定去认真读一下jdk文档，写的很好</p>
-<p>先从<code>ThreadPoolExecutor</code>实现的顶层接口<code>Executor</code>来说，该接口设计的目的是为了实现任务提交和任务执行解耦，线程池类ThreadPoolExecutor实现了该接口，因此能将任务的提交与执行进行解耦，不仅如此，通过池化技术，可以控制线程的创建销毁，可以复用线程资源，减少开销，同时提供对于线程等资源的管理</p>
-        
-          <a class="article-more-a" href="/2018/03/17/zai-tan-xian-cheng-chi/#more">more >></a>
-        
-      
-
-      
-    </div>
-	<!-- 版权内容 -->
-	
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">Java</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2018/03/17/zai-tan-xian-cheng-chi/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-
-  
-    <article id="post-zhong-xin-ren-shi-xin-xi-yin-cang" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2018/03/09/zhong-xin-ren-shi-xin-xi-yin-cang/">重新认识信息隐藏</a>
-    </h1>
-  
-
-        
-        <a href="/2018/03/09/zhong-xin-ren-shi-xin-xi-yin-cang/" class="archive-article-date">
-  	<time datetime="2018-03-09T11:25:51.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-03-09</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="一个重要却容易忽略的问题"><a href="#一个重要却容易忽略的问题" class="headerlink" title="一个重要却容易忽略的问题"></a>一个重要却容易忽略的问题</h2><p>在谈到 OOP 的特征时，大家都会想到<strong>封装，继承和多态</strong>，所谓封装，<strong>就是将数据与相关行为包装在一起以实现信息隐藏</strong>，更准确来说，信息隐藏是我们编程时的原则，而封装是实现信息隐藏的一种方式。那么信息隐藏为什么重要？</p>
-<p>引用一段<code>Effective Java</code>中的话：</p>
+        <h2 id="类加载器是什么"><a href="#类加载器是什么" class="headerlink" title="类加载器是什么"></a>类加载器是什么</h2><p>定义摘自<code>深入理解Java虚拟机</code></p>
 <blockquote>
-<p>要区别设计良好的模块和设计不好的模块，重要的标志在于，这个模块对于外部其他模块而言，是否隐藏其内部数据和实现细节。设计良好的模块会隐藏所有的实现细节，模块间仅通过API进行通信</p>
+<p>虚拟机设计团队把类加载阶段中的”通过一个类的全限定名获取描述此类的二进制字节流”这个动作放到Java虚拟机外部去实现，以便让应用程序自己决定如何去获取所需要的类。实现这个动作的代码模块称为“类加载器”</p>
 </blockquote>
-        
-          <a class="article-more-a" href="/2018/03/09/zhong-xin-ren-shi-xin-xi-yin-cang/#more">more >></a>
-        
-      
-
-      
-    </div>
-	<!-- 版权内容 -->
-	
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">Java</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">设计</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2018/03/09/zhong-xin-ren-shi-xin-xi-yin-cang/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-
-  
-    <article id="post-chuang-jian-[?]-ge-dui-xiang-de-si-kao" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2018/03/08/chuang-jian-[?]-ge-dui-xiang-de-si-kao/">创建一个对象的思考</a>
-    </h1>
-  
-
-        
-        <a href="/2018/03/08/chuang-jian-[?]-ge-dui-xiang-de-si-kao/" class="archive-article-date">
-  	<time datetime="2018-03-08T05:59:25.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-03-08</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="事情可能没有看起来那么简单"><a href="#事情可能没有看起来那么简单" class="headerlink" title="事情可能没有看起来那么简单"></a>事情可能没有看起来那么简单</h2><p>Java作为OOP的语言，对象的创建自然是最基本不过的，然而如何创建对象这件事，并没有那么简单，不是 new 关键字加构造器这么容易。那么创建一个对象，我们可能要思考哪些问题呢？</p>
+<p>从上面的定义中，我们可以得到如下信息：</p>
+<a id="more"></a>
 <ul>
-<li>创建方式，是使用构造器，用工厂类，用Builder，用反射，克隆，还是反序列化呢？</li>
-<li>数量，是构造单例，还是通过对象池构造有限个对象，还是不加限制？</li>
-<li>时间，是立即构建，还是延迟构建呢？</li>
-<li>形式，是构造实际对象，还是构造代理对象？是本地对象，还是远程对象？</li>
+<li>类加载器的作用：获取描述此类的二进制字节流，也就是Class文件，那么什么是Class文件？</li>
+<li>这只是类加载阶段中的一部分功能，那么类加载机制是怎么样的？</li>
+<li>类加载器的目的是让应用程序自己决定如何获取需要的类，这样做有什么好处？换句话说，我什么时候可能需要自己定义一个类加载器？</li>
 </ul>
-        
-          <a class="article-more-a" href="/2018/03/08/chuang-jian-[?]-ge-dui-xiang-de-si-kao/#more">more >></a>
-        
-      
-
-      
-    </div>
-	<!-- 版权内容 -->
-	
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">Java</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">设计</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2018/03/08/chuang-jian-[?]-ge-dui-xiang-de-si-kao/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-
-  
-    <article id="post-phantom-types-in-java" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2018/02/20/phantom-types-in-java/">Phantom types in Java</a>
-    </h1>
-  
-
-        
-        <a href="/2018/02/20/phantom-types-in-java/" class="archive-article-date">
-  	<time datetime="2018-02-20T04:12:36.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-02-20</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>本文为翻译文章，原文链接为：<a href="http://gabrielsw.blogspot.com/2012/09/phantom-types-in-java.html" target="_blank" rel="noopener">Phantom types in Java</a></p>
-<p>相比于Python这种动态类型语言来说，使用Java这种静态语言在有些场景下会让代码显得啰嗦冗长，但是合理的利用静态语言的类型系统，对于写出<strong>更安全且语义更明确</strong>的代码是非常有帮助的，这篇翻译的文章，实际上就是关于如何利用类型系统(Phantom type)来书写更健壮的代码的一个技巧，值得思考和借鉴</p>
-<h2 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h2><p>我喜欢编程语言中的类型，其中一个原因就在于它会帮助我们(尽管有时也有相反的作用，比如相比动态类型语言，类型有时会让代码显得啰嗦)。在编译期能进行的检查越多，在测试时需要做的检查就越少(运行时出错的可能性也就越小)。</p>
-<p>自从Java1.5，我们有了参数化类型(泛型)－－也就是可以把类型参数加到其他类型上：<br><code>public class MyType&lt;TypeParameter&gt; { ... }</code></p>
-<p>我们也可以在方法上使用类型参数:<br><code>public &lt;T&gt; Result doSomething(MyType&lt;T&gt; p) { ... do something with p ... }</code></p>
-<p>或者限制在方法上使用确定的类型参数(也叫 generic type in invocation):</p>
-<p><code>public Result doSomethingStringy(MyType&lt;String&gt; p) {... do something with p ... }</code></p>
-        
-          <a class="article-more-a" href="/2018/02/20/phantom-types-in-java/#more">more >></a>
-        
-      
-
-      
-    </div>
-	<!-- 版权内容 -->
-	
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">Java</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">翻译</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2018/02/20/phantom-types-in-java/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-
-  
-    <article id="post-efficient-data-transfer-through-zero-copy" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/11/27/efficient-data-transfer-through-zero-copy/">Efficient data transfer through zero copy</a>
-    </h1>
-  
-
-        
-        <a href="/2017/11/27/efficient-data-transfer-through-zero-copy/" class="archive-article-date">
-  	<time datetime="2017-11-27T09:03:56.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-11-27</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>本文为翻译文章，原文链接为:<a href="https://www.ibm.com/developerworks/library/j-zerocopy/" target="_blank" rel="noopener">Efficient data transfer through zero copy</a></p>
-<p>许多web应用都会提供从磁盘读取大量的静态数据，然后再把这些数据写到 response socket 中。这种服务看起来几乎不会用到 cpu 计算，但是这里却存在不高效的情况：内核从磁盘读取数据后，会把它通过kernel-user边界push到应用，然后再通过kernel-user边界push回socket buffer供socket写出。实际上，这里应用层成了磁盘和socket之间一个低效的中间介质</p>
-<p>每次数据通过kernel-user边界时，必须被复制，这就会消耗cpu cycles 和内存带宽。幸运的是，我们可以通过<code>zero copy</code>技术来消除这些拷贝。<strong>使用 zero copy技术，应用可以直接把磁盘数据移动到socket，不需要经过应用</strong>。zero copy 技术很大的提升了应用性能并且减少了kernel和user模式的切换</p>
-<p>Java 类库通过 <code>java.nio.channels.FileChannel</code>类的<code>transferTo()</code>方法支持在 Linux 和 Unix操作系统上的zero copy技术。你可以使用 transferTo() 方法把字节流从调用这个方法的 channel直接移动到另一个可写的字节channel，不需要数据经由应用。本文首先会证明使用传统的复制语义会带来 overhead，然后展示使用zero copy技术的transferTo()方法如何实现更好的性能</p>
-        
-          <a class="article-more-a" href="/2017/11/27/efficient-data-transfer-through-zero-copy/#more">more >></a>
-        
-      
-
-      
-    </div>
-	<!-- 版权内容 -->
-	
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">翻译</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">OS</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">优化</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2017/11/27/efficient-data-transfer-through-zero-copy/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-
-  
-    <article id="post-fan-zhuan-dan-lian-biao-de-ji-chong-zi-shi" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/09/30/fan-zhuan-dan-lian-biao-de-ji-chong-zi-shi/">反转单链表的几种姿势</a>
-    </h1>
-  
-
-        
-        <a href="/2017/09/30/fan-zhuan-dan-lian-biao-de-ji-chong-zi-shi/" class="archive-article-date">
-  	<time datetime="2017-09-30T03:20:02.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-09-30</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>基础数据结构的操作，简单但是有意义，整理下几种实现思路</p>
-<h2 id="头插法建立单链表"><a href="#头插法建立单链表" class="headerlink" title="头插法建立单链表"></a>头插法建立单链表</h2><p>由头插法操作一组数据后生成逆序的单链表，利用这个性质，我们可以遍历给出的单链表，利用头插法建立新的单链表，返回链表的头节点即可。实现简单，但是需要开辟额外的空间，空间复杂度和时间复杂度都是 <code>O(n)</code>，代码如下：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">static</span> LinkNode <span class="title">reverseWithCreate</span><span class="params">(LinkNode head)</span> </span>&#123;</span><br><span class="line">        <span class="comment">// 虚拟头指针</span></span><br><span class="line">        LinkNode newHead = <span class="keyword">new</span> LinkNode(<span class="number">0</span>);</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">while</span> (head != <span class="keyword">null</span>) &#123;</span><br><span class="line">            <span class="comment">// 头插法建立单链表</span></span><br><span class="line">            LinkNode cur = <span class="keyword">new</span> LinkNode(head.val);</span><br><span class="line">            cur.next = newHead.next;</span><br><span class="line">            newHead.next = cur;</span><br><span class="line"></span><br><span class="line">            head = head.next;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> newHead.next;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
-        
-          <a class="article-more-a" href="/2017/09/30/fan-zhuan-dan-lian-biao-de-ji-chong-zi-shi/#more">more >></a>
-        
-      
-
-      
-    </div>
-	<!-- 版权内容 -->
-	
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">算法</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2017/09/30/fan-zhuan-dan-lian-biao-de-ji-chong-zi-shi/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-
-  
-    <article id="post-sharding-and-ids-at-instagram" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/09/27/sharding-and-ids-at-instagram/">Sharding &amp; IDs at Instagram</a>
-    </h1>
-  
-
-        
-        <a href="/2017/09/27/sharding-and-ids-at-instagram/" class="archive-article-date">
-  	<time datetime="2017-09-27T05:50:26.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-09-27</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>本文为 Instagram Engineering 博客中的翻译文章，原文链接为：<a href="https://engineering.instagram.com/sharding-ids-at-instagram-1cf5a71e5a5c" target="_blank" rel="noopener">Sharding &amp; IDs at Instagram</a></p>
-<p>每秒超过25张照片，90个like 在 Instagram 上产生，应用的后台存储了大量的数据。为了保证所有重要的数据可以放在内存中，并被用户快速的获取，Instagram 进行了 shard(数据分片)，换句话说就是把数据分别放在很多小的 bucket 中。</p>
-<p>ins 的后台服务运行在 Django，数据存储在 PostgreSQL中。在决定进行数据 shard 后，遇到的第一个问题就是是否仍然采用PostgreSQL作为主存储，还是选择别的存储方案。在调研了其他的 NoSQL 方案后，最后确定<strong>最适合目前场景</strong>的方案是把数据 shard 到多台 PostgreSQL 服务器上</p>
-<p>在把数据写到这些存储服务器上前，还有一个重要的问题需要解决，那就是如何为每一条数据生成一个<strong>唯一ID</strong>(例如，在我们系统中每一个发布的照片)。传统的单台数据库下使用数据库自带的自增主键在当前场景下不再适用(同一时刻需要往不同机器的数据库插入数据)。这篇文章的后半部分主要就来探讨如何解决这个问题</p>
-        
-          <a class="article-more-a" href="/2017/09/27/sharding-and-ids-at-instagram/#more">more >></a>
-        
-      
-
-      
-    </div>
-	<!-- 版权内容 -->
-	
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">设计</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">翻译</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">分布式</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2017/09/27/sharding-and-ids-at-instagram/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-
-  
-    <article id="post-debunking-the-myths-of-rpc-and-rest" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/09/24/debunking-the-myths-of-rpc-and-rest/">Debunking the Myths of RPC &amp; REST</a>
-    </h1>
-  
-
-        
-        <a href="/2017/09/24/debunking-the-myths-of-rpc-and-rest/" class="archive-article-date">
-  	<time datetime="2017-09-24T14:40:00.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-09-24</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>本文为翻译文章，原文链接为:<a href="http://etherealbits.com/2012/12/debunking-the-myths-of-rpc-rest/" target="_blank" rel="noopener">Debunking the Myths of RPC &amp; REST</a></p>
-<p>网上有很多关于 RPC 和 REST 的文章，博客与讨论，但是大部分都在回答某一个特定的应用下，应该选择使用 RPC 还是 REST，而这本身并不是一个正确的二分法。这些回答普遍没有解释我想要知道的问题，而是让我感觉到大部分的开发者并不懂为什么要使用 REST，而仅仅是因为觉得这个架构听起来很酷。讽刺的是<a href="https://en.wikipedia.org/wiki/Roy_Fielding" target="_blank" rel="noopener">Roy Fielding</a>在介绍REST的论文中就提到了这种<strong>“design by fad”</strong></p>
+<h2 id="关于类加载涉及的一些定义"><a href="#关于类加载涉及的一些定义" class="headerlink" title="关于类加载涉及的一些定义"></a>关于类加载涉及的一些定义</h2><h3 id="Class文件"><a href="#Class文件" class="headerlink" title="Class文件"></a>Class文件</h3><p>每个Class文件都对应着唯一一个类或者接口的定义信息，该文件是一个以8位字节为基础的二进制流，每个数据都有严格的定义和顺序。虚拟机通过该文件实现了语言无关性</p>
+<h3 id="类加载的步骤"><a href="#类加载的步骤" class="headerlink" title="类加载的步骤"></a>类加载的步骤</h3><p>包括加载，验证，准备，解析和初始化，其中验证，准备和初始化合称为连接。类型的加载，连接和初始化都是在程序运行期间完成的，增加了类加载的性能负担但是提高了灵活性，比如：</p>
 <blockquote>
-<p>“Consider how often we see software projects begin with adoption of the latest fad in architectural design, and only later discover whether or not the system requirements call for such an architecture.”</p>
+<p>编写一个面向接口的应用程序，可以等到运行时再指定其实现类；用户可以通过自定义的类加载器，让一个本地的应用程序可以在运行时从网络或者其他地方加载一个二进制流作为程序代码的一部分，这种组装程序的方式广泛应用于Java程序之中，如JSP，OSGi等</p>
 </blockquote>
-        
-          <a class="article-more-a" href="/2017/09/24/debunking-the-myths-of-rpc-and-rest/#more">more >></a>
-        
+<h3 id="加载与类加载"><a href="#加载与类加载" class="headerlink" title="加载与类加载"></a>加载与类加载</h3><p>加载是类加载的一个步骤，加载阶段虚拟机完成三件事：</p>
+<ul>
+<li>通过一个类的全限定名来获取定义此类的二进制字节流，也就是<strong>类加载器实现的功能</strong></li>
+<li>将这个字节流所代表的静态存储结构转为方法区的运行时数据结构</li>
+<li>在内存中生成一个代表这个类的<code>java.lang.Class对象</code>，作为方法区这个类的各种数据的访问入口</li>
+</ul>
+<h2 id="类加载器的双亲委派模型"><a href="#类加载器的双亲委派模型" class="headerlink" title="类加载器的双亲委派模型"></a>类加载器的双亲委派模型</h2><h3 id="是什么"><a href="#是什么" class="headerlink" title="是什么"></a>是什么</h3><p>双亲委派模型的工作过程是：如果一个类加载器收到了类加载的请求，它首先不会自己去尝试加载这个类，而是把这个请求委派给父类加载器去完成，每一个层次的类加载器都是如此，因此所有的加载请求最终都应该传送到顶层的启动类加载器中，只有当父加载器反馈自己无法完成这个加载请求（它的搜索范围中没有找到所需的类）时，子加载器才会尝试自己去加载。如下图(图片来自网络)：</p>
+<p><img src="http://ryan-hou.github.io/assets/img/blogPic/classLoader.png" alt=""></p>
+<h3 id="如何实现"><a href="#如何实现" class="headerlink" title="如何实现"></a>如何实现</h3><blockquote>
+<p>实现双亲委派的代码集中在 <code>java.lang.ClassLoader</code> 类的 <code>loadClass()</code> 方法中，很清晰易懂：先检查是否已被加载过，若没有则调用父加载器的 loadClass() 方法，若父加载器为空则默认使用启动类的加载器作为父加载器。如果父加载器加载失败，抛出<code>ClassNotFoundException</code> 异常后，再调用自己的 <code>findClass()</code> 方法进行加载</p>
+</blockquote>
+<h3 id="双亲委派模型的优点"><a href="#双亲委派模型的优点" class="headerlink" title="双亲委派模型的优点"></a>双亲委派模型的优点</h3><p>保证Java程序稳定运行</p>
+<blockquote>
+<p>使用双亲委派模型来组织类加载器之间的关系，有一个显而易见的好处就是<strong>Java类随着它的类加载器一起具备了一种带有优先级的层次关系。</strong>例如类java.lang.Object，它存放在rt.jar之中，无论哪一个类加载器要加载这个类，最终都是委派给处于模型最顶端的启动类加载器进行加载，因此Object类在程序的各种类加载器环境中都是同一个类。相反，如果没有使用双亲委派模型，由各个类加载器自行去加载的话，如果用户自己编写了一个称为java.lang.Object的类，并放在程序的ClassPath中，那系统中将会出现多个不同的Object类，Java类型体系中最基础的行为也就无法保证，应用程序也将会变得一片混乱。如果自己去编写一个与rt.jar类库中已有类重名的Java类，将会发现可以正常编译，但永远无法被加载运行</p>
+</blockquote>
+<h2 id="自定义类加载器"><a href="#自定义类加载器" class="headerlink" title="自定义类加载器"></a>自定义类加载器</h2><p>如果程序只是在本机跑的话，一般来说默认加载器可以应付。但是如果我们需要加载远程服务器的类，或者说加载网络上的，不是本机上的类的时候，就需要到自定义类加载器</p>
+<p>自定义类加载器实现过程：</p>
+<ul>
+<li>继承ClassLoader 类</li>
+<li>重写 findClass() 方法</li>
+</ul>
+<p>在<code>ClassLoader</code>类中，有三个重要的方法：</p>
+<ul>
+<li><code>loadClass(String name, Boolean reslove)</code>方法，该方法前面说过了，实现了双亲委派模型，一般不重写</li>
+<li><code>defineClass(String name, byte[] b, int off, int len)</code>用于将原始字节码转为 Class 对象，一般也不用重写</li>
+<li><code>findClass(String name)</code>方法，根据类名来查找类，把<code>.class</code>文件的内容放入byte数组，供defineClass()方法使用，一般我们会改写这个方法，前面这里也描述过，一旦父加载器处理失败，就会调用自己的 <code>findClass(String name)</code>方法来加载</li>
+</ul>
+<p>下面举个例子：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Slf</span>4j</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">CustomClassLoader</span> <span class="keyword">extends</span> <span class="title">ClassLoader</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> String CLASSLOADER_NAME;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> String PATH = <span class="string">"/Users/Ryan-hou/Documents/test_staff/"</span>;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> String FILE_TYPE = <span class="string">".class"</span>;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">CustomClassLoader</span><span class="params">(String classLoaderName)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">super</span>();</span><br><span class="line">        <span class="keyword">this</span>.CLASSLOADER_NAME = classLoaderName;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">protected</span> Class&lt;?&gt; findClass(String name) <span class="keyword">throws</span> ClassNotFoundException &#123;</span><br><span class="line">        <span class="keyword">byte</span>[] data = loadClassData(name);</span><br><span class="line">        <span class="keyword">if</span> (data == <span class="keyword">null</span>) &#123;</span><br><span class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> ClassNotFoundException(name);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">super</span>.defineClass(name, data, <span class="number">0</span>, data.length);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">byte</span>[] loadClassData(String name) &#123;</span><br><span class="line">        InputStream in = <span class="keyword">null</span>;</span><br><span class="line">        ByteArrayOutputStream baos = <span class="keyword">null</span>;</span><br><span class="line"></span><br><span class="line">        String filePath = PATH + name + FILE_TYPE;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            in = <span class="keyword">new</span> FileInputStream(<span class="keyword">new</span> File(filePath));</span><br><span class="line">            baos = <span class="keyword">new</span> ByteArrayOutputStream();</span><br><span class="line">            <span class="keyword">int</span> index;</span><br><span class="line">            <span class="keyword">while</span> (-<span class="number">1</span> != (index = in.read())) &#123;</span><br><span class="line">                baos.write(index);</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">byte</span>[] data = baos.toByteArray();</span><br><span class="line">            <span class="keyword">return</span> data;</span><br><span class="line">        &#125; <span class="keyword">catch</span> (FileNotFoundException e) &#123;</span><br><span class="line">            log.error(<span class="string">"File not found error, file path = &#123;&#125;"</span>, filePath, e);</span><br><span class="line">        &#125; <span class="keyword">catch</span> (IOException e) &#123;</span><br><span class="line">            log.error(<span class="string">"read file error! "</span>, e);</span><br><span class="line">        &#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">            <span class="keyword">try</span> &#123;</span><br><span class="line">                <span class="keyword">if</span> (in != <span class="keyword">null</span>) &#123;</span><br><span class="line">                    in.close();</span><br><span class="line">                &#125;</span><br><span class="line">                <span class="keyword">if</span> (baos != <span class="keyword">null</span>) &#123;</span><br><span class="line">                    baos.close();</span><br><span class="line">                &#125;</span><br><span class="line">            &#125; <span class="keyword">catch</span> (IOException e) &#123;</span><br><span class="line">               log.error(<span class="string">"close io error! "</span>, e);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">toString</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="string">"CustomClassLoader&#123;"</span> +</span><br><span class="line">                <span class="string">"CLASSLOADER_NAME='"</span> + CLASSLOADER_NAME + <span class="string">'\''</span> +</span><br><span class="line">                <span class="string">'&#125;'</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        CustomClassLoader loader = <span class="keyword">new</span> CustomClassLoader(<span class="string">"MyClassLoader"</span>);</span><br><span class="line">        Class&lt;?&gt; clazz = loader.loadClass(<span class="string">"Sample4ClassLoader"</span>);</span><br><span class="line">        clazz.newInstance();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>Java代码很容易被反编译，如果需要把代码进行加密，可以先将编译后的代码用某种加密算法加密，然后<strong>实现自己的类加载器，负责将这段加密后的代码还原</strong></p>
+
       
 
       
+        <div class="page-reward">
+          <a href="javascript:;" class="page-reward-btn tooltip-top">
+            <div class="tooltip tooltip-east">
+            <span class="tooltip-item">
+              赏
+            </span>
+            <span class="tooltip-content">
+              <span class="tooltip-text">
+                <span class="tooltip-inner">
+                  <p class="reward-p"><i class="icon icon-quo-left"></i>谢谢你支持我创作！<i class="icon icon-quo-right"></i></p>
+                  <div class="reward-box">
+                    
+                    <div class="reward-box-item">
+                      <img class="reward-img" src="/assets/img/alipay.png">
+                      <span class="reward-type">支付宝</span>
+                    </div>
+                    
+                    
+                  </div>
+                </span>
+              </span>
+            </span>
+          </div>
+          </a>
+        </div>
+      
     </div>
 	<!-- 版权内容 -->
+	
+		<style type="text/css">
+	.article-footer-copyright{
+   border-top:1px solid #d3d3d3;
+   margin: 20px auto;     
+   padding-left:2em;
+   width: 80%;
+}
+.article-footer-copyright p{
+  font-size:1.2em;
+}
+.article-footer-copyright span,.copyright abbr{
+  color:#3d3d3d;
+}
+div.copyright{
+    
+       font-weight:bold;
+       color:#FCB297;
+       padding:0.3em 0.5em;
+       margin:0 0 1em 0;
+       border-bottom:none;
+       background-color:#AAD2F0;
+       -moz-border-radius: 1em;
+       -webkit-border-radius:1em;
+       border-radius: 1em;
+  -moz-box-shadow:inset 0px 1px 0px 0px #eeeeee;
+  -webkit-box-shadow:inset 0px 1px 0px 0px #eeeeee;
+  box-shadow:inset 0px 1px 0px 0px #eeeeee;
+  background:-webkit-gradient( linear, left top, left bottom, color-stop(0.05, #aad2f0), color-stop(1, #8bc1ed) );
+  background:-moz-linear-gradient( center top, #aad2f0 5%, #8bc1ed 100% );
+  /* filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#aad2f0', endColorstr='#8bc1ed'); */
+  background-color:#aad2f0;
+  border:1px solid #dcdcdc;
+  text-shadow:1px 1px 0px #eeeeee;
+  
+}
+div.article-footer-copyright{
+    margin:0em 0em 0em 5em;
+	margin-top:2em;
+    padding:0.5em 1em;
+    border-left:3px solid #ff1700;
+    background-color:#f9f9f9;
+}
+.article-footer-copyright p{
+    line-height: 160%;
+    margin: 10px;
+    font-size: 100%;
+}
+</style>
+
+<div class="article-footer-copyright">
+	<p>本文标题: <a href="/2017/03/14/jvmlei-jia-zai-qi/" target="_blank" title="JVM类加载器">JVM类加载器</a></p>
+	<p>本文链接: <a href="/2017/03/14/jvmlei-jia-zai-qi/" target="_blank" title="JVM类加载器">https://ryan-hou.github.io/2017/03/14/jvmlei-jia-zai-qi/</a></p>
+	<p>转载请注明本文链接~~</p>
+</div>
+
 	
     <div class="article-info article-info-index">
       
@@ -967,15 +316,11 @@
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">设计</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">Java</a>
         		</li>
       		 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">翻译</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">分布式</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">虚拟机</a>
         		</li>
       		
 		</ul>
@@ -984,16 +329,84 @@
       
 
       
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2017/09/24/debunking-the-myths-of-rpc-and-rest/">展开全文 >></a>
-        </p>
-      
 
+      
+        
+<div class="share-btn share-icons tooltip-left">
+  <div class="tooltip tooltip-east">
+    <span class="tooltip-item">
+      <a href="javascript:;" class="share-sns share-outer">
+        <i class="icon icon-share"></i>
+      </a>
+    </span>
+    <span class="tooltip-content">
+      <div class="share-wrap">
+        <div class="share-icons">
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="icon icon-weibo"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="icon icon-weixin"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="icon icon-qq"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="icon icon-douban"></i>
+          </a>
+          <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a>
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="icon icon-facebook"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="icon icon-twitter"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="icon icon-google"></i>
+          </a>
+        </div>
+      </div>
+    </span>
+  </div>
+</div>
+
+<div class="page-modal wx-share js-wx-box">
+    <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+      <img src="//pan.baidu.com/share/qrcode?url=https://ryan-hou.github.io/2017/03/14/jvmlei-jia-zai-qi/" alt="微信分享二维码">
+    </div>
+</div>
+
+<div class="mask js-mask"></div>
       
       <div class="clearfix"></div>
     </div>
   </div>
 </article>
+
+  
+<nav id="article-nav">
+  
+    <a href="/2017/03/15/javaxian-cheng-chi-shi-xian-yuan-li/" id="article-nav-newer" class="article-nav-link-wrap">
+      <i class="icon-circle-left"></i>
+      <div class="article-nav-title">
+        
+          Java线程池实现原理
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2017/03/10/mo-ban-fang-fa-mo-shi-vsce-lue-mo-shi/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">模版方法模式vs策略模式</div>
+      <i class="icon-circle-right"></i>
+    </a>
+  
+</nav>
+
 
 <aside class="wrap-side-operation">
     <div class="mod-side-operation">
@@ -1013,14 +426,33 @@
 
 
 
+  
+  
+  
 
+  
 
   
+
   
-    <nav id="page-nav">
-      <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><a class="extend next" rel="next" href="/page/2/">Next &raquo;</a>
-    </nav>
+  <div id="gitment-ctn"></div> 
+<link rel="stylesheet" href="https://billts.site/extra_css/gitment.css">
+<script src="https://billts.site/js/gitment.js"></script>
+<script>
+var gitment = new Gitment({
+  id: 'JVM类加载器',
+  owner: 'Ryan-hou',
+  repo: 'Ryan-hou.github.io',
+  oauth: {
+    client_id: '10b94f286862e039846e',
+    client_secret: '51c6b587d0a58d70f6da2e9c5641e66a431751d9',
+  },
+})
+gitment.render('gitment-ctn')
+</script>
+
   
+
 
 
           </div>
@@ -1042,8 +474,8 @@
     <script>
 	var yiliaConfig = {
 		mathjax: false,
-		isHome: true,
-		isPost: false,
+		isHome: false,
+		isPost: true,
 		isArchive: false,
 		isTag: false,
 		isCategory: false,

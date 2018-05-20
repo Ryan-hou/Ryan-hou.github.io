@@ -324,6 +324,93 @@
 
 
   
+    <article id="post-lombok-overview" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/04/27/lombok-overview/">Lombok overview</a>
+    </h1>
+  
+
+        
+        <a href="/2017/04/27/lombok-overview/" class="archive-article-date">
+  	<time datetime="2017-04-27T02:37:44.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-04-27</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="是什么"><a href="#是什么" class="headerlink" title="是什么"></a>是什么</h2><p>使用注解的方式，在代码编译阶段，自动生成相应的方法(比如<code>get/set</code>方法，<code>hashCocde/equals</code> 方法等)，减少 <code>Boilerplate</code> 代码带来的“噪音”，增强代码的局部性和可读性</p>
+<h2 id="为什么使用"><a href="#为什么使用" class="headerlink" title="为什么使用"></a>为什么使用</h2><p>推荐去阅读官方文档(本文最后会给出链接)，这里引用其中的一段话：</p>
+<blockquote>
+<p>“Boilerplate” is a term used to describe code that is repeated in many parts of an application with little alteration. One of the most frequently voiced criticisms of the Java language is the volume of this type of code that is found in most projects. This problem is frequently a result of design decisions in various libraries, but is exacerbated by limitations in the language itself. Project Lombok aims to reduce the prevalence of some of the worst offenders by replacing them with a simple set of annotations.</p>
+</blockquote>
+        
+          <a class="article-more-a" href="/2017/04/27/lombok-overview/#more">more >></a>
+        
+      
+
+      
+    </div>
+	<!-- 版权内容 -->
+	
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">Java</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">工具</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2017/04/27/lombok-overview/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+
+  
     <article id="post-threadlocaljie-xi" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -463,6 +550,93 @@
       
         <p class="article-more-link">
           <a class="article-more-a" href="/2017/03/15/javaxian-cheng-chi-shi-xian-yuan-li/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+
+  
+    <article id="post-jvmlei-jia-zai-qi" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/03/14/jvmlei-jia-zai-qi/">JVM类加载器</a>
+    </h1>
+  
+
+        
+        <a href="/2017/03/14/jvmlei-jia-zai-qi/" class="archive-article-date">
+  	<time datetime="2017-03-14T07:43:17.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-03-14</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="类加载器是什么"><a href="#类加载器是什么" class="headerlink" title="类加载器是什么"></a>类加载器是什么</h2><p>定义摘自<code>深入理解Java虚拟机</code></p>
+<blockquote>
+<p>虚拟机设计团队把类加载阶段中的”通过一个类的全限定名获取描述此类的二进制字节流”这个动作放到Java虚拟机外部去实现，以便让应用程序自己决定如何去获取所需要的类。实现这个动作的代码模块称为“类加载器”</p>
+</blockquote>
+<p>从上面的定义中，我们可以得到如下信息：</p>
+        
+          <a class="article-more-a" href="/2017/03/14/jvmlei-jia-zai-qi/#more">more >></a>
+        
+      
+
+      
+    </div>
+	<!-- 版权内容 -->
+	
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">Java</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">虚拟机</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2017/03/14/jvmlei-jia-zai-qi/">展开全文 >></a>
         </p>
       
 
@@ -830,175 +1004,6 @@
 
 
   
-    <article id="post-die-dai-qi-fail-fast" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/06/16/die-dai-qi-fail-fast/">迭代器的fail-fast</a>
-    </h1>
-  
-
-        
-        <a href="/2016/06/16/die-dai-qi-fail-fast/" class="archive-article-date">
-  	<time datetime="2016-06-16T07:10:24.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2016-06-16</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>在迭代器创建之后，如果从<strong>结构</strong>上对其进行修改(比如删除或者增加新的元素)，除非通过<strong>迭代器本身</strong>的 <code>remove</code> 方法，其他任何时间任何方式的修改，迭代器都将尽可能抛出 <code>ConcurrentModificationException</code>。这一现象，我们称作<code>fail-fast</code></p>
-<p>举个简单的小例子：</p>
-        
-          <a class="article-more-a" href="/2016/06/16/die-dai-qi-fail-fast/#more">more >></a>
-        
-      
-
-      
-    </div>
-	<!-- 版权内容 -->
-	
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">Java</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">设计</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2016/06/16/die-dai-qi-fail-fast/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-
-  
-    <article id="post-die-dai-qi-mo-shi-yu-for-eachxun-huan" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/06/15/die-dai-qi-mo-shi-yu-for-eachxun-huan/">迭代器模式</a>
-    </h1>
-  
-
-        
-        <a href="/2016/06/15/die-dai-qi-mo-shi-yu-for-eachxun-huan/" class="archive-article-date">
-  	<time datetime="2016-06-15T07:49:35.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2016-06-15</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="是什么"><a href="#是什么" class="headerlink" title="是什么"></a>是什么</h2><p>迭代器模式提供一种方法顺序访问一个聚合对象中的各个元素，而又不暴露其内部的数据结构。把访问的任务放在迭代器上而不是聚合上</p>
-<h2 id="为什么"><a href="#为什么" class="headerlink" title="为什么"></a>为什么</h2><p>思考这样一个问题，我们客户端中有一个类，需要访问不同的聚合对象，遍历各个聚合对象的所有元素，来进行相应的操作，应该怎么做？</p>
-<p>最简单直接的一种方式当然是由各个聚合对象来提供遍历的接口，在客户端的类中来调用这个接口实现遍历，这样当然是可以的，但是我们可以思考一下这样做的弊端：</p>
-        
-          <a class="article-more-a" href="/2016/06/15/die-dai-qi-mo-shi-yu-for-eachxun-huan/#more">more >></a>
-        
-      
-
-      
-    </div>
-	<!-- 版权内容 -->
-	
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">Java</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">设计</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2016/06/15/die-dai-qi-mo-shi-yu-for-eachxun-huan/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-
-  
   
     <nav id="page-nav">
       <a class="extend prev" rel="prev" href="/">&laquo; Prev</a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><a class="extend next" rel="next" href="/page/3/">Next &raquo;</a>
@@ -1113,6 +1118,14 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">算法</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">工具</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">虚拟机</a>
               </li>
             
             <div class="clearfix"></div>
