@@ -6,15 +6,22 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="https://ryan-hou.github.io">
-  <title>Tag: 分布式 | 0x08 0x17</title>
+  <title>从强制类型转换到安全和基础 | 0x08 0x17</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta property="og:type" content="website">
-<meta property="og:title" content="0x08 0x17">
-<meta property="og:url" content="https://ryan-hou.github.io/tags/分布式/index.html">
+  <meta name="description" content="电脑无疑是当代最牛的发明，但事实上，它并不像我们想象的那么”聪明”，其实我们的电脑只认识一堆0-1数字，之所以看起来很厉害，是因为有很厉害的程序员设计了逻辑严谨的语句使电脑工作。 庆幸的是它还不够智能，(AI的奇点不知何时来临，目前看还需要些时间)不然我们的一大批码农真的就该回家种地了。所以，理解计算机到底是怎么进行工作的，对我们的代码逻辑和理解安全问题绝对是有好处的。不过这个话题太大了，而且鉴于">
+<meta name="keywords" content="安全">
+<meta property="og:type" content="article">
+<meta property="og:title" content="从强制类型转换到安全和基础">
+<meta property="og:url" content="https://ryan-hou.github.io/2016/03/10/cong-qiang-zhi-lei-xing-zhuan-huan-dai-lai-de-an-quan-wen-ti-kan-ji-chu-xue-xi/index.html">
 <meta property="og:site_name" content="0x08 0x17">
+<meta property="og:description" content="电脑无疑是当代最牛的发明，但事实上，它并不像我们想象的那么”聪明”，其实我们的电脑只认识一堆0-1数字，之所以看起来很厉害，是因为有很厉害的程序员设计了逻辑严谨的语句使电脑工作。 庆幸的是它还不够智能，(AI的奇点不知何时来临，目前看还需要些时间)不然我们的一大批码农真的就该回家种地了。所以，理解计算机到底是怎么进行工作的，对我们的代码逻辑和理解安全问题绝对是有好处的。不过这个话题太大了，而且鉴于">
 <meta property="og:locale" content="default">
+<meta property="og:image" content="http://Ryan-hou.github.io/assets/img/blocPic/typeConversion.png">
+<meta property="og:updated_time" content="2018-05-21T10:28:38.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="0x08 0x17">
+<meta name="twitter:title" content="从强制类型转换到安全和基础">
+<meta name="twitter:description" content="电脑无疑是当代最牛的发明，但事实上，它并不像我们想象的那么”聪明”，其实我们的电脑只认识一堆0-1数字，之所以看起来很厉害，是因为有很厉害的程序员设计了逻辑严谨的语句使电脑工作。 庆幸的是它还不够智能，(AI的奇点不知何时来临，目前看还需要些时间)不然我们的一大批码农真的就该回家种地了。所以，理解计算机到底是怎么进行工作的，对我们的代码逻辑和理解安全问题绝对是有好处的。不过这个话题太大了，而且鉴于">
+<meta name="twitter:image" content="http://Ryan-hou.github.io/assets/img/blocPic/typeConversion.png">
   
     <link rel="alternative" href="/atom.xml" title="0x08 0x17" type="application/atom+xml">
   
@@ -146,114 +153,284 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            
-  
-  
+            <article id="post-cong-qiang-zhi-lei-xing-zhuan-huan-dai-lai-de-an-quan-wen-ti-kan-ji-chu-xue-xi" class="article article-type-post " itemscope itemprop="blogPost">
+  <div class="article-inner">
     
-    
-      
-      
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2017" class="archive-year">2017</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2017/09/27/sharding-and-ids-at-instagram/" class="archive-article-date">
-  	<time datetime="2017-09-27T05:50:26.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-09-27</time>
-</a>
-        </div>
-    	 
+      <header class="article-header">
+        
   
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2017/09/27/sharding-and-ids-at-instagram/">Sharding &amp; IDs at Instagram</a>
+    <h1 class="article-title" itemprop="name">
+      从强制类型转换到安全和基础
     </h1>
   
 
-        <div class="article-info info-on-right">
-          
+        
+        <a href="/2016/03/10/cong-qiang-zhi-lei-xing-zhuan-huan-dai-lai-de-an-quan-wen-ti-kan-ji-chu-xue-xi/" class="archive-article-date">
+  	<time datetime="2016-03-10T14:16:42.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2016-03-10</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>电脑无疑是当代最牛的发明，但事实上，它并不像我们想象的那么”聪明”，<strong>其实我们的电脑只认识一堆0-1数字</strong>，之所以看起来很厉害，是因为有很厉害的程序员设计了逻辑严谨的语句使电脑工作。</p>
+<p>庆幸的是它还不够智能，(AI的奇点不知何时来临，目前看还需要些时间)不然我们的一大批码农真的就该回家种地了。所以，理解计算机到底是怎么进行工作的，对我们的代码逻辑和理解安全问题绝对是有好处的。不过这个话题太大了，而且鉴于自己本身水平有限，只能就一点展开说一下。</p>
+<a id="more"></a>
+<p>在计算机中，我们的数据一般以补码的形式来表示，正数的补码与原码表示方式一致，负数的补码就是在原码的基础上，符号位不变，其它位按位求反加1得到。比如：(假设计算机字长8位)<code>数字-24  原码为：0 0011000  补码为：0 1101000</code></p>
+<p>对于补码，我们还需要了解补码的表示范围，假设计算机字长为n+1位，对于纯小数，范围为：<code>-1 &lt;= x &lt;= 1 – 2^(-n)</code>；对于整数，补码的范围为：<code>-(2^n) &lt;= x &lt;= (2^n)-1</code>。没错，这也就是我们面试时会遇到的题目，假设int型数据为4个字节，那么 int 表示的数字范围是多少？基础的基础。</p>
+<p>下面先说强制类型转换。简单的说，一句话：<strong>计算机不会改变数字的内容，每一位都不会变，结果不同是由于不同的解释方式产生的</strong>，具体举例并结合整型溢出带来的安全问题多说说：</p>
+<p>先看下面这段代码：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">	<span class="keyword">short</span> x = <span class="number">-4321</span>;</span><br><span class="line">	<span class="keyword">unsigned</span> <span class="keyword">short</span> y = (<span class="keyword">unsigned</span> <span class="keyword">short</span>) x;</span><br><span class="line">	<span class="built_in">printf</span>(“x = %d, y = %u\n”, x, y);</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 输出的结果为：x = -4321, y = 61215</span></span><br></pre></td></tr></table></figure>
+<p>为什么结果看起来差好远呢？强制类型转换怎么实现的呢？这就要记得开始的第一句话：<strong>计算机不会聪明到自己擅自修改你的数据，他只是用了不同的解释方式</strong>。我们把这两个结果写成16进制来看一下：<code>x = 0xef1f , y = 0xef1f</code>(这里建议先写成原码的2进制补码形式，再来转换)，发现什么了没有？没错，<strong>exactly the same numbers</strong>，只是由于y强制转换为了无符号整数，在解释这个补码时，符号位就变成数字位了，很简单对吧？</p>
+<p>再来举个例子，看下面这段代码：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">int main()&#123;</span><br><span class="line">	unsigned short x = 65535;</span><br><span class="line">	short y = (short) x;</span><br><span class="line">	printf(“x = %u, y = %d\n”, x, y);</span><br><span class="line">&#125;</span><br><span class="line">// 输出的结果是：x = 65535, y = -1;</span><br></pre></td></tr></table></figure>
+<p>根据我们的经验，把这个给我们人类看的数字转换成计算机实际”看到”的0-1数字串，并转换成16进制，我们发现：<code>x = 0xffff，y = 0xffff</code>；没错，还是一样的，在输出y时，y在解释为有符号数字时，首位1变为符号位。</p>
+<p>下面我们再来介绍一下<strong>不同字长</strong>之间的整数进行强制类型转换是如何实现，其实，还是一个原理，<strong>数值不变</strong>，看下面这段代码：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">mian</span><span class="params">()</span></span>&#123;</span><br><span class="line">	<span class="keyword">int</span> x = <span class="number">165537</span>; <span class="comment">//int 型整数大小为4字节</span></span><br><span class="line">	<span class="keyword">int</span> u = <span class="number">-34991</span>;</span><br><span class="line">	<span class="keyword">short</span> y = (<span class="keyword">short</span>)x;</span><br><span class="line">	<span class="keyword">short</span> v = (<span class="keyword">short</span>)u;</span><br><span class="line">	<span class="built_in">printf</span>(“x = %d, y = %d \n”, x, y);</span><br><span class="line">	<span class="built_in">printf</span>(“u = %d, v = %d \n”, u, v);</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 输出的结果为：</span></span><br><span class="line"><span class="comment">// x = 165537, y = -31071;u = -34991, v = 30545;</span></span><br></pre></td></tr></table></figure>
+<p>看起来还是很混乱，不过我们写成16进制再来看一下：<code>x = 0x000286a1, y = 0x86a1;</code> <code>u = 0xffff7751, v = 0x7751;</code></p>
+<p>看到这个结果就很清晰了，当大字长变量向小字长强制转换时，系统会<strong>把多余的高位字长部分直接截断，低位直接赋值</strong>，看，还是保存原来的数字吧。(这里多说一句，当我们把一个比较大的数字转为二进制时怎么才能更快呢？没有别的办法，<strong>把常用2的次幂全都记住</strong>，如果你连社会主义核心价值观这种口号都记得住，那么这个要求不过分。这不是应试，而且这很有用，比如我之前在一个大牛的微博曾看到，大牛在和朋友吃饭时，朋友提到服务器传来的数据好大，有<strong>1048576</strong>k(具体数值可能有偏差，但是意思是这样)，大牛说道，为什么这个数据这么<strong>整</strong>？朋友不解，大牛说道，这不就是2的20次幂吗？朋友听了也觉得不对了，回去一看，发现传过来的数据被别人抓包了！怎么样？要不要记？)</p>
+<p>最后一种情况就是，短字长变量转换为长字长变量时，位置相等的情况下，我们还需要补充高位的符号位(无符号数也就是全是正数了，高位补0即可)</p>
+<p>到这里，我们应该对强制类型转换有一个比较清晰的认识了，下面来说一下强制类型转换带来的整型溢出以及产生的安全隐患。在C语言中，无符号整数溢出是有定义的：溢出后的数会以<code>2^(8*sizeof(type))</code>作模运算；<strong>但是对于有符号数，C语言是没有定义的，也就是说：结果是什么都有可能</strong>，对大多数编译器来说，算的结果是什么就是什么。</p>
+<p>先举个简单例子：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">short</span> len = <span class="number">0</span>;</span><br><span class="line">...</span><br><span class="line"><span class="keyword">while</span> (len &lt; MAX_LEN) &#123;</span><br><span class="line">	...</span><br><span class="line">	len += buffer;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这个一段常见的代码，但是我们不妨考虑一下，假入MAX_LEN是一个比较大的整数，我们假设这个数比较接近short能表示的最大整数 32767。我们可以注意到，len是一个有符号整数，在不断进行len + buffer时会导致溢出，使len的值变为负数，最终导致<strong>死循环</strong>。</p>
+<p>看下一个例子：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="built_in">strlen</span>(s) – <span class="number">1</span>; i &gt;= <span class="number">0</span>; i --) &#123;</span><br><span class="line">	...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这是我们经常用来倒序遍历数组的一行代码，函数strlen的返回值是size_t类型的，也就是unsigned int 类型，那么问题就出现了，假如strlen(s)为0，那么strlen(s)-1 得到的值是unsigned int(-1),根据我们之前介绍的强制类型转换，我们会得到一个最大的整数0xffffffff，那么这个程序代码会出现越界访问，带来安全问题。看到这里，有没有冒冷汗的感觉，下面再举一个很常见的代码段，二分搜索算法：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">binary_search</span><span class="params">(<span class="keyword">int</span> a[], <span class="keyword">int</span> len, <span class="keyword">int</span> key)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> low = <span class="number">0</span>; </span><br><span class="line">    <span class="keyword">int</span> high = len - <span class="number">1</span>; </span><br><span class="line"> </span><br><span class="line">    <span class="keyword">while</span> ( low&lt;=high ) &#123;</span><br><span class="line">        <span class="keyword">int</span> mid = (low + high)/<span class="number">2</span>;</span><br><span class="line">        <span class="keyword">if</span> (a[mid] == key) &#123;</span><br><span class="line">            <span class="keyword">return</span> mid;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span> (key &lt; a[mid]) &#123;</span><br><span class="line">            high = mid - <span class="number">1</span>;</span><br><span class="line">        &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">            low = mid + <span class="number">1</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这段代码，由于我们知道len， low，high肯定都是正数，不妨定义成size_t类型，很有道理，不过这时也要小心了，假如len为0，那么 high = len -1就会使high的值过大（参考上一个例子）。即使不修改，问题也还是有，low + high 就有可能产生溢出，正确的写法应该是：<code>int mid = low + (high - low)/2</code>，想到自己写的代码</p>
+<p><img src="http://Ryan-hou.github.io/assets/img/blocPic/typeConversion.png" alt=""></p>
+<p>从上述几个简单的例子中我们可以知道：<strong>对于各种数据类型的使用范围，数值范围要保持头脑清醒，同时在做强制类型转换时要格外小心！学会检查整型溢出和规范编码</strong>。写这些也是说明基础的重要，同时代码规范和安全性也要考虑到。试想，如果黑客通过反编译得到我们的源码，这些问题肯定逃不过他们的嗅觉。鉴于我们写了那么多不安全可靠的代码，所以真的就像黑客们说的<strong>不是不黑你，而是你没有被黑的价值</strong>。关于整型溢出的安全问题还有很多深入的例子和文章，推荐大家感兴趣的话可以找到并学习。</p>
+
+      
+
+      
+        <div class="page-reward">
+          <a href="javascript:;" class="page-reward-btn tooltip-top">
+            <div class="tooltip tooltip-east">
+            <span class="tooltip-item">
+              赏
+            </span>
+            <span class="tooltip-content">
+              <span class="tooltip-text">
+                <span class="tooltip-inner">
+                  <p class="reward-p"><i class="icon icon-quo-left"></i>谢谢你支持我创作！<i class="icon icon-quo-right"></i></p>
+                  <div class="reward-box">
+                    
+                    <div class="reward-box-item">
+                      <img class="reward-img" src="/assets/img/alipay.png">
+                      <span class="reward-type">支付宝</span>
+                    </div>
+                    
+                    
+                  </div>
+                </span>
+              </span>
+            </span>
+          </div>
+          </a>
+        </div>
+      
+    </div>
+	<!-- 版权内容 -->
+	
+		<style type="text/css">
+	.article-footer-copyright{
+   border-top:1px solid #d3d3d3;
+   margin: 20px auto;     
+   padding-left:2em;
+   width: 80%;
+}
+.article-footer-copyright p{
+  font-size:1.2em;
+}
+.article-footer-copyright span,.copyright abbr{
+  color:#3d3d3d;
+}
+div.copyright{
+    
+       font-weight:bold;
+       color:#FCB297;
+       padding:0.3em 0.5em;
+       margin:0 0 1em 0;
+       border-bottom:none;
+       background-color:#AAD2F0;
+       -moz-border-radius: 1em;
+       -webkit-border-radius:1em;
+       border-radius: 1em;
+  -moz-box-shadow:inset 0px 1px 0px 0px #eeeeee;
+  -webkit-box-shadow:inset 0px 1px 0px 0px #eeeeee;
+  box-shadow:inset 0px 1px 0px 0px #eeeeee;
+  background:-webkit-gradient( linear, left top, left bottom, color-stop(0.05, #aad2f0), color-stop(1, #8bc1ed) );
+  background:-moz-linear-gradient( center top, #aad2f0 5%, #8bc1ed 100% );
+  /* filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#aad2f0', endColorstr='#8bc1ed'); */
+  background-color:#aad2f0;
+  border:1px solid #dcdcdc;
+  text-shadow:1px 1px 0px #eeeeee;
+  
+}
+div.article-footer-copyright{
+    margin:0em 0em 0em 5em;
+	margin-top:2em;
+    padding:0.5em 1em;
+    border-left:3px solid #ff1700;
+    background-color:#f9f9f9;
+}
+.article-footer-copyright p{
+    line-height: 160%;
+    margin: 10px;
+    font-size: 100%;
+}
+</style>
+
+<div class="article-footer-copyright">
+	<p>本文标题: <a href="/2016/03/10/cong-qiang-zhi-lei-xing-zhuan-huan-dai-lai-de-an-quan-wen-ti-kan-ji-chu-xue-xi/" target="_blank" title="从强制类型转换到安全和基础">从强制类型转换到安全和基础</a></p>
+	<p>本文链接: <a href="/2016/03/10/cong-qiang-zhi-lei-xing-zhuan-huan-dai-lai-de-an-quan-wen-ti-kan-ji-chu-xue-xi/" target="_blank" title="从强制类型转换到安全和基础">https://ryan-hou.github.io/2016/03/10/cong-qiang-zhi-lei-xing-zhuan-huan-dai-lai-de-an-quan-wen-ti-kan-ji-chu-xue-xi/</a></p>
+	<p>转载请注明本文链接~~</p>
+</div>
+
+	
+    <div class="article-info article-info-index">
+      
+      
 	<div class="article-tag tagcloud">
 		<i class="icon-price-tags icon"></i>
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">设计</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">翻译</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">分布式</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">安全</a>
         		</li>
       		
 		</ul>
 	</div>
 
-          
+      
 
+      
+
+      
+        
+<div class="share-btn share-icons tooltip-left">
+  <div class="tooltip tooltip-east">
+    <span class="tooltip-item">
+      <a href="javascript:;" class="share-sns share-outer">
+        <i class="icon icon-share"></i>
+      </a>
+    </span>
+    <span class="tooltip-content">
+      <div class="share-wrap">
+        <div class="share-icons">
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="icon icon-weibo"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="icon icon-weixin"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="icon icon-qq"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="icon icon-douban"></i>
+          </a>
+          <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a>
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="icon icon-facebook"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="icon icon-twitter"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="icon icon-google"></i>
+          </a>
         </div>
-        <div class="clearfix"></div>
-    </header>
+      </div>
+    </span>
+  </div>
+</div>
+
+<div class="page-modal wx-share js-wx-box">
+    <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+      <img src="//pan.baidu.com/share/qrcode?url=https://ryan-hou.github.io/2016/03/10/cong-qiang-zhi-lei-xing-zhuan-huan-dai-lai-de-an-quan-wen-ti-kan-ji-chu-xue-xi/" alt="微信分享二维码">
+    </div>
+</div>
+
+<div class="mask js-mask"></div>
+      
+      <div class="clearfix"></div>
+    </div>
   </div>
 </article>
+
   
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2017/09/24/debunking-the-myths-of-rpc-and-rest/" class="archive-article-date">
-  	<time datetime="2017-09-24T14:40:00.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-09-24</time>
-</a>
+<nav id="article-nav">
+  
+    <a href="/2016/03/13/ha-xi-he-yu-yan-de-keng/" id="article-nav-newer" class="article-nav-link-wrap">
+      <i class="icon-circle-left"></i>
+      <div class="article-nav-title">
+        
+          从哈希到安全和基础
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2016/01/26/tan-tan-java-i-slash-oliu-xia/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">谈谈Java I/O流(下)</div>
+      <i class="icon-circle-right"></i>
+    </a>
+  
+</nav>
+
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
         </div>
-    	 
+        
+        
+    </div>
+</aside>
+
+
+
   
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2017/09/24/debunking-the-myths-of-rpc-and-rest/">Debunking the Myths of RPC &amp; REST</a>
-    </h1>
+  
   
 
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">设计</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">翻译</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">分布式</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-  
-    </div></section>
   
 
-    
+  
+
+  
+  <div id="gitment-ctn"></div> 
+<link rel="stylesheet" href="https://billts.site/extra_css/gitment.css">
+<script src="https://billts.site/js/gitment.js"></script>
+<script>
+var gitment = new Gitment({
+  id: '从强制类型转换到安全和基础',
+  owner: 'Ryan-hou',
+  repo: 'Ryan-hou.github.io',
+  oauth: {
+    client_id: '10b94f286862e039846e',
+    client_secret: '51c6b587d0a58d70f6da2e9c5641e66a431751d9',
+  },
+})
+gitment.render('gitment-ctn')
+</script>
+
+  
+
 
 
           </div>
@@ -276,9 +453,9 @@
 	var yiliaConfig = {
 		mathjax: false,
 		isHome: false,
-		isPost: false,
+		isPost: true,
 		isArchive: false,
-		isTag: true,
+		isTag: false,
 		isCategory: false,
 		open_in_new: true,
 		toc_hide_index: true,
