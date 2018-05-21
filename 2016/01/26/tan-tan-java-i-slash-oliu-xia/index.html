@@ -6,15 +6,22 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="https://ryan-hou.github.io">
-  <title>Archives | 0x08 0x17</title>
+  <title>谈谈Java I/O流(下) | 0x08 0x17</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta property="og:type" content="website">
-<meta property="og:title" content="0x08 0x17">
-<meta property="og:url" content="https://ryan-hou.github.io/archives/page/3/index.html">
+  <meta name="description" content="在介绍具体的 I/O 类之前，有必要先了解一下装饰者模式 ，因为java.io包内的类实在是有点多，如果你了解装饰者模式的话，再看各种 I/O 流类就会清晰多了 什么是装饰者模式 装饰者模式动态的将“责任”(也就是增强的功能)附加到对象上，若要实现动态扩展功能，装饰者提供了比继承更有弹性的替代方案  总结几个要点：">
+<meta name="keywords" content="Java,设计">
+<meta property="og:type" content="article">
+<meta property="og:title" content="谈谈Java I&#x2F;O流(下)">
+<meta property="og:url" content="https://ryan-hou.github.io/2016/01/26/tan-tan-java-i-slash-oliu-xia/index.html">
 <meta property="og:site_name" content="0x08 0x17">
+<meta property="og:description" content="在介绍具体的 I/O 类之前，有必要先了解一下装饰者模式 ，因为java.io包内的类实在是有点多，如果你了解装饰者模式的话，再看各种 I/O 流类就会清晰多了 什么是装饰者模式 装饰者模式动态的将“责任”(也就是增强的功能)附加到对象上，若要实现动态扩展功能，装饰者提供了比继承更有弹性的替代方案  总结几个要点：">
 <meta property="og:locale" content="default">
+<meta property="og:image" content="http://Ryan-hou.github.io/assets/img/blogPic/IO_1.png">
+<meta property="og:updated_time" content="2018-05-21T02:50:54.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="0x08 0x17">
+<meta name="twitter:title" content="谈谈Java I&#x2F;O流(下)">
+<meta name="twitter:description" content="在介绍具体的 I/O 类之前，有必要先了解一下装饰者模式 ，因为java.io包内的类实在是有点多，如果你了解装饰者模式的话，再看各种 I/O 流类就会清晰多了 什么是装饰者模式 装饰者模式动态的将“责任”(也就是增强的功能)附加到对象上，若要实现动态扩展功能，装饰者提供了比继承更有弹性的替代方案  总结几个要点：">
+<meta name="twitter:image" content="http://Ryan-hou.github.io/assets/img/blogPic/IO_1.png">
   
     <link rel="alternative" href="/atom.xml" title="0x08 0x17" type="application/atom+xml">
   
@@ -146,120 +153,190 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            
-  
-  
+            <article id="post-tan-tan-java-i-slash-oliu-xia" class="article article-type-post " itemscope itemprop="blogPost">
+  <div class="article-inner">
     
-    
-      
-      
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2016" class="archive-year">2016</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2016/06/16/die-dai-qi-fail-fast/" class="archive-article-date">
-  	<time datetime="2016-06-16T07:10:24.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2016-06-16</time>
-</a>
-        </div>
-    	 
+      <header class="article-header">
+        
   
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2016/06/16/die-dai-qi-fail-fast/">迭代器的fail-fast</a>
+    <h1 class="article-title" itemprop="name">
+      谈谈Java I/O流(下)
     </h1>
   
 
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">Java</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">设计</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2016/06/15/die-dai-qi-mo-shi-yu-for-eachxun-huan/" class="archive-article-date">
-  	<time datetime="2016-06-15T07:49:35.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2016-06-15</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2016/06/15/die-dai-qi-mo-shi-yu-for-eachxun-huan/">迭代器模式</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">Java</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">设计</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2016/01/26/tan-tan-java-i-slash-oliu-xia/" class="archive-article-date">
+        
+        <a href="/2016/01/26/tan-tan-java-i-slash-oliu-xia/" class="archive-article-date">
   	<time datetime="2016-01-26T06:02:16.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2016-01-26</time>
 </a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2016/01/26/tan-tan-java-i-slash-oliu-xia/">谈谈Java I/O流(下)</a>
-    </h1>
-  
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>在介绍具体的 I/O 类之前，有必要先了解一下<strong>装饰者模式</strong> ，因为<code>java.io</code>包内的类实在是有点多，如果你了解装饰者模式的话，再看各种 I/O 流类就会清晰多了</p>
+<h2 id="什么是装饰者模式"><a href="#什么是装饰者模式" class="headerlink" title="什么是装饰者模式"></a>什么是装饰者模式</h2><blockquote>
+<p>装饰者模式动态的将“责任”(也就是增强的功能)附加到对象上，若要实现动态扩展功能，装饰者提供了比继承更有弹性的替代方案</p>
+</blockquote>
+<p>总结几个要点：</p>
+<a id="more"></a>
+<ul>
+<li>装饰者和被装饰者必须是一样的类型，也就是有共同的超类(通常优先使用接口或者抽象类)；在这里我们使用继承来达到<strong>类型匹配</strong>的功能，而不是通过继承获得<strong>行为</strong></li>
+<li>继承属于扩展类的一种形式，但是不利于弹性设计；在装饰者模式中，我们通过<strong>组合和委托，可以在运行时动态的添加新行为。组合优于实现继承</strong></li>
+<li><strong>符合开闭原则</strong>：类应该对扩展开放,对修改关闭 </li>
+<li>代码实现的核心操作是：我们在装饰者类中引入一个装饰者和被装饰者共同的超类实例变量，用来保存被装饰者类的实例；然后通过装饰者的构造器把被装饰者记录到该超类实例变量，通过 <code>new</code> 来调用构造器实现装饰者模式，在 Java I/O 流类，你是不是对一串串的 <code>new</code> 记忆犹新呢？</li>
+<li>装饰者模式的优点在于提供了功能上的弹性扩展，但是使用不当会导致出现很多小对象，让程序变的复杂</li>
+</ul>
+<p>举例说明：</p>
+<p>Java I/O 类中的装饰者模式的部分类关系图如下：</p>
+<p><img src="http://Ryan-hou.github.io/assets/img/blogPic/IO_1.png" alt=""></p>
+<p>在这个图中，我们最熟悉的<code>InpusStream</code>就是抽象组件，也就是上面说的装饰者和被装饰者共同的超类；<code>FilterInputStream</code>是一个抽象的装饰者类；<code>FilterInputStream</code>下面的<code>BufferedInputStream</code>,<code>DataInputStream</code>等类是具体的装饰者类；<code>FileInputStream</code>，<code>StringBufferInputStream</code>等类是可以被装饰者类包装起来的具体的被装饰类。有了这样一个概念，再看这行代码<code>BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(&quot;test.txt&quot;)));</code>是不是亲切多了？</p>
+<p>铺垫到这里，再开始 I/O 类的说明，其实就简单多了，两个任务：<strong>认识常见的各种 I/O 类；熟悉常用的 API；三个字：读文档</strong></p>
+<h2 id="Java-字节流"><a href="#Java-字节流" class="headerlink" title="Java 字节流"></a>Java 字节流</h2><p>抽象基类：<code>InputStream/OutputStream</code></p>
+<p>InputStream 抽象了应用程序读取数据的方式，OutputStream 抽象了应用程序写出数据的方式</p>
+<p>一些常用的具体类(<strong>后缀名均为 InputStream/OutputStream</strong>)：</p>
+<ul>
+<li><code>FileInputStream/FileOutputStream</code>：具体实现了在文件上读取数据</li>
+<li><code>DataInputStream/DataOutputStream</code>：对“流”功能的扩展，可以可以更加方便的读取 <code>int</code>，<code>long</code>，<code>double</code> 等类型的数据，该类就通过 <code>FilterInputStream/FilterOutputStream</code>实现了装饰者模式，多说一句，像读取 int 等基本数据类型数据这种包装也不神秘，一个一个字节的读取，然后通过移位符进行组装就可以了</li>
+<li><code>BufferedInputStream/BufferedOutputStream</code>：也是装饰者模式的实现，为 I/O 流增加了缓冲区的操作，提高了 I/O 操作的性能； 其他类不具体展开，参见官方文档</li>
+</ul>
+<h2 id="Java-字符流"><a href="#Java-字符流" class="headerlink" title="Java 字符流"></a>Java 字符流</h2><p>抽象基类：<code>Reader/Writer</code></p>
+<p>一些常用的具体类(<strong>后缀名均为 Reader/Writer</strong>)：</p>
+<ul>
+<li><code>InputStreamReader/OutputStreamWriter</code>：完成字节流到字符流的转换，可以设置编码方式</li>
+<li><code>FileReader/FileWriter</code>：继承自上面的两个类，创建更方便，但是不能指定编码方式</li>
+<li><code>BufferedReader/BufferedWriter</code>：一次读取一行字符，不识别换行符；提供 newLine() 方法来输出换行</li>
+</ul>
+<p>最后，还是通过一个例子来看一下具体的 I/O 流操作，代码实现功能为：把 a 地址处的文本文件复制到 b 地址</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">BufferedReader br = <span class="keyword">new</span> BufferedReader(</span><br><span class="line">					<span class="keyword">new</span> InputStreamReader(</span><br><span class="line">						<span class="keyword">new</span> FileInputStream(<span class="string">"a"</span>)));</span><br><span class="line"></span><br><span class="line">BufferWriter bw = <span class="keyword">new</span> BufferWriter(</span><br><span class="line">					<span class="keyword">new</span> OutputStreamWriter(</span><br><span class="line">						<span class="keyword">new</span> FileOutputStream(<span class="string">"b"</span>)));</span><br><span class="line">String line;</span><br><span class="line"><span class="keyword">while</span>((line = br.readLine()) != <span class="keyword">null</span>) &#123;</span><br><span class="line">	bw.write(line);</span><br><span class="line">	bw.newLine();</span><br><span class="line">	bw.flush();</span><br><span class="line">&#125;</span><br><span class="line">br.close();</span><br><span class="line">bw.close();</span><br></pre></td></tr></table></figure>
+<h2 id="序列化与反序列化"><a href="#序列化与反序列化" class="headerlink" title="序列化与反序列化"></a>序列化与反序列化</h2><p>这是Java I/O 流中一个重要的知识点，可以展开为一篇文章，鉴于自己实际使用有限，在这里尽可能把一些重要的点列出来</p>
+<p>内存中的对象在变为“垃圾”后，会被垃圾回收机制清除，因此当我们需要保存对象的信息，在需要的时候，再读取这个对象时，我们需要使用到序列化与反序列化的知识</p>
+<h3 id="定义"><a href="#定义" class="headerlink" title="定义"></a>定义</h3><p>对象的序列化就是将对象转为字节序列(可用于存储或者网络传输等)；反序列化反之</p>
+<h3 id="基本概念"><a href="#基本概念" class="headerlink" title="基本概念"></a>基本概念</h3><ul>
+<li>一个对象想实现序列化，该对象所在的类必须实现 <code>Serializble</code> 标记接口(该接口没有任何方法，只是一个标准)</li>
+<li>基本类： 序列化流<code>ObjectOutputStream</code>和反序列化流<code>ObjectInputStream</code></li>
+<li>一个类实现了序列化接口，其子类均可以序列化(序列化也不能改变先有父类才有子类的顺序，因此序列化时会调用父类的构造器)</li>
+<li>类的静态变量不会参与序列化(序列化是针对的具体对象，而静态变量属于类的属性)</li>
+</ul>
+<h3 id="重要应用"><a href="#重要应用" class="headerlink" title="重要应用"></a>重要应用</h3><ul>
+<li><code>transient</code> 关键字和防止序列化的另一种方式</li>
+</ul>
+<p>transient 关键字修饰的变量不会参与 JVM 默认的序列化和反序列化的操作(<strong>但是我们自己可以完成这个元素的序列化</strong>)</p>
+<p>典型应用：在 ArrayList 中，把元素数组声明为 transient 变量，在序列化时只把数组的有效元素进行序列化，可以减少工作量，在网络传输时也可以减少带宽的占用，部分源码如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="keyword">transient</span> Object[] elementData;</span><br><span class="line"><span class="keyword">private</span> <span class="keyword">int</span> size;</span><br><span class="line"><span class="comment">// ...</span></span><br><span class="line">s.defaultWriteObject();</span><br><span class="line"><span class="comment">//自定义系列化</span></span><br><span class="line">s.writeInt(elementData.length);</span><br><span class="line"><span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; size; i++)</span><br><span class="line">	s.writeObject(elementData[i]);</span><br><span class="line"><span class="comment">// ...</span></span><br></pre></td></tr></table></figure>
+<p>对子类对象进行反序列化时，如果其父类没有实现序列化接口，那么父类默认的无参构造器会被调用，所以反序列化时，为了构造父对象，只能调用父类的无参构造函数作为默认的父对象</p>
+<p>这是一个很有用的性质，为我们提供了避免字段被序列化的另一种方式，<strong>我们可以将不需要被序列化的字段抽取出来放到父类中，子类实现 Serializable 接口，父类不实现，根据父类序列化规则，父类的字段数据将不被序列化</strong>；而且这样的好处是，当有另一个子类时，该子类不需要重复定义 transient 的变量，简化了代码</p>
+<ul>
+<li>对一些敏感字段加密</li>
+</ul>
+<p>在序列化过程中，虚拟机会试图调用对象类里的<code>writeObject</code> 和 <code>readObject</code> 方法，进行用户自定义的序列化和反序列化，用户自定义的 <code>writeObject</code> 和 <code>readObject</code>方法可以允许用户控制序列化的过程，比如可以在序列化的过程中动态改变序列化的数值。基于这个原理，可以在实际应用中得到使用，用于敏感字段的加密工作</p>
+<ul>
+<li>序列化 ID 的使用</li>
+</ul>
+<p>虚拟机是否允许反序列化，不仅取决于类路径和功能代码是否一致，一个非常重要的一点是两个类的序列化 ID 是否一致（也就是 <code>private static final long serialVersionUID = 1L</code>）</p>
+<p>序列化 ID 在 Eclipse 下提供了两种生成策略，一个是固定的 1L，一个是随机生成一个不重复的 long 类型数据（实际上是使用 JDK 工具生成），建议在没有特殊需求，就是用默认的 1L 就可以，这样可以确保代码一致时反序列化成功。那么随机生成的序列化 ID 有什么作用呢，有些时候，<strong>通过改变序列化 ID 可以用来限制某些用户的使用</strong></p>
+<p>典型应用：可以通过服务器改变序列化 ID 的方式，使客户端的反序列化操作失败，从而强制客户端更新服务器的最新程序</p>
+<ul>
+<li>序列化的存储规则问题</li>
+</ul>
+<p>Java 序列化机制为了节省磁盘空间，具有特定的存储规则，<strong>当写入文件的为同一对象时，并不会再将对象的内容进行存储，而只是再次存储一份引用，再次序列化后增加的字节就是新增引用和一些控制信息的空间</strong>。反序列化时，恢复引用关系，使得两次序列化的指向唯一的对象。该存储规则极大的节省了存储空间</p>
+<p>凡事有利必有弊，这种存储的方式会导致写入对象数据时出问题，原因就是第一次写入对象以后，第二次再试图写的时候，虚拟机根据引用关系知道已经有一个相同对象已经写入文件，因此<strong>只保存第二次写的引用</strong>，所以读取时，都是第一次保存的对象，在多次使用 writeObject 方法时需要特别注意这个问题</p>
+<hr>
+<h3 id="参考文章"><a href="#参考文章" class="headerlink" title="参考文章"></a>参考文章</h3><ul>
+<li><a href="http://www.cnblogs.com/archimedes/p/java-study-note16.html" target="_blank" rel="noopener">java学习笔记16-I/O流和文件</a></li>
+<li><a href="http://www.cnblogs.com/rollenholt/articles/2180119.html" target="_blank" rel="noopener">Java序列化的高级认识</a></li>
+</ul>
 
-        <div class="article-info info-on-right">
-          
+      
+
+      
+        <div class="page-reward">
+          <a href="javascript:;" class="page-reward-btn tooltip-top">
+            <div class="tooltip tooltip-east">
+            <span class="tooltip-item">
+              赏
+            </span>
+            <span class="tooltip-content">
+              <span class="tooltip-text">
+                <span class="tooltip-inner">
+                  <p class="reward-p"><i class="icon icon-quo-left"></i>谢谢你支持我创作！<i class="icon icon-quo-right"></i></p>
+                  <div class="reward-box">
+                    
+                    <div class="reward-box-item">
+                      <img class="reward-img" src="/assets/img/alipay.png">
+                      <span class="reward-type">支付宝</span>
+                    </div>
+                    
+                    
+                  </div>
+                </span>
+              </span>
+            </span>
+          </div>
+          </a>
+        </div>
+      
+    </div>
+	<!-- 版权内容 -->
+	
+		<style type="text/css">
+	.article-footer-copyright{
+   border-top:1px solid #d3d3d3;
+   margin: 20px auto;     
+   padding-left:2em;
+   width: 80%;
+}
+.article-footer-copyright p{
+  font-size:1.2em;
+}
+.article-footer-copyright span,.copyright abbr{
+  color:#3d3d3d;
+}
+div.copyright{
+    
+       font-weight:bold;
+       color:#FCB297;
+       padding:0.3em 0.5em;
+       margin:0 0 1em 0;
+       border-bottom:none;
+       background-color:#AAD2F0;
+       -moz-border-radius: 1em;
+       -webkit-border-radius:1em;
+       border-radius: 1em;
+  -moz-box-shadow:inset 0px 1px 0px 0px #eeeeee;
+  -webkit-box-shadow:inset 0px 1px 0px 0px #eeeeee;
+  box-shadow:inset 0px 1px 0px 0px #eeeeee;
+  background:-webkit-gradient( linear, left top, left bottom, color-stop(0.05, #aad2f0), color-stop(1, #8bc1ed) );
+  background:-moz-linear-gradient( center top, #aad2f0 5%, #8bc1ed 100% );
+  /* filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#aad2f0', endColorstr='#8bc1ed'); */
+  background-color:#aad2f0;
+  border:1px solid #dcdcdc;
+  text-shadow:1px 1px 0px #eeeeee;
+  
+}
+div.article-footer-copyright{
+    margin:0em 0em 0em 5em;
+	margin-top:2em;
+    padding:0.5em 1em;
+    border-left:3px solid #ff1700;
+    background-color:#f9f9f9;
+}
+.article-footer-copyright p{
+    line-height: 160%;
+    margin: 10px;
+    font-size: 100%;
+}
+</style>
+
+<div class="article-footer-copyright">
+	<p>本文标题: <a href="/2016/01/26/tan-tan-java-i-slash-oliu-xia/" target="_blank" title="谈谈Java I/O流(下)">谈谈Java I/O流(下)</a></p>
+	<p>本文链接: <a href="/2016/01/26/tan-tan-java-i-slash-oliu-xia/" target="_blank" title="谈谈Java I/O流(下)">https://ryan-hou.github.io/2016/01/26/tan-tan-java-i-slash-oliu-xia/</a></p>
+	<p>转载请注明本文链接~~</p>
+</div>
+
+	
+    <div class="article-info article-info-index">
+      
+      
 	<div class="article-tag tagcloud">
 		<i class="icon-price-tags icon"></i>
 		<ul class="article-tag-list">
@@ -275,99 +352,133 @@
 		</ul>
 	</div>
 
-          
+      
 
+      
+
+      
+        
+<div class="share-btn share-icons tooltip-left">
+  <div class="tooltip tooltip-east">
+    <span class="tooltip-item">
+      <a href="javascript:;" class="share-sns share-outer">
+        <i class="icon icon-share"></i>
+      </a>
+    </span>
+    <span class="tooltip-content">
+      <div class="share-wrap">
+        <div class="share-icons">
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="icon icon-weibo"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="icon icon-weixin"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="icon icon-qq"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="icon icon-douban"></i>
+          </a>
+          <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a>
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="icon icon-facebook"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="icon icon-twitter"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="icon icon-google"></i>
+          </a>
         </div>
-        <div class="clearfix"></div>
-    </header>
+      </div>
+    </span>
+  </div>
+</div>
+
+<div class="page-modal wx-share js-wx-box">
+    <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+      <img src="//pan.baidu.com/share/qrcode?url=https://ryan-hou.github.io/2016/01/26/tan-tan-java-i-slash-oliu-xia/" alt="微信分享二维码">
+    </div>
+</div>
+
+<div class="mask js-mask"></div>
+      
+      <div class="clearfix"></div>
+    </div>
   </div>
 </article>
+
   
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2016/01/25/tan-tan-java-i-slash-oliu-shang/" class="archive-article-date">
-  	<time datetime="2016-01-25T04:48:32.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2016-01-25</time>
-</a>
+<nav id="article-nav">
+  
+    <a href="/2016/06/15/die-dai-qi-mo-shi-yu-for-eachxun-huan/" id="article-nav-newer" class="article-nav-link-wrap">
+      <i class="icon-circle-left"></i>
+      <div class="article-nav-title">
+        
+          迭代器模式
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2016/01/25/tan-tan-java-i-slash-oliu-shang/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">谈谈Java I/O流(上)</div>
+      <i class="icon-circle-right"></i>
+    </a>
+  
+</nav>
+
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
         </div>
-    	 
+        
+        
+    </div>
+</aside>
+
+
+
   
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2016/01/25/tan-tan-java-i-slash-oliu-shang/">谈谈Java I/O流(上)</a>
-    </h1>
+  
   
 
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">Java</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2016/01/21/jie-xi-mapzhi-hashmap/" class="archive-article-date">
-  	<time datetime="2016-01-20T16:16:13.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2016-01-21</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2016/01/21/jie-xi-mapzhi-hashmap/">解析Map之HashMap</a>
-    </h1>
   
 
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">Java</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-  
-    </div></section>
   
 
-    
-    <nav id="page-nav">
-      <a class="extend prev" rel="prev" href="/archives/page/2/">&laquo; Prev</a><a class="page-number" href="/archives/">1</a><a class="page-number" href="/archives/page/2/">2</a><span class="page-number current">3</span>
-    </nav>
   
+  <div id="gitment-ctn"></div> 
+<link rel="stylesheet" href="https://billts.site/extra_css/gitment.css">
+<script src="https://billts.site/js/gitment.js"></script>
+<script>
+var gitment = new Gitment({
+  id: '谈谈Java I/O流(下)',
+  owner: 'Ryan-hou',
+  repo: 'Ryan-hou.github.io',
+  oauth: {
+    client_id: '10b94f286862e039846e',
+    client_secret: '51c6b587d0a58d70f6da2e9c5641e66a431751d9',
+  },
+})
+gitment.render('gitment-ctn')
+</script>
+
+  
+
 
 
           </div>
@@ -390,8 +501,8 @@
 	var yiliaConfig = {
 		mathjax: false,
 		isHome: false,
-		isPost: false,
-		isArchive: true,
+		isPost: true,
+		isArchive: false,
 		isTag: false,
 		isCategory: false,
 		open_in_new: true,
