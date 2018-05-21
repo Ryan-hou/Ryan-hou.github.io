@@ -324,6 +324,92 @@
 
 
   
+    <article id="post-bi-bao-yu-javanei-bu-lei" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/04/30/bi-bao-yu-javanei-bu-lei/">闭包与Java内部类</a>
+    </h1>
+  
+
+        
+        <a href="/2017/04/30/bi-bao-yu-javanei-bu-lei/" class="archive-article-date">
+  	<time datetime="2017-04-30T15:16:52.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-04-30</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="什么是闭包"><a href="#什么是闭包" class="headerlink" title="什么是闭包"></a>什么是闭包</h2><p>简单来说一句话：<strong>带上下文的函数</strong>，下面具体解释一下</p>
+<p>声明：接下来的内容来自对 StackOverflow 回答的翻译，原答案写的非常好！链接在此：<a href="http://stackoverflow.com/questions/36636/what-is-a-closure" target="_blank" rel="noopener">What is a ‘Closure’?</a></p>
+<p>要想理解好闭包，首先要清楚 <code>Scope</code>，当我们声明一个局部变量时，这个变量会有一个 Scope，通常局部变量仅在声明它的 block 或 function 中有效，比如下面 js 代码：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span></span><br><span class="line"><span class="function">	<span class="title">var</span> <span class="title">a</span> = 1;</span></span><br><span class="line"><span class="function">	<span class="title">console</span>.<span class="title">log</span>(<span class="params">a</span>); // <span class="title">works</span></span></span><br><span class="line"><span class="function">&#125;</span></span><br><span class="line"><span class="function"><span class="title">console</span>.<span class="title">log</span>(<span class="params">a</span>); //<span class="title">fails</span></span></span><br></pre></td></tr></table></figure>
+        
+          <a class="article-more-a" href="/2017/04/30/bi-bao-yu-javanei-bu-lei/#more">more >></a>
+        
+      
+
+      
+    </div>
+	<!-- 版权内容 -->
+	
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">Java</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">设计</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2017/04/30/bi-bao-yu-javanei-bu-lei/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+
+  
     <article id="post-lombok-overview" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -753,6 +839,91 @@
 
 
   
+    <article id="post-hui-diao-ji-zai-javazhong-de-shi-yong" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/02/10/hui-diao-ji-zai-javazhong-de-shi-yong/">回调及在Java中的使用</a>
+    </h1>
+  
+
+        
+        <a href="/2017/02/10/hui-diao-ji-zai-javazhong-de-shi-yong/" class="archive-article-date">
+  	<time datetime="2017-02-10T15:39:14.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-02-10</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="回调是什么"><a href="#回调是什么" class="headerlink" title="回调是什么"></a>回调是什么</h2><p>回调可以通过类比电话系统来理解：一个方法调用可以类比为给某人打电话，然后问他一个问题，得到答案后挂掉电话；那么回调就可以类比为，打电话询问问题后，把你的名字和电话告诉他，这样他就可以在知道答案后再打电话回答你</p>
+<h2 id="回调的过程"><a href="#回调的过程" class="headerlink" title="回调的过程"></a>回调的过程</h2><p>通过上面的例子我们不难得出，我们使用回调一般有这么几个步骤：<code>1)定义回调接口/方法；2)注册回调(发起回调方注册)；3)当事件发生时，调用回调方法(先提供回调的实现)；</code></p>
+<p>简单来说就是把写死在一起的代码给拆开来，把让其中一部分保持原有的流程，并在流程中“挖出一些空”，让另一部分代码作为参数传进来，在流程中合适的地方<strong>被调用</strong>。像Java 中的模版方法模式，观察者模式，策略模式等都使用了回调；使用回调的优点也很明显了，可以把代码在空间上解耦，如果使用异步回调的话，相当于在时间上也做了解耦</p>
+        
+          <a class="article-more-a" href="/2017/02/10/hui-diao-ji-zai-javazhong-de-shi-yong/#more">more >></a>
+        
+      
+
+      
+    </div>
+	<!-- 版权内容 -->
+	
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">Java</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">设计</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2017/02/10/hui-diao-ji-zai-javazhong-de-shi-yong/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+
+  
     <article id="post-javafan-xing-yu-tong-pei-fu" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -803,177 +974,6 @@
       
         <p class="article-more-link">
           <a class="article-more-a" href="/2017/01/09/javafan-xing-yu-tong-pei-fu/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-
-  
-    <article id="post-tan-tan-java-fan-xing" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/01/08/tan-tan-java-fan-xing/">谈谈 Java 泛型</a>
-    </h1>
-  
-
-        
-        <a href="/2017/01/08/tan-tan-java-fan-xing/" class="archive-article-date">
-  	<time datetime="2017-01-08T13:09:25.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-01-08</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="相关术语和入门使用"><a href="#相关术语和入门使用" class="headerlink" title="相关术语和入门使用"></a>相关术语和入门使用</h2><p><strong>关于泛型的几个术语</strong></p>
-<ul>
-<li>ArrayList<e> 中的 <code>&lt;&gt;</code> 念作 <code>typeof</code>，E 称为类型参数变量</e></li>
-<li><code>ArrayList&lt;Integer&gt;</code> 中的 Integer 称为实际类型参数</li>
-<li>整个 <code>ArrayList&lt;E&gt;</code> 称为泛型类型；整个 <code>ArrayList&lt;Integer&gt;</code> 称为参数化的类型</li>
-</ul>
-<p><strong>关于泛型几个需要注意的点(由于Java的泛型采用类型擦除来现实，存在相关问题，后面会继续讨论)</strong></p>
-        
-          <a class="article-more-a" href="/2017/01/08/tan-tan-java-fan-xing/#more">more >></a>
-        
-      
-
-      
-    </div>
-	<!-- 版权内容 -->
-	
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">Java</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2017/01/08/tan-tan-java-fan-xing/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-
-  
-    <article id="post-shi-pei-qi-mo-shi" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/06/17/shi-pei-qi-mo-shi/">适配器模式</a>
-    </h1>
-  
-
-        
-        <a href="/2016/06/17/shi-pei-qi-mo-shi/" class="archive-article-date">
-  	<time datetime="2016-06-17T03:01:39.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2016-06-17</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><blockquote>
-<p>适配器模式将一个类的接口，转换成客户期望的另一个接口，适配让原本接口不兼容的类可以合作无间</p>
-</blockquote>
-<p>举个简单的也是最老生常谈的例子，插头与插座，通过电源适配器，可以把我们的插头与本来不相匹配的插座进行适配，这样做的好处显然易见，<strong>我既不用重新更换自己的插头，也不用更换插座，只需要使用一个适配器就可以使插头与插座适配工作</strong>，而这也就是适配器模式的设计初衷</p>
-        
-          <a class="article-more-a" href="/2016/06/17/shi-pei-qi-mo-shi/#more">more >></a>
-        
-      
-
-      
-    </div>
-	<!-- 版权内容 -->
-	
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">Java</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">设计</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2016/06/17/shi-pei-qi-mo-shi/">展开全文 >></a>
         </p>
       
 
@@ -1109,15 +1109,15 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">算法</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">OS</a>
               </li>
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">优化</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">算法</a>
               </li>
              
               <li class="article-tag-list-item">

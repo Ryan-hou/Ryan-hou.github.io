@@ -6,20 +6,20 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="https://ryan-hou.github.io">
-  <title>反转单链表的几种姿势 | 0x08 0x17</title>
+  <title>回调及在Java中的使用 | 0x08 0x17</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="基础数据结构的操作，简单但是有意义，整理下几种实现思路 头插法建立单链表由头插法操作一组数据后生成逆序的单链表，利用这个性质，我们可以遍历给出的单链表，利用头插法建立新的单链表，返回链表的头节点即可。实现简单，但是需要开辟额外的空间，空间复杂度和时间复杂度都是 O(n)，代码如下： 1234567891011121314private static LinkNode reverseWithCrea">
-<meta name="keywords" content="算法">
+  <meta name="description" content="回调是什么回调可以通过类比电话系统来理解：一个方法调用可以类比为给某人打电话，然后问他一个问题，得到答案后挂掉电话；那么回调就可以类比为，打电话询问问题后，把你的名字和电话告诉他，这样他就可以在知道答案后再打电话回答你 回调的过程通过上面的例子我们不难得出，我们使用回调一般有这么几个步骤：1)定义回调接口/方法；2)注册回调(发起回调方注册)；3)当事件发生时，调用回调方法(先提供回调的实现)；">
+<meta name="keywords" content="Java,设计">
 <meta property="og:type" content="article">
-<meta property="og:title" content="反转单链表的几种姿势">
-<meta property="og:url" content="https://ryan-hou.github.io/2017/09/30/fan-zhuan-dan-lian-biao-de-ji-chong-zi-shi/index.html">
+<meta property="og:title" content="回调及在Java中的使用">
+<meta property="og:url" content="https://ryan-hou.github.io/2017/02/10/hui-diao-ji-zai-javazhong-de-shi-yong/index.html">
 <meta property="og:site_name" content="0x08 0x17">
-<meta property="og:description" content="基础数据结构的操作，简单但是有意义，整理下几种实现思路 头插法建立单链表由头插法操作一组数据后生成逆序的单链表，利用这个性质，我们可以遍历给出的单链表，利用头插法建立新的单链表，返回链表的头节点即可。实现简单，但是需要开辟额外的空间，空间复杂度和时间复杂度都是 O(n)，代码如下： 1234567891011121314private static LinkNode reverseWithCrea">
+<meta property="og:description" content="回调是什么回调可以通过类比电话系统来理解：一个方法调用可以类比为给某人打电话，然后问他一个问题，得到答案后挂掉电话；那么回调就可以类比为，打电话询问问题后，把你的名字和电话告诉他，这样他就可以在知道答案后再打电话回答你 回调的过程通过上面的例子我们不难得出，我们使用回调一般有这么几个步骤：1)定义回调接口/方法；2)注册回调(发起回调方注册)；3)当事件发生时，调用回调方法(先提供回调的实现)；">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2018-05-17T15:07:17.000Z">
+<meta property="og:updated_time" content="2018-05-21T05:52:33.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="反转单链表的几种姿势">
-<meta name="twitter:description" content="基础数据结构的操作，简单但是有意义，整理下几种实现思路 头插法建立单链表由头插法操作一组数据后生成逆序的单链表，利用这个性质，我们可以遍历给出的单链表，利用头插法建立新的单链表，返回链表的头节点即可。实现简单，但是需要开辟额外的空间，空间复杂度和时间复杂度都是 O(n)，代码如下： 1234567891011121314private static LinkNode reverseWithCrea">
+<meta name="twitter:title" content="回调及在Java中的使用">
+<meta name="twitter:description" content="回调是什么回调可以通过类比电话系统来理解：一个方法调用可以类比为给某人打电话，然后问他一个问题，得到答案后挂掉电话；那么回调就可以类比为，打电话询问问题后，把你的名字和电话告诉他，这样他就可以在知道答案后再打电话回答你 回调的过程通过上面的例子我们不难得出，我们使用回调一般有这么几个步骤：1)定义回调接口/方法；2)注册回调(发起回调方注册)；3)当事件发生时，调用回调方法(先提供回调的实现)；">
   
     <link rel="alternative" href="/atom.xml" title="0x08 0x17" type="application/atom+xml">
   
@@ -151,34 +151,34 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            <article id="post-fan-zhuan-dan-lian-biao-de-ji-chong-zi-shi" class="article article-type-post " itemscope itemprop="blogPost">
+            <article id="post-hui-diao-ji-zai-javazhong-de-shi-yong" class="article article-type-post " itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
         
   
     <h1 class="article-title" itemprop="name">
-      反转单链表的几种姿势
+      回调及在Java中的使用
     </h1>
   
 
         
-        <a href="/2017/09/30/fan-zhuan-dan-lian-biao-de-ji-chong-zi-shi/" class="archive-article-date">
-  	<time datetime="2017-09-30T03:20:02.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-09-30</time>
+        <a href="/2017/02/10/hui-diao-ji-zai-javazhong-de-shi-yong/" class="archive-article-date">
+  	<time datetime="2017-02-10T15:39:14.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-02-10</time>
 </a>
         
       </header>
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>基础数据结构的操作，简单但是有意义，整理下几种实现思路</p>
-<h2 id="头插法建立单链表"><a href="#头插法建立单链表" class="headerlink" title="头插法建立单链表"></a>头插法建立单链表</h2><p>由头插法操作一组数据后生成逆序的单链表，利用这个性质，我们可以遍历给出的单链表，利用头插法建立新的单链表，返回链表的头节点即可。实现简单，但是需要开辟额外的空间，空间复杂度和时间复杂度都是 <code>O(n)</code>，代码如下：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">static</span> LinkNode <span class="title">reverseWithCreate</span><span class="params">(LinkNode head)</span> </span>&#123;</span><br><span class="line">        <span class="comment">// 虚拟头指针</span></span><br><span class="line">        LinkNode newHead = <span class="keyword">new</span> LinkNode(<span class="number">0</span>);</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">while</span> (head != <span class="keyword">null</span>) &#123;</span><br><span class="line">            <span class="comment">// 头插法建立单链表</span></span><br><span class="line">            LinkNode cur = <span class="keyword">new</span> LinkNode(head.val);</span><br><span class="line">            cur.next = newHead.next;</span><br><span class="line">            newHead.next = cur;</span><br><span class="line"></span><br><span class="line">            head = head.next;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> newHead.next;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+        <h2 id="回调是什么"><a href="#回调是什么" class="headerlink" title="回调是什么"></a>回调是什么</h2><p>回调可以通过类比电话系统来理解：一个方法调用可以类比为给某人打电话，然后问他一个问题，得到答案后挂掉电话；那么回调就可以类比为，打电话询问问题后，把你的名字和电话告诉他，这样他就可以在知道答案后再打电话回答你</p>
+<h2 id="回调的过程"><a href="#回调的过程" class="headerlink" title="回调的过程"></a>回调的过程</h2><p>通过上面的例子我们不难得出，我们使用回调一般有这么几个步骤：<code>1)定义回调接口/方法；2)注册回调(发起回调方注册)；3)当事件发生时，调用回调方法(先提供回调的实现)；</code></p>
+<p>简单来说就是把写死在一起的代码给拆开来，把让其中一部分保持原有的流程，并在流程中“挖出一些空”，让另一部分代码作为参数传进来，在流程中合适的地方<strong>被调用</strong>。像Java 中的模版方法模式，观察者模式，策略模式等都使用了回调；使用回调的优点也很明显了，可以把代码在空间上解耦，如果使用异步回调的话，相当于在时间上也做了解耦</p>
 <a id="more"></a>
-<h2 id="递归思想"><a href="#递归思想" class="headerlink" title="递归思想"></a>递归思想</h2><p>反转一个单链表，可以分解为，先反转单链表除了头节点之后的单链表，然后处理反转后的单链表与头节点的关系即可。递归出口是头节点为空或者头节点的下一个节点为空。使用递归这种声明式的方式使代码更加简洁，重在描述代码做什么而不是怎么做。空间复杂度为<code>O(1)</code>，时间复杂度为<code>O(n)</code>，代码如下：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">static</span> LinkNode <span class="title">reverseWithRecursion</span><span class="params">(LinkNode head)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (head == <span class="keyword">null</span> || head.next == <span class="keyword">null</span>) &#123;</span><br><span class="line">            <span class="keyword">return</span> head; <span class="comment">// 递归出口</span></span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        LinkNode headOfLeftNode = reverseWithRecursion(head.next);</span><br><span class="line">        head.next.next = head;</span><br><span class="line">        head.next = <span class="keyword">null</span>;</span><br><span class="line">        <span class="keyword">return</span> headOfLeftNode;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
-<h2 id="指针移动实现反转"><a href="#指针移动实现反转" class="headerlink" title="指针移动实现反转"></a>指针移动实现反转</h2><p>反转一个单链表还有一种很直观的解决方法就是遍历这个单链表，然后依次反转每个需要反转的节点。但是这里存在一个问题，在反转当前节点的时候，当前节点的下一个节点需要先提前保存一下，不然会存在丢失的情况。对于算法的边界，需要考虑链表为空，链表只有一个节点，有两个节点和多于两个节点这几种情况。时间复杂度为<code>O(n)</code>，空间复杂度为<code>O(1)</code>。代码如下：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">static</span> LinkNode <span class="title">reverseWithIter</span><span class="params">(LinkNode head)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (head == <span class="keyword">null</span>) &#123;</span><br><span class="line">            <span class="keyword">return</span> head;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        LinkNode pre = head;</span><br><span class="line">        LinkNode cur = head.next;</span><br><span class="line">        LinkNode next;</span><br><span class="line">        <span class="keyword">while</span> (cur != <span class="keyword">null</span>) &#123;</span><br><span class="line">            <span class="comment">// next 保存指针将要变化的节点原本的下一个节点</span></span><br><span class="line">            next = cur.next;</span><br><span class="line">            cur.next = pre;</span><br><span class="line">            <span class="comment">// pre,cur 同时后移一个距离</span></span><br><span class="line">            pre = cur;</span><br><span class="line">            cur = next;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        head.next = <span class="keyword">null</span>;</span><br><span class="line">        <span class="keyword">return</span> pre;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<h2 id="Java中回调的使用"><a href="#Java中回调的使用" class="headerlink" title="Java中回调的使用"></a>Java中回调的使用</h2><p>在 Java 中，我们一般通过定义接口(或者抽象类也可以)的方式来实现回调，经常结合使用匿名类表达式(Anonymous class expression)</p>
+<p>先定义一个回调接口，接口中定义需要被回调的方法，然后把该接口作为参数注册到调用该回调接口的类中，在需要的时候，通过传入实现了该接口的类实例或者直接使用匿名内部类的方式来作为参数传入，回调接口的方法，举个例子：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">CallbackInterface</span> </span>&#123;</span><br><span class="line">	<span class="function"><span class="keyword">void</span> <span class="title">testCallBack</span><span class="params">()</span></span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Caller</span> </span>&#123;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">testCall</span><span class="params">(CallbackInterface callbackInterface)</span> </span>&#123;</span><br><span class="line">		callbackInterface.testCallBack();</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">		Caller caller = <span class="keyword">new</span> Caller();</span><br><span class="line">		CallbackInterface callbackInterface = <span class="keyword">new</span> CallbackInterfaceImpl();</span><br><span class="line">		<span class="comment">// 1.实现接口的类实例作为参数</span></span><br><span class="line">		caller.testCall(callbackInterface);</span><br><span class="line">		<span class="comment">// 2.直接使用匿名类表达式</span></span><br><span class="line">		caller.testCall(<span class="keyword">new</span> CallbackInterface() &#123;</span><br><span class="line">			<span class="meta">@Override</span></span><br><span class="line">			<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">testCallBack</span><span class="params">()</span> </span>&#123;</span><br><span class="line">				System.out.println(<span class="string">"测试匿名类与回调"</span>);</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="回调在设计模式中的应用"><a href="#回调在设计模式中的应用" class="headerlink" title="回调在设计模式中的应用"></a>回调在设计模式中的应用</h2><p>以模版方法模式为例简单说一下，我们都知道模版方法模式的主要思想是<strong>定义出算法的骨架，然后留出扩展点供子类实现</strong>，在抽象类中，我们通常会设计一些钩子方法，并提供默认实现，并由子类决定是否要进行覆盖，这里的<strong>钩子方法就是一种回调的实现</strong>，我们允许低层组件将自己挂钩到系统上，但是高层组件会决定什么时候和怎么使用这些低层组件。换句话说,高层组件对待低层组件的方式是”别调用我们,我们会调用你”</p>
 
       
 
@@ -262,8 +262,8 @@ div.article-footer-copyright{
 </style>
 
 <div class="article-footer-copyright">
-	<p>本文标题: <a href="/2017/09/30/fan-zhuan-dan-lian-biao-de-ji-chong-zi-shi/" target="_blank" title="反转单链表的几种姿势">反转单链表的几种姿势</a></p>
-	<p>本文链接: <a href="/2017/09/30/fan-zhuan-dan-lian-biao-de-ji-chong-zi-shi/" target="_blank" title="反转单链表的几种姿势">https://ryan-hou.github.io/2017/09/30/fan-zhuan-dan-lian-biao-de-ji-chong-zi-shi/</a></p>
+	<p>本文标题: <a href="/2017/02/10/hui-diao-ji-zai-javazhong-de-shi-yong/" target="_blank" title="回调及在Java中的使用">回调及在Java中的使用</a></p>
+	<p>本文链接: <a href="/2017/02/10/hui-diao-ji-zai-javazhong-de-shi-yong/" target="_blank" title="回调及在Java中的使用">https://ryan-hou.github.io/2017/02/10/hui-diao-ji-zai-javazhong-de-shi-yong/</a></p>
 	<p>转载请注明本文链接~~</p>
 </div>
 
@@ -276,7 +276,11 @@ div.article-footer-copyright{
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">算法</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">Java</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">设计</a>
         		</li>
       		
 		</ul>
@@ -332,7 +336,7 @@ div.article-footer-copyright{
     <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
     <p>扫一扫，分享到微信</p>
     <div class="wx-qrcode">
-      <img src="//pan.baidu.com/share/qrcode?url=https://ryan-hou.github.io/2017/09/30/fan-zhuan-dan-lian-biao-de-ji-chong-zi-shi/" alt="微信分享二维码">
+      <img src="//pan.baidu.com/share/qrcode?url=https://ryan-hou.github.io/2017/02/10/hui-diao-ji-zai-javazhong-de-shi-yong/" alt="微信分享二维码">
     </div>
 </div>
 
@@ -346,18 +350,18 @@ div.article-footer-copyright{
   
 <nav id="article-nav">
   
-    <a href="/2017/11/27/efficient-data-transfer-through-zero-copy/" id="article-nav-newer" class="article-nav-link-wrap">
+    <a href="/2017/03/10/mo-ban-fang-fa-mo-shi-vsce-lue-mo-shi/" id="article-nav-newer" class="article-nav-link-wrap">
       <i class="icon-circle-left"></i>
       <div class="article-nav-title">
         
-          Efficient data transfer through zero copy
+          模版方法模式vs策略模式
         
       </div>
     </a>
   
   
-    <a href="/2017/09/27/sharding-and-ids-at-instagram/" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">Sharding &amp; IDs at Instagram</div>
+    <a href="/2017/01/09/javafan-xing-yu-tong-pei-fu/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">Java泛型与通配符</div>
       <i class="icon-circle-right"></i>
     </a>
   
@@ -396,7 +400,7 @@ div.article-footer-copyright{
 <script src="https://billts.site/js/gitment.js"></script>
 <script>
 var gitment = new Gitment({
-  id: '反转单链表的几种姿势',
+  id: '回调及在Java中的使用',
   owner: 'Ryan-hou',
   repo: 'Ryan-hou.github.io',
   oauth: {
