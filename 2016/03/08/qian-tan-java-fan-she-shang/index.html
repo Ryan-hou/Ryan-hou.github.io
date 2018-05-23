@@ -6,20 +6,20 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="https://ryan-hou.github.io">
-  <title>Debunking the Myths of RPC &amp; REST | 0x08 0x17</title>
+  <title>浅谈 Java 反射(上) | 0x08 0x17</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="本文为翻译文章，原文链接为:Debunking the Myths of RPC &amp;amp; REST 网上有很多关于 RPC 和 REST 的文章，博客与讨论，但是大部分都在回答某一个特定的应用下，应该选择使用 RPC 还是 REST，而这本身并不是一个正确的二分法。这些回答普遍没有解释我想要知道的问题，而是让我感觉到大部分的开发者并不懂为什么要使用 REST，而仅仅是因为觉得这个架构听起来很酷">
-<meta name="keywords" content="设计,翻译,分布式">
+  <meta name="description" content="是什么反射作为Java语言的一大特性，在底层框架的构建中应用广泛，我们从字面上来理解，反射就类似于照镜子，更进一步，反射就是一个类自己在“照镜子”。在Java中我们提供了Class类来实现反射，Class类封装了当前对象对应的类的信息，也就是Class类是描述一个我们定义的类的类。相当于在我们自己定义的类上又抽象了一层。对于每个类而言，JRE都为其保留一个不变的Class类型的对象 怎么用创建 C">
+<meta name="keywords" content="Java">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Debunking the Myths of RPC &amp; REST">
-<meta property="og:url" content="https://ryan-hou.github.io/2017/09/24/debunking-the-myths-of-rpc-and-rest/index.html">
+<meta property="og:title" content="浅谈 Java 反射(上)">
+<meta property="og:url" content="https://ryan-hou.github.io/2016/03/08/qian-tan-java-fan-she-shang/index.html">
 <meta property="og:site_name" content="0x08 0x17">
-<meta property="og:description" content="本文为翻译文章，原文链接为:Debunking the Myths of RPC &amp;amp; REST 网上有很多关于 RPC 和 REST 的文章，博客与讨论，但是大部分都在回答某一个特定的应用下，应该选择使用 RPC 还是 REST，而这本身并不是一个正确的二分法。这些回答普遍没有解释我想要知道的问题，而是让我感觉到大部分的开发者并不懂为什么要使用 REST，而仅仅是因为觉得这个架构听起来很酷">
+<meta property="og:description" content="是什么反射作为Java语言的一大特性，在底层框架的构建中应用广泛，我们从字面上来理解，反射就类似于照镜子，更进一步，反射就是一个类自己在“照镜子”。在Java中我们提供了Class类来实现反射，Class类封装了当前对象对应的类的信息，也就是Class类是描述一个我们定义的类的类。相当于在我们自己定义的类上又抽象了一层。对于每个类而言，JRE都为其保留一个不变的Class类型的对象 怎么用创建 C">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2018-05-19T15:18:16.000Z">
+<meta property="og:updated_time" content="2018-05-23T03:37:11.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Debunking the Myths of RPC &amp; REST">
-<meta name="twitter:description" content="本文为翻译文章，原文链接为:Debunking the Myths of RPC &amp;amp; REST 网上有很多关于 RPC 和 REST 的文章，博客与讨论，但是大部分都在回答某一个特定的应用下，应该选择使用 RPC 还是 REST，而这本身并不是一个正确的二分法。这些回答普遍没有解释我想要知道的问题，而是让我感觉到大部分的开发者并不懂为什么要使用 REST，而仅仅是因为觉得这个架构听起来很酷">
+<meta name="twitter:title" content="浅谈 Java 反射(上)">
+<meta name="twitter:description" content="是什么反射作为Java语言的一大特性，在底层框架的构建中应用广泛，我们从字面上来理解，反射就类似于照镜子，更进一步，反射就是一个类自己在“照镜子”。在Java中我们提供了Class类来实现反射，Class类封装了当前对象对应的类的信息，也就是Class类是描述一个我们定义的类的类。相当于在我们自己定义的类上又抽象了一层。对于每个类而言，JRE都为其保留一个不变的Class类型的对象 怎么用创建 C">
   
     <link rel="alternative" href="/atom.xml" title="0x08 0x17" type="application/atom+xml">
   
@@ -151,45 +151,47 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            <article id="post-debunking-the-myths-of-rpc-and-rest" class="article article-type-post " itemscope itemprop="blogPost">
+            <article id="post-qian-tan-java-fan-she-shang" class="article article-type-post " itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
         
   
     <h1 class="article-title" itemprop="name">
-      Debunking the Myths of RPC &amp; REST
+      浅谈 Java 反射(上)
     </h1>
   
 
         
-        <a href="/2017/09/24/debunking-the-myths-of-rpc-and-rest/" class="archive-article-date">
-  	<time datetime="2017-09-24T14:40:00.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-09-24</time>
+        <a href="/2016/03/08/qian-tan-java-fan-she-shang/" class="archive-article-date">
+  	<time datetime="2016-03-07T16:18:00.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2016-03-08</time>
 </a>
         
       </header>
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>本文为翻译文章，原文链接为:<a href="http://etherealbits.com/2012/12/debunking-the-myths-of-rpc-rest/" target="_blank" rel="noopener">Debunking the Myths of RPC &amp; REST</a></p>
-<p>网上有很多关于 RPC 和 REST 的文章，博客与讨论，但是大部分都在回答某一个特定的应用下，应该选择使用 RPC 还是 REST，而这本身并不是一个正确的二分法。这些回答普遍没有解释我想要知道的问题，而是让我感觉到大部分的开发者并不懂为什么要使用 REST，而仅仅是因为觉得这个架构听起来很酷。讽刺的是<a href="https://en.wikipedia.org/wiki/Roy_Fielding" target="_blank" rel="noopener">Roy Fielding</a>在介绍REST的论文中就提到了这种<strong>“design by fad”</strong></p>
-<blockquote>
-<p>“Consider how often we see software projects begin with adoption of the latest fad in architectural design, and only later discover whether or not the system requirements call for such an architecture.”</p>
-</blockquote>
+        <h2 id="是什么"><a href="#是什么" class="headerlink" title="是什么"></a>是什么</h2><p>反射作为Java语言的一大特性，在底层框架的构建中应用广泛，我们从字面上来理解，反射就类似于照镜子，更进一步，反射就是一个类自己在“照镜子”。在Java中我们提供了<code>Class类</code>来实现反射，<strong>Class类封装了当前对象对应的类的信息</strong>，也就是Class类是描述一个我们定义的类的类。相当于在我们自己定义的类上又抽象了一层。对于每个类而言，JRE都为其保留<strong>一个不变的Class类型的对象</strong></p>
+<h2 id="怎么用"><a href="#怎么用" class="headerlink" title="怎么用"></a>怎么用</h2><h3 id="创建-Class-类对象"><a href="#创建-Class-类对象" class="headerlink" title="创建 Class 类对象"></a>创建 Class 类对象</h3><p><strong>Class 对象只能由系统建立（JVM类加载时在方法区创建）,一个类在JVM中只有一个 Class实例(对象)</strong></p>
 <a id="more"></a>
-<p>如果你想深入了解REST而且只能读一篇文档，那不要阅读本文，去参考 Fielding 的论文<a href="http://www.ics.uci.edu/~fielding/pubs/dissertation/rest_arch_style.htm" target="_blank" rel="noopener">DISSERTATION</a>。如果你没有时间或者只是想在比较高的层面上了解RPC和REST，那么可以继续阅读，在开始之前，我们先来看下RPC，REST和HTTP的一些细节</p>
-<p><strong>Remote Procedure Call(RPC)</strong>是一种允许你调用其他进程的方法并且通过通信来交换数据。通常会在客户端生成方法 stub,使用 stub 使得调用看起来更像本地调用，而实际上在 stub 背后会包装请求然后把请求发送到服务端，然后服务端进程会解析这个请求并且调用客户端想要调用的方法，然后再反向的把这个调用的执行结果返回给客户端。<strong>HTTP协议有时会是底层的信息传递协议，但是RPC并不强制要求一定使用HTTP协议。</strong>远程方法调用(RMI)和RPC更相近，RMI比RPC的远程调用更进一步，它更加面向对象，可以保存远程对象的引用并且调用这个对象的相关方法</p>
-<p><strong>Representational State Transfer(REST)是一种架构方式，通过对接口进行一系列限制来实现一些目标。</strong>REST 强制使用 客户端／服务器模型，客户端获取和操作由服务端管理的各种资源，服务端通过提供各种资源的状态来告诉客户端相关资源的信息，同时提供获取资源最新状态和操作这些资源的方法。客户端和服务端所有的信息交互必须是无状态的和可缓存的。REST 架构的实现通常被称为 RESTful</p>
-<p><strong>Hypertext Transfer Protocol(HTTP)</strong>是一个 RESTful 的协议，可以在分布式环境下暴露相应的资源。在 HTTP 协议中，服务端通过 HTTP 响应的body告诉客户端这些资源的信息。如果body是HTML的话，那么后续合法的操作会给出在 A 标签里，让客户端要么通过 GET 请求获取新的资源状态，要么通过 POST/PUT 或者 DELETE 请求来操作这些资源</p>
-<p>通过以上这些定义，我们可以得出下面结论：</p>
+<h3 id="获取-Class-对象"><a href="#获取-Class-对象" class="headerlink" title="获取 Class 对象"></a>获取 Class 对象</h3><p>我们有三种方式获取 Class 对象</p>
 <ul>
-<li><strong>把 RPC 和 REST 作类比是没有道理的</strong>。事实上你可以通过在任何RPC实现的基础上构建RESTful的服务，只要创建遵守REST架构限制的方法即可。你甚至可以基于RPC的实现构建HTTP风格的REST架构，你需要做的就是通过实现相应的 GET,POST,PUT,DELETE 方法来把 HTTP 请求头和请求体的数据提取并转化到 RPC 的调用</li>
-<li><strong>HTTP和REST不是一对一的关系，HTTP是REST一种实现方式</strong>。REST 是由一组限制构成，但是并没有包括HTTP实现方面的限制。例如你的服务可以不使用HTTP协议来暴露接口仍然可以是RESTful 的</li>
+<li>通过类的 class 属性获取，该方法最为安全可靠，程序性能更高:<code>Class clazz = String.class;</code></li>
+<li>通过对象的<strong>getClass()方法</strong>获取：<code>Class clazz = &quot;hello&quot;.getClass();</code></li>
+<li>通过Class对象的<strong>forName()静态方法</strong>获取，但可能抛出<strong>ClassNotFoundException异常</strong>(事实上，这个方法常在框架中经常使用，在使用 JDBC 获取数据库驱动类的 Class 类对象时也使用过这个静态类方法):<code>Class clazz = Class.forName(&quot;java.lang.String&quot;);</code></li>
 </ul>
-<p>事实上当人们在问她们是否应该用 RPC 或者 REST 时，真正想要问的是<strong>“我应该通过HTTP协议实现的RESTful服务来对外暴露我的资源，还是我应该使用像 SOAP 或者 XML－RPC 这样更个性化的方式来构建更高一层的抽象”</strong>。要回答这个问题，我们首先来看一下 REST 和 HTTP 的优点，注意，虽然我们分开来说为什么你要使服务RESTful和为什么你要使用HTTP协议，然而前者的观点对于后者也是适用的(反之则不适用)</p>
-<p>REST 架构的优点在于任何状态下合法的行为都是被服务端控制的，只需要制定很少的与客户端的约定。就 HTTP 协议实现的 REST 架构来说，服务端与客户端之间的约定仅仅是顶层的 URI，我可以使用这个 URI 来发送一个 GET 请求。从这里也可以看出，这些服务端对于客户端的限制是在运行时的。相比之下，传统的RPC实现的REST限制更为严格，服务端定义的需要被客户端消费的程序在构建时就要被明确定义好。为了方便理解，可以比较通过页面导航来找到需要的商品(通过调用服务端提供各种链接)和直接通过产品的名字来获取这个产品。在第一种方式中，API的变化完全是由服务端来控制的，但是在第二种情况下需要协同部署客户端与服务端。在这个例子中很明显的问题在于计算机并不能很好的动态消费API，所以如果你正在构建一个被其他服务消费的服务，你很难获得由服务端来控制行为的好处。</p>
-<p>使用HTTP协议来暴露资源的一个很大的好处在于，你可以使用很多专门为 HTTP 协议而开发的工具而不需要自己额外的进行开发。我们来考虑下使用缓存的例子，因为HTTP的响应的输入是被良好定义的(query string,HTTP headers,POST data)，所以我可以在我的服务前面加一个中间层<a href="http://www.squid-cache.org/" target="_blank" rel="noopener">Squid</a>。如果使用 RPC，即使 RPC 的消息传递协议使用 HTTP，我们无法保证消息和远程调用是一对一的，因为一个远程调用可能需要传入多个消息，当然RPC的输入可以通过一种标准的方式被使用或者忽略，从而使对请求和对应的响应进行缓存成为可能。而请求中也可能需要相应的信息来知道如何处理缓存(像 HTTP <a href="https://www.w3.org/Protocols/rfc2616/rfc2616-sec13.html" target="_blank" rel="noopener">dose</a>)。通过使用 HTTP 协议我们可以避免重新造一些轮子</p>
-<p>使用HTTP协议的另一个好处就是它通过一种很通用的<a href="https://www.w3.org/Protocols/rfc2616/rfc2616-sec9.html" target="_blank" rel="noopener">方式</a>，GET,POST/PUT和 DELETE 来暴露资源，这使得测试很容易进行。在实际中如果你为了将来的扩展而使用了过于窄的语义，这会导致你的方法，接口或者服务过分膨胀，并最终成为你的 SOA 的一部分。关于这一点其实就可以单独写一篇文章来解释，所以在这一篇文章中就不深入的探讨了。</p>
+<h3 id="实例化-Class-对象对应的类"><a href="#实例化-Class-对象对应的类" class="headerlink" title="实例化 Class 对象对应的类"></a>实例化 Class 对象对应的类</h3><p>获取了 Class 对象，就可以为对应的类实例化了，我们利用 Class 对象的<strong>newInstance()方法</strong>来创建类的一个实例:<code>Object obj = clazz.newInstance()</code>，实际上调用的是<strong>类的那个无参数的构造器</strong>，写到这里我们就知道了，如果想要使用反射来构造相应的类对象，我们就要老老实实地把类的无参数构造器保留，小心不要被重写！</p>
+<h3 id="获取反射类对象可以做什么"><a href="#获取反射类对象可以做什么" class="headerlink" title="获取反射类对象可以做什么"></a>获取反射类对象可以做什么</h3><ul>
+<li><p>既然 Class 是对一个类的描述，那么 Class对象就应该可以使用该类的属性(Filed),该类的方法(Method),该类的构造器(Constructor)。我们都知道Java是面向对象的语言，这种OO思想在这里更加清晰地得以体现：一个成员方法就是一个<strong>Method对象</strong>，一个成员变量就是一个<strong>Field对象</strong>，在Java中提供了相应的<code>Method类</code>和<code>Field类</code>来实现，还有具体的 API 方法，举例来说明：</p>
+  <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//获取当前类声明的所有方法，包括私有方法</span></span><br><span class="line">Class clazz = Class.forName(com.javase.Person);</span><br><span class="line">Method [] methods = clazz.getDeclaredMethods();</span><br><span class="line"></span><br><span class="line"><span class="comment">//若通过反射执行私有方法权限不够，先使该方法变为可被访问的</span></span><br><span class="line">method.setAccessible(<span class="keyword">true</span>);</span><br><span class="line">...</span><br><span class="line"><span class="comment">//获取Filed数组</span></span><br><span class="line">Filed [] fields = clazz.getDeclaredFields();</span><br><span class="line"><span class="comment">//获取指定名字的Field</span></span><br><span class="line">Field field = clazz.getDeclaredField(<span class="string">"name"</span>);</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>我们通过上面那些函数可以得到一堆的好东西，包括方法啊，字段啊，接下来就是如何来应用了，后面会有篇文章写关于 AOP 的实现，就用到了这里的反射。Method类有一个函数很重要，必须得提一下:<code>public Object invoke (Object obj, Object ... args)</code>,我们通过 Method对象来执行这个方法。还是举个例子，通过改写这个方法我们可以定制自己需要的工具方法(下面这个方法就整合了得到Method对象和调用 invoke 方法这两步)：</p>
+  <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment">	 * <span class="doctag">@obj</span>: 执行方法的那个对象</span></span><br><span class="line"><span class="comment">	 * <span class="doctag">@methodName</span>: 类的一个方法的方法名</span></span><br><span class="line"><span class="comment">	 * <span class="doctag">@args</span>: 调用该方法需要传入的参数</span></span><br><span class="line"><span class="comment">	 * <span class="doctag">@return</span>: 调用方法的返回值</span></span><br><span class="line"><span class="comment">	 */</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">public</span> Object <span class="title">invoke</span><span class="params">(Object obj, String methodName, Object ... args)</span> </span>&#123;</span><br><span class="line">	Class [] paremeterTypes = <span class="keyword">new</span> Class [args.length];</span><br><span class="line">	<span class="keyword">for</span> (<span class="keyword">int</span> i  = <span class="number">0</span>; i &lt; args.length; ++i) &#123;</span><br><span class="line">		parameterTypes[i] = args[i].getClass();</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">try</span> &#123;</span><br><span class="line">		Method method = obj.getClass().getDeclaredMethod(methodName, 	paremeterTypes);</span><br><span class="line">		<span class="keyword">return</span> method.invoke(obj, args);</span><br><span class="line">	&#125; <span class="keyword">catch</span>(Exception e) &#123;</span><br><span class="line">		e.printStackTrace();</span><br><span class="line">		<span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">	&#125;	</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>反射与动态加载类: 我们使用<strong>关键字new</strong>创建的对象需要在编译期就知道要使用到的类，这会使程序失去灵活性。我们在这里可以使用反射可以在运行期动态加载需要的类，即<code>Class c = Class.forName(args[0]);</code>这里还需要扩展一下，在实例化c时，我们需要做强制类型转换，可是转换成谁呢？我们应该马上想到写一个接口，然后用不同的类来具体实现，以实现<strong>动态绑定</strong> 。我们用这种面向接口编程的方式，可以很好的实现低耦合</p>
+</li>
+</ul>
+<p>本文至此结束，下一篇文章会介绍反射与泛型的关系，反射与注解的结合</p>
 
       
 
@@ -273,8 +275,8 @@ div.article-footer-copyright{
 </style>
 
 <div class="article-footer-copyright">
-	<p>本文标题: <a href="/2017/09/24/debunking-the-myths-of-rpc-and-rest/" target="_blank" title="Debunking the Myths of RPC &amp; REST">Debunking the Myths of RPC &amp; REST</a></p>
-	<p>本文链接: <a href="/2017/09/24/debunking-the-myths-of-rpc-and-rest/" target="_blank" title="Debunking the Myths of RPC &amp; REST">https://ryan-hou.github.io/2017/09/24/debunking-the-myths-of-rpc-and-rest/</a></p>
+	<p>本文标题: <a href="/2016/03/08/qian-tan-java-fan-she-shang/" target="_blank" title="浅谈 Java 反射(上)">浅谈 Java 反射(上)</a></p>
+	<p>本文链接: <a href="/2016/03/08/qian-tan-java-fan-she-shang/" target="_blank" title="浅谈 Java 反射(上)">https://ryan-hou.github.io/2016/03/08/qian-tan-java-fan-she-shang/</a></p>
 	<p>转载请注明本文链接~~</p>
 </div>
 
@@ -287,15 +289,7 @@ div.article-footer-copyright{
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">设计</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">翻译</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">分布式</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">Java</a>
         		</li>
       		
 		</ul>
@@ -351,7 +345,7 @@ div.article-footer-copyright{
     <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
     <p>扫一扫，分享到微信</p>
     <div class="wx-qrcode">
-      <img src="//pan.baidu.com/share/qrcode?url=https://ryan-hou.github.io/2017/09/24/debunking-the-myths-of-rpc-and-rest/" alt="微信分享二维码">
+      <img src="//pan.baidu.com/share/qrcode?url=https://ryan-hou.github.io/2016/03/08/qian-tan-java-fan-she-shang/" alt="微信分享二维码">
     </div>
 </div>
 
@@ -365,18 +359,18 @@ div.article-footer-copyright{
   
 <nav id="article-nav">
   
-    <a href="/2017/09/27/sharding-and-ids-at-instagram/" id="article-nav-newer" class="article-nav-link-wrap">
+    <a href="/2016/03/09/qian-tan-java-fan-she-xia/" id="article-nav-newer" class="article-nav-link-wrap">
       <i class="icon-circle-left"></i>
       <div class="article-nav-title">
         
-          Sharding &amp; IDs at Instagram
+          浅谈 Java 反射(下)
         
       </div>
     </a>
   
   
-    <a href="/2017/09/23/visitor-pattern/" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">Visitor pattern</div>
+    <a href="/2016/01/26/tan-tan-java-i-slash-oliu-xia/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">谈谈Java I/O流(下)</div>
       <i class="icon-circle-right"></i>
     </a>
   
@@ -415,7 +409,7 @@ div.article-footer-copyright{
 <script src="https://billts.site/js/gitment.js"></script>
 <script>
 var gitment = new Gitment({
-  id: 'Debunking the Myths of RPC &amp; REST',
+  id: '浅谈 Java 反射(上)',
   owner: 'Ryan-hou',
   repo: 'Ryan-hou.github.io',
   oauth: {
