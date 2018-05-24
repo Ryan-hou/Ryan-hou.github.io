@@ -324,6 +324,91 @@
 
 
   
+    <article id="post-cong-[?]-ge-jian-dan-de-qian-duan-bugtan-tan-jsde-dan-xian-cheng" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/05/30/cong-[?]-ge-jian-dan-de-qian-duan-bugtan-tan-jsde-dan-xian-cheng/">从一个简单的前端Bug谈点感受</a>
+    </h1>
+  
+
+        
+        <a href="/2017/05/30/cong-[?]-ge-jian-dan-de-qian-duan-bugtan-tan-jsde-dan-xian-cheng/" class="archive-article-date">
+  	<time datetime="2017-05-30T09:47:26.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-05-30</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="问题背景"><a href="#问题背景" class="headerlink" title="问题背景"></a>问题背景</h2><p>为了防止按钮多次点击发送多次异步请求到服务器，在点击按钮后，需要disabled 掉该按钮，等异步请求执行完成后再恢复按钮状态为可点击。原本很简单的操作，通过 jQuery 拿到按钮对象后，使用 attr 方法把按钮的 disabled 属性置为 true 然后等请求执行完成后再移除该属性即可。然而就这么一个简单的操作，代码就是不按想象的执行，按钮仍然可以点击多次，执行多次请求</p>
+<h2 id="分析问题"><a href="#分析问题" class="headerlink" title="分析问题"></a>分析问题</h2><p>最开始在 Google 上搜索了一下 jQuery attr 函数在 chrom 浏览器下失效的原因，找到很多答案，基本都指向了同一个问题，那就是 jQuery 的新版本需要使用 prop 函数，换上 prop 函数后，仍然没有效果；</p>
+<p>接下来，决定用更直接的方法，在按钮事件中定义一个布尔变量，当执行 jQuery ajax 请求时，先把该变量置为 false，执行完成后再置为 true，仍然没有效果。</p>
+        
+          <a class="article-more-a" href="/2017/05/30/cong-[?]-ge-jian-dan-de-qian-duan-bugtan-tan-jsde-dan-xian-cheng/#more">more >></a>
+        
+      
+
+      
+    </div>
+	<!-- 版权内容 -->
+	
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">FE</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">总结</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2017/05/30/cong-[?]-ge-jian-dan-de-qian-duan-bugtan-tan-jsde-dan-xian-cheng/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+
+  
     <article id="post-bi-bao-yu-javanei-bu-lei" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -926,92 +1011,6 @@
 
 
   
-    <article id="post-mo-ban-fang-fa-mo-shi-vsce-lue-mo-shi" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/03/10/mo-ban-fang-fa-mo-shi-vsce-lue-mo-shi/">模版方法模式vs策略模式</a>
-    </h1>
-  
-
-        
-        <a href="/2017/03/10/mo-ban-fang-fa-mo-shi-vsce-lue-mo-shi/" class="archive-article-date">
-  	<time datetime="2017-03-10T14:58:32.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-03-10</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>模版方法模式和策略模式是两个比较”神似”的设计模式，都把一个类的可变部分移交给其他类进行处理，使整体保持灵活，但是两者在使用方法和侧重点上还是各有不同的，下面会展开讲述</p>
-<h2 id="模版方法模式"><a href="#模版方法模式" class="headerlink" title="模版方法模式"></a>模版方法模式</h2><blockquote>
-<p>在一个方法中定义算法骨架,而将一些步骤延迟到子类中。模版方法使得子类可以在不改变算法结构的情况下,重新定义算法中的某些步骤</p>
-</blockquote>
-        
-          <a class="article-more-a" href="/2017/03/10/mo-ban-fang-fa-mo-shi-vsce-lue-mo-shi/#more">more >></a>
-        
-      
-
-      
-    </div>
-	<!-- 版权内容 -->
-	
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">Java</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">设计</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2017/03/10/mo-ban-fang-fa-mo-shi-vsce-lue-mo-shi/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-
-  
   
     <nav id="page-nav">
       <a class="extend prev" rel="prev" href="/">&laquo; Prev</a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><a class="page-number" href="/page/4/">4</a><a class="page-number" href="/page/5/">5</a><a class="extend next" rel="next" href="/page/3/">Next &raquo;</a>
@@ -1121,6 +1120,14 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">FE</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">总结</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">翻译</a>
               </li>
              
@@ -1137,15 +1144,15 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">数据结构</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">工具</a>
               </li>
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">虚拟机</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">数据结构</a>
               </li>
             
             <div class="clearfix"></div>
