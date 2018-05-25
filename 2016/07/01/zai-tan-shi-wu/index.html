@@ -6,15 +6,20 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="https://ryan-hou.github.io">
-  <title>Archives: 2018/2 | 0x08 0x17</title>
+  <title>浅谈数据库事务 | 0x08 0x17</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta property="og:type" content="website">
-<meta property="og:title" content="0x08 0x17">
-<meta property="og:url" content="https://ryan-hou.github.io/archives/2018/02/index.html">
+  <meta name="description" content="定义所谓数据库事务是用户定义的一个数据库操作序列，这些操作要么全做，要么全不做，是一个不可分割的单位 为什么有事务 [1]Transactions are not a law of nature; they were created with a purpose, namely to simplify the programming model for applications accessing">
+<meta name="keywords" content="数据库">
+<meta property="og:type" content="article">
+<meta property="og:title" content="浅谈数据库事务">
+<meta property="og:url" content="https://ryan-hou.github.io/2016/07/01/zai-tan-shi-wu/index.html">
 <meta property="og:site_name" content="0x08 0x17">
+<meta property="og:description" content="定义所谓数据库事务是用户定义的一个数据库操作序列，这些操作要么全做，要么全不做，是一个不可分割的单位 为什么有事务 [1]Transactions are not a law of nature; they were created with a purpose, namely to simplify the programming model for applications accessing">
 <meta property="og:locale" content="default">
+<meta property="og:updated_time" content="2018-05-25T09:19:33.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="0x08 0x17">
+<meta name="twitter:title" content="浅谈数据库事务">
+<meta name="twitter:description" content="定义所谓数据库事务是用户定义的一个数据库操作序列，这些操作要么全做，要么全不做，是一个不可分割的单位 为什么有事务 [1]Transactions are not a law of nature; they were created with a purpose, namely to simplify the programming model for applications accessing">
   
     <link rel="alternative" href="/atom.xml" title="0x08 0x17" type="application/atom+xml">
   
@@ -146,64 +151,298 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            
-  
-  
+            <article id="post-zai-tan-shi-wu" class="article article-type-post " itemscope itemprop="blogPost">
+  <div class="article-inner">
     
-    
-      
-      
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2018" class="archive-year">2018</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2018/02/20/phantom-types-in-java/" class="archive-article-date">
-  	<time datetime="2018-02-20T04:12:36.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-02-20</time>
-</a>
-        </div>
-    	 
+      <header class="article-header">
+        
   
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2018/02/20/phantom-types-in-java/">Phantom types in Java</a>
+    <h1 class="article-title" itemprop="name">
+      浅谈数据库事务
     </h1>
   
 
-        <div class="article-info info-on-right">
-          
+        
+        <a href="/2016/07/01/zai-tan-shi-wu/" class="archive-article-date">
+  	<time datetime="2016-07-01T09:43:41.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2016-07-01</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="定义"><a href="#定义" class="headerlink" title="定义"></a>定义</h2><p>所谓数据库事务是用户定义的一个<strong>数据库操作序列</strong>，这些操作要么全做，要么全不做，是一个<strong>不可分割</strong>的单位</p>
+<h2 id="为什么有事务"><a href="#为什么有事务" class="headerlink" title="为什么有事务"></a>为什么有事务</h2><blockquote>
+<p>[1]Transactions are not a law of nature; they were created with a purpose, namely to simplify the programming model for applications accessing a database. By using transactions, the application is free to ignore certain potential error scenarios and concurrency issues, because the database takes care of them instead (we call these safety guarantees).</p>
+</blockquote>
+<p>上面引用说明了事务的出现是为了简化我们的编程模型，不需要我们去考虑各种可能出现的问题和并发问题。我们在实际使用事务时，不需要考虑数据库宕机，网络异常，并发修改数据等问题，要么提交，要么回滚，非常方便。所以<strong>本质上来说，事务的出现了是为了应用层服务的，而不是数据库系统本身的需要</strong></p>
+<h2 id="事务的特性"><a href="#事务的特性" class="headerlink" title="事务的特性"></a>事务的特性</h2><p>也就是大家耳熟能详的  <strong>ACID</strong>，即原子性(<code>Atomicity</code>)  一致性(<code>Consistency</code>)  隔离性(<code>Isolation</code>)  持久性(<code>Durability</code>)</p>
+<a id="more"></a>
+<ul>
+<li>原子性 – 即不可分割性，事务中的操作要么全不做，要么全做</li>
+<li>一致性 – 指系统从一个正确的状态，迁移到另一个正确的状态。也就是保证数据不会被破坏，事务操作成功后，数据库所处的状态和它的业务规则是一致的</li>
+<li>隔离性 – 一个事务的执行不能被其他事务的执行干扰，<strong>这里引入了事务隔离机制</strong>，下面具体再说</li>
+<li>持久性 – 指一个事务一旦提交，他对数据库中数据的改变就应该是永久性的；已提交的事务，即使在提交后数据库崩溃，重启数据库后也能够根据日志对未持久化的数据重新进行操作</li>
+</ul>
+<h2 id="关于一致性"><a href="#关于一致性" class="headerlink" title="关于一致性"></a>关于一致性</h2><p>这是一个比较大的话题，在不同的场景下有不同含义的一致性，比如：冗余副本的一致性；一致性Hash；CAP理论里面的一致性；ACID中的一致性；一致性的含义都是有区别的</p>
+<p>我们这里把问题限定在单机系统下ACID中的一致性定义，在ACID里，AID都是依赖数据库的具体实现，是数据库的特征，而一致性C需要依赖于应用层。这里的一致性是指系统从一个正确的状态，迁移到另一个正确的状态，那么什么是正确的状态呢？就是当前的状态满足预订的约束就叫做正确的状态。而事务具备ACID里的一致性C是说，通过事务的AID来保证我们的一致性。但是这里必须要注意，我们能够通过AID保证我们的一致性，但事务本身没有办法确保。比如，你在事务里故意写出违反约束的代码，比如银行系统定时每天给自己的账户打钱，这个事务是没办法控制的。</p>
+<p>综上，事务里的一致性是指，应用系统从一个正确的状态到另一个正确的状态，而ACID就是说事务能够通过AID来保证这个C的过程，C是目的，AID都是手段</p>
+<h2 id="事务隔离机制"><a href="#事务隔离机制" class="headerlink" title="事务隔离机制"></a>事务隔离机制</h2><p>在多用户操作的数据库中，对于<strong>数据访问的并发性和数据的一致性</strong>需要进行合理的控制</p>
+<blockquote>
+<p><strong>Data concurrency</strong> means that many users can access data at the same time.<br><br><br><strong>Data consistency</strong> means that each user sees a consistent view of the data, including visible changes made by the user’s own transactions and transactions of other users.</p>
+</blockquote>
+<p><strong>为了解决事务并发时的一致性问题，引入了事务隔离的机制</strong></p>
+<blockquote>
+<p>The serializable mode of transaction behavior tries to ensure that transactions run in such a way that they appear to be executed one at a time, or serially, rather than concurrently.</p>
+</blockquote>
+<p><strong>隔离机制的引入实际上是对数据库操作性能的折衷</strong></p>
+<blockquote>
+<p>Complete isolation of concurrently running transactions could mean that one transaction cannot perform an insert into a table being queried by another transaction. In short, real-world considerations usually require a compromise between perfect transaction isolation and performance.</p>
+</blockquote>
+<p><strong>不能隔离级别会有哪些问题？</strong></p>
+<p>主要有：<strong>脏读，不可重复读和幻读</strong>，具体解释还是参考从官方文档引用的内容：</p>
+<blockquote>
+<p><strong>Dirty reads</strong>:  A transaction reads data that has been written by another transaction that has not been committed yet.<br><br><strong>Nonrepeatable (fuzzy) reads</strong>:  A transaction rereads data it has previously read and finds that another committed transaction has modified or deleted the data.<br><br><strong>Phantom reads (or phantoms)</strong>:  A transaction re-runs a query returning a set of rows that satisfies a search condition and finds that another committed transaction has inserted additional rows that satisfy the condition.</p>
+</blockquote>
+<p>一般数据库的默认事务级别都不允许出现脏读(如MySQL和Oracle)，根据解决隔离带来的问题，从而有不同的隔离机制，比如<strong>解决不可重复读需要行级锁，而解决幻读则需要表级锁(MySQL通过间隙锁部分解决了这个问题)</strong>。需要根据具体场景下并发量的大小，对于数据一致性的要求采用合适的隔离级别</p>
+<h2 id="事务管理"><a href="#事务管理" class="headerlink" title="事务管理"></a>事务管理</h2><p>事务机制目前仍是数据落地最可靠的实现方式，虽然 NoSQL 在支持大数据量快速查询上有巨大优势，但是对于事务的支持弱也是一个重要的问题</p>
+<p>保证事务 ACID 特性是事务管理的重要任务；数据库管理系统通过恢复机制和并发控制机制来对事务进行管理；<strong>事务是恢复和并发控制的基本单位</strong></p>
+<p>事务的开始与结束可以由用户显示的控制，如果用户没有显示地定义事务，则由 DBMS 按缺省规定自动划分事务，在 SQL 中事务通常是以 <code>BEGIN TRANSACTION</code> 开始，以 <code>COMMIT</code>或 <code>ROLLBACK</code> 结束</p>
+<p>综上，理解事务要清楚引入事务的目的，以及事务的四个特性(ACID)，在这四个特性中又需要注意隔离性中不同隔离级别对于并发性和数据一致性的权衡</p>
+<hr>
+<h3 id="推荐阅读"><a href="#推荐阅读" class="headerlink" title="推荐阅读"></a>推荐阅读</h3><ul>
+<li><a href="https://www.zhihu.com/question/31346392/answer/362597203" target="_blank" rel="noopener">如何理解数据库事务中的一致性的概念？</a></li>
+</ul>
+
+      
+
+      
+        <div class="page-reward">
+          <a href="javascript:;" class="page-reward-btn tooltip-top">
+            <div class="tooltip tooltip-east">
+            <span class="tooltip-item">
+              赏
+            </span>
+            <span class="tooltip-content">
+              <span class="tooltip-text">
+                <span class="tooltip-inner">
+                  <p class="reward-p"><i class="icon icon-quo-left"></i>谢谢你支持我创作！<i class="icon icon-quo-right"></i></p>
+                  <div class="reward-box">
+                    
+                    <div class="reward-box-item">
+                      <img class="reward-img" src="/assets/img/alipay.png">
+                      <span class="reward-type">支付宝</span>
+                    </div>
+                    
+                    
+                  </div>
+                </span>
+              </span>
+            </span>
+          </div>
+          </a>
+        </div>
+      
+    </div>
+	<!-- 版权内容 -->
+	
+		<style type="text/css">
+	.article-footer-copyright{
+   border-top:1px solid #d3d3d3;
+   margin: 20px auto;     
+   padding-left:2em;
+   width: 80%;
+}
+.article-footer-copyright p{
+  font-size:1.2em;
+}
+.article-footer-copyright span,.copyright abbr{
+  color:#3d3d3d;
+}
+div.copyright{
+    
+       font-weight:bold;
+       color:#FCB297;
+       padding:0.3em 0.5em;
+       margin:0 0 1em 0;
+       border-bottom:none;
+       background-color:#AAD2F0;
+       -moz-border-radius: 1em;
+       -webkit-border-radius:1em;
+       border-radius: 1em;
+  -moz-box-shadow:inset 0px 1px 0px 0px #eeeeee;
+  -webkit-box-shadow:inset 0px 1px 0px 0px #eeeeee;
+  box-shadow:inset 0px 1px 0px 0px #eeeeee;
+  background:-webkit-gradient( linear, left top, left bottom, color-stop(0.05, #aad2f0), color-stop(1, #8bc1ed) );
+  background:-moz-linear-gradient( center top, #aad2f0 5%, #8bc1ed 100% );
+  /* filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#aad2f0', endColorstr='#8bc1ed'); */
+  background-color:#aad2f0;
+  border:1px solid #dcdcdc;
+  text-shadow:1px 1px 0px #eeeeee;
+  
+}
+div.article-footer-copyright{
+    margin:0em 0em 0em 5em;
+	margin-top:2em;
+    padding:0.5em 1em;
+    border-left:3px solid #ff1700;
+    background-color:#f9f9f9;
+}
+.article-footer-copyright p{
+    line-height: 160%;
+    margin: 10px;
+    font-size: 100%;
+}
+</style>
+
+<div class="article-footer-copyright">
+	<p>本文标题: <a href="/2016/07/01/zai-tan-shi-wu/" target="_blank" title="浅谈数据库事务">浅谈数据库事务</a></p>
+	<p>本文链接: <a href="/2016/07/01/zai-tan-shi-wu/" target="_blank" title="浅谈数据库事务">https://ryan-hou.github.io/2016/07/01/zai-tan-shi-wu/</a></p>
+	<p>转载请注明本文链接~~</p>
+</div>
+
+	
+    <div class="article-info article-info-index">
+      
+      
 	<div class="article-tag tagcloud">
 		<i class="icon-price-tags icon"></i>
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">Java</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">翻译</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">数据库</a>
         		</li>
       		
 		</ul>
 	</div>
 
-          
+      
 
+      
+
+      
+        
+<div class="share-btn share-icons tooltip-left">
+  <div class="tooltip tooltip-east">
+    <span class="tooltip-item">
+      <a href="javascript:;" class="share-sns share-outer">
+        <i class="icon icon-share"></i>
+      </a>
+    </span>
+    <span class="tooltip-content">
+      <div class="share-wrap">
+        <div class="share-icons">
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="icon icon-weibo"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="icon icon-weixin"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="icon icon-qq"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="icon icon-douban"></i>
+          </a>
+          <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a>
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="icon icon-facebook"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="icon icon-twitter"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="icon icon-google"></i>
+          </a>
         </div>
-        <div class="clearfix"></div>
-    </header>
+      </div>
+    </span>
+  </div>
+</div>
+
+<div class="page-modal wx-share js-wx-box">
+    <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+      <img src="//pan.baidu.com/share/qrcode?url=https://ryan-hou.github.io/2016/07/01/zai-tan-shi-wu/" alt="微信分享二维码">
+    </div>
+</div>
+
+<div class="mask js-mask"></div>
+      
+      <div class="clearfix"></div>
+    </div>
   </div>
 </article>
+
+  
+<nav id="article-nav">
+  
+    <a href="/2017/01/03/checked-slash-unchecked-exception-in-java/" id="article-nav-newer" class="article-nav-link-wrap">
+      <i class="icon-circle-left"></i>
+      <div class="article-nav-title">
+        
+          Checked/Unchecked Exception
+        
+      </div>
+    </a>
   
   
-    </div></section>
+    <a href="/2016/06/17/shi-pei-qi-mo-shi/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">适配器模式</div>
+      <i class="icon-circle-right"></i>
+    </a>
+  
+</nav>
+
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+  
+  
   
 
-    
+  
+
+  
+
+  
+  <div id="gitment-ctn"></div> 
+<link rel="stylesheet" href="https://billts.site/extra_css/gitment.css">
+<script src="https://billts.site/js/gitment.js"></script>
+<script>
+var gitment = new Gitment({
+  id: '浅谈数据库事务',
+  owner: 'Ryan-hou',
+  repo: 'Ryan-hou.github.io',
+  oauth: {
+    client_id: '10b94f286862e039846e',
+    client_secret: '51c6b587d0a58d70f6da2e9c5641e66a431751d9',
+  },
+})
+gitment.render('gitment-ctn')
+</script>
+
+  
+
 
 
           </div>
@@ -226,8 +465,8 @@
 	var yiliaConfig = {
 		mathjax: false,
 		isHome: false,
-		isPost: false,
-		isArchive: true,
+		isPost: true,
+		isArchive: false,
 		isTag: false,
 		isCategory: false,
 		open_in_new: true,
