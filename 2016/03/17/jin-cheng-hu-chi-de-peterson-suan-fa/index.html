@@ -6,20 +6,20 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="https://ryan-hou.github.io">
-  <title>important conceptions in language | 0x08 0x17</title>
+  <title>进程互斥的 Peterson 算法 | 0x08 0x17</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="整理一些非常基础容易忽视但是却很重要的语言概念，概念不是教条，但是对概念有一个清晰的认识是一件好事。内容大部分来自 Oracle 官方文档的翻译和对维基百科的翻译。会给出链接，需要详细信息的可以自行查阅 Expression, Statements, Blocks Operators may be used in building expressions, which compute values">
-<meta name="keywords" content="总结,Java">
+  <meta name="description" content="背景：在进程互斥的软件实现算法中，Peterson算法是一个比较经典的方式，他基本满足了同步机制应该遵循的准则：空闲让进，忙则等待，有限等待和让权等待。在该算法中通过设置标志位和公共变量来实现临界区互斥的解决方法值得我们借鉴学习。">
+<meta name="keywords" content="OS,算法">
 <meta property="og:type" content="article">
-<meta property="og:title" content="important conceptions in language">
-<meta property="og:url" content="https://ryan-hou.github.io/2017/09/30/basic-but-important-conception-in-language/index.html">
+<meta property="og:title" content="进程互斥的 Peterson 算法">
+<meta property="og:url" content="https://ryan-hou.github.io/2016/03/17/jin-cheng-hu-chi-de-peterson-suan-fa/index.html">
 <meta property="og:site_name" content="0x08 0x17">
-<meta property="og:description" content="整理一些非常基础容易忽视但是却很重要的语言概念，概念不是教条，但是对概念有一个清晰的认识是一件好事。内容大部分来自 Oracle 官方文档的翻译和对维基百科的翻译。会给出链接，需要详细信息的可以自行查阅 Expression, Statements, Blocks Operators may be used in building expressions, which compute values">
+<meta property="og:description" content="背景：在进程互斥的软件实现算法中，Peterson算法是一个比较经典的方式，他基本满足了同步机制应该遵循的准则：空闲让进，忙则等待，有限等待和让权等待。在该算法中通过设置标志位和公共变量来实现临界区互斥的解决方法值得我们借鉴学习。">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2018-05-25T07:06:08.000Z">
+<meta property="og:updated_time" content="2018-05-28T01:47:37.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="important conceptions in language">
-<meta name="twitter:description" content="整理一些非常基础容易忽视但是却很重要的语言概念，概念不是教条，但是对概念有一个清晰的认识是一件好事。内容大部分来自 Oracle 官方文档的翻译和对维基百科的翻译。会给出链接，需要详细信息的可以自行查阅 Expression, Statements, Blocks Operators may be used in building expressions, which compute values">
+<meta name="twitter:title" content="进程互斥的 Peterson 算法">
+<meta name="twitter:description" content="背景：在进程互斥的软件实现算法中，Peterson算法是一个比较经典的方式，他基本满足了同步机制应该遵循的准则：空闲让进，忙则等待，有限等待和让权等待。在该算法中通过设置标志位和公共变量来实现临界区互斥的解决方法值得我们借鉴学习。">
   
     <link rel="alternative" href="/atom.xml" title="0x08 0x17" type="application/atom+xml">
   
@@ -151,65 +151,55 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            <article id="post-basic-but-important-conception-in-language" class="article article-type-post " itemscope itemprop="blogPost">
+            <article id="post-jin-cheng-hu-chi-de-peterson-suan-fa" class="article article-type-post " itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
         
   
     <h1 class="article-title" itemprop="name">
-      important conceptions in language
+      进程互斥的 Peterson 算法
     </h1>
   
 
         
-        <a href="/2017/09/30/basic-but-important-conception-in-language/" class="archive-article-date">
-  	<time datetime="2017-09-30T06:21:37.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-09-30</time>
+        <a href="/2016/03/17/jin-cheng-hu-chi-de-peterson-suan-fa/" class="archive-article-date">
+  	<time datetime="2016-03-17T13:11:45.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2016-03-17</time>
 </a>
         
       </header>
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>整理一些非常基础容易忽视但是却很重要的语言概念，概念不是教条，但是对概念有一个清晰的认识是一件好事。内容大部分来自 Oracle 官方文档的翻译和对维基百科的翻译。会给出链接，需要详细信息的可以自行查阅</p>
-<h2 id="Expression-Statements-Blocks"><a href="#Expression-Statements-Blocks" class="headerlink" title="Expression, Statements, Blocks"></a>Expression, Statements, Blocks</h2><blockquote>
-<p>Operators may be used in building expressions, which compute values; expressions are the core componens of statements; statements may be grouped into blocks.</p>
-</blockquote>
-<h3 id="Expressions"><a href="#Expressions" class="headerlink" title="Expressions"></a>Expressions</h3><p>一个表达式是由各种变量，操作符和方法调用按照语言提供的语法规则构成，<strong>并且可以计算得到一个值。</strong>表达式得到的值的类型根据表达式中的元素推导出。比如表达式 <code>cadence = 0</code> 返回 int 类型的数据，因为赋值操作符返回一个相同的数据类型给操作符左边的操作数。在这个例子中，cadence 是一个 int 类型数据</p>
-<p>Java 编程语言允许你通过各种更小的表达式来构造复合的表达式，只要表达式的返回类型互相匹配即可。比如<code>1 * 2 * 3</code> 就是一个比较简单的复合表达式</p>
-<p><strong>在书写复合表达式时，通过使用括号来明确的指定各运算符的优先顺序会使代码更加易读和可维护。把复杂的表达式拆分成简单的表达式并用合适的变量定义也是很好的代码重构手段</strong></p>
+        <p>背景：在进程互斥的软件实现算法中，Peterson算法是一个比较经典的方式，他基本满足了同步机制应该遵循的准则：<strong>空闲让进，忙则等待，有限等待和让权等待</strong>。在该算法中通过设置标志位和公共变量来实现临界区互斥的解决方法值得我们借鉴学习。</p>
 <a id="more"></a>
-<h3 id="Statements"><a href="#Statements" class="headerlink" title="Statements"></a>Statements</h3><p>Statements 可以大致类比为自然语言中的句子，一个 Statement 构成一个完整的执行单元。下面的表达式通过在表达式末尾增加一个分号<code>;</code>就可以构成一个 statement：</p>
+<p>要理解这个算法，我们头脑中要清楚自己想要实现什么效果。软件方式实现临界区互斥的总体思路是这样的：在进入区设置和检查一些标志来标明是否有进程在临界区中，如果已有进程在临界区中，则在进入区通过循环检查进行等待，进程离开临界区后则在退出区修改标志。那么接下来问题就来了：</p>
 <ul>
-<li>赋值表达式</li>
-<li>使用 ++ 或者 –  的表达式</li>
-<li>方法调用</li>
-<li>对象创建表达式</li>
+<li><p>如何解决临界区互斥的问题？这里我们很容易就会想到，可以设计一个标志位 flag 来实现，很简单，进程在进入临界区前，先把自己的标志位flag设置为TRUE，表示自己要进入临界区进行操作，然后在循环检测中检测对方的flag标志，一旦发现对方标识也为TRUE，则循环检测等待，如果为FALSE，则说明可是执行临界区的代码。</p>
+</li>
+<li><p>就这么简单吗？当然不是，上一步在解决临界区互斥的问题上会引入<strong>“饥饿”现象</strong>，也就是当两个进程<strong>同时</strong>把自己的标志位设置为TRUE，然后检测对方的标志位时，发现对方也为TRUE，接下来就麻烦了，两个进程会傻傻的一直等待对方修改状态，但是谁也不能继续进行下去。这时，我们需要再加一个标志，来避免这种情况。个人认为，这一步也是Peterson算法的关键所在。那么如何做到让两个进程按顺序来使用临界区呢？因为我们都知道，<strong>同时发生</strong>这件事对我们的计算机来说是不可能的，严格意义上，两件事之间不可能同时，总会有细小的时间差距，那么这里我们就可以利用这一点来实现顺序的操作。按照<strong>“先到先得”</strong>的原则，我们可以再加一个公共变量turn，在循环检测的语句中我们也要加上关于这个公共变量的判断，下面先给出Peterson的伪代码，方便解释。</p>
+</li>
 </ul>
-<p>这些 Statements 就叫做 <code>expression statements</code>。下面就是一些表达式Statements的例子：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// assignment statement</span></span><br><span class="line">aValue = <span class="number">9999.1</span>;</span><br><span class="line"><span class="comment">// increment statement</span></span><br><span class="line">aValue++;</span><br><span class="line"><span class="comment">// method invocation statement</span></span><br><span class="line">System.out.println(<span class="string">"Hello world"</span>);</span><br><span class="line"><span class="comment">// object creation statement</span></span><br><span class="line">Bicycle myBike = <span class="keyword">new</span> Bicycle();</span><br></pre></td></tr></table></figure>
-<p>除了表达式语句，还有两种类型的语句：声明语句和控制流语句。一个声明语句声明一个变量。你早已经见过了很多声明语句了： <code>double aValue = 11.2; // // declaration statment</code>最后就是控制流statements了，用来控制statements的执行顺序。</p>
-<p>文件中的 statements 通常是按照他们在文件中出现的顺序来执行的。然而，控制流statements <strong>通过决定，循环和分支来打破原来的流程，使你的程序可以按条件来执行特定的代码块。</strong>控制流语句包括了 decision-making statements（<strong>if-then,if-then-else,switch</strong>），the looping statements(<strong>for, while, do-while</strong>)和 the branching statements(<strong>break, continue, return</strong>)</p>
-<h3 id="Blocks"><a href="#Blocks" class="headerlink" title="Blocks"></a>Blocks</h3><blockquote>
-<p>A block is a group of zero or more statements between balanced braces and can be used anywhere a single statement is allowed.</p>
-</blockquote>
-<p>举个例子来解释blocks的使用：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">BlockDemo</span> </span>&#123;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">		<span class="keyword">boolean</span> condition = <span class="keyword">true</span>;</span><br><span class="line">		<span class="keyword">if</span> (condition) &#123; <span class="comment">// begin block 1</span></span><br><span class="line">			System.out.println(<span class="string">"Condition is true"</span>);</span><br><span class="line">		&#125; <span class="comment">// end block one</span></span><br><span class="line">		<span class="keyword">else</span> &#123; <span class="comment">// begin block 2</span></span><br><span class="line">			System.out.println(<span class="string">"Condition is false"</span>);</span><br><span class="line">		&#125; <span class="comment">// end block 2</span></span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h2 id="Scope"><a href="#Scope" class="headerlink" title="Scope"></a>Scope</h2><p>在计算机编程中，命名绑定(name binding－名字和实体的关联(比如变量和绑定的值))的scope是程序中的一个范围，在这个范围内该绑定是有效的：可以使用这个名字来引用这个实体。在程序的其它部分这个名字可能会指向不同的实体，或者指向空</p>
-<p>这个绑定的scope通常也被叫做一个实体的可见性。这是从被引用实体的视角来描述的，前面说的绑定是从指向引用的名字的角度来说的。精确的定义这个 Scope 是比较困难的，但是在平常使用和实践中，通常Scope会根据使用的语言和实体的类型被指代为 <code>a block, a function, or a file</code></p>
-<h3 id="Lexical-scope-VS-Dynamic-scope"><a href="#Lexical-scope-VS-Dynamic-scope" class="headerlink" title="Lexical scope VS Dynamic scope"></a>Lexical scope VS Dynamic scope</h3><p>在scope中存在一个根本的不同是“程序中的一部分”指的是什么。在使用词法作用域(也叫静态作用域)的语言中，名称解析依赖于源码中名称的位置和词法上下文（根据命名变量和函数定义的位置来定义）。相对的，使用动态作用域的语言，名称解析依赖于程序状态，当这个名字被解析到时执行上下文是什么。在实际中，使用词法作用域的变量定义通过搜寻包含他的block或者function来解析，如果失败了，会继续搜寻外面一层的block，以此类推。当然，在这两种规则中，我们都是首先查看该变量的本地定义。</p>
-<p>大部分现代语言都使用词法作用域，动态作用域主要被 Lisp 的一些方言使用，还有一些脚本语言如Perl，和一些模版语言。即使在词法作用域中，闭包作用域对于一些没有专门知识的人理解起来也是困惑的。这是由于<strong>闭包的词法作用域依赖于她定义的位置，而不是她调用的位置</strong></p>
-<h2 id="语言的类型系统"><a href="#语言的类型系统" class="headerlink" title="语言的类型系统"></a>语言的类型系统</h2><h3 id="statically-typed-system-VS-dynamically-typed-system"><a href="#statically-typed-system-VS-dynamically-typed-system" class="headerlink" title="statically typed system VS dynamically typed system"></a>statically typed system VS dynamically typed system</h3><p>先区分静态类型系统和动态类型系统:</p>
-<p>在动态类型系统中，值在运行时有类型，但是变量和函数没有类型。在静态类型系统中，变量和函数的类型在编译期是已知的。举例来说，在 Python 中，x 可以是任意的东西，在运行时，如果他是1，那么x就是number类型，如果他是”foo”,那么x就是一个 string。你只有在运行时才能知道x的类型，而且在你每次运行程序时，这个类型可能不一样。在像 Java 这样的静态类型语言中，如果x是number，你一般直接定义 int x，编译器在编译期就知道x是int类型，而且不会在运行时改变。</p>
-<h3 id="Explicit-VS-Implicit"><a href="#Explicit-VS-Implicit" class="headerlink" title="Explicit VS Implicit"></a>Explicit VS Implicit</h3><p>在静态类型系统下，再区分：</p>
-<p>静态类型系统是说，一个变量的类型是在编译期已知的，但是不表示你必须像Java那样显示的写出来，比如<code>public int foo(String bra, Object baz) {...}</code>这是一个静态的，显示的方式。有的语言编译器会自己进行类型推导，不需要显示的把类型写出来，比如在 OCaml中，<code>let foo x = x + 1</code>，因为你使用了操作符<code>+</code>所以OCaml会推断出x是int类型，你不需要自己显示的写出来</p>
-<h3 id="Nominal-typing-VS-Structural-typing"><a href="#Nominal-typing-VS-Structural-typing" class="headerlink" title="Nominal typing VS Structural typing"></a>Nominal typing VS Structural typing</h3><p>一个类型像是 a string，a boolean，an object，or a class，它们都有一个名字和结构，像string 或者boolean 这样的基本数据类型的结构很简单，基本只有一个名字。像类这样的类型的结构就比较复杂了，它们也都有自己的名字，即使他们的结构是一样的</p>
-<p>静态类型检查器如果通过类型的名字来检查类型是否一样，这就是 nominal typing，如果是通过结构来检查，这就是 structural typing</p>
-<hr>
-<h3 id="参考文章："><a href="#参考文章：" class="headerlink" title="参考文章："></a>参考文章：</h3><ul>
-<li><a href="https://docs.oracle.com/javase/tutorial/java/nutsandbolts/expressions.html" target="_blank" rel="noopener">Expressions, Statements, and Blocks</a></li>
-<li><a href="https://medium.com/@thejameskyle/type-systems-structural-vs-nominal-typing-explained-56511dd969f4#.wo7rcsj48" target="_blank" rel="noopener">Type Systems: Structural vs. Nominal typing explained</a></li>
-<li><a href="https://en.wikipedia.org/wiki/Type_system" target="_blank" rel="noopener">Type system</a></li>
+<pre><code class="c"><span class="comment">// 伪代码</span>
+Pi进程：                                                  
+flag[i] = TRUE; turn = j;    <span class="comment">//进入区</span>
+<span class="keyword">while</span>(flag[j] &amp;&amp; turn == j); <span class="comment">//进入区</span>
+critical section;           <span class="comment">//临界区</span>
+flag[i] = FALSE;            <span class="comment">//退出区</span>
+remainder section;          <span class="comment">//剩余区</span>
+
+pj进程：
+flag[j] = TRUE; turn = i;      <span class="comment">// 进入区</span>
+<span class="keyword">while</span>(flag[i] &amp;&amp; turn == i); <span class="comment">// 进入区</span>
+critical section;            <span class="comment">// 临界区</span>
+flag[j] = FALSE;             <span class="comment">// 退出区</span>
+remainder section;           <span class="comment">// 剩余区</span>
+</code></pre>
+<p>下面看一下Peterson算法解决“饥饿”现象的原理：</p>
+<ul>
+<li>进程想要执行前，会先设置自己的flag标志告诉其他的进程“hey，我要进入临界区了！”，如果其他进程没有回应，那么该进程就可以顺畅的执行下去。</li>
+<li>如果其他进程这时也想进去，没关系，我们还有一个标志位turn。这里turn标志可以理解为和其他进程的一句“客套话”,因为他的值等于对方进程的进程号嘛，先问好有礼貌的人我们都比较喜欢，结果就是，<strong>先设置了turn标志值的进程会先得到执行</strong>(两个进程的turn值的设置总是会有一个先后顺序的)。</li>
+<li>原因很明显，后来设置标志位turn的进程会使得自己的循环判断语句为真，而使其他进程的循环判断语句为假从而得到执行，类似于一种先手优势。相比我们其他的方法，比如：单标志法，双标志先检查法和双标志后检查法，Peterson要有效地多，而且这种处理问题的逻辑值得我们借鉴。</li>
 </ul>
 
       
@@ -294,8 +284,8 @@ div.article-footer-copyright{
 </style>
 
 <div class="article-footer-copyright">
-	<p>本文标题: <a href="/2017/09/30/basic-but-important-conception-in-language/" target="_blank" title="important conceptions in language">important conceptions in language</a></p>
-	<p>本文链接: <a href="/2017/09/30/basic-but-important-conception-in-language/" target="_blank" title="important conceptions in language">https://ryan-hou.github.io/2017/09/30/basic-but-important-conception-in-language/</a></p>
+	<p>本文标题: <a href="/2016/03/17/jin-cheng-hu-chi-de-peterson-suan-fa/" target="_blank" title="进程互斥的 Peterson 算法">进程互斥的 Peterson 算法</a></p>
+	<p>本文链接: <a href="/2016/03/17/jin-cheng-hu-chi-de-peterson-suan-fa/" target="_blank" title="进程互斥的 Peterson 算法">https://ryan-hou.github.io/2016/03/17/jin-cheng-hu-chi-de-peterson-suan-fa/</a></p>
 	<p>转载请注明本文链接~~</p>
 </div>
 
@@ -308,11 +298,11 @@ div.article-footer-copyright{
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">总结</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">OS</a>
         		</li>
       		 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">Java</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">算法</a>
         		</li>
       		
 		</ul>
@@ -368,7 +358,7 @@ div.article-footer-copyright{
     <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
     <p>扫一扫，分享到微信</p>
     <div class="wx-qrcode">
-      <img src="//pan.baidu.com/share/qrcode?url=https://ryan-hou.github.io/2017/09/30/basic-but-important-conception-in-language/" alt="微信分享二维码">
+      <img src="//pan.baidu.com/share/qrcode?url=https://ryan-hou.github.io/2016/03/17/jin-cheng-hu-chi-de-peterson-suan-fa/" alt="微信分享二维码">
     </div>
 </div>
 
@@ -382,18 +372,18 @@ div.article-footer-copyright{
   
 <nav id="article-nav">
   
-    <a href="/2017/11/27/efficient-data-transfer-through-zero-copy/" id="article-nav-newer" class="article-nav-link-wrap">
+    <a href="/2016/04/08/shu-ju-chuan-shu-zhong-de-jia-jie-mi/" id="article-nav-newer" class="article-nav-link-wrap">
       <i class="icon-circle-left"></i>
       <div class="article-nav-title">
         
-          Efficient data transfer through zero copy
+          数据传输中的加解密
         
       </div>
     </a>
   
   
-    <a href="/2017/09/30/fan-zhuan-dan-lian-biao-de-ji-chong-zi-shi/" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">反转单链表的几种姿势</div>
+    <a href="/2016/03/16/wen-jian-de-luo-ji-jie-gou-yu-wu-li-jie-gou/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">文件的逻辑结构与物理结构</div>
       <i class="icon-circle-right"></i>
     </a>
   
@@ -432,7 +422,7 @@ div.article-footer-copyright{
 <script src="https://billts.site/js/gitment.js"></script>
 <script>
 var gitment = new Gitment({
-  id: 'important conceptions in language',
+  id: '进程互斥的 Peterson 算法',
   owner: 'Ryan-hou',
   repo: 'Ryan-hou.github.io',
   oauth: {

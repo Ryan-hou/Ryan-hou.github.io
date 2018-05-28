@@ -6,20 +6,20 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="https://ryan-hou.github.io">
-  <title>important conceptions in language | 0x08 0x17</title>
+  <title>文件的逻辑结构与物理结构 | 0x08 0x17</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="整理一些非常基础容易忽视但是却很重要的语言概念，概念不是教条，但是对概念有一个清晰的认识是一件好事。内容大部分来自 Oracle 官方文档的翻译和对维基百科的翻译。会给出链接，需要详细信息的可以自行查阅 Expression, Statements, Blocks Operators may be used in building expressions, which compute values">
-<meta name="keywords" content="总结,Java">
+  <meta name="description" content="背景：在系统运行时，计算机以进程为单位来进行资源分配；而在用户输入输出中，则以文件为基本单位。大多数应用程序的输入输出都是通过文件实现的，并保存在文件中。实际上，我们的输入输出设备其实也完全可以看做是文件，所以有必要了解关于文件系统的运作原理，而在文件中比较抽象和易混的概念就是逻辑结构和物理结构了。">
+<meta name="keywords" content="OS">
 <meta property="og:type" content="article">
-<meta property="og:title" content="important conceptions in language">
-<meta property="og:url" content="https://ryan-hou.github.io/2017/09/30/basic-but-important-conception-in-language/index.html">
+<meta property="og:title" content="文件的逻辑结构与物理结构">
+<meta property="og:url" content="https://ryan-hou.github.io/2016/03/16/wen-jian-de-luo-ji-jie-gou-yu-wu-li-jie-gou/index.html">
 <meta property="og:site_name" content="0x08 0x17">
-<meta property="og:description" content="整理一些非常基础容易忽视但是却很重要的语言概念，概念不是教条，但是对概念有一个清晰的认识是一件好事。内容大部分来自 Oracle 官方文档的翻译和对维基百科的翻译。会给出链接，需要详细信息的可以自行查阅 Expression, Statements, Blocks Operators may be used in building expressions, which compute values">
+<meta property="og:description" content="背景：在系统运行时，计算机以进程为单位来进行资源分配；而在用户输入输出中，则以文件为基本单位。大多数应用程序的输入输出都是通过文件实现的，并保存在文件中。实际上，我们的输入输出设备其实也完全可以看做是文件，所以有必要了解关于文件系统的运作原理，而在文件中比较抽象和易混的概念就是逻辑结构和物理结构了。">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2018-05-25T07:06:08.000Z">
+<meta property="og:updated_time" content="2018-05-28T01:35:48.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="important conceptions in language">
-<meta name="twitter:description" content="整理一些非常基础容易忽视但是却很重要的语言概念，概念不是教条，但是对概念有一个清晰的认识是一件好事。内容大部分来自 Oracle 官方文档的翻译和对维基百科的翻译。会给出链接，需要详细信息的可以自行查阅 Expression, Statements, Blocks Operators may be used in building expressions, which compute values">
+<meta name="twitter:title" content="文件的逻辑结构与物理结构">
+<meta name="twitter:description" content="背景：在系统运行时，计算机以进程为单位来进行资源分配；而在用户输入输出中，则以文件为基本单位。大多数应用程序的输入输出都是通过文件实现的，并保存在文件中。实际上，我们的输入输出设备其实也完全可以看做是文件，所以有必要了解关于文件系统的运作原理，而在文件中比较抽象和易混的概念就是逻辑结构和物理结构了。">
   
     <link rel="alternative" href="/atom.xml" title="0x08 0x17" type="application/atom+xml">
   
@@ -151,66 +151,54 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            <article id="post-basic-but-important-conception-in-language" class="article article-type-post " itemscope itemprop="blogPost">
+            <article id="post-wen-jian-de-luo-ji-jie-gou-yu-wu-li-jie-gou" class="article article-type-post " itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
         
   
     <h1 class="article-title" itemprop="name">
-      important conceptions in language
+      文件的逻辑结构与物理结构
     </h1>
   
 
         
-        <a href="/2017/09/30/basic-but-important-conception-in-language/" class="archive-article-date">
-  	<time datetime="2017-09-30T06:21:37.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-09-30</time>
+        <a href="/2016/03/16/wen-jian-de-luo-ji-jie-gou-yu-wu-li-jie-gou/" class="archive-article-date">
+  	<time datetime="2016-03-16T15:02:00.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2016-03-16</time>
 </a>
         
       </header>
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>整理一些非常基础容易忽视但是却很重要的语言概念，概念不是教条，但是对概念有一个清晰的认识是一件好事。内容大部分来自 Oracle 官方文档的翻译和对维基百科的翻译。会给出链接，需要详细信息的可以自行查阅</p>
-<h2 id="Expression-Statements-Blocks"><a href="#Expression-Statements-Blocks" class="headerlink" title="Expression, Statements, Blocks"></a>Expression, Statements, Blocks</h2><blockquote>
-<p>Operators may be used in building expressions, which compute values; expressions are the core componens of statements; statements may be grouped into blocks.</p>
-</blockquote>
-<h3 id="Expressions"><a href="#Expressions" class="headerlink" title="Expressions"></a>Expressions</h3><p>一个表达式是由各种变量，操作符和方法调用按照语言提供的语法规则构成，<strong>并且可以计算得到一个值。</strong>表达式得到的值的类型根据表达式中的元素推导出。比如表达式 <code>cadence = 0</code> 返回 int 类型的数据，因为赋值操作符返回一个相同的数据类型给操作符左边的操作数。在这个例子中，cadence 是一个 int 类型数据</p>
-<p>Java 编程语言允许你通过各种更小的表达式来构造复合的表达式，只要表达式的返回类型互相匹配即可。比如<code>1 * 2 * 3</code> 就是一个比较简单的复合表达式</p>
-<p><strong>在书写复合表达式时，通过使用括号来明确的指定各运算符的优先顺序会使代码更加易读和可维护。把复杂的表达式拆分成简单的表达式并用合适的变量定义也是很好的代码重构手段</strong></p>
+        <p>背景：在系统运行时，计算机以进程为单位来进行资源分配；而在用户输入输出中，则以文件为基本单位。大多数应用程序的输入输出都是通过文件实现的，并保存在文件中。实际上，我们的输入输出设备其实也完全可以看做是文件，所以有必要了解关于文件系统的运作原理，而在文件中比较抽象和易混的概念就是逻辑结构和物理结构了。</p>
 <a id="more"></a>
-<h3 id="Statements"><a href="#Statements" class="headerlink" title="Statements"></a>Statements</h3><p>Statements 可以大致类比为自然语言中的句子，一个 Statement 构成一个完整的执行单元。下面的表达式通过在表达式末尾增加一个分号<code>;</code>就可以构成一个 statement：</p>
+<p>在说明物理结构和逻辑结构前，有必要先来明确一下有关文件的重要概念。我们系统中的所有文件信息都保存在外存的目录结构中(也就是FCB的有序集合)，当需要时再调入内存。<strong>通常目录条目(也就是一个FCB)包括文件名和唯一标示符(在Unix系统中称为i节点)，由唯一标识符来定位文件的其他属性。</strong>大部分操作系统要求文件在使用之前就被显示的打开，操作Open会根据文件名搜索目录，并将目录条目复制到打开文件表，并返回一个指向该条目的指针给用户，使用户使用该指针而不是文件名来操作文件，节省了资源。</p>
+<p>关于文件的逻辑结构与物理结构的关系，先记住一句话：<strong>物理结构就是为了实现某一个特定的逻辑结构服务的</strong>，当我们理解了二者的关系后，完全可以把他们当成两个单独<strong>客观存在</strong>的东西。</p>
+<p>我们都知道，文件按其逻辑结构分为有结构文件(由若干记录组成，也称记录式文件，比如数据库文件)和无结构文件(也叫流式文件)。事实上，我们完全可以把流式文件也看做有结构文件，只不过每个文件记录为一个字节而已。下面我们把文件都看做有结构的。关于逻辑结构，就是一句话:<strong>指记录之间的相互关系</strong>。具体一点，就是每个记录在文件中的位置，我们把这种位置称为<code>顺序</code>。当我们写一个文件时，一定有一个潜意识的先后顺序，那么<strong>这个顺序就是逻辑结构</strong>，那么这些顺序是怎么形成的呢？<strong>一般有顺序与索引两种方式，由这两种方式决定记录在文件中的位置。</strong>再具体一点，文件逻辑结构的实现形式主要有:</p>
 <ul>
-<li>赋值表达式</li>
-<li>使用 ++ 或者 –  的表达式</li>
-<li>方法调用</li>
-<li>对象创建表达式</li>
+<li>顺序文件：其记录是按某种顺序排列所形成的，记录在文件中的位置由某种顺序决定，这里按决定顺序的不同原因可分为串结构(记录顺序与关键字无关，由时间决定)和顺序结构(按关键字顺序排列)</li>
+<li>索引文件：记录在文件中的位置由索引表来决定，其实是按某个记录键来确定位置的。</li>
+<li>索引顺序文件：上面两种的结合。先将顺序文件中的记录分为组，再为顺序文件建立一张索引表，在索引表里为每组中的第一个记录建立索引项，记录在文件中的位置由索引表和顺序决定。</li>
 </ul>
-<p>这些 Statements 就叫做 <code>expression statements</code>。下面就是一些表达式Statements的例子：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// assignment statement</span></span><br><span class="line">aValue = <span class="number">9999.1</span>;</span><br><span class="line"><span class="comment">// increment statement</span></span><br><span class="line">aValue++;</span><br><span class="line"><span class="comment">// method invocation statement</span></span><br><span class="line">System.out.println(<span class="string">"Hello world"</span>);</span><br><span class="line"><span class="comment">// object creation statement</span></span><br><span class="line">Bicycle myBike = <span class="keyword">new</span> Bicycle();</span><br></pre></td></tr></table></figure>
-<p>除了表达式语句，还有两种类型的语句：声明语句和控制流语句。一个声明语句声明一个变量。你早已经见过了很多声明语句了： <code>double aValue = 11.2; // // declaration statment</code>最后就是控制流statements了，用来控制statements的执行顺序。</p>
-<p>文件中的 statements 通常是按照他们在文件中出现的顺序来执行的。然而，控制流statements <strong>通过决定，循环和分支来打破原来的流程，使你的程序可以按条件来执行特定的代码块。</strong>控制流语句包括了 decision-making statements（<strong>if-then,if-then-else,switch</strong>），the looping statements(<strong>for, while, do-while</strong>)和 the branching statements(<strong>break, continue, return</strong>)</p>
-<h3 id="Blocks"><a href="#Blocks" class="headerlink" title="Blocks"></a>Blocks</h3><blockquote>
-<p>A block is a group of zero or more statements between balanced braces and can be used anywhere a single statement is allowed.</p>
-</blockquote>
-<p>举个例子来解释blocks的使用：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">BlockDemo</span> </span>&#123;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">		<span class="keyword">boolean</span> condition = <span class="keyword">true</span>;</span><br><span class="line">		<span class="keyword">if</span> (condition) &#123; <span class="comment">// begin block 1</span></span><br><span class="line">			System.out.println(<span class="string">"Condition is true"</span>);</span><br><span class="line">		&#125; <span class="comment">// end block one</span></span><br><span class="line">		<span class="keyword">else</span> &#123; <span class="comment">// begin block 2</span></span><br><span class="line">			System.out.println(<span class="string">"Condition is false"</span>);</span><br><span class="line">		&#125; <span class="comment">// end block 2</span></span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h2 id="Scope"><a href="#Scope" class="headerlink" title="Scope"></a>Scope</h2><p>在计算机编程中，命名绑定(name binding－名字和实体的关联(比如变量和绑定的值))的scope是程序中的一个范围，在这个范围内该绑定是有效的：可以使用这个名字来引用这个实体。在程序的其它部分这个名字可能会指向不同的实体，或者指向空</p>
-<p>这个绑定的scope通常也被叫做一个实体的可见性。这是从被引用实体的视角来描述的，前面说的绑定是从指向引用的名字的角度来说的。精确的定义这个 Scope 是比较困难的，但是在平常使用和实践中，通常Scope会根据使用的语言和实体的类型被指代为 <code>a block, a function, or a file</code></p>
-<h3 id="Lexical-scope-VS-Dynamic-scope"><a href="#Lexical-scope-VS-Dynamic-scope" class="headerlink" title="Lexical scope VS Dynamic scope"></a>Lexical scope VS Dynamic scope</h3><p>在scope中存在一个根本的不同是“程序中的一部分”指的是什么。在使用词法作用域(也叫静态作用域)的语言中，名称解析依赖于源码中名称的位置和词法上下文（根据命名变量和函数定义的位置来定义）。相对的，使用动态作用域的语言，名称解析依赖于程序状态，当这个名字被解析到时执行上下文是什么。在实际中，使用词法作用域的变量定义通过搜寻包含他的block或者function来解析，如果失败了，会继续搜寻外面一层的block，以此类推。当然，在这两种规则中，我们都是首先查看该变量的本地定义。</p>
-<p>大部分现代语言都使用词法作用域，动态作用域主要被 Lisp 的一些方言使用，还有一些脚本语言如Perl，和一些模版语言。即使在词法作用域中，闭包作用域对于一些没有专门知识的人理解起来也是困惑的。这是由于<strong>闭包的词法作用域依赖于她定义的位置，而不是她调用的位置</strong></p>
-<h2 id="语言的类型系统"><a href="#语言的类型系统" class="headerlink" title="语言的类型系统"></a>语言的类型系统</h2><h3 id="statically-typed-system-VS-dynamically-typed-system"><a href="#statically-typed-system-VS-dynamically-typed-system" class="headerlink" title="statically typed system VS dynamically typed system"></a>statically typed system VS dynamically typed system</h3><p>先区分静态类型系统和动态类型系统:</p>
-<p>在动态类型系统中，值在运行时有类型，但是变量和函数没有类型。在静态类型系统中，变量和函数的类型在编译期是已知的。举例来说，在 Python 中，x 可以是任意的东西，在运行时，如果他是1，那么x就是number类型，如果他是”foo”,那么x就是一个 string。你只有在运行时才能知道x的类型，而且在你每次运行程序时，这个类型可能不一样。在像 Java 这样的静态类型语言中，如果x是number，你一般直接定义 int x，编译器在编译期就知道x是int类型，而且不会在运行时改变。</p>
-<h3 id="Explicit-VS-Implicit"><a href="#Explicit-VS-Implicit" class="headerlink" title="Explicit VS Implicit"></a>Explicit VS Implicit</h3><p>在静态类型系统下，再区分：</p>
-<p>静态类型系统是说，一个变量的类型是在编译期已知的，但是不表示你必须像Java那样显示的写出来，比如<code>public int foo(String bra, Object baz) {...}</code>这是一个静态的，显示的方式。有的语言编译器会自己进行类型推导，不需要显示的把类型写出来，比如在 OCaml中，<code>let foo x = x + 1</code>，因为你使用了操作符<code>+</code>所以OCaml会推断出x是int类型，你不需要自己显示的写出来</p>
-<h3 id="Nominal-typing-VS-Structural-typing"><a href="#Nominal-typing-VS-Structural-typing" class="headerlink" title="Nominal typing VS Structural typing"></a>Nominal typing VS Structural typing</h3><p>一个类型像是 a string，a boolean，an object，or a class，它们都有一个名字和结构，像string 或者boolean 这样的基本数据类型的结构很简单，基本只有一个名字。像类这样的类型的结构就比较复杂了，它们也都有自己的名字，即使他们的结构是一样的</p>
-<p>静态类型检查器如果通过类型的名字来检查类型是否一样，这就是 nominal typing，如果是通过结构来检查，这就是 structural typing</p>
-<hr>
-<h3 id="参考文章："><a href="#参考文章：" class="headerlink" title="参考文章："></a>参考文章：</h3><ul>
-<li><a href="https://docs.oracle.com/javase/tutorial/java/nutsandbolts/expressions.html" target="_blank" rel="noopener">Expressions, Statements, and Blocks</a></li>
-<li><a href="https://medium.com/@thejameskyle/type-systems-structural-vs-nominal-typing-explained-56511dd969f4#.wo7rcsj48" target="_blank" rel="noopener">Type Systems: Structural vs. Nominal typing explained</a></li>
-<li><a href="https://en.wikipedia.org/wiki/Type_system" target="_blank" rel="noopener">Type system</a></li>
+<p>以上这些逻辑组织方式，都形成了一个文件。这个文件是有一定逻辑结构的，即<strong>每个记录在文件中都有自己的位置</strong>。但现在这个文件是从<strong>用户角度</strong>来看的，不管这些记录在文件中的位置怎么确定，也不管在磁盘上怎么存储，他就是一个有逻辑结构的文件了，你就把它当成<strong>客观存在</strong>。</p>
+<p>现在来看物理结构，我们首先明确两点：现在我们存在了一个具有具体逻辑结构的文件，即这个文件中的记录的位置是确定的；物理结构是为逻辑结构服务的，从用户角度看到的这个文件的逻辑结构是这个样子的，这只是虚拟的概念，怎么存储来体现文件的记录之间的位置关系呢？这就是我们的物理结构了。也就是:<strong>逻辑结构+外存分配方式=物理文件</strong>，常见的物理实现方式：</p>
+<ul>
+<li><p>连续分配：为每个文件分配一组相邻的盘块，通过盘块的相邻关系来体现逻辑结构中的记录顺序。在目录项的文件物理地址字段中，记录该文件第一个记录所在的盘块号和文件长度。</p>
+</li>
+<li><p>链接分配：通过链接指针来体现逻辑上的相邻关系，形成链接文件，消除了外碎片。又分为隐式链接和显式连接(内存中有一张纪录磁盘所有文件的链接表FAT，表的序号是物理块号，每个表项中存放链接指针即下一个盘块号。凡是属于某一文件的第一个盘块号，均作为文件地址写入相应的FCB中的物理地址字段，查询记录在内存中进行，加快了速度)。</p>
+</li>
+<li><p>索引分配： 逻辑结构中的索引分配是索引记录键相关的东西，而这里我们是要将逻辑上相邻的位置关系在物理上体现，所以按文件的逻辑顺序建立了物理文件盘块的索引表。(为每个文件分配一个索引盘块，把分配给该文件的所有盘块号，都记录在该索引盘块中，在建立文件时，便需在为之建立的目录项中，填上指向该索引块的指针，支持直接访问。可以把索引块读入内存加速。)，其实，索引分配就是<strong>将链接的方式顺序文本化。逻辑位置关系体现在索引表中而不是指针</strong>。</p>
+</li>
 </ul>
+<p>最后总结下关于文件的逻辑结构与物理结构：</p>
+<ul>
+<li><p>逻辑结构就是文件记录顺序的确定方式，是用户角度的文件实现方式。</p>
+</li>
+<li><p>物理结构是逻辑结构的物理实现。</p>
+</li>
+</ul>
+<p>当然关于其中的具体实现我们也是需要掌握的，对于不同的情景，我们需要合理的选择文件的实现形式以满足不同场景的需求</p>
 
       
 
@@ -294,8 +282,8 @@ div.article-footer-copyright{
 </style>
 
 <div class="article-footer-copyright">
-	<p>本文标题: <a href="/2017/09/30/basic-but-important-conception-in-language/" target="_blank" title="important conceptions in language">important conceptions in language</a></p>
-	<p>本文链接: <a href="/2017/09/30/basic-but-important-conception-in-language/" target="_blank" title="important conceptions in language">https://ryan-hou.github.io/2017/09/30/basic-but-important-conception-in-language/</a></p>
+	<p>本文标题: <a href="/2016/03/16/wen-jian-de-luo-ji-jie-gou-yu-wu-li-jie-gou/" target="_blank" title="文件的逻辑结构与物理结构">文件的逻辑结构与物理结构</a></p>
+	<p>本文链接: <a href="/2016/03/16/wen-jian-de-luo-ji-jie-gou-yu-wu-li-jie-gou/" target="_blank" title="文件的逻辑结构与物理结构">https://ryan-hou.github.io/2016/03/16/wen-jian-de-luo-ji-jie-gou-yu-wu-li-jie-gou/</a></p>
 	<p>转载请注明本文链接~~</p>
 </div>
 
@@ -308,11 +296,7 @@ div.article-footer-copyright{
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">总结</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">Java</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">OS</a>
         		</li>
       		
 		</ul>
@@ -368,7 +352,7 @@ div.article-footer-copyright{
     <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
     <p>扫一扫，分享到微信</p>
     <div class="wx-qrcode">
-      <img src="//pan.baidu.com/share/qrcode?url=https://ryan-hou.github.io/2017/09/30/basic-but-important-conception-in-language/" alt="微信分享二维码">
+      <img src="//pan.baidu.com/share/qrcode?url=https://ryan-hou.github.io/2016/03/16/wen-jian-de-luo-ji-jie-gou-yu-wu-li-jie-gou/" alt="微信分享二维码">
     </div>
 </div>
 
@@ -382,18 +366,18 @@ div.article-footer-copyright{
   
 <nav id="article-nav">
   
-    <a href="/2017/11/27/efficient-data-transfer-through-zero-copy/" id="article-nav-newer" class="article-nav-link-wrap">
+    <a href="/2016/03/17/jin-cheng-hu-chi-de-peterson-suan-fa/" id="article-nav-newer" class="article-nav-link-wrap">
       <i class="icon-circle-left"></i>
       <div class="article-nav-title">
         
-          Efficient data transfer through zero copy
+          进程互斥的 Peterson 算法
         
       </div>
     </a>
   
   
-    <a href="/2017/09/30/fan-zhuan-dan-lian-biao-de-ji-chong-zi-shi/" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">反转单链表的几种姿势</div>
+    <a href="/2016/03/14/cong-jian-dan-mo-shi-pi-pei-dao-kmp-suan-fa/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">从简单模式匹配到 KMP 算法</div>
       <i class="icon-circle-right"></i>
     </a>
   
@@ -432,7 +416,7 @@ div.article-footer-copyright{
 <script src="https://billts.site/js/gitment.js"></script>
 <script>
 var gitment = new Gitment({
-  id: 'important conceptions in language',
+  id: '文件的逻辑结构与物理结构',
   owner: 'Ryan-hou',
   repo: 'Ryan-hou.github.io',
   oauth: {
