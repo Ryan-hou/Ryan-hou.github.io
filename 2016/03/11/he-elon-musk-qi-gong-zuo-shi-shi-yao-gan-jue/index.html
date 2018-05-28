@@ -6,20 +6,23 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="https://ryan-hou.github.io">
-  <title>Java线程池实现原理 | 0x08 0x17</title>
+  <title>和Elon Musk一起工作是什么感觉 | 0x08 0x17</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="为什么要使用线程池在开发中，我们使用多线程来处理多个任务，一般是先编写实现任务的代码(任务类一般实现Runnable接口)，然后为每个任务启动一个线程(Thread类)，接下来由系统负责完成线程间的调度。假设任务很多，而且执行时间不长，为每个任务都创建一个对应的线程，会使线程频繁的创建和销毁，所以我们引入线程池，控制线程创建的数目，尽量的使线程可以复用 实现线程池要考虑的问题 线程池自身的状态如何">
-<meta name="keywords" content="Java">
+  <meta name="description" content="What is it like to work with Elon Musk?">
+<meta name="keywords" content="翻译,非技术">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Java线程池实现原理">
-<meta property="og:url" content="https://ryan-hou.github.io/2017/03/15/javaxian-cheng-chi-shi-xian-yuan-li/index.html">
+<meta property="og:title" content="和Elon Musk一起工作是什么感觉">
+<meta property="og:url" content="https://ryan-hou.github.io/2016/03/11/he-elon-musk-qi-gong-zuo-shi-shi-yao-gan-jue/index.html">
 <meta property="og:site_name" content="0x08 0x17">
-<meta property="og:description" content="为什么要使用线程池在开发中，我们使用多线程来处理多个任务，一般是先编写实现任务的代码(任务类一般实现Runnable接口)，然后为每个任务启动一个线程(Thread类)，接下来由系统负责完成线程间的调度。假设任务很多，而且执行时间不长，为每个任务都创建一个对应的线程，会使线程频繁的创建和销毁，所以我们引入线程池，控制线程创建的数目，尽量的使线程可以复用 实现线程池要考虑的问题 线程池自身的状态如何">
+<meta property="og:description" content="What is it like to work with Elon Musk?">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2018-05-18T07:18:29.000Z">
+<meta property="og:image" content="http://Ryan-hou.github.io/assets/img/Musk/Elon-1.png">
+<meta property="og:image" content="http://qph.is.quoracdn.net/main-qimg-9d7fdd248ad89bde89aa9e842473b64e?convert_to_webp=true">
+<meta property="og:updated_time" content="2018-05-28T11:13:52.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Java线程池实现原理">
-<meta name="twitter:description" content="为什么要使用线程池在开发中，我们使用多线程来处理多个任务，一般是先编写实现任务的代码(任务类一般实现Runnable接口)，然后为每个任务启动一个线程(Thread类)，接下来由系统负责完成线程间的调度。假设任务很多，而且执行时间不长，为每个任务都创建一个对应的线程，会使线程频繁的创建和销毁，所以我们引入线程池，控制线程创建的数目，尽量的使线程可以复用 实现线程池要考虑的问题 线程池自身的状态如何">
+<meta name="twitter:title" content="和Elon Musk一起工作是什么感觉">
+<meta name="twitter:description" content="What is it like to work with Elon Musk?">
+<meta name="twitter:image" content="http://Ryan-hou.github.io/assets/img/Musk/Elon-1.png">
   
     <link rel="alternative" href="/atom.xml" title="0x08 0x17" type="application/atom+xml">
   
@@ -151,82 +154,66 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            <article id="post-javaxian-cheng-chi-shi-xian-yuan-li" class="article article-type-post " itemscope itemprop="blogPost">
+            <article id="post-he-elon-musk-qi-gong-zuo-shi-shi-yao-gan-jue" class="article article-type-post " itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
         
   
     <h1 class="article-title" itemprop="name">
-      Java线程池实现原理
+      和Elon Musk一起工作是什么感觉
     </h1>
   
 
         
-        <a href="/2017/03/15/javaxian-cheng-chi-shi-xian-yuan-li/" class="archive-article-date">
-  	<time datetime="2017-03-15T09:17:03.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-03-15</time>
+        <a href="/2016/03/11/he-elon-musk-qi-gong-zuo-shi-shi-yao-gan-jue/" class="archive-article-date">
+  	<time datetime="2016-03-11T15:20:43.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2016-03-11</time>
 </a>
         
       </header>
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h2 id="为什么要使用线程池"><a href="#为什么要使用线程池" class="headerlink" title="为什么要使用线程池"></a>为什么要使用线程池</h2><p>在开发中，我们使用多线程来处理多个任务，一般是先编写实现任务的代码(任务类一般实现<code>Runnable</code>接口)，然后为每个任务启动一个线程(<code>Thread</code>类)，接下来由系统负责完成线程间的调度。假设任务很多，而且执行时间不长，为每个任务都创建一个对应的线程，<strong>会使线程频繁的创建和销毁，所以我们引入线程池，控制线程创建的数目，尽量的使线程可以复用</strong></p>
-<h2 id="实现线程池要考虑的问题"><a href="#实现线程池要考虑的问题" class="headerlink" title="实现线程池要考虑的问题"></a>实现线程池要考虑的问题</h2><ul>
-<li>线程池自身的状态如何管理？比如 running, shutdown 等</li>
-<li>如何控制线程池的线程数目？</li>
-<li>线程池如何执行待处理的任务？</li>
-<li>如何控制待执行的任务和线程之间的关系？</li>
-</ul>
+        <h2 id="What-is-it-like-to-work-with-Elon-Musk"><a href="#What-is-it-like-to-work-with-Elon-Musk" class="headerlink" title="What is it like to work with Elon Musk?"></a>What is it like to work with Elon Musk?</h2><p><img src="http://Ryan-hou.github.io/assets/img/Musk/Elon-1.png" alt=""></p>
 <a id="more"></a>
-<h2 id="ThreadPoolExecutor的代码分析"><a href="#ThreadPoolExecutor的代码分析" class="headerlink" title="ThreadPoolExecutor的代码分析"></a>ThreadPoolExecutor的代码分析</h2><p>关于一个线程池的实现，在上面给出了几个需要重点关注的地方，下面结合源码进行解析</p>
-<h3 id="Executor接口"><a href="#Executor接口" class="headerlink" title="Executor接口"></a>Executor接口</h3><blockquote>
-<p>An object that executes submitted Runnable tasks. This interface provides a way of decoupling task submission from the mechanics of how each task will be run, including details of thread use, scheduling, etc. An Executor is normally used instead of explicitly creating threads.</p>
-</blockquote>
-<p>该接口把任务的提交和任务的执行进行解耦，至于如何执行提交的任务，可以有很多不同的实现，在 Oracle 提供的 API 文档中，有详细的描述。后面我们会详细了解 <code>ThreadPoolExecutor</code> 是如何实现该接口的 <code>execute(Runnable command)</code>方法的</p>
-<h3 id="线程池的状态管理"><a href="#线程池的状态管理" class="headerlink" title="线程池的状态管理"></a>线程池的状态管理</h3><p>在 <code>ThreadPoolExecutor</code>类中定义了一个线程池的状态，并且提供了对应的锁，来保证状态修改的同步，同时还有与线程池状态相关的操作，比如<code>shutdown(), shutdownNow()</code>等；在执行线程池中的任务时，也需要对线程池的状态进行判断，一些重要的字段如下：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// runState is stored in the high-order bits</span></span><br><span class="line">   <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> RUNNING    = -<span class="number">1</span> &lt;&lt; COUNT_BITS;</span><br><span class="line">   <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> SHUTDOWN   =  <span class="number">0</span> &lt;&lt; COUNT_BITS;</span><br><span class="line">   <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> STOP       =  <span class="number">1</span> &lt;&lt; COUNT_BITS;</span><br><span class="line">   <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> TIDYING    =  <span class="number">2</span> &lt;&lt; COUNT_BITS;</span><br><span class="line">   <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> TERMINATED =  <span class="number">3</span> &lt;&lt; COUNT_BITS;</span><br><span class="line">   ...</span><br><span class="line">   <span class="keyword">private</span> <span class="keyword">final</span> ReentrantLock mainLock = <span class="keyword">new</span> ReentrantLock();</span><br></pre></td></tr></table></figure>
-<h3 id="如何控制线程池的线程数"><a href="#如何控制线程池的线程数" class="headerlink" title="如何控制线程池的线程数"></a>如何控制线程池的线程数</h3><p>首先要关注几个重要的字段：</p>
+<p><a href="http://www.zh.wikipedia.org/wiki/%E4%BC%8A%E9%9A%86%C2%B7%E9%A9%AC%E6%96%AF%E5%85%8B" target="_blank" rel="noopener">Elon Musk</a>，原在线支付公司 Paypal 的联合创始人，现任电动汽车 Tesla、太空探测公司SpaceX 和太阳能产业 SolarCity 的 CEO，现实版的钢铁侠。该问题是 Quora 上的一个问题，回答者是 SpaceX 的前员工，答案很棒，翻译在这里一起分享。Musk 的个人魅力和对待困难与失败的态度绝对值得我们为之热血沸腾！</p>
+<p>原答案内容如下：</p>
+<p>在 SpaceX 公司作为高级人才招聘主管工作了5年多之后，看到这个问题有很多想写的答案。但是我能给出的任何答案都会因为个人经历而带有主观色彩，所以我不保证这是一个没有主观色彩的描述。</p>
+<p>每个人的个性品质不是凭空想象而来的，你必须通过不断地锤炼形成。如果说有任何一个创始人，任何一家公司曾经这样做到过并在继续这样做，那他就是 SpaceX 公司。与其回忆与 Elon 一起工作时他的只言片语，我更愿意分享一些特别的回忆。那是我们最艰难的一段的时光和之后史诗般的成就。</p>
+<p>2008年8月2号，我加入 SpaceX 公司8个月之后，SpaceX第三次试飞他的猎鹰一号运载火箭，猎鹰一号是现在 SpaceX 使用的猎鹰9号的最初版本。</p>
+<p><img src="http://qph.is.quoracdn.net/main-qimg-9d7fdd248ad89bde89aa9e842473b64e?convert_to_webp=true" alt=""></p>
+<p>对于当时的公司而言，这是一个决定性的时刻。Elon在几年前的新闻发布会上就曾经声明，他对于公司$100百万的个人投资只能保证公司三次实验，如果我们第三次失败了，我们就只能申请破产。我们所面临的压力不只来自于媒体的描述，还有竞争公司的恶意宣传(世界上最强的制造商，ps：我个人觉得可能说的是波音公司)，他们在华盛顿大肆宣扬试图搞垮我们，通过渲染我们存在安全问题和对发射火箭毫无经验来削弱我们的信誉，目的就是为了保护他们在太空器发射上面数十亿美金的利益。</p>
+<p>SpaceX完美的完成了飞行计划的第一价段，(这一阶段主要是使飞行器脱离地心引力，在这时飞行器会经历最大速度(我觉得这里应该是指逃逸速度，使离心力大于地心引力，记不太清了，对不起高中物理老师，默哀))，这一阶段是整个任务最危险的阶段。</p>
+<p>然而，在完成第一阶段后，紧接着的第二阶段的分离(这里应该是指火箭的第一级推进器脱离，打开第二级推进器），我们丢失了飞行器，任务失败。</p>
+<p>在 SpaceX 公司中，有 Propulsion 的副总裁，现代火箭科学的教父<a href="http://www.en.wikipedia.org/wiki/Tom_Mueller" target="_blank" rel="noopener">Tom Mueller</a>，当今地球上最杰出的大脑之一。他和他的团队为SpaceX重新设计了堪称完美的火箭引擎系统，比之前的引擎更加高效和有力。</p>
+<p>我们的火箭在关闭了第一阶段的推进器然后继续执行分离任务时，第一阶段的引擎带来的动力仍然产生了遗留的动力，所以我们第一阶段的”成功”事实上导致了第二阶段飞行器分离任务的失败。这是一次灾难性的打击。</p>
+<p>当时我和大约350名左右的员工在一起，当火箭起飞时，我们一片欢呼，在看到任务执行的显示器时，我们都清楚接下来要进入分离阶段了，这时录像反馈信号被切断。公司的视频信号与任务控制中心有20秒的延迟，因为在公司外部的显示器有媒体的人也在观看，这种延迟是为了避免任务出现异常而设定。所以当失去信号时，我们知道一定出了什么大问题。</p>
+<p>Elon和7，8个顶级技术专家在 SpaceX 通过 Hawthorne 厂房后面的轨道车来指挥任务，这时我们都在等着车的门打开，然后有人告诉我们发生了什么。整栋大楼被绝望地情绪笼罩，这时你脑子里会想，到现在SpaceX公司成立6年了，很多人每周工作七八十个小时以上，每天都要面对巨大的压力，比如技术上的难关，来自制度，经济上的困难，每个人都在竭尽全力的付出他们的血汗。</p>
+<p>每个人都付出了很多，精神上和身体上都筋疲力竭，大家都需要一场胜利来重新振作起精神，并且给他们信心继续跟着这个男人攀登一座使无数人都丧失希望和大量金钱的高峰。</p>
+<p>这个夜晚将会影响整个公司的未来，它有可能使这个公司陷入不可逆转的低潮。领导层的失败，不仅仅会从外界压力和未来客户的层面影响我们，它将从内部完全的摧毁我们。</p>
+<p>当 Elon 出来时，他经过各家媒体，首先介绍了这家公司。他是怎么开场的，确切的话我记不清了，但是他发言的精华全在下面：</p>
 <ul>
-<li><code>private volatile int corePoolSize; // 核心池的大小</code>,在创建了线程池后，默认情况下，线程池中并没有任何线程，而是等待有任务到来才创建线程去执行任务，除非调用了prestartAllCoreThreads()或者prestartCoreThread()方法，从这2个方法的名字就可以看出，是预创建线程的意思，即在没有任务到来之前就创建corePoolSize个线程或者一个线程。默认情况下，在创建了线程池后，线程池中的线程数为0，当有任务来之后，就会创建一个线程去执行任务，当线程池中的线程数目达到corePoolSize后，就会把到达的任务放到缓存队列当中</li>
-<li><code>private volatile int maxinumPoolSize; // 线程池最大线程数</code></li>
-<li><code>private final BlockingQueue&lt;Runnable&gt; workQueue; // 任务缓存队列，用存放等待执行的任务</code></li>
-<li><code>private final HashSet&lt;Worker&gt; workers = new HashSet&lt;Worker&gt;();</code> // Set containing all worker threads in pool. Accessed only when holding mainLock.（其中Worker 包装了具体要执行的任务和执行该任务的线程）</li>
+<li><p>我们都知道这将很困难，这毕竟是火箭科学。然后他列举了大约6个曾试图发射火箭失败的国家，他们甚至连第一阶段都没有成功，而这个阶段我们那天进行得相当顺利。</p>
+</li>
+<li><p>Elon很有预见的为这次失败做好了准备，他获得了一大笔注资(如果我记得没错的话应该是从 Draper Fisher Jurvetson 这里得到的投资)，这笔资金使得 SpaceX 有足够的钱来进行至少两次发射，也就是说如果我们需要的话，这笔钱至少为我们的第5次发射提供了保证。</p>
+</li>
+<li><p>他告诉我们，我们需要重新找回自己，掸掉身上的尘土，因为我们还有很多工作要做。然后，在经过了20多个小时的工作后，他用他能发出的最坚定和有力的语气说道<strong><em>For my part, I will never give up and I mean never.</em></strong>,如果我们继续跟着他坚持下去，我们一定能成功。</p>
+</li>
 </ul>
-<p><code>ThreadPoolExecutor</code> 类大体实现的思路：当线程池中的线程数小于核心池<strong>corePoolSize</strong>时，直接创建线程(通过Worker)执行该任务，方法为 <code>addIfUnderCorePoolSize(command)</code>; 当线程池中的线程数大于核心池corePoolSize时，把任务加入到缓存队列<code>workQueue.offer(command)</code>，队列中的任务会通过<code>getTask()</code> 方法获取</p>
-<h3 id="execute方法的实现"><a href="#execute方法的实现" class="headerlink" title="execute方法的实现"></a>execute方法的实现</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">execute</span><span class="params">(Runnable command)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (command == <span class="keyword">null</span>)</span><br><span class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> NullPointerException();</span><br><span class="line">    <span class="keyword">if</span> (poolSize &gt;= corePoolSize || !addIfUnderCorePoolSize(command)) &#123;</span><br><span class="line">        <span class="keyword">if</span> (runState == RUNNING &amp;&amp; workQueue.offer(command)) &#123;</span><br><span class="line">            <span class="keyword">if</span> (runState != RUNNING || poolSize == <span class="number">0</span>)</span><br><span class="line">                ensureQueuedTaskHandled(command);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">else</span> <span class="keyword">if</span> (!addIfUnderMaximumPoolSize(command))</span><br><span class="line">            reject(command); <span class="comment">// is shutdown or saturated</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<blockquote>
-</blockquote>
-<p>首先，判断提交的任务command是否为null，若是null，则抛出空指针异常</p>
-<blockquote>
-<p>接着是这句，这句要好好理解一下：<code>if (poolSize &gt;= corePoolSize || !addIfUnderCorePoolSize(command))</code>由于是或条件运算符，所以先计算前半部分的值，如果线程池中当前线程数不小于核心池大小，那么就会直接进入下面的if语句块了<br><br>如果线程池中<strong>当前线程数小于核心池大小</strong>，则接着执行后半部分，也就是执行<code>addIfUnderCorePoolSize(command)</code>如果执行完<code>addIfUnderCorePoolSize</code>这个方法返回false，则继续执行下面的if语句块，否则整个方法就直接执行完毕了<br><br>如果执行完<code>addIfUnderCorePoolSize</code>这个方法返回false，然后接着判断：<code>if (runState == RUNNING &amp;&amp; workQueue.offer(command))</code>如果当前线程池处于RUNNING状态，则将任务放入任务缓存队列；如果当前线程池不处于RUNNING状态或者任务放入缓存队列失败，则执行：<code>addIfUnderMaximumPoolSize(command)</code>如果执行<code>addIfUnderMaximumPoolSize</code>方法失败，则执行<code>reject()</code>方法进行任务拒绝处理<br><br>回到前面 <code>if (runState == RUNNING &amp;&amp; workQueue.offer(command))</code>这句的执行，如果说当前线程池处于RUNNING状态且将任务放入任务缓存队列成功，则继续进行判断：<br><code>if (runState != RUNNING || poolSize == 0)</code><br>这句判断是为了防止在将此任务添加进任务缓存队列的同时其他线程突然调用shutdown或者shutdownNow方法关闭了线程池的一种应急措施。如果是这样就执行：<code>ensureQueuedTaskHandled(command)</code>进行应急处理，从名字可以看出是保证 添加到任务缓存队列中的任务得到处理。</p>
-</blockquote>
-<p>接下里重点关注 <code>addIfUnderCorePoolSize(Runnable firstTask)</code> 方法</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">boolean</span> <span class="title">addIfUnderCorePoolSize</span><span class="params">(Runnable firstTask)</span> </span>&#123;</span><br><span class="line">    Thread t = <span class="keyword">null</span>;</span><br><span class="line">    <span class="keyword">final</span> ReentrantLock mainLock = <span class="keyword">this</span>.mainLock;</span><br><span class="line">    mainLock.lock();</span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">        <span class="keyword">if</span> (poolSize &lt; corePoolSize &amp;&amp; runState == RUNNING)</span><br><span class="line">            t = addThread(firstTask);   </span><br><span class="line">        &#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">        mainLock.unlock();</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span> (t == <span class="keyword">null</span>)</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">    t.start();</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>在该方法中通过 addThread(firstTask) 把待执行的任务交给 Thread 对象，然后通过 <code>t.start()</code> 启动线程，等待任务执行</p>
-<p>那么顺着代码执行，下面关注一下<code>addThread(Runnable command)</code> 方法：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> Thread <span class="title">addThread</span><span class="params">(Runnable firstTask)</span> </span>&#123;</span><br><span class="line">    Worker w = <span class="keyword">new</span> Worker(firstTask);</span><br><span class="line">    Thread t = threadFactory.newThread(w);  <span class="comment">//创建一个线程，执行任务   </span></span><br><span class="line">    <span class="keyword">if</span> (t != <span class="keyword">null</span>) &#123;</span><br><span class="line">        w.thread = t;            <span class="comment">//将创建的线程的引用赋值为w的成员变量       </span></span><br><span class="line">        workers.add(w);</span><br><span class="line">        <span class="keyword">int</span> nt = ++poolSize;     <span class="comment">//当前线程数加1       </span></span><br><span class="line">        <span class="keyword">if</span> (nt &gt; largestPoolSize)</span><br><span class="line">            largestPoolSize = nt;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> t;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>通过该方法，我们知道了执行任务的线程和线程池是通过 <code>Worker</code> 和 <code>HashSet&lt;Worker&gt;</code> 来封装执行，所以接下关注 <code>Worker</code> 的<code>run</code>方法:</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            Runnable task = firstTask;</span><br><span class="line">            firstTask = <span class="keyword">null</span>;</span><br><span class="line">            <span class="keyword">while</span> (task != <span class="keyword">null</span> || (task = getTask()) != <span class="keyword">null</span>) &#123;</span><br><span class="line">                runTask(task);</span><br><span class="line">                task = <span class="keyword">null</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">            workerDone(<span class="keyword">this</span>);          </span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
-<p>从run方法的实现可以看出，它首先执行的是通过构造器传进来的任务firstTask，在调用runTask()执行完firstTask之后，在while循环里面不断通过<code>getTask()</code>去取新的任务来执行，那么去哪里取呢？自然是从任务缓存队列里面去取。这里有一个非常巧妙的设计，假如我们来设计线程池，可能会有一个任务分派线程，当发现有线程空闲时，就从任务缓存队列中取一个任务交给空闲线程执行。但是在这里，并没有采用这样的方式，因为这样会要额外地对任务分派线程进行管理，无形地会增加难度和复杂度，这里<strong>直接让执行完任务的线程去任务缓存队列里面取任务来执行</strong></p>
-<p>Worker 的 run 方法调用了 <code>runTask(task)</code> 方法来最终执行任务，所以我们再看下该方法的代码：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">runTask</span><span class="params">(Runnable task)</span> </span>&#123;</span><br><span class="line">       <span class="keyword">final</span> ReentrantLock runLock = <span class="keyword">this</span>.runLock;</span><br><span class="line">       runLock.lock();</span><br><span class="line">       <span class="keyword">try</span> &#123;</span><br><span class="line">           <span class="keyword">if</span> (runState &lt; STOP &amp;&amp;</span><br><span class="line">               Thread.interrupted() &amp;&amp;</span><br><span class="line">               runState &gt;= STOP)</span><br><span class="line">           <span class="keyword">boolean</span> ran = <span class="keyword">false</span>;</span><br><span class="line">           beforeExecute(thread, task);         </span><br><span class="line">           <span class="keyword">try</span> &#123;</span><br><span class="line">               task.run();</span><br><span class="line">               ran = <span class="keyword">true</span>;</span><br><span class="line">               afterExecute(task, <span class="keyword">null</span>);</span><br><span class="line">               ++completedTasks;</span><br><span class="line">           &#125; <span class="keyword">catch</span> (RuntimeException ex) &#123;</span><br><span class="line">               <span class="keyword">if</span> (!ran)</span><br><span class="line">                   afterExecute(task, ex);</span><br><span class="line">               <span class="keyword">throw</span> ex;</span><br><span class="line">           &#125;</span><br><span class="line">       &#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">           runLock.unlock();</span><br><span class="line">       &#125;</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
-<p>看到代码里的 <code>task.run()</code> 我们总算可以松一口气了，这就是我们的任务实际要执行的代码</p>
-<p>总结一下一个任务的执行顺序：通过把任务提交给 ThreadPoolExecutor 的 execute(Runnable) 方法，为每个任务创建一个对应的 Worker 对象，该对象封装了执行该任务的线程，通过在该对象 <code>run()</code> 方法获取要执行的任务(包括通过 <code>getTask()</code> 方法从队列中去取)，并最终调用 <code>runTask(task)</code>来执行任务的代码(task.run())</p>
-<h3 id="创建线程池"><a href="#创建线程池" class="headerlink" title="创建线程池"></a>创建线程池</h3><p>提倡直接使用ThreadPoolExecutor的构造函数，而不是使用<code>Executors</code>类中提供的几个静态方法来创建线程池（Executors 方法用起来方便，但是有坑，后面会专门介绍）</p>
-<h3 id="workQueue的排队策略"><a href="#workQueue的排队策略" class="headerlink" title="workQueue的排队策略"></a>workQueue的排队策略</h3><p>workQueue的类型为BlockingQueue<runnable>，通常可以取下面三种类型：</runnable></p>
+<p>我想我们中绝大部分人在他说完这些之后都愿意死心塌地跟着他奔向”地狱”,这是我所见证的关于领导力印象最为深刻的展示。短短的一瞬间，整栋大楼从绝望和失败的气氛中转向巨大的决心，大家开始专注于前进而不是向后看。在短短5秒钟时间之内，这个巨大的转变发生在每个人身上。这是一次难以置信和充满力量的经历。</p>
+<p>在那之后的接下来几天，几周之内发生的事，是一系列的奇迹：</p>
 <ul>
-<li>ArrayBlockingQueue：基于数组的先进先出队列，此队列创建时必须指定大小</li>
-<li>LinkedBlockingQueue：基于链表的先进先出队列，如果创建时没有指定此队列大小，则默认为Integer.MAX_VALUE</li>
-<li>synchronousQueue：这个队列比较特殊，它不会保存提交的任务，而是将直接新建一个线程来执行新来的任务。</li>
+<li><p>在几个小时内，SpaceX的团队确定了事故发生的可能原因，通常其他公司的事故调查会花费数周甚至数月。我们的团队认真筛查了每一点数据，以确保我们可以尽快准确的理解我们哪里出错了。</p>
+</li>
+<li><p>到8月6号，我们宣布了我们的调查结果，并向我们的投资方和客户解释清楚，以保证我们可以在这最困难的时间继续得到他们的信任和支持。</p>
+</li>
+<li><p>在7周内，我们重新制造并准备发射另一个火箭。没有人可以在有限的人力和财力下6个月内做到这些。SpaceX<strong>只用了6周时间</strong>做到了，而且我们只有不到400个人，财务紧缩。</p>
+</li>
+<li><p>在2008年9月28号，SpaceX在南太平洋的Kwajalein Atoll第一次完全成功的发射了 Falcon 运载火箭，成为世界上第一个成功发射火箭的私人企业。久违的应得的属于整个 SpaceX 团队的胜利！正如SpaceX 公司所希望的那样，这将会广泛的影响人类的未来。</p>
+</li>
 </ul>
-<p><strong>具体的内容在 java.util.concurrent.ThreadPoolExecutor API 文档中说的很清楚，比如使用 ArrayBlockingQueue 时，如何在 queue size 和 maximum pool size 之间作 trade off，建议去仔细看一下</strong></p>
-<p>以上就是关于一个线程池实现原理的主要讲述，当然还有很多细节没有说，比如如何通过锁处理线程并发，建议去看源码和注释</p>
-<hr>
-<p><strong>推荐阅读：</strong></p>
-<ul>
-<li><a href="http://www.cnblogs.com/dolphin0520/p/3932921.html" target="_blank" rel="noopener">Java并发编程：线程池的使用</a></li>
-</ul>
+<p>所以对于那些问这个问题的人，这就是我对于Elon Musk个性的真实答案。<strong>从不会被各种状况所吓倒，无畏各种失败，并且总是选择在任何人看来都是最困难的技术和挑战中开辟战场</strong>，但不知为何，他总能存活下来，然而很多其他家伙就没这么”幸运”了。</p>
+<p>和Elon一起工作不是一件轻松的经历，<strong>他对自己从不满意，所以他对于身边的任何人也绝不会真正的满意。</strong>他不断努力的推动自己，也同样推动着身边的人。而挑战在于，他是”钢铁侠”，而我们其他人不是。<strong>所以如果你打算为Elon工作，你就要接受这种不适。但是你在这种不适中获得的成长是你在其他任何地方都不会获得的，这值得你为之付出每一滴汗水。</strong></p>
 
       
 
@@ -310,8 +297,8 @@ div.article-footer-copyright{
 </style>
 
 <div class="article-footer-copyright">
-	<p>本文标题: <a href="/2017/03/15/javaxian-cheng-chi-shi-xian-yuan-li/" target="_blank" title="Java线程池实现原理">Java线程池实现原理</a></p>
-	<p>本文链接: <a href="/2017/03/15/javaxian-cheng-chi-shi-xian-yuan-li/" target="_blank" title="Java线程池实现原理">https://ryan-hou.github.io/2017/03/15/javaxian-cheng-chi-shi-xian-yuan-li/</a></p>
+	<p>本文标题: <a href="/2016/03/11/he-elon-musk-qi-gong-zuo-shi-shi-yao-gan-jue/" target="_blank" title="和Elon Musk一起工作是什么感觉">和Elon Musk一起工作是什么感觉</a></p>
+	<p>本文链接: <a href="/2016/03/11/he-elon-musk-qi-gong-zuo-shi-shi-yao-gan-jue/" target="_blank" title="和Elon Musk一起工作是什么感觉">https://ryan-hou.github.io/2016/03/11/he-elon-musk-qi-gong-zuo-shi-shi-yao-gan-jue/</a></p>
 	<p>转载请注明本文链接~~</p>
 </div>
 
@@ -324,7 +311,11 @@ div.article-footer-copyright{
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">Java</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">翻译</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">非技术</a>
         		</li>
       		
 		</ul>
@@ -380,7 +371,7 @@ div.article-footer-copyright{
     <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
     <p>扫一扫，分享到微信</p>
     <div class="wx-qrcode">
-      <img src="//pan.baidu.com/share/qrcode?url=https://ryan-hou.github.io/2017/03/15/javaxian-cheng-chi-shi-xian-yuan-li/" alt="微信分享二维码">
+      <img src="//pan.baidu.com/share/qrcode?url=https://ryan-hou.github.io/2016/03/11/he-elon-musk-qi-gong-zuo-shi-shi-yao-gan-jue/" alt="微信分享二维码">
     </div>
 </div>
 
@@ -394,18 +385,18 @@ div.article-footer-copyright{
   
 <nav id="article-nav">
   
-    <a href="/2017/03/18/mysqlsuo-yin-yuan-li/" id="article-nav-newer" class="article-nav-link-wrap">
+    <a href="/2016/03/12/dong-tai-dai-li-shi-xian-aop/" id="article-nav-newer" class="article-nav-link-wrap">
       <i class="icon-circle-left"></i>
       <div class="article-nav-title">
         
-          MySQL索引原理
+          动态代理实现 AOP
         
       </div>
     </a>
   
   
-    <a href="/2017/03/14/jvmlei-jia-zai-qi/" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">JVM类加载器</div>
+    <a href="/2016/03/10/cong-qiang-zhi-lei-xing-zhuan-huan-dai-lai-de-an-quan-wen-ti-kan-ji-chu-xue-xi/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">从强制类型转换到安全和基础</div>
       <i class="icon-circle-right"></i>
     </a>
   
@@ -444,7 +435,7 @@ div.article-footer-copyright{
 <script src="https://billts.site/js/gitment.js"></script>
 <script>
 var gitment = new Gitment({
-  id: 'Java线程池实现原理',
+  id: '和Elon Musk一起工作是什么感觉',
   owner: 'Ryan-hou',
   repo: 'Ryan-hou.github.io',
   oauth: {
