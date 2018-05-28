@@ -6,20 +6,15 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="https://ryan-hou.github.io">
-  <title>进程互斥的 Peterson 算法 | 0x08 0x17</title>
+  <title>Tag: web | 0x08 0x17</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="背景：在进程互斥的软件实现算法中，Peterson算法是一个比较经典的方式，他基本满足了同步机制应该遵循的准则：空闲让进，忙则等待，有限等待和让权等待。在该算法中通过设置标志位和公共变量来实现临界区互斥的解决方法值得我们借鉴学习。">
-<meta name="keywords" content="算法,OS">
-<meta property="og:type" content="article">
-<meta property="og:title" content="进程互斥的 Peterson 算法">
-<meta property="og:url" content="https://ryan-hou.github.io/2016/03/17/jin-cheng-hu-chi-de-peterson-suan-fa/index.html">
+  <meta property="og:type" content="website">
+<meta property="og:title" content="0x08 0x17">
+<meta property="og:url" content="https://ryan-hou.github.io/tags/web/index.html">
 <meta property="og:site_name" content="0x08 0x17">
-<meta property="og:description" content="背景：在进程互斥的软件实现算法中，Peterson算法是一个比较经典的方式，他基本满足了同步机制应该遵循的准则：空闲让进，忙则等待，有限等待和让权等待。在该算法中通过设置标志位和公共变量来实现临界区互斥的解决方法值得我们借鉴学习。">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2018-05-28T01:47:37.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="进程互斥的 Peterson 算法">
-<meta name="twitter:description" content="背景：在进程互斥的软件实现算法中，Peterson算法是一个比较经典的方式，他基本满足了同步机制应该遵循的准则：空闲让进，忙则等待，有限等待和让权等待。在该算法中通过设置标志位和公共变量来实现临界区互斥的解决方法值得我们借鉴学习。">
+<meta name="twitter:title" content="0x08 0x17">
   
     <link rel="alternative" href="/atom.xml" title="0x08 0x17" type="application/atom+xml">
   
@@ -151,290 +146,64 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            <article id="post-jin-cheng-hu-chi-de-peterson-suan-fa" class="article article-type-post " itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
+            
   
-    <h1 class="article-title" itemprop="name">
-      进程互斥的 Peterson 算法
+  
+    
+    
+      
+      
+      <section class="archives-wrap">
+        <div class="archive-year-wrap">
+          <a href="/archives/2016" class="archive-year">2016</a>
+        </div>
+        <div class="archives">
+    
+    <article class="archive-article archive-type-post">
+  <div class="archive-article-inner">
+    <header class="archive-article-header">
+      	<div class="article-meta">
+	      	<a href="/2016/04/11/liu-lan-qi-huan-cun-ji-zhi-xue-xi/" class="archive-article-date">
+  	<time datetime="2016-04-11T14:15:12.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2016-04-11</time>
+</a>
+        </div>
+    	 
+  
+    <h1 itemprop="name">
+      <a class="archive-article-title" href="/2016/04/11/liu-lan-qi-huan-cun-ji-zhi-xue-xi/">浏览器缓存机制学习</a>
     </h1>
   
 
-        
-        <a href="/2016/03/17/jin-cheng-hu-chi-de-peterson-suan-fa/" class="archive-article-date">
-  	<time datetime="2016-03-17T13:11:45.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2016-03-17</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>背景：在进程互斥的软件实现算法中，Peterson算法是一个比较经典的方式，他基本满足了同步机制应该遵循的准则：<strong>空闲让进，忙则等待，有限等待和让权等待</strong>。在该算法中通过设置标志位和公共变量来实现临界区互斥的解决方法值得我们借鉴学习。</p>
-<a id="more"></a>
-<p>要理解这个算法，我们头脑中要清楚自己想要实现什么效果。软件方式实现临界区互斥的总体思路是这样的：在进入区设置和检查一些标志来标明是否有进程在临界区中，如果已有进程在临界区中，则在进入区通过循环检查进行等待，进程离开临界区后则在退出区修改标志。那么接下来问题就来了：</p>
-<ul>
-<li><p>如何解决临界区互斥的问题？这里我们很容易就会想到，可以设计一个标志位 flag 来实现，很简单，进程在进入临界区前，先把自己的标志位flag设置为TRUE，表示自己要进入临界区进行操作，然后在循环检测中检测对方的flag标志，一旦发现对方标识也为TRUE，则循环检测等待，如果为FALSE，则说明可是执行临界区的代码。</p>
-</li>
-<li><p>就这么简单吗？当然不是，上一步在解决临界区互斥的问题上会引入<strong>“饥饿”现象</strong>，也就是当两个进程<strong>同时</strong>把自己的标志位设置为TRUE，然后检测对方的标志位时，发现对方也为TRUE，接下来就麻烦了，两个进程会傻傻的一直等待对方修改状态，但是谁也不能继续进行下去。这时，我们需要再加一个标志，来避免这种情况。个人认为，这一步也是Peterson算法的关键所在。那么如何做到让两个进程按顺序来使用临界区呢？因为我们都知道，<strong>同时发生</strong>这件事对我们的计算机来说是不可能的，严格意义上，两件事之间不可能同时，总会有细小的时间差距，那么这里我们就可以利用这一点来实现顺序的操作。按照<strong>“先到先得”</strong>的原则，我们可以再加一个公共变量turn，在循环检测的语句中我们也要加上关于这个公共变量的判断，下面先给出Peterson的伪代码，方便解释。</p>
-</li>
-</ul>
-<pre><code class="c"><span class="comment">// 伪代码</span>
-Pi进程：                                                  
-flag[i] = TRUE; turn = j;    <span class="comment">//进入区</span>
-<span class="keyword">while</span>(flag[j] &amp;&amp; turn == j); <span class="comment">//进入区</span>
-critical section;           <span class="comment">//临界区</span>
-flag[i] = FALSE;            <span class="comment">//退出区</span>
-remainder section;          <span class="comment">//剩余区</span>
-
-pj进程：
-flag[j] = TRUE; turn = i;      <span class="comment">// 进入区</span>
-<span class="keyword">while</span>(flag[i] &amp;&amp; turn == i); <span class="comment">// 进入区</span>
-critical section;            <span class="comment">// 临界区</span>
-flag[j] = FALSE;             <span class="comment">// 退出区</span>
-remainder section;           <span class="comment">// 剩余区</span>
-</code></pre>
-<p>下面看一下Peterson算法解决“饥饿”现象的原理：</p>
-<ul>
-<li>进程想要执行前，会先设置自己的flag标志告诉其他的进程“hey，我要进入临界区了！”，如果其他进程没有回应，那么该进程就可以顺畅的执行下去。</li>
-<li>如果其他进程这时也想进去，没关系，我们还有一个标志位turn。这里turn标志可以理解为和其他进程的一句“客套话”,因为他的值等于对方进程的进程号嘛，先问好有礼貌的人我们都比较喜欢，结果就是，<strong>先设置了turn标志值的进程会先得到执行</strong>(两个进程的turn值的设置总是会有一个先后顺序的)。</li>
-<li>原因很明显，后来设置标志位turn的进程会使得自己的循环判断语句为真，而使其他进程的循环判断语句为假从而得到执行，类似于一种先手优势。相比我们其他的方法，比如：单标志法，双标志先检查法和双标志后检查法，Peterson要有效地多，而且这种处理问题的逻辑值得我们借鉴。</li>
-</ul>
-
-      
-
-      
-        <div class="page-reward">
-          <a href="javascript:;" class="page-reward-btn tooltip-top">
-            <div class="tooltip tooltip-east">
-            <span class="tooltip-item">
-              赏
-            </span>
-            <span class="tooltip-content">
-              <span class="tooltip-text">
-                <span class="tooltip-inner">
-                  <p class="reward-p"><i class="icon icon-quo-left"></i>谢谢你支持我创作！<i class="icon icon-quo-right"></i></p>
-                  <div class="reward-box">
-                    
-                    <div class="reward-box-item">
-                      <img class="reward-img" src="/assets/img/alipay.png">
-                      <span class="reward-type">支付宝</span>
-                    </div>
-                    
-                    
-                  </div>
-                </span>
-              </span>
-            </span>
-          </div>
-          </a>
-        </div>
-      
-    </div>
-	<!-- 版权内容 -->
-	
-		<style type="text/css">
-	.article-footer-copyright{
-   border-top:1px solid #d3d3d3;
-   margin: 20px auto;     
-   padding-left:2em;
-   width: 80%;
-}
-.article-footer-copyright p{
-  font-size:1.2em;
-}
-.article-footer-copyright span,.copyright abbr{
-  color:#3d3d3d;
-}
-div.copyright{
-    
-       font-weight:bold;
-       color:#FCB297;
-       padding:0.3em 0.5em;
-       margin:0 0 1em 0;
-       border-bottom:none;
-       background-color:#AAD2F0;
-       -moz-border-radius: 1em;
-       -webkit-border-radius:1em;
-       border-radius: 1em;
-  -moz-box-shadow:inset 0px 1px 0px 0px #eeeeee;
-  -webkit-box-shadow:inset 0px 1px 0px 0px #eeeeee;
-  box-shadow:inset 0px 1px 0px 0px #eeeeee;
-  background:-webkit-gradient( linear, left top, left bottom, color-stop(0.05, #aad2f0), color-stop(1, #8bc1ed) );
-  background:-moz-linear-gradient( center top, #aad2f0 5%, #8bc1ed 100% );
-  /* filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#aad2f0', endColorstr='#8bc1ed'); */
-  background-color:#aad2f0;
-  border:1px solid #dcdcdc;
-  text-shadow:1px 1px 0px #eeeeee;
-  
-}
-div.article-footer-copyright{
-    margin:0em 0em 0em 5em;
-	margin-top:2em;
-    padding:0.5em 1em;
-    border-left:3px solid #ff1700;
-    background-color:#f9f9f9;
-}
-.article-footer-copyright p{
-    line-height: 160%;
-    margin: 10px;
-    font-size: 100%;
-}
-</style>
-
-<div class="article-footer-copyright">
-	<p>本文标题: <a href="/2016/03/17/jin-cheng-hu-chi-de-peterson-suan-fa/" target="_blank" title="进程互斥的 Peterson 算法">进程互斥的 Peterson 算法</a></p>
-	<p>本文链接: <a href="/2016/03/17/jin-cheng-hu-chi-de-peterson-suan-fa/" target="_blank" title="进程互斥的 Peterson 算法">https://ryan-hou.github.io/2016/03/17/jin-cheng-hu-chi-de-peterson-suan-fa/</a></p>
-	<p>转载请注明本文链接~~</p>
-</div>
-
-	
-    <div class="article-info article-info-index">
-      
-      
+        <div class="article-info info-on-right">
+          
 	<div class="article-tag tagcloud">
 		<i class="icon-price-tags icon"></i>
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">算法</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">web</a>
         		</li>
       		 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">OS</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">网络</a>
         		</li>
       		
 		</ul>
 	</div>
 
-      
+          
 
-      
-
-      
-        
-<div class="share-btn share-icons tooltip-left">
-  <div class="tooltip tooltip-east">
-    <span class="tooltip-item">
-      <a href="javascript:;" class="share-sns share-outer">
-        <i class="icon icon-share"></i>
-      </a>
-    </span>
-    <span class="tooltip-content">
-      <div class="share-wrap">
-        <div class="share-icons">
-          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
-            <i class="icon icon-weibo"></i>
-          </a>
-          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
-            <i class="icon icon-weixin"></i>
-          </a>
-          <a class="qq share-sns" href="javascript:;" data-type="qq">
-            <i class="icon icon-qq"></i>
-          </a>
-          <a class="douban share-sns" href="javascript:;" data-type="douban">
-            <i class="icon icon-douban"></i>
-          </a>
-          <a class="qzone share-sns" href="javascript:;" data-type="qzone">
-            <i class="icon icon-qzone"></i>
-          </a>
-          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
-            <i class="icon icon-facebook"></i>
-          </a>
-          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
-            <i class="icon icon-twitter"></i>
-          </a>
-          <a class="google share-sns" href="javascript:;" data-type="google">
-            <i class="icon icon-google"></i>
-          </a>
         </div>
-      </div>
-    </span>
-  </div>
-</div>
-
-<div class="page-modal wx-share js-wx-box">
-    <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
-    <p>扫一扫，分享到微信</p>
-    <div class="wx-qrcode">
-      <img src="//pan.baidu.com/share/qrcode?url=https://ryan-hou.github.io/2016/03/17/jin-cheng-hu-chi-de-peterson-suan-fa/" alt="微信分享二维码">
-    </div>
-</div>
-
-<div class="mask js-mask"></div>
-      
-      <div class="clearfix"></div>
-    </div>
+        <div class="clearfix"></div>
+    </header>
   </div>
 </article>
-
-  
-<nav id="article-nav">
-  
-    <a href="/2016/04/08/shu-ju-chuan-shu-zhong-de-jia-jie-mi/" id="article-nav-newer" class="article-nav-link-wrap">
-      <i class="icon-circle-left"></i>
-      <div class="article-nav-title">
-        
-          数据传输中的加解密
-        
-      </div>
-    </a>
   
   
-    <a href="/2016/03/16/wen-jian-de-luo-ji-jie-gou-yu-wu-li-jie-gou/" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">文件的逻辑结构与物理结构</div>
-      <i class="icon-circle-right"></i>
-    </a>
-  
-</nav>
-
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-  
-  
+    </div></section>
   
 
-  
-
-  
-
-  
-  <div id="gitment-ctn"></div> 
-<link rel="stylesheet" href="https://billts.site/extra_css/gitment.css">
-<script src="https://billts.site/js/gitment.js"></script>
-<script>
-var gitment = new Gitment({
-  id: '进程互斥的 Peterson 算法',
-  owner: 'Ryan-hou',
-  repo: 'Ryan-hou.github.io',
-  oauth: {
-    client_id: '10b94f286862e039846e',
-    client_secret: '51c6b587d0a58d70f6da2e9c5641e66a431751d9',
-  },
-})
-gitment.render('gitment-ctn')
-</script>
-
-  
-
+    
 
 
           </div>
@@ -457,9 +226,9 @@ gitment.render('gitment-ctn')
 	var yiliaConfig = {
 		mathjax: false,
 		isHome: false,
-		isPost: true,
+		isPost: false,
 		isArchive: false,
-		isTag: false,
+		isTag: true,
 		isCategory: false,
 		open_in_new: true,
 		toc_hide_index: true,
