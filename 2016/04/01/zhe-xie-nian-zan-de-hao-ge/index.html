@@ -6,20 +6,22 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="https://ryan-hou.github.io">
-  <title>从$与#到SQL注入 | 0x08 0x17</title>
+  <title>一些好歌 | 0x08 0x17</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="在使用 iBatis 或者 MyBatis 时，我们都会接触到 $ 与 # 符号，也在这里踩过坑，比如 ORDER BY #{XXX}，IN (#{XXX}) 时会发现 SQL 没有报错，但是执行结果不正确，问题的原因就出在了 # 符号 先简单的说明一下 $ 与 # 的区别：  ${ } 就是纯碎的字符串替换，在动态 SQL 解析阶段将会进行变量替换 #{ }解析为一个 JDBC 预编译语句（pr">
-<meta name="keywords" content="数据库,安全">
+  <meta name="description" content="这是我之前的一个博客中比较早的一篇文章了，现在看来需要加的歌还有很多，那先把之前的文章的贴过来，然后慢慢更吧！ 作为一个喜欢听歌的人，虽不说听歌无数，但的确也是听了成千上万首歌。世界上的歌实在太多了，但说实话找到一首自己很享受的单曲循环着实不易，在这里忍不住吐槽一下网上的所谓“经典中的经典”、“让你一直听下去的好歌”等等">
+<meta name="keywords" content="非技术">
 <meta property="og:type" content="article">
-<meta property="og:title" content="从$与#到SQL注入">
-<meta property="og:url" content="https://ryan-hou.github.io/2017/04/21/cong-$yu-number-dao-sqlzhu-ru/index.html">
+<meta property="og:title" content="一些好歌">
+<meta property="og:url" content="https://ryan-hou.github.io/2016/04/01/zhe-xie-nian-zan-de-hao-ge/index.html">
 <meta property="og:site_name" content="0x08 0x17">
-<meta property="og:description" content="在使用 iBatis 或者 MyBatis 时，我们都会接触到 $ 与 # 符号，也在这里踩过坑，比如 ORDER BY #{XXX}，IN (#{XXX}) 时会发现 SQL 没有报错，但是执行结果不正确，问题的原因就出在了 # 符号 先简单的说明一下 $ 与 # 的区别：  ${ } 就是纯碎的字符串替换，在动态 SQL 解析阶段将会进行变量替换 #{ }解析为一个 JDBC 预编译语句（pr">
+<meta property="og:description" content="这是我之前的一个博客中比较早的一篇文章了，现在看来需要加的歌还有很多，那先把之前的文章的贴过来，然后慢慢更吧！ 作为一个喜欢听歌的人，虽不说听歌无数，但的确也是听了成千上万首歌。世界上的歌实在太多了，但说实话找到一首自己很享受的单曲循环着实不易，在这里忍不住吐槽一下网上的所谓“经典中的经典”、“让你一直听下去的好歌”等等">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2018-05-23T08:59:35.000Z">
+<meta property="og:image" content="http://Ryan-hou.github.io/assets/img/music.png">
+<meta property="og:updated_time" content="2018-05-30T07:45:09.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="从$与#到SQL注入">
-<meta name="twitter:description" content="在使用 iBatis 或者 MyBatis 时，我们都会接触到 $ 与 # 符号，也在这里踩过坑，比如 ORDER BY #{XXX}，IN (#{XXX}) 时会发现 SQL 没有报错，但是执行结果不正确，问题的原因就出在了 # 符号 先简单的说明一下 $ 与 # 的区别：  ${ } 就是纯碎的字符串替换，在动态 SQL 解析阶段将会进行变量替换 #{ }解析为一个 JDBC 预编译语句（pr">
+<meta name="twitter:title" content="一些好歌">
+<meta name="twitter:description" content="这是我之前的一个博客中比较早的一篇文章了，现在看来需要加的歌还有很多，那先把之前的文章的贴过来，然后慢慢更吧！ 作为一个喜欢听歌的人，虽不说听歌无数，但的确也是听了成千上万首歌。世界上的歌实在太多了，但说实话找到一首自己很享受的单曲循环着实不易，在这里忍不住吐槽一下网上的所谓“经典中的经典”、“让你一直听下去的好歌”等等">
+<meta name="twitter:image" content="http://Ryan-hou.github.io/assets/img/music.png">
   
     <link rel="alternative" href="/atom.xml" title="0x08 0x17" type="application/atom+xml">
   
@@ -151,59 +153,163 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            <article id="post-cong-$yu-number-dao-sqlzhu-ru" class="article article-type-post " itemscope itemprop="blogPost">
+            <article id="post-zhe-xie-nian-zan-de-hao-ge" class="article article-type-post " itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
         
   
     <h1 class="article-title" itemprop="name">
-      从$与#到SQL注入
+      一些好歌
     </h1>
   
 
         
-        <a href="/2017/04/21/cong-$yu-number-dao-sqlzhu-ru/" class="archive-article-date">
-  	<time datetime="2017-04-21T11:33:38.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-04-21</time>
+        <a href="/2016/04/01/zhe-xie-nian-zan-de-hao-ge/" class="archive-article-date">
+  	<time datetime="2016-04-01T15:24:51.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2016-04-01</time>
 </a>
         
       </header>
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>在使用 iBatis 或者 MyBatis 时，我们都会接触到 $ 与 # 符号，也在这里踩过坑，比如 <strong>ORDER BY #{XXX}，IN (#{XXX})</strong> 时会发现 SQL 没有报错，但是执行结果不正确，问题的原因就出在了 # 符号</p>
-<p>先简单的说明一下 $ 与 # 的区别：</p>
-<ul>
-<li><code>${ }</code> 就是纯碎的字符串替换，在动态 SQL 解析阶段将会进行变量替换</li>
-<li><code>#{ }</code>解析为一个 JDBC 预编译语句（prepared statement）的参数标记符(?)</li>
-</ul>
+        <p>这是我之前的一个博客中比较早的一篇文章了，现在看来需要加的歌还有很多，那先把之前的文章的贴过来，然后慢慢更吧！</p>
+<p>作为一个喜欢听歌的人，虽不说听歌无数，但的确也是听了成千上万首歌。世界上的歌实在太多了，但说实话<strong>找到一首自己很享受的单曲循环着实不易</strong>，在这里忍不住吐槽一下网上的所谓“经典中的经典”、“让你一直听下去的好歌”等等</p>
 <a id="more"></a>
-<p>从上面这个根本的区别上，我们不难得出，能用 <code>#{}</code> 的地方一定可以用<code>${}</code> <strong>但是</strong>，我们提倡只要能用 <code>#{}</code> 就不要用 <code>${}</code>。原因在于 <code>#{}</code> 相对于 <code>${}</code>的一些优势：</p>
-<h4 id="性能："><a href="#性能：" class="headerlink" title="性能："></a>性能：</h4><p><code>#{}</code>使用<strong>参数化查询的方式</strong> 参数化的查询往往有性能优势。因为参数化的查询能让不同的数据通过参数到达数据库，从而公用同一条SQL语句。大多数数据库会缓存解释SQL语句产生的字节码而省下重复解析的开销。如果采取拼接字符串的SQL语句，则会由于操作数据是SQL语句的一部分而非参数的一部分，而反复大量解释SQL语句产生不必要的开销</p>
-<h4 id="安全性"><a href="#安全性" class="headerlink" title="安全性"></a>安全性</h4><p>使用参数化查询的方式可以很大程度的避免sql注入，这个在下面会具体的说一下</p>
-<p>但是在有些情况下我们也不得不使用 <code>${}</code>，比如传入的参数为表名(<code>select * from ${tableName} where name = #{name};</code>)，如果使用 <code>#{}</code> 会在占位符替换时加上 <code>&#39;&#39;</code> 符号导致sql语法错误，这时我们可以使用<code>${}</code>，但是这是在我们已经知晓了问题的情况下才选择这样做的，而不是盲目使用</p>
-<h2 id="关于SQL注入"><a href="#关于SQL注入" class="headerlink" title="关于SQL注入"></a>关于SQL注入</h2><p>SQL注入的概念我们都很清楚了，最简单的例子就是：<code>sql = &quot;SELECT * FROM users WHERE name = &#39;&quot; + userName + &quot;&#39;;&quot;</code> 其中我们把 userName 的值赋为 <code>&quot;1&#39; OR &#39;1&#39;=&#39;1&quot;</code>，那么整个sql语句就变成了：<code>&quot;SELECT * FROM users WHERE name = &#39;1&#39; OR &#39;1&#39;=&#39;1&#39;;&quot;</code> 恒为真，sql注入就这样发生了</p>
-<p>接着上面的例子，我们认真的思考一下为什么会这样？其实说到底，原因在于模糊了数据与代码的界限，<strong>数据库把我们的传入的数据当做代码给编译执行了</strong>，这种处理并不罕见，比如JS中的<code>eval</code>函数也是把数据当做代码来处理，这种处理提供了强大的功能，但是也带来了安全隐患。</p>
-<p>我们理解了sql注入的根本原因，那么对于解决方案就很好理解了。从根本上说就是<strong>避免用户的恶意输入在数据库系统中编译</strong>，怎么做？<strong>在数据库系统编译前再加一层处理，进行SQL语句的预编译和查询参数的绑定。</strong></p>
-<p>下面我们再看一下sql预编译，引用内容会在最后给出链接地址</p>
-<h3 id="定义"><a href="#定义" class="headerlink" title="定义"></a>定义</h3><p>sql 预编译指的是数据库驱动在发送 sql 语句和参数给 DBMS 之前对 sql 语句进行编译，这样 DBMS 执行 sql 时，就不需要重新编译。</p>
-<blockquote>
-<p>为什么需要预编译？<br><br>JDBC 中使用对象 PreparedStatement 来抽象预编译语句，使用预编译<br></p>
+<p>刚开始我会很兴奋的一一试听，但结果往往很失望，后来见多了我甚至怀疑有多少人真正都听过歌单里面的推荐？还是简单的复制粘贴？所以决心在这里自己也总结一个歌单，我不能保证推荐的歌大家都喜欢，但我可以保证我全部听过，而且觉得好听！先从英文歌开始（顺便还可以学学单词，多好！）<strong>排名不分先后！不定期更新</strong>。</p>
+<p><img src="http://Ryan-hou.github.io/assets/img/music.png" alt=""></p>
+<p>从&nbsp;<strong>Gaga</strong>&nbsp;开始吧，推荐两首大家可能不熟悉的： </p>
 <ul>
-<li>预编译阶段可以优化 sql 的执行。</li>
+<li><code>Gypsy</code>（歌词很棒，唱的非常有力量，尤其最后。单曲循环很久，听完我都想当个吉普赛人去流浪了！） </li>
+<li><code>Hair</code>（歌词更棒！很励志啊，很喜欢歌中合唱的另一个女声,哈哈）</li>
+<li><code>The Edge Of Glory</code>（典型的Gaga唱腔）</li>
 </ul>
-<p>预编译之后的 sql 多数情况下可以直接执行，DBMS 不需要再次编译，越复杂的sql，编译的复杂度将越大，预编译阶段可以合并多次操作为一个操作。</p>
+<p>女神&nbsp;<strong>Britney&nbsp; Spears</strong>&nbsp;的推荐两首：</p>
 <ul>
-<li>预编译语句对象可以重复利用。</li>
+<li><code>Sometimes</code>（虽然歌很老了，但是依然喜欢，单曲循环到今天！超喜欢歌词和女神的唱腔！） </li>
+<li><code>Perfume</code>（好听，MV不错！）</li>
 </ul>
-<p>把一个 sql 预编译后产生的 PreparedStatement 对象缓存下来，下次对于同一个sql，可以直接使用这个缓存的 PreparedState 对象。<br><br>mybatis 默认情况下，将对所有的 sql 进行预编译。</p>
-</blockquote>
-<p>结合这里我们就知道了使用<code>#{}</code>可以利用预编译来提高性能，同时由于在预编译阶段把用户的输入进行参数化处理，避免了在数据库系统编译时把数据当做代码运行，从而导致sql注入。而由于<code>${}</code>在预编译阶段就进行了字符串的替换，所以仍然存在sql注入的风险</p>
+<p>来个男歌手，&nbsp;<strong>Frankie&nbsp; J</strong>&nbsp;的歌：</p>
+<ul>
+<li><code>Still</code>（很抒情，旋律朗朗上口）</li>
+<li><code>Don&#39;t wanna try</code> （好听！单曲循环很久！）</li>
+</ul>
+<p>继续男歌手&nbsp;<strong>Daniel &nbsp;Powter</strong>：</p>
+<ul>
+<li><code>Bad day</code>（旋律超清新，印象里好像还是百事的宣传曲，歌词也很好！好吧，我还是比较看中歌词的~） </li>
+<li><code>Best of me</code>（也是很清新的情歌哦，嗓音好棒。Daniel也是<strong>James&nbsp;Blunt</strong>，唱&nbsp;<code>You are beautiful</code> 的同门师弟）</li>
+</ul>
+<p>唱跳俱佳的实力天后&nbsp;<strong>Beyonce</strong>：</p>
+<ul>
+<li><code>If I were a boy</code>（每一个男生都该好好看看歌词和MV，对自己女朋友多点理解！） </li>
+<li><code>Halo</code>（不多说，唱得好高！但是之前看过一个视频，里面一个女生一屋听众，她唱得更棒，听得我高潮迭起，连呼过瘾啊，可惜视频被我弄丢了，如有知道的，！）</li>
+<li><code>Love On Top</code>（很欢快的歌，Beyonce真的唱跳俱佳）</li>
+<li><code>Listen</code>（听完了整个人都舒服了，我一直认为Beyonce就是欧美腔的典型代表！）</li>
+</ul>
+<p>来支乐队吧，<strong>Maroon&nbsp; 5</strong>：</p>
+<ul>
+<li><code>Payphone</code>（超爱！曾经的手机铃声，很多歌手翻唱，推荐一个我最爱的版本：<strong>Megan&nbsp; Nicole &nbsp;&amp;&nbsp; Dave&nbsp; Days</strong>，真的很好听！）</li>
+<li><code>Won&#39;t go home without you</code>（听着很舒服！）</li>
+<li><code>Maps</code>（Maroon5 的代表作！怪怪的嗓音听着好带感！）</li>
+<li><p><code>Suger</code>(最近的单曲循环，越来越爱骚当的嗓音啊，MV也很不错！)</p>
+<p><strong>Black&nbsp; Eyed&nbsp; Peas</strong> 就推荐一首吧：</p>
+</li>
+<li><p><code>I Gotta Feeling</code>（很欢快，不开心听听，每次跑步必听！）</p>
+<p>推荐两首&nbsp;<strong>Westlife</strong>&nbsp;可能不是常见的经典：</p>
+</li>
+<li><p><code>To be with You</code>（超爱这一版的翻唱，曾单曲循环了很久！）</p>
+</li>
+<li><p><code>Tonight</code>（适合戴耳机听，尤其前两句，超级有代入感）</p>
+<p>水果姐&nbsp;<strong>katy&nbsp;Perry</strong>&nbsp;的来两首：</p>
+</li>
+<li><p><code>Firework</code>（你可以说这歌很老了，但没办法，就是爱！尤其歌词，太常听！<strong>It’s &nbsp;always&nbsp; been&nbsp; inside&nbsp; of &nbsp;you,you,you…..</strong>想到都觉得激动！顺便推荐一部迪士尼的动画，马达加斯加，马戏团表演那段背景音乐就是这首，不要太经典！好吧，啰嗦的有点多，可见不是复制粘贴！）</p>
+</li>
+<li><p><code>Part of me</code> 、<code>Last Friday Night</code>（都是很欢快的歌，适合运动！）</p>
+<p>来吧！<strong>Tylor&nbsp; Swift</strong>&nbsp;的，长腿女神，太多歌都朗朗上口，个人觉得没人比Tylor更适合穿高腰裤了！好吧，扯远了。推荐几首：</p>
+</li>
+<li><p><code>Highway don&#39;t care</code>(很喜欢这首合唱！不多说，你值得拥有)</p>
+</li>
+<li><code>Red</code>、<code>Sparks Fly</code>（两首欢快型的） </li>
+<li><code>22</code>（喜欢，哎, 眼看也要22了，哭）</li>
+<li><code>Blank Space</code>（MV很棒哦）</li>
+<li><p><code>Hey Stephen</code>（从歌词就可以看出Tylor真的很有才啊！）好吧，我是Tylor的粉，每首歌差不多都听过，都不错啦，大家直接去听吧！哈哈~</p>
+<p>继续，最为爱运动的人，下面推荐几首适合运动的欢快型歌曲：</p>
+</li>
+<li><p>Kelly &nbsp;Clarkson的<code>Stronger</code>（经典中的经典，励志的歌词配上动感的节奏，超级适合跑步！单曲循环很久）</p>
+</li>
+<li><code>Catch My Breath</code>(也是&nbsp;Kelly&nbsp;Clarkson&nbsp;的歌，有力量，超喜欢这种歌手)</li>
+<li><code>Breakaway</code>(还是Kelly&nbsp;Clarkson的歌，她的很多歌都很值得推荐，直接去收听她的专辑吧！这首歌比较抒情，歌词写得很棒！)</li>
+<li><code>Run This Town</code>（<strong>Jay-Z</strong>&nbsp;和&nbsp;<strong>Rihanna</strong>&nbsp;合唱的，喜欢NBA的同学可能听过，经常作为NBA视频的背景音乐） </li>
+<li><code>Wing$</code>(喜欢运动时听这种调调~) </li>
+<li><code>SHE</code>(<strong>groove &nbsp;coverage</strong> 的，旋律超级带感，高中时期的起床闹铃！怀念！)  </li>
+<li><code>Wake Me Up</code>（<strong>Avicii</strong>的，欢快~） </li>
+<li><code>Viva La Vida</code>（经典不多说，值得多听，歌词很棒！可以百度一下这首歌的创作背景哦）</li>
+<li><code>BeyBey</code>（<strong>Mariah&nbsp; Carey</strong>的，歌词讲述亲人朋友的离去，但是旋律很轻快，听了让人很豁达，很喜欢这个女声！不要错过！）</li>
+<li><code>PaperPlanes</code>（<strong>lenka</strong>的，如果你看过贫民窟的百万富翁应该不会陌生，里面追火车那段的背景音乐就是这个，唱腔很奇特，不过很舒服，尤其喜欢枪声和邮局印戳配合的声音！） </li>
+<li><p><code>Always Come Back to your Love</code>（<strong>Samantha&nbsp; Mumba</strong>的歌，典型的说唱，爽！）  貌似很适合运动的歌太多了，没办法，喜欢运动。为了不显得这里太多，我还是按原计划整理，欢迎试听！总有你喜欢的。（PS，欢迎推荐，共资源！)</p>
+<p>来两首舒缓的歌曲，适合走路听:</p>
+</li>
+<li><p>Rihanna&nbsp;的<code>Take a Bow</code> (经典啊，超爱！歌词很棒！很诙谐！单曲循环很久~)  </p>
+</li>
+<li><code>Telling The world</code>（如果看过里约大冒险应该很熟悉！里面的经典插曲，没看过里约大冒险的同学可以去看一下哦，非常值得一看，其实很多迪士尼的动画插曲都很棒的，比如<strong>Frozen</strong>中的<code>Let it go</code>）</li>
+<li><code>Beautiful Days</code> 和<code>I&#39;m the one</code>（都是电影天使之恋的插曲，虽然个人很反感日本这个国家，不过客观的讲人家还是很值得我们学习的民族。这个电影也很值得一看的！电影的插曲都很不错，尤其最后一个镜头的插曲<code>Waltz</code>，包您喜欢！好吧，顺便连电影也推荐了）</li>
+<li><code>One Time</code>（<strong>Justin &nbsp;Bieber</strong>的歌，很欢快，小时候多好的嗓子，万人迷哎~还有经典的Baby，个人不太喜欢他现在的歌。）</li>
+<li><code>I Hate Love</code>（<strong>Claude &nbsp;Kelly</strong>的，喜欢这种抒情的情歌嗓！）</li>
+<li><code>Do I Have to cry for you</code>（<strong>Nick Carter</strong>的，有点伤感，不过很好听哦，单曲循环过~）</li>
+<li><code>Let her go</code>（<strong>Passenger</strong>的歌，很喜欢这种很干净的抒情歌曲，歌词耐人寻味，曾经百威啤酒的一只广告曾用过这首歌作为背景音乐，是一只狗狗和马群的故事，广告能做成这样只能默默点赞了！）</li>
+</ul>
+<p>继续，<strong>吸血鬼日记</strong>插曲系列：（原来追过这个美剧，插曲普遍不错，后来因为这个剧的剧情太扯淡，已弃）</p>
+<ul>
+<li><code>Down</code>(<strong>Jason&nbsp; Walker</strong>的，里面还有一个女声也不错，有点伤感，单曲循环过~)</li>
+<li><code>Echo</code>(<strong>也是Jason&nbsp;Walker</strong>的，还挺喜欢这种嗓音)</li>
+<li><code>A moment changes everything</code>(<strong>David&nbsp;Gray</strong>的，也是听抒情的这一类，听起来很流畅)</li>
+<li><code>The mess I made</code>(<strong>Parachute</strong>的歌，很喜欢歌曲尾部的那个很长的假音，听着真舒服)</li>
+<li><code>You Wait for rain</code>(没找到歌手信息，反正是很值得一听的女声)</li>
+<li><code>Skinny love</code>(很清新，好听。曾经在<strong>X &nbsp;factor</strong>的选秀中听过一版更好听的翻唱，有兴趣的可以搜索一下~)</li>
+<li><code>Say All Ｉ need</code>(<strong>OneRepublic</strong>的歌，旋律挺动感，很不错,吸血鬼日记还有很多不错的插曲，暂时先写这些，音乐列表歌太多了…..)</li>
+</ul>
+<p><strong>Jessie &nbsp;J</strong>的推荐两首：</p>
+<ul>
+<li><code>Price Tag</code>（不多说，百听不厌的歌，旋律歌词俱佳，被翻唱过那么多，没有一版超越Jessie&nbsp;J。我相信，没有对金钱和标签那种看清的态度，是唱不出真正的内涵和洒脱的）</li>
+<li><code>Domino</code>(Jessie&nbsp;J代表作，一直很喜欢她这种唱腔，真正的Live女王)</li>
+<li><code>Who you are</code>(不多说，好听)</li>
+</ul>
+<p>我去快一点了，准备睡觉，先更到这里，拉个分割线，有时间再继续。</p>
 <hr>
-<h3 id="推荐阅读"><a href="#推荐阅读" class="headerlink" title="推荐阅读"></a>推荐阅读</h3><ul>
-<li><a href="https://segmentfault.com/a/1190000004617028" target="_blank" rel="noopener">mybatis深入理解(一)之 # 与 $ 区别以及 sql 预编译</a></li>
-<li><a href="http://www.importnew.com/5006.html" target="_blank" rel="noopener">JDBC为什么要使用PreparedStatement而不是Statement</a></li>
-<li><a href="https://www.zhihu.com/question/22953267/answer/23192081" target="_blank" rel="noopener">如何从根本上防止 SQL 注入？</a></li>
+<p><strong>3月31号凌晨1点20分，第一更～</strong></p>
+<p><strong>Carly &nbsp; Rae &nbsp; Jepsen</strong>推荐两首，有段时间特别喜欢她的嗓音，略带沙哑，听起来很舒服。特别是她的<strong>MV</strong>都好棒！一定要看~</p>
+<ul>
+<li><code>I Realy Like  You</code> Carly 最近的新歌，MV是和影帝汤姆.汉克斯一起拍的哦，很欢快，边听边看MV心情很nice啊。</li>
+<li><code>Good Time</code> 经典代表作，听很久，依然很喜欢。Carly嗓音特质的最佳体现。MV很棒，合唱的男音也好听，不能错过。</li>
+<li><code>Call Me Maybe</code> 又一经典代表作，依然很欢快，貌似Carly 大部分的歌都很欢快~听着很舒服，心情不好听一听，心情好更要听！MV结局很意外，哈哈。喜欢Carly嗓音的可以直接去听专辑~(PS, Carly笑容很灿烂啊)</li>
+</ul>
+<p><strong>B.o.B</strong>来两首，很喜欢他的说唱，喜欢NBA的肯定不陌生。代表作和<strong>Jessie &nbsp; J</strong>的<code>Price Tag</code>不多说。</p>
+<ul>
+<li><code>Nothing On You</code>，和<strong>火星哥</strong>的合唱，欢快，好听，曾经的手机铃声。</li>
+<li><code>Airplane</code> 经常出现在NBA视频的背景音乐，合唱的女声也很好听！</li>
+<li><code>Rio Rio</code> 电影<code>里约大冒险</code>的插曲，超级赞，电影和电影里的所有插曲都很赞，没看过的建议看一下。看动画的好处就是不需要什么逻辑思考，要的就是天马行空的想象力。多说一句，曾经还有人在网上弄了一个短视频吐槽动画<code>马达加斯加</code>的剧情没有逻辑，对于这等无聊的人，我也只能对他说你厉害了！</li>
+</ul>
+<p>轻快的音乐来两首，歌手有点多，就不单列了~</p>
+<ul>
+<li><code>Stuck In My Heart</code> <strong>C21</strong>乐队的歌，很清新，旋律轻快，文艺青年应该会喜欢。我这种伪文艺表示也很喜欢。</li>
+<li><code>Lil&#39; Star</code><strong>Kelis</strong>的歌，依旧欢快，不过刚开始7秒左右的前奏我不是很喜欢，差点错过了这首歌。还好还好多了点耐心~</li>
+<li><code>If You Come To Me</code>很喜欢<strong>Atomic Kitten</strong>这个女子组合,有不少歌都不错，推荐试听。</li>
+</ul>
+<hr>
+<p><strong>4月5号凌晨1点半，更新博客，顺便微更几首歌:</strong></p>
+<ul>
+<li><code>Fourfiveseconds</code>舒缓的音乐，<strong>Rihanna</strong>、<strong>Kanye West</strong>、<strong>Paul McCartney</strong> 的合唱，大爱<strong>Rihanna</strong>，格莱美获奖作品，不要错过。</li>
+<li><code>Thinking Out Loud</code> <strong>Ed Sheeran</strong> 的歌，抒情，听起来很舒服，这种歌就非常适合咖啡馆，黄昏下午，喜欢。</li>
+<li><code>Love Me Like You Do</code> <strong>Ellie Goulding</strong>的歌，如果你看过讲述雾霾的电影<code>五十度灰</code>，那么对这首插曲就不会陌生了，什么？<strong>苍穹之下</strong>才是讲的雾霾，那这个讲的什么？</li>
+<li><code>walking on sunshine</code>韩国歌手<strong>朴宝英</strong>的歌，很欢快，但是个人更喜欢她在电影<strong>非常主播</strong>里面的几次演唱，尤其是海豚音和合唱那段，超级赞！电影也不错，可以一看。很多时候都在怀疑韩国的电影和电视剧是不是一个国家拍的，怎么感觉差距那么大呢？好吧，韩密轻喷~</li>
+</ul>
+<hr>
+<p><strong>4月19日凌晨3点，再添两首歌:</strong></p>
+<ul>
+<li><code>Heart</code> 女神<strong>Britney Spears</strong>的歌，很抒情，喜欢女神略带沙哑的嗓音，可以一听!</li>
+<li><code>Uptown Funk</code>,<strong>Mark Ronson &amp; Bruno Mars</strong>,超有律动感啊！！黑人这种欢快的dance节奏真真是深入血液，最近写文章的单曲循环，边听边写根本停不下来~</li>
+<li><code>Danza Kuduro</code>，<strong>Don Omar &amp; Lucenzo</strong>的歌，<strong>速度与激情5</strong>最后大家分了一亿美金的那段插曲就是这个，虽然完全听不懂，但就是很喜欢这个节奏，相当欢快，值得一听！(PS，个人一直认为速度与激情5是整个系列最好看的一部，不论剧情演员还是结局！！）</li>
+<li><code>See You Again</code> <strong>Wiz Khalifa &amp; Charlie Puth</strong>的歌，几天前去看了电影<strong>速度与激情7</strong>，电影很棒，其中这首插曲也很好听，为纪念Paul而作。个人对于这种家庭主题的影片毫无抵抗力，尤其硬汉柔情。如果用一句话概括整个速度与激情系列，那就是范爷说的这句：<strong>I don’t have friends, I got family.</strong></li>
 </ul>
 
       
@@ -288,8 +394,8 @@ div.article-footer-copyright{
 </style>
 
 <div class="article-footer-copyright">
-	<p>本文标题: <a href="/2017/04/21/cong-$yu-number-dao-sqlzhu-ru/" target="_blank" title="从$与#到SQL注入">从$与#到SQL注入</a></p>
-	<p>本文链接: <a href="/2017/04/21/cong-$yu-number-dao-sqlzhu-ru/" target="_blank" title="从$与#到SQL注入">https://ryan-hou.github.io/2017/04/21/cong-$yu-number-dao-sqlzhu-ru/</a></p>
+	<p>本文标题: <a href="/2016/04/01/zhe-xie-nian-zan-de-hao-ge/" target="_blank" title="一些好歌">一些好歌</a></p>
+	<p>本文链接: <a href="/2016/04/01/zhe-xie-nian-zan-de-hao-ge/" target="_blank" title="一些好歌">https://ryan-hou.github.io/2016/04/01/zhe-xie-nian-zan-de-hao-ge/</a></p>
 	<p>转载请注明本文链接~~</p>
 </div>
 
@@ -302,11 +408,7 @@ div.article-footer-copyright{
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">数据库</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">安全</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">非技术</a>
         		</li>
       		
 		</ul>
@@ -362,7 +464,7 @@ div.article-footer-copyright{
     <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
     <p>扫一扫，分享到微信</p>
     <div class="wx-qrcode">
-      <img src="//pan.baidu.com/share/qrcode?url=https://ryan-hou.github.io/2017/04/21/cong-$yu-number-dao-sqlzhu-ru/" alt="微信分享二维码">
+      <img src="//pan.baidu.com/share/qrcode?url=https://ryan-hou.github.io/2016/04/01/zhe-xie-nian-zan-de-hao-ge/" alt="微信分享二维码">
     </div>
 </div>
 
@@ -376,18 +478,18 @@ div.article-footer-copyright{
   
 <nav id="article-nav">
   
-    <a href="/2017/04/27/lombok-overview/" id="article-nav-newer" class="article-nav-link-wrap">
+    <a href="/2016/04/05/git-cao-zuo-gai-shu/" id="article-nav-newer" class="article-nav-link-wrap">
       <i class="icon-circle-left"></i>
       <div class="article-nav-title">
         
-          Lombok overview
+          git 操作概述
         
       </div>
     </a>
   
   
-    <a href="/2017/04/03/threadlocaljie-xi/" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">ThreadLocal解析</div>
+    <a href="/2016/03/27/web-fu-wu-qi-ru-he-gong-zuo/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">Web 服务器如何工作</div>
       <i class="icon-circle-right"></i>
     </a>
   
@@ -426,7 +528,7 @@ div.article-footer-copyright{
 <script src="https://billts.site/js/gitment.js"></script>
 <script>
 var gitment = new Gitment({
-  id: '从$与#到SQL注入',
+  id: '一些好歌',
   owner: 'Ryan-hou',
   repo: 'Ryan-hou.github.io',
   oauth: {
