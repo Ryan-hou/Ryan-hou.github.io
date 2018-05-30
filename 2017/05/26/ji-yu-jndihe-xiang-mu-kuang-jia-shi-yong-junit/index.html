@@ -6,15 +6,20 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="https://ryan-hou.github.io">
-  <title>Archives: 2018/2 | 0x08 0x17</title>
+  <title>基于JNDI和项目框架使用JUnit | 0x08 0x17</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta property="og:type" content="website">
-<meta property="og:title" content="0x08 0x17">
-<meta property="og:url" content="https://ryan-hou.github.io/archives/2018/02/index.html">
+  <meta name="description" content="问题背景新参与的项目，由于之前赶进度开发，代码质量堪忧，没有任何单元测试，项目使用JNDI在Tomcat容器配置数据源信息，并且公司的架构对Spring和iBatis做了二次开发。最近打算重构一部分代码，需要加上单元测试，考虑到项目的部署环境并不复杂，数据访问也不是很大，第一步先使用Junit测试，直连数据库，后期再引入Mock环境 需要解决的问题 整合JNDI和Spring Test 整合Spr">
+<meta name="keywords" content="Java,优化">
+<meta property="og:type" content="article">
+<meta property="og:title" content="基于JNDI和项目框架使用JUnit">
+<meta property="og:url" content="https://ryan-hou.github.io/2017/05/26/ji-yu-jndihe-xiang-mu-kuang-jia-shi-yong-junit/index.html">
 <meta property="og:site_name" content="0x08 0x17">
+<meta property="og:description" content="问题背景新参与的项目，由于之前赶进度开发，代码质量堪忧，没有任何单元测试，项目使用JNDI在Tomcat容器配置数据源信息，并且公司的架构对Spring和iBatis做了二次开发。最近打算重构一部分代码，需要加上单元测试，考虑到项目的部署环境并不复杂，数据访问也不是很大，第一步先使用Junit测试，直连数据库，后期再引入Mock环境 需要解决的问题 整合JNDI和Spring Test 整合Spr">
 <meta property="og:locale" content="default">
+<meta property="og:updated_time" content="2018-05-30T08:07:53.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="0x08 0x17">
+<meta name="twitter:title" content="基于JNDI和项目框架使用JUnit">
+<meta name="twitter:description" content="问题背景新参与的项目，由于之前赶进度开发，代码质量堪忧，没有任何单元测试，项目使用JNDI在Tomcat容器配置数据源信息，并且公司的架构对Spring和iBatis做了二次开发。最近打算重构一部分代码，需要加上单元测试，考虑到项目的部署环境并不复杂，数据访问也不是很大，第一步先使用Junit测试，直连数据库，后期再引入Mock环境 需要解决的问题 整合JNDI和Spring Test 整合Spr">
   
     <link rel="alternative" href="/atom.xml" title="0x08 0x17" type="application/atom+xml">
   
@@ -146,36 +151,162 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            
-  
-  
+            <article id="post-ji-yu-jndihe-xiang-mu-kuang-jia-shi-yong-junit" class="article article-type-post " itemscope itemprop="blogPost">
+  <div class="article-inner">
     
-    
-      
-      
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2018" class="archive-year">2018</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2018/02/20/phantom-types-in-java/" class="archive-article-date">
-  	<time datetime="2018-02-20T04:12:36.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-02-20</time>
-</a>
-        </div>
-    	 
+      <header class="article-header">
+        
   
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2018/02/20/phantom-types-in-java/">Phantom types in Java</a>
+    <h1 class="article-title" itemprop="name">
+      基于JNDI和项目框架使用JUnit
     </h1>
   
 
-        <div class="article-info info-on-right">
-          
+        
+        <a href="/2017/05/26/ji-yu-jndihe-xiang-mu-kuang-jia-shi-yong-junit/" class="archive-article-date">
+  	<time datetime="2017-05-26T09:37:49.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-05-26</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="问题背景"><a href="#问题背景" class="headerlink" title="问题背景"></a>问题背景</h2><p>新参与的项目，由于之前赶进度开发，代码质量堪忧，没有任何单元测试，项目使用JNDI在Tomcat容器配置数据源信息，并且公司的架构对Spring和iBatis做了二次开发。最近打算重构一部分代码，需要加上单元测试，考虑到项目的部署环境并不复杂，数据访问也不是很大，第一步先使用Junit测试，直连数据库，后期再引入Mock环境</p>
+<h2 id="需要解决的问题"><a href="#需要解决的问题" class="headerlink" title="需要解决的问题"></a>需要解决的问题</h2><ul>
+<li>整合JNDI和Spring Test</li>
+<li>整合Spring Test 和公司封装的框架</li>
+</ul>
+<h2 id="关于JNDI及与测试框架整合"><a href="#关于JNDI及与测试框架整合" class="headerlink" title="关于JNDI及与测试框架整合"></a>关于JNDI及与测试框架整合</h2><h3 id="什么是JNDI"><a href="#什么是JNDI" class="headerlink" title="什么是JNDI"></a>什么是JNDI</h3><blockquote>
+<p>JNDI stands for Java Naming and Directory Interface. It is an API to providing access to a directory service, that is, a service mapping name (strings) with objects, reference to remote objects or simple data<br>Applications use the JNDI interface to access resources.</p>
+</blockquote>
+<a id="more"></a>
+<p>简单来说，可以类比为一个 hashmap，有一个String类型的key，同时对应一个用来表示网络资源的对象类型的值。通常，这些资源被组织为分层级的目录服务，不同的层级通过分隔符来定义(比如，在DNS中使用<code>.</code>，在LDAP中使用<code>,</code>)。这是一个命名惯例，不同的上下文有自己的命名惯例。</p>
+<h3 id="为什么使用JNDI"><a href="#为什么使用JNDI" class="headerlink" title="为什么使用JNDI"></a>为什么使用JNDI</h3><p>JDNI可以使分布式应用以一种抽象的，资源无关的方式来寻找服务。最常见的应用是在 Java EE 应用服务器（比如Tomcat）配置数据库连接池（使用统一的配置中心来进行集中管理也是一种思路）。这样任何部署在这台服务器上的应用都可以使用 JNDI 名<code>java:comp/env/FooBarPool</code> 来获取连接而不用知道具体的连接信息。这种做法有两个主要的好处：</p>
+<ul>
+<li>如果你的应用是在不同的环境下都要部署的，比如<code>dev-&gt;test-&gt;pre-&gt;prod</code>，那么你可以在不同的环境下使用相同的 JNDI 名字，应用在不同的环境下迁移不需要做任何的修改</li>
+<li>最小化配置信息的知情人，把配置和管理服务器的人与开发的人分开，不同的环境可以控制自己相应的账户与密码等信息</li>
+</ul>
+<h3 id="与Spring-JUnit-整合"><a href="#与Spring-JUnit-整合" class="headerlink" title="与Spring JUnit 整合"></a>与Spring JUnit 整合</h3><p>从上面我们知道，一般使用JNDI是结合JavaEE容器来使用，配置信息在容器层面，但是我们要使用单元测试，就需要把配置信息在项目层面进行配置，即配置数据源连接信息，分三步走：</p>
+<ul>
+<li>把JavaEE容器中的信息获取到，配置为项目的bean，举个例子：</li>
+</ul>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">bean</span> <span class="attr">id</span>=<span class="string">"dataSourceUC"</span>	<span class="attr">class</span>=<span class="string">"org.springframework.jdbc.datasource.DriverManagerDataSource"</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"driverClassName"</span> <span class="attr">value</span>=<span class="string">"com.mysql.jdbc.Driver"</span> /&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"url"</span> <span class="attr">value</span>=<span class="string">"jdbc:mysql://xx.xx.xx.xx:3306/database_name?useUnicode=true&amp;amp;characterEncoding=utf8&amp;amp;zeroDateTimeBehavior=convertToNull"</span> /&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"username"</span> <span class="attr">value</span>=<span class="string">"xxx"</span> /&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"password"</span> <span class="attr">value</span>=<span class="string">"xxx"</span> /&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">bean</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li><p>使用 Spring 官方提供的 <strong>SimpleNamingContextBuilder</strong> <code>binding a JDBC DataSource to a well-known JNDI location, to be able to use traditional J2EE data access code outside of a J2EE container.</code>（具体信息见官网，文章最后会给出链接）</p>
+</li>
+<li><p>优化上面的操作，通过继承<strong>SpringJUnit4ClassRunner</strong>类来进行JNDI和数据源的绑定操作，示例代码如下，具体信息文章最后会给出相应的文章链接，写的很好很详细</p>
+</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * This class adds the JNDI capabilities to the SpringJUnit4ClassRunner.</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">SpringWithJNDIRunner</span> <span class="keyword">extends</span> <span class="title">SpringJUnit4ClassRunner</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">boolean</span> isJNDIactive;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * JNDI is activated with this constructor.</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> klass</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@throws</span> InitializationError</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@throws</span> NamingException</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@throws</span> IllegalStateException</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">SpringWithJNDIRunner</span><span class="params">(Class&lt;?&gt; klass)</span> <span class="keyword">throws</span> InitializationError,</span></span><br><span class="line"><span class="function">            IllegalStateException, NamingException </span>&#123;</span><br><span class="line">        <span class="keyword">super</span>(klass);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">synchronized</span> (SpringWithJNDIRunner.class) &#123;</span><br><span class="line">            <span class="keyword">if</span> (!isJNDIactive) &#123;</span><br><span class="line"></span><br><span class="line">                ApplicationContext applicationContext = <span class="keyword">new</span> ClassPathXmlApplicationContext(</span><br><span class="line">                        <span class="string">"initTestEnvir.xml"</span>);</span><br><span class="line">                <span class="comment">// 这里的bean是用来初始化项目的路径用的，与公司的架构封装有关，可以忽略       </span></span><br><span class="line">                applicationContext.getBean(<span class="string">"initPath"</span>);</span><br><span class="line"></span><br><span class="line">                applicationContext = <span class="keyword">new</span> ClassPathXmlApplicationContext(<span class="string">"dataAccessContext-ibatis-UC.xml"</span>);</span><br><span class="line">                SimpleNamingContextBuilder builder = <span class="keyword">new</span> SimpleNamingContextBuilder();</span><br><span class="line">                builder.bind(<span class="string">"java:comp/env/jdbc/ucmysql,ucmysql_read_1"</span>,</span><br><span class="line">                        applicationContext.getBean(<span class="string">"dataSourceUC"</span>));</span><br><span class="line">                builder.activate();</span><br><span class="line"></span><br><span class="line">                isJNDIactive = <span class="keyword">true</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">@RunWith</span>(SpringWithJNDIRunner.class)</span><br><span class="line"><span class="meta">@ContextConfiguration</span>(locations = &#123;<span class="string">"classpath:dataAccessContext-ibatis-UC.xml"</span>,</span><br><span class="line">        <span class="string">"classpath:com/xxx/framework/config/spring/applicationContext_annotation.xml"</span>&#125;)</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">VehicleRetireDAOImplTest</span> </span>&#123;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> Logger logger = LoggerFactory.getLogger(VehicleRetireDAOImplTest.class);</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Autowired</span></span><br><span class="line">    <span class="keyword">private</span> VehicleRetireDAO vehicleRetireDAO;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Test</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">testGetRetireById</span><span class="params">()</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        logger.error(<span class="string">"-----------------Start---------------"</span>);</span><br><span class="line"></span><br><span class="line">        VehicleRetire vehicleRetire = vehicleRetireDAO.getRetireById(<span class="number">100L</span>);</span><br><span class="line">        logger.error(<span class="string">"Vehicle info = &#123;&#125;"</span>, JSONObject.toJSONString(vehicleRetire));</span><br><span class="line">        logger.error(<span class="string">"-----------------End------------------"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="整合公司开发框架"><a href="#整合公司开发框架" class="headerlink" title="整合公司开发框架"></a>整合公司开发框架</h3><p>在整合公司的框架时，遇到了不少的问题，因为是基于开源框架的二次开发，而且没有什么文档，只能一点点的调试和debug，主要解决的问题有三个，也算是有参考价值的点：</p>
+<ul>
+<li>设置项目编译后的路径信息，并在加载其他配置文件前，先设置好该路径</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">InitPath</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">InitPath</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        GlobalMessage.setPath(Thread.currentThread().getContextClassLoader().getResource(<span class="string">""</span>).getPath().replace(<span class="string">"test-classes/"</span>,<span class="string">"xxx"</span>));</span><br><span class="line">        &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>找到项目Bean注解扫描(如@Service,@Resource,@Autowired等)的配置</li>
+<li>梳理项目整合数据源与封装后的iBatis配置，及整合Spring的配置</li>
+</ul>
+<p>至此，项目终于可以正常使用 JUnit 来进行单元测试，为下一步进行代码重构准备好前提条件</p>
+<hr>
+<p>####参考文章</p>
+<ul>
+<li><a href="http://blog.manupk.com/2014/03/integration-testing-for-spring.html" target="_blank" rel="noopener">Integration Testing for Spring Applications with JNDI Connection Pools</a></li>
+<li><a href="http://docs.spring.io/spring/docs/current/javadoc-api/org/springframework/mock/jndi/SimpleNamingContextBuilder.html" target="_blank" rel="noopener">Class SimpleNamingContextBuilder</a></li>
+<li><a href="http://docs.spring.io/spring-batch/reference/html/testing.html" target="_blank" rel="noopener">10. Unit Testing</a></li>
+</ul>
+
+      
+
+      
+        <div class="page-reward">
+          <a href="javascript:;" class="page-reward-btn tooltip-top">
+            <div class="tooltip tooltip-east">
+            <span class="tooltip-item">
+              赏
+            </span>
+            <span class="tooltip-content">
+              <span class="tooltip-text">
+                <span class="tooltip-inner">
+                  <p class="reward-p"><i class="icon icon-quo-left"></i>谢谢你支持我创作！<i class="icon icon-quo-right"></i></p>
+                  <div class="reward-box">
+                    
+                    <div class="reward-box-item">
+                      <img class="reward-img" src="/assets/img/alipay.png">
+                      <span class="reward-type">支付宝</span>
+                    </div>
+                    
+                    
+                  </div>
+                </span>
+              </span>
+            </span>
+          </div>
+          </a>
+        </div>
+      
+    </div>
+	<!-- 版权内容 -->
+	
+		<style type="text/css">
+	.article-footer-copyright{
+   border-top:1px solid #d3d3d3;
+   margin: 20px auto;     
+   padding-left:2em;
+   width: 80%;
+}
+.article-footer-copyright p{
+  font-size:1.2em;
+}
+.article-footer-copyright span,.copyright abbr{
+  color:#3d3d3d;
+}
+div.copyright{
+    
+       font-weight:bold;
+       color:#FCB297;
+       padding:0.3em 0.5em;
+       margin:0 0 1em 0;
+       border-bottom:none;
+       background-color:#AAD2F0;
+       -moz-border-radius: 1em;
+       -webkit-border-radius:1em;
+       border-radius: 1em;
+  -moz-box-shadow:inset 0px 1px 0px 0px #eeeeee;
+  -webkit-box-shadow:inset 0px 1px 0px 0px #eeeeee;
+  box-shadow:inset 0px 1px 0px 0px #eeeeee;
+  background:-webkit-gradient( linear, left top, left bottom, color-stop(0.05, #aad2f0), color-stop(1, #8bc1ed) );
+  background:-moz-linear-gradient( center top, #aad2f0 5%, #8bc1ed 100% );
+  /* filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#aad2f0', endColorstr='#8bc1ed'); */
+  background-color:#aad2f0;
+  border:1px solid #dcdcdc;
+  text-shadow:1px 1px 0px #eeeeee;
+  
+}
+div.article-footer-copyright{
+    margin:0em 0em 0em 5em;
+	margin-top:2em;
+    padding:0.5em 1em;
+    border-left:3px solid #ff1700;
+    background-color:#f9f9f9;
+}
+.article-footer-copyright p{
+    line-height: 160%;
+    margin: 10px;
+    font-size: 100%;
+}
+</style>
+
+<div class="article-footer-copyright">
+	<p>本文标题: <a href="/2017/05/26/ji-yu-jndihe-xiang-mu-kuang-jia-shi-yong-junit/" target="_blank" title="基于JNDI和项目框架使用JUnit">基于JNDI和项目框架使用JUnit</a></p>
+	<p>本文链接: <a href="/2017/05/26/ji-yu-jndihe-xiang-mu-kuang-jia-shi-yong-junit/" target="_blank" title="基于JNDI和项目框架使用JUnit">https://ryan-hou.github.io/2017/05/26/ji-yu-jndihe-xiang-mu-kuang-jia-shi-yong-junit/</a></p>
+	<p>转载请注明本文链接~~</p>
+</div>
+
+	
+    <div class="article-info article-info-index">
+      
+      
 	<div class="article-tag tagcloud">
 		<i class="icon-price-tags icon"></i>
 		<ul class="article-tag-list">
@@ -185,25 +316,139 @@
         		</li>
       		 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">翻译</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">优化</a>
         		</li>
       		
 		</ul>
 	</div>
 
-          
+      
 
+      
+
+      
+        
+<div class="share-btn share-icons tooltip-left">
+  <div class="tooltip tooltip-east">
+    <span class="tooltip-item">
+      <a href="javascript:;" class="share-sns share-outer">
+        <i class="icon icon-share"></i>
+      </a>
+    </span>
+    <span class="tooltip-content">
+      <div class="share-wrap">
+        <div class="share-icons">
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="icon icon-weibo"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="icon icon-weixin"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="icon icon-qq"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="icon icon-douban"></i>
+          </a>
+          <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a>
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="icon icon-facebook"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="icon icon-twitter"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="icon icon-google"></i>
+          </a>
         </div>
-        <div class="clearfix"></div>
-    </header>
+      </div>
+    </span>
+  </div>
+</div>
+
+<div class="page-modal wx-share js-wx-box">
+    <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+      <img src="//pan.baidu.com/share/qrcode?url=https://ryan-hou.github.io/2017/05/26/ji-yu-jndihe-xiang-mu-kuang-jia-shi-yong-junit/" alt="微信分享二维码">
+    </div>
+</div>
+
+<div class="mask js-mask"></div>
+      
+      <div class="clearfix"></div>
+    </div>
   </div>
 </article>
+
+  
+<nav id="article-nav">
+  
+    <a href="/2017/05/30/cong-[?]-ge-jian-dan-de-qian-duan-bugtan-tan-jsde-dan-xian-cheng/" id="article-nav-newer" class="article-nav-link-wrap">
+      <i class="icon-circle-left"></i>
+      <div class="article-nav-title">
+        
+          从一个简单的前端Bug谈点感受
+        
+      </div>
+    </a>
   
   
-    </div></section>
+    <a href="/2017/04/30/bi-bao-yu-javanei-bu-lei/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">闭包与Java内部类</div>
+      <i class="icon-circle-right"></i>
+    </a>
+  
+</nav>
+
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+  
+  
   
 
-    
+  
+
+  
+
+  
+  <div id="gitment-ctn"></div> 
+<link rel="stylesheet" href="https://billts.site/extra_css/gitment.css">
+<script src="https://billts.site/js/gitment.js"></script>
+<script>
+var gitment = new Gitment({
+  id: '基于JNDI和项目框架使用JUnit',
+  owner: 'Ryan-hou',
+  repo: 'Ryan-hou.github.io',
+  oauth: {
+    client_id: '10b94f286862e039846e',
+    client_secret: '51c6b587d0a58d70f6da2e9c5641e66a431751d9',
+  },
+})
+gitment.render('gitment-ctn')
+</script>
+
+  
+
 
 
           </div>
@@ -226,8 +471,8 @@
 	var yiliaConfig = {
 		mathjax: false,
 		isHome: false,
-		isPost: false,
-		isArchive: true,
+		isPost: true,
+		isArchive: false,
 		isTag: false,
 		isCategory: false,
 		open_in_new: true,

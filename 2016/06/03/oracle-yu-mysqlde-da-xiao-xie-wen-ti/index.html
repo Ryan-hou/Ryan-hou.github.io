@@ -6,15 +6,20 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="https://ryan-hou.github.io">
-  <title>Archives: 2018/2 | 0x08 0x17</title>
+  <title>Oracle 与 MySQL的大小写问题 | 0x08 0x17</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta property="og:type" content="website">
-<meta property="og:title" content="0x08 0x17">
-<meta property="og:url" content="https://ryan-hou.github.io/archives/2018/02/index.html">
+  <meta name="description" content="Oracle 大小写问题 ORACLE在建表时，表名或者字段名如果没有双引号，ORACLE会把表名、字段名全部转化为大写字母然后写入数据字典。访问数据字典时，没有双引号ORACLE会将其转化成大写然后再去数据字段中查找；如果加上双引号则能区分大小写 ORACLE数据库中关键字，函数名，过程名，表名称，表字段，pl/sql 块中变量名，用户名，密码等都不区分大小写(在写入数据字典时全部转为大写) 在">
+<meta name="keywords" content="数据库">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Oracle 与 MySQL的大小写问题">
+<meta property="og:url" content="https://ryan-hou.github.io/2016/06/03/oracle-yu-mysqlde-da-xiao-xie-wen-ti/index.html">
 <meta property="og:site_name" content="0x08 0x17">
+<meta property="og:description" content="Oracle 大小写问题 ORACLE在建表时，表名或者字段名如果没有双引号，ORACLE会把表名、字段名全部转化为大写字母然后写入数据字典。访问数据字典时，没有双引号ORACLE会将其转化成大写然后再去数据字段中查找；如果加上双引号则能区分大小写 ORACLE数据库中关键字，函数名，过程名，表名称，表字段，pl/sql 块中变量名，用户名，密码等都不区分大小写(在写入数据字典时全部转为大写) 在">
 <meta property="og:locale" content="default">
+<meta property="og:updated_time" content="2018-05-30T08:13:22.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="0x08 0x17">
+<meta name="twitter:title" content="Oracle 与 MySQL的大小写问题">
+<meta name="twitter:description" content="Oracle 大小写问题 ORACLE在建表时，表名或者字段名如果没有双引号，ORACLE会把表名、字段名全部转化为大写字母然后写入数据字典。访问数据字典时，没有双引号ORACLE会将其转化成大写然后再去数据字段中查找；如果加上双引号则能区分大小写 ORACLE数据库中关键字，函数名，过程名，表名称，表字段，pl/sql 块中变量名，用户名，密码等都不区分大小写(在写入数据字典时全部转为大写) 在">
   
     <link rel="alternative" href="/atom.xml" title="0x08 0x17" type="application/atom+xml">
   
@@ -146,64 +151,275 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            
-  
-  
+            <article id="post-oracle-yu-mysqlde-da-xiao-xie-wen-ti" class="article article-type-post " itemscope itemprop="blogPost">
+  <div class="article-inner">
     
-    
-      
-      
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2018" class="archive-year">2018</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2018/02/20/phantom-types-in-java/" class="archive-article-date">
-  	<time datetime="2018-02-20T04:12:36.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-02-20</time>
-</a>
-        </div>
-    	 
+      <header class="article-header">
+        
   
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2018/02/20/phantom-types-in-java/">Phantom types in Java</a>
+    <h1 class="article-title" itemprop="name">
+      Oracle 与 MySQL的大小写问题
     </h1>
   
 
-        <div class="article-info info-on-right">
-          
+        
+        <a href="/2016/06/03/oracle-yu-mysqlde-da-xiao-xie-wen-ti/" class="archive-article-date">
+  	<time datetime="2016-06-03T02:03:20.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2016-06-03</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h3 id="Oracle-大小写问题"><a href="#Oracle-大小写问题" class="headerlink" title="Oracle 大小写问题"></a>Oracle 大小写问题</h3><ul>
+<li><code>ORACLE</code>在建表时，表名或者字段名如果没有双引号，ORACLE会把<strong>表名、字段名</strong>全部转化为大写字母然后写入数据字典。访问数据字典时，没有双引号ORACLE会将其转化成大写然后再去数据字段中查找；<strong>如果加上双引号则能区分大小写</strong></li>
+<li><code>ORACLE</code>数据库中<strong>关键字，函数名，过程名，表名称，表字段，pl/sql 块中变量名，用户名，密码等</strong>都不区分大小写(在写入数据字典时全部转为大写)</li>
+<li>在向数据库中插入数据或在where字句中的<code>‘’</code>之间的数据是区分大小写的</li>
+</ul>
+<a id="more"></a>
+<h4 id="MySQL-大小写问题"><a href="#MySQL-大小写问题" class="headerlink" title="MySQL 大小写问题"></a>MySQL 大小写问题</h4><blockquote>
+<p><strong>Column, index, stored routine, and event names are not case sensitive on any platform, nor are column aliases.</strong><br><br>By default, table aliases are case sensitive on Unix, but not so on Windows or OSX.</p>
+</blockquote>
+<p>从官方文档的描述来看，列名，列别名，索引名在任何系统下都是大小写不敏感的，而表别名的大小写敏感问题与操作系统平台有关；也就是说，遇到大小写敏感的问题，<strong>先确定自己的操作系统，再去看官方文档</strong></p>
+<blockquote>
+<p>Although database, table, and trigger names are not case sensitive on some platforms, you shoule not refer to one of these using different cases within the same statement. The following statement would not work because it refers to a table both as my my_table and as MY_TABLE:</p>
+</blockquote>
+<p><code>mysql&gt; SELECT * FROM my_table WHERE MY_TABLE.col = 1</code></p>
+<p>至于为什么操作系统会影响数据库的大小写敏感问题，在官网上也有叙述，如下：</p>
+<blockquote>
+<p>In MySQL, <strong>databases correspond to directories within the data directory.</strong> Each table within a database corresponds to at least one file within the database directory(and possibly more, depending on the storage engine).Triggers also correspond to files.Consequently, the case sensitivity of the underlying operating system plays a part int the case sensitivity of <strong>database, table, and trigger names</strong>.<br><br>This means such names are not case sensitive in Windows, but are case sensitive in most varieties of Unix. One notable exception is OS X, which is Unix-based but uses a default file system type(HFS+) that is not case sensitvie.</p>
+</blockquote>
+<p>总结起来一句话，明确所用的操作系统和数据库类型，查看官方文档！</p>
+
+      
+
+      
+        <div class="page-reward">
+          <a href="javascript:;" class="page-reward-btn tooltip-top">
+            <div class="tooltip tooltip-east">
+            <span class="tooltip-item">
+              赏
+            </span>
+            <span class="tooltip-content">
+              <span class="tooltip-text">
+                <span class="tooltip-inner">
+                  <p class="reward-p"><i class="icon icon-quo-left"></i>谢谢你支持我创作！<i class="icon icon-quo-right"></i></p>
+                  <div class="reward-box">
+                    
+                    <div class="reward-box-item">
+                      <img class="reward-img" src="/assets/img/alipay.png">
+                      <span class="reward-type">支付宝</span>
+                    </div>
+                    
+                    
+                  </div>
+                </span>
+              </span>
+            </span>
+          </div>
+          </a>
+        </div>
+      
+    </div>
+	<!-- 版权内容 -->
+	
+		<style type="text/css">
+	.article-footer-copyright{
+   border-top:1px solid #d3d3d3;
+   margin: 20px auto;     
+   padding-left:2em;
+   width: 80%;
+}
+.article-footer-copyright p{
+  font-size:1.2em;
+}
+.article-footer-copyright span,.copyright abbr{
+  color:#3d3d3d;
+}
+div.copyright{
+    
+       font-weight:bold;
+       color:#FCB297;
+       padding:0.3em 0.5em;
+       margin:0 0 1em 0;
+       border-bottom:none;
+       background-color:#AAD2F0;
+       -moz-border-radius: 1em;
+       -webkit-border-radius:1em;
+       border-radius: 1em;
+  -moz-box-shadow:inset 0px 1px 0px 0px #eeeeee;
+  -webkit-box-shadow:inset 0px 1px 0px 0px #eeeeee;
+  box-shadow:inset 0px 1px 0px 0px #eeeeee;
+  background:-webkit-gradient( linear, left top, left bottom, color-stop(0.05, #aad2f0), color-stop(1, #8bc1ed) );
+  background:-moz-linear-gradient( center top, #aad2f0 5%, #8bc1ed 100% );
+  /* filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#aad2f0', endColorstr='#8bc1ed'); */
+  background-color:#aad2f0;
+  border:1px solid #dcdcdc;
+  text-shadow:1px 1px 0px #eeeeee;
+  
+}
+div.article-footer-copyright{
+    margin:0em 0em 0em 5em;
+	margin-top:2em;
+    padding:0.5em 1em;
+    border-left:3px solid #ff1700;
+    background-color:#f9f9f9;
+}
+.article-footer-copyright p{
+    line-height: 160%;
+    margin: 10px;
+    font-size: 100%;
+}
+</style>
+
+<div class="article-footer-copyright">
+	<p>本文标题: <a href="/2016/06/03/oracle-yu-mysqlde-da-xiao-xie-wen-ti/" target="_blank" title="Oracle 与 MySQL的大小写问题">Oracle 与 MySQL的大小写问题</a></p>
+	<p>本文链接: <a href="/2016/06/03/oracle-yu-mysqlde-da-xiao-xie-wen-ti/" target="_blank" title="Oracle 与 MySQL的大小写问题">https://ryan-hou.github.io/2016/06/03/oracle-yu-mysqlde-da-xiao-xie-wen-ti/</a></p>
+	<p>转载请注明本文链接~~</p>
+</div>
+
+	
+    <div class="article-info article-info-index">
+      
+      
 	<div class="article-tag tagcloud">
 		<i class="icon-price-tags icon"></i>
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">Java</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">翻译</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">数据库</a>
         		</li>
       		
 		</ul>
 	</div>
 
-          
+      
 
+      
+
+      
+        
+<div class="share-btn share-icons tooltip-left">
+  <div class="tooltip tooltip-east">
+    <span class="tooltip-item">
+      <a href="javascript:;" class="share-sns share-outer">
+        <i class="icon icon-share"></i>
+      </a>
+    </span>
+    <span class="tooltip-content">
+      <div class="share-wrap">
+        <div class="share-icons">
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="icon icon-weibo"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="icon icon-weixin"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="icon icon-qq"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="icon icon-douban"></i>
+          </a>
+          <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a>
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="icon icon-facebook"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="icon icon-twitter"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="icon icon-google"></i>
+          </a>
         </div>
-        <div class="clearfix"></div>
-    </header>
+      </div>
+    </span>
+  </div>
+</div>
+
+<div class="page-modal wx-share js-wx-box">
+    <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+      <img src="//pan.baidu.com/share/qrcode?url=https://ryan-hou.github.io/2016/06/03/oracle-yu-mysqlde-da-xiao-xie-wen-ti/" alt="微信分享二维码">
+    </div>
+</div>
+
+<div class="mask js-mask"></div>
+      
+      <div class="clearfix"></div>
+    </div>
   </div>
 </article>
+
+  
+<nav id="article-nav">
+  
+    <a href="/2016/06/06/maven-gai-shu/" id="article-nav-newer" class="article-nav-link-wrap">
+      <i class="icon-circle-left"></i>
+      <div class="article-nav-title">
+        
+          Maven 概述
+        
+      </div>
+    </a>
   
   
-    </div></section>
+    <a href="/2016/05/23/shuo-shuo-hashcodefang-fa/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">说说hashCode方法</div>
+      <i class="icon-circle-right"></i>
+    </a>
+  
+</nav>
+
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+  
+  
   
 
-    
+  
+
+  
+
+  
+  <div id="gitment-ctn"></div> 
+<link rel="stylesheet" href="https://billts.site/extra_css/gitment.css">
+<script src="https://billts.site/js/gitment.js"></script>
+<script>
+var gitment = new Gitment({
+  id: 'Oracle 与 MySQL的大小写问题',
+  owner: 'Ryan-hou',
+  repo: 'Ryan-hou.github.io',
+  oauth: {
+    client_id: '10b94f286862e039846e',
+    client_secret: '51c6b587d0a58d70f6da2e9c5641e66a431751d9',
+  },
+})
+gitment.render('gitment-ctn')
+</script>
+
+  
+
 
 
           </div>
@@ -226,8 +442,8 @@
 	var yiliaConfig = {
 		mathjax: false,
 		isHome: false,
-		isPost: false,
-		isArchive: true,
+		isPost: true,
+		isArchive: false,
 		isTag: false,
 		isCategory: false,
 		open_in_new: true,
