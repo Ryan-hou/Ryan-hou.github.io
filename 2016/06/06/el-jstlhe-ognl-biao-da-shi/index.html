@@ -6,15 +6,20 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="https://ryan-hou.github.io">
-  <title>Archives | 0x08 0x17</title>
+  <title>EL,JSTL和OGNL 表达式 | 0x08 0x17</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta property="og:type" content="website">
-<meta property="og:title" content="0x08 0x17">
-<meta property="og:url" content="https://ryan-hou.github.io/archives/page/4/index.html">
+  <meta name="description" content="EL 表达式EL 表达式用于查找作用域中的数据，然后对他们执行简单操作 比如在 JSP 页面中，使用 ${标识符} 形式，通知 JSP 引擎调用 pageContext.findAttribute() 方法，以标识符为关键字从各个域中获取对象，如果域对象中不存在标识符关键字对应的对象，则返回结果为 &amp;quot;&amp;quot;(注意不是 null)  EL 表达式的格式为 ${}: $ 为定界符，内容">
+<meta name="keywords" content="web">
+<meta property="og:type" content="article">
+<meta property="og:title" content="EL,JSTL和OGNL 表达式">
+<meta property="og:url" content="https://ryan-hou.github.io/2016/06/06/el-jstlhe-ognl-biao-da-shi/index.html">
 <meta property="og:site_name" content="0x08 0x17">
+<meta property="og:description" content="EL 表达式EL 表达式用于查找作用域中的数据，然后对他们执行简单操作 比如在 JSP 页面中，使用 ${标识符} 形式，通知 JSP 引擎调用 pageContext.findAttribute() 方法，以标识符为关键字从各个域中获取对象，如果域对象中不存在标识符关键字对应的对象，则返回结果为 &amp;quot;&amp;quot;(注意不是 null)  EL 表达式的格式为 ${}: $ 为定界符，内容">
 <meta property="og:locale" content="default">
+<meta property="og:updated_time" content="2018-05-31T03:12:45.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="0x08 0x17">
+<meta name="twitter:title" content="EL,JSTL和OGNL 表达式">
+<meta name="twitter:description" content="EL 表达式EL 表达式用于查找作用域中的数据，然后对他们执行简单操作 比如在 JSP 页面中，使用 ${标识符} 形式，通知 JSP 引擎调用 pageContext.findAttribute() 方法，以标识符为关键字从各个域中获取对象，如果域对象中不存在标识符关键字对应的对象，则返回结果为 &amp;quot;&amp;quot;(注意不是 null)  EL 表达式的格式为 ${}: $ 为定界符，内容">
   
     <link rel="alternative" href="/atom.xml" title="0x08 0x17" type="application/atom+xml">
   
@@ -146,276 +151,179 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            
-  
-  
+            <article id="post-el-jstlhe-ognl-biao-da-shi" class="article article-type-post " itemscope itemprop="blogPost">
+  <div class="article-inner">
     
-    
-      
-      
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2016" class="archive-year">2016</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2016/07/01/zai-tan-shi-wu/" class="archive-article-date">
-  	<time datetime="2016-07-01T09:43:41.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2016-07-01</time>
-</a>
-        </div>
-    	 
+      <header class="article-header">
+        
   
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2016/07/01/zai-tan-shi-wu/">浅谈数据库事务</a>
+    <h1 class="article-title" itemprop="name">
+      EL,JSTL和OGNL 表达式
     </h1>
   
 
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">数据库</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2016/06/17/shi-pei-qi-mo-shi/" class="archive-article-date">
-  	<time datetime="2016-06-17T03:01:39.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2016-06-17</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2016/06/17/shi-pei-qi-mo-shi/">适配器模式</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">Java</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">设计</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2016/06/16/die-dai-qi-fail-fast/" class="archive-article-date">
-  	<time datetime="2016-06-16T07:10:24.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2016-06-16</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2016/06/16/die-dai-qi-fail-fast/">迭代器的fail-fast</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">Java</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">设计</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2016/06/15/die-dai-qi-mo-shi-yu-for-eachxun-huan/" class="archive-article-date">
-  	<time datetime="2016-06-15T07:49:35.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2016-06-15</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2016/06/15/die-dai-qi-mo-shi-yu-for-eachxun-huan/">迭代器模式</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">Java</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">设计</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2016/06/08/zi-dong-zhuang-xiang-yu-chai-xiang/" class="archive-article-date">
-  	<time datetime="2016-06-08T15:37:09.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2016-06-08</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2016/06/08/zi-dong-zhuang-xiang-yu-chai-xiang/">自动装箱与拆箱</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">Java</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2016/06/06/maven-gai-shu/" class="archive-article-date">
-  	<time datetime="2016-06-06T12:56:38.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2016-06-06</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2016/06/06/maven-gai-shu/">Maven 概述</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">工具</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2016/06/06/el-jstlhe-ognl-biao-da-shi/" class="archive-article-date">
+        
+        <a href="/2016/06/06/el-jstlhe-ognl-biao-da-shi/" class="archive-article-date">
   	<time datetime="2016-06-06T12:36:51.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2016-06-06</time>
 </a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2016/06/06/el-jstlhe-ognl-biao-da-shi/">EL,JSTL和OGNL 表达式</a>
-    </h1>
-  
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h3 id="EL-表达式"><a href="#EL-表达式" class="headerlink" title="EL 表达式"></a>EL 表达式</h3><p>EL 表达式用于<strong>查找作用域中的数据，然后对他们执行简单操作</strong></p>
+<p>比如在 JSP 页面中，使用 <code>${标识符}</code> 形式，通知 JSP 引擎调用 <code>pageContext.findAttribute()</code> 方法，以标识符为关键字从各个域中获取对象，如果域对象中不存在标识符关键字对应的对象，则返回结果为 <code>&quot;&quot;</code>(注意不是 null)</p>
+<ul>
+<li>EL 表达式的格式为 <code>${}:</code> <code>$</code> 为定界符，内容包括在 <code>{}</code>中</li>
+<li>EL 表达式由<strong>标识符, 存取器, 运算符和文字</strong>组成；标识符用来标识存储在作用域中的数据对象，EL 表达式存在 11 个保留标识符对应 11 个隐式对象(比如 <code>pageContext, requestScope, sessionScope 等</code>)，除此外所有的标识符用来标识作用域的对象；例:</li>
+</ul>
+<a id="more"></a>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">&lt;%</span><br><span class="line">    String data = &quot;abcd&quot;;</span><br><span class="line">    request.setAttribute(&quot;data&quot;, data);</span><br><span class="line">%&gt;</span><br><span class="line">$&#123;data&#125; &lt;%-- 等价于 pageContext.findAttribute(&quot;data&quot;)，依次访问 page request session application 作用域--%&gt;</span><br><span class="line"></span><br><span class="line">&lt;!--获取当前 web 应用的名称--&gt;</span><br><span class="line">$&#123;pageContext.request.contextPath&#125;</span><br><span class="line"></span><br><span class="line">&lt;!--操作对象属性--&gt;</span><br><span class="line">&lt;%</span><br><span class="line">    Person p = new Person();</span><br><span class="line">    p.setName(&quot;Ryan&quot;);</span><br><span class="line">    request.setAttribute(&quot;person&quot;, p);</span><br><span class="line">%&gt;</span><br><span class="line">$&#123;person.name&#125; (或 $&#123;person[&quot;name&quot;]&#125;)</span><br><span class="line"></span><br><span class="line">&lt;!--操作集合，配合 JSTL 可实现遍历等操作--&gt;</span><br><span class="line">&lt;%</span><br><span class="line">    Map map = new HashMap();</span><br><span class="line">    map.put(&quot;aa&quot;, new Person(&quot;ryan&quot;));</span><br><span class="line">    map.put(&quot;bb&quot;, new Person(&quot;mike&quot;));</span><br><span class="line">    request.setAttribute(&quot;map111&quot;, map);</span><br><span class="line">%&gt;</span><br><span class="line">$&#123;map111.bb.name&#125; (或者 $&#123;map111[&apos;bb&apos;].name&#125; )</span><br></pre></td></tr></table></figure>
+<ul>
+<li>EL 存取器：通过 <code>[]</code> 或者 <code>.</code>符号来获取相关数据</li>
+<li>EL 运算符包括：算数运算符，逻辑运算符，关系运算符和验证运算符(<code>empty</code> 用于验证数据是否为 null)</li>
+<li>EL 文字：表示固定的值，包括数字，字符，字符串，布尔值或者空值</li>
+</ul>
+<h3 id="JSTL-表达式"><a href="#JSTL-表达式" class="headerlink" title="JSTL 表达式"></a>JSTL 表达式</h3><p>JSTL(JSP Standard Tag Library) 是 sun 公司实现的一套<strong>标签库</strong>，使用 JSTL 可以在页面中实现一些简单的逻辑，从而替换页面中的脚本代码</p>
+<p>JSTL1.0 由四个定制标记库(<code>core, format, xml 和 sql</code>)和一对通用标记库验证器组成，我们在 JSP 中常用的是 <code>core</code> 中的一些标签 和 <code>format</code> 中的一些标签，来完成一些简单的逻辑控制和格式化显示</p>
+<p>在页面中使用 JSTL 标签需要以下两步：</p>
+<ul>
+<li>导入 jstl.jar 和 standard.jar 包</li>
+<li>在 JSP 页面中使用 <code>&lt;%@taglib url=&quot;&quot; prefix=&quot;&quot; %&gt;</code> 元素导入标签库</li>
+</ul>
+<p>关于 JSTL 的使用举例如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">&lt;!--遍历集合--&gt;</span><br><span class="line">&lt;%</span><br><span class="line">    Map map = new HashMap();</span><br><span class="line">    map.put(&quot;aa&quot;, new Person(&quot;aaaa&quot;));</span><br><span class="line">    map.put(&quot;bb&quot;, new Person(&quot;bbb&quot;));</span><br><span class="line">    request.setAttribute(&quot;map&quot;, map);</span><br><span class="line">%&gt;</span><br><span class="line">&lt;c:forEach var=&quot;entry&quot; items=&quot;$&#123;map&#125;&quot;&gt;</span><br><span class="line">    $&#123;entry.key&#125; : $&#123;entry.value.name&#125; &lt;br/&gt;</span><br><span class="line">&lt;/c:forEach&gt;</span><br><span class="line">&lt;!--逻辑判断--&gt;</span><br><span class="line">&lt;c:if test=&quot;$&#123;user != null&#125;&quot;&gt;</span><br><span class="line">&lt;!--格式化输出--&gt;</span><br><span class="line">&lt;fmt:formatData value=&quot;$&#123;curDate&#125;&quot; pattern=&quot;yyyy-MM-dd HH:mm:ss&quot; /&gt;&lt;br/&gt;</span><br><span class="line">&lt;!--在 jar 包中的 META-INF 文件夹下可以查看 tld 文件中标签定义--&gt;</span><br><span class="line">&lt;/c:if&gt;</span><br></pre></td></tr></table></figure>
+<h3 id="OGNL-表达式"><a href="#OGNL-表达式" class="headerlink" title="OGNL 表达式"></a>OGNL 表达式</h3><p>OGNL(Object Graph Navigation Language，对象图导航语言)是一种功能强大的表达式语言，通过 OGNL 可以使用简单一致的表达式语法存取<strong>对象的任意属性、调用对象的方法、遍历整个对象的结构图和实现字段类型转换等功能</strong>。在 Struts 2 和 MyBatis 中都有用到 OGNL 表达式</p>
+<p>OGNL 表达式的基本构成</p>
+<h4 id="基础单元"><a href="#基础单元" class="headerlink" title="基础单元"></a>基础单元</h4><p>OGNL 表达式的基础单元是<strong>导航链(navigation chain)，简称链</strong>。最简单的链由属性名、方法调用和数组索引构成；例如：取一本书的第一个作者的年龄，并将年龄转换为字符串形式，用 OGNL 表达式可以写为：<code>book.authors[0].age.toString()</code></p>
+<h4 id="常量"><a href="#常量" class="headerlink" title="常量"></a>常量</h4><ul>
+<li>字符串常量<br>指用单引号或者双引号括起来的字符串，这里要注意：如果字符串只有一个字符，必须使用双引号括起来，以和字符常量区分</li>
+<li>字符常量<br>指以单引号括起来的字符</li>
+<li>数值常量<br>int 常量：123；<br>long 常量：123l 或 123L；<br>float 常量：123.4f；<br>double 常量：123.3 或 123.4d；</li>
+<li>布尔常量<br>指 false 和 true</li>
+<li>null 常量</li>
+</ul>
+<h4 id="操作符"><a href="#操作符" class="headerlink" title="操作符"></a>操作符</h4><ul>
+<li>逗号(<code>,</code>)操作符<br>用来分隔两个或者多个独立的表达式，而整个表达式的值取最后一个表达式的值</li>
+<li>花括号(<code>{}</code>)操作符<br>用来创建列表，例如表达式：<code>{&quot;xiaoqi&quot;,&quot;xiaoyue&quot;,&quot;candy&quot;}</code></li>
+<li><code>in</code> 和 <code>not in</code> 操作符<br>用来判断一个值是否存在于指定的集合中，例如：<code>userName in {&quot;xiaoqi&quot;,&quot;xiaoyue&quot;}</code></li>
+<li>除上述特殊操作符外，OGNL 支持所有的 Java 操作符</li>
+</ul>
+<h4 id="调用方法"><a href="#调用方法" class="headerlink" title="调用方法"></a>调用方法</h4><p>OGNL 提供了调用任何方法的能力</p>
+<ul>
+<li>访问 JavaBean 的属性(getXXX() 方法)<br><code>book.getAuthor().getName()</code></li>
+<li>调用静态方法和静态字段<br>语法格式为：<br><code>@class@method</code><br><code>@class@field</code></li>
+</ul>
+<p>举个例子：要将一个字符串 123 转换成 int 类型数字 123，代码如下：<br><a href="mailto:`@java.lang.Integer" target="_blank" rel="noopener">`@java.lang.Integer</a>@parseInt(“123”)<code>这里的 class 要写全类名，如果省略类名，则默认类为</code>java.lang.Math<code>，例如调用</code>java.lang.Math<code>类的</code>max()<code>方法，可以直接使用如下格式：</code>@@max(123,456)`</p>
+<ul>
+<li>调用构造方法<br>OGNL 支持调用构造方法，使用 new 关键字创建对象，例：<br><code>new java.util.Date()</code><br>注意，这里的 class 也必须为全类名</li>
+</ul>
+<h4 id="对集合进行操作"><a href="#对集合进行操作" class="headerlink" title="对集合进行操作"></a>对集合进行操作</h4><ul>
+<li>创建和访问列表<br>创建列表就是用花括号(<code>{}</code>)将元素括起来，元素之间用逗号隔开，如下：<br><code>{&quot;aa&quot;,&quot;aaa&quot;,&quot;aaaa&quot;}</code><br>访问第一个元素如下：<br><code>{&quot;aa&quot;,&quot;aaa&quot;,&quot;aaaa&quot;}[0]</code></li>
+<li>创建和访问数组<br>创建数组需要使用 new 关键字，如下：<br><code>new String[]{&quot;a&quot;,&quot;aa&quot;,&quot;aaa&quot;}</code><br>访问数组第一个元素如下：<br><code>new String[]{&quot;a&quot;,&quot;aaa&quot;,&quot;aaa&quot;}[0]</code></li>
+<li>创建 Map</li>
+</ul>
+<p>创建 Map 需要使用 <code>#{}</code> 操作符和 <code>Key-Value</code> 键值对，语法如下：<br><code>#{&quot;key1&quot;:&quot;value1&quot;, &quot;key2&quot;:&quot;value2&quot;, &quot;key3&quot;:&quot;value3&quot;, ....}</code><br>举个例子:<br><code>#{&quot;admin&quot;:&quot;xiaoqi&quot;, &quot;manager&quot;:&quot;xiaoyue&quot;, &quot;operator&quot;:&quot;xiaoming&quot;}</code><br>访问 key 为 admin 的元素，如下：<br><code>#{&quot;admin&quot;:&quot;xiaoqi&quot;, &quot;manager&quot;:&quot;xiaoyue&quot;, &quot;operator&quot;:&quot;xiaoming&quot;}[&quot;admin&quot;]</code><br>或<br><code>#{&quot;admin&quot;:&quot;xiaoqi&quot;, &quot;manager&quot;:&quot;xiaoyue&quot;, &quot;operator&quot;:&quot;xiaoming&quot;}.admin</code></p>
+<ul>
+<li>投影(projection)</li>
+</ul>
+<p>投影是指在一个集合中对每一个元素调用相同的方法或者抽取每一个元素的相同属性，并将结果保存为一个新的集合，例如如下列表：<br><code>{1,2,3,4,5}</code><br>现在通过投影，将上面列表中的每个元素都从整型转换成字符串类型，从而构成一个新的列表，代码如下：<br><code>{1,2,3,4,5}.{#this.toString()}</code><br>其中，<code>#this</code> 变量用来引用迭代过程中的当前元素，新的列表如下：<br><code>{&quot;1&quot;,&quot;2&quot;,&quot;3&quot;,&quot;4&quot;,&quot;5&quot;}</code></p>
+<ul>
+<li>选择(selection)</li>
+</ul>
+<p>指的是使用表达式从集合中选择某些元素，并将这些元素保存到新的集合中，例如有如下列表：<br><code>{1,2,3,4,5}</code><br>通过选择，将上面列表中大于2的元素选择出来，并保存到新的列表中，代码如下：<br><code>{1,2,3,4,5}.{?#this&gt;2}</code></p>
 
-        <div class="article-info info-on-right">
-          
+      
+
+      
+        <div class="page-reward">
+          <a href="javascript:;" class="page-reward-btn tooltip-top">
+            <div class="tooltip tooltip-east">
+            <span class="tooltip-item">
+              赏
+            </span>
+            <span class="tooltip-content">
+              <span class="tooltip-text">
+                <span class="tooltip-inner">
+                  <p class="reward-p"><i class="icon icon-quo-left"></i>谢谢你支持我创作！<i class="icon icon-quo-right"></i></p>
+                  <div class="reward-box">
+                    
+                    <div class="reward-box-item">
+                      <img class="reward-img" src="/assets/img/alipay.png">
+                      <span class="reward-type">支付宝</span>
+                    </div>
+                    
+                    
+                  </div>
+                </span>
+              </span>
+            </span>
+          </div>
+          </a>
+        </div>
+      
+    </div>
+	<!-- 版权内容 -->
+	
+		<style type="text/css">
+	.article-footer-copyright{
+   border-top:1px solid #d3d3d3;
+   margin: 20px auto;     
+   padding-left:2em;
+   width: 80%;
+}
+.article-footer-copyright p{
+  font-size:1.2em;
+}
+.article-footer-copyright span,.copyright abbr{
+  color:#3d3d3d;
+}
+div.copyright{
+    
+       font-weight:bold;
+       color:#FCB297;
+       padding:0.3em 0.5em;
+       margin:0 0 1em 0;
+       border-bottom:none;
+       background-color:#AAD2F0;
+       -moz-border-radius: 1em;
+       -webkit-border-radius:1em;
+       border-radius: 1em;
+  -moz-box-shadow:inset 0px 1px 0px 0px #eeeeee;
+  -webkit-box-shadow:inset 0px 1px 0px 0px #eeeeee;
+  box-shadow:inset 0px 1px 0px 0px #eeeeee;
+  background:-webkit-gradient( linear, left top, left bottom, color-stop(0.05, #aad2f0), color-stop(1, #8bc1ed) );
+  background:-moz-linear-gradient( center top, #aad2f0 5%, #8bc1ed 100% );
+  /* filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#aad2f0', endColorstr='#8bc1ed'); */
+  background-color:#aad2f0;
+  border:1px solid #dcdcdc;
+  text-shadow:1px 1px 0px #eeeeee;
+  
+}
+div.article-footer-copyright{
+    margin:0em 0em 0em 5em;
+	margin-top:2em;
+    padding:0.5em 1em;
+    border-left:3px solid #ff1700;
+    background-color:#f9f9f9;
+}
+.article-footer-copyright p{
+    line-height: 160%;
+    margin: 10px;
+    font-size: 100%;
+}
+</style>
+
+<div class="article-footer-copyright">
+	<p>本文标题: <a href="/2016/06/06/el-jstlhe-ognl-biao-da-shi/" target="_blank" title="EL,JSTL和OGNL 表达式">EL,JSTL和OGNL 表达式</a></p>
+	<p>本文链接: <a href="/2016/06/06/el-jstlhe-ognl-biao-da-shi/" target="_blank" title="EL,JSTL和OGNL 表达式">https://ryan-hou.github.io/2016/06/06/el-jstlhe-ognl-biao-da-shi/</a></p>
+	<p>转载请注明本文链接~~</p>
+</div>
+
+	
+    <div class="article-info article-info-index">
+      
+      
 	<div class="article-tag tagcloud">
 		<i class="icon-price-tags icon"></i>
 		<ul class="article-tag-list">
@@ -427,137 +335,133 @@
 		</ul>
 	</div>
 
-          
+      
 
+      
+
+      
+        
+<div class="share-btn share-icons tooltip-left">
+  <div class="tooltip tooltip-east">
+    <span class="tooltip-item">
+      <a href="javascript:;" class="share-sns share-outer">
+        <i class="icon icon-share"></i>
+      </a>
+    </span>
+    <span class="tooltip-content">
+      <div class="share-wrap">
+        <div class="share-icons">
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="icon icon-weibo"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="icon icon-weixin"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="icon icon-qq"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="icon icon-douban"></i>
+          </a>
+          <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a>
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="icon icon-facebook"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="icon icon-twitter"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="icon icon-google"></i>
+          </a>
         </div>
-        <div class="clearfix"></div>
-    </header>
+      </div>
+    </span>
+  </div>
+</div>
+
+<div class="page-modal wx-share js-wx-box">
+    <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+      <img src="//pan.baidu.com/share/qrcode?url=https://ryan-hou.github.io/2016/06/06/el-jstlhe-ognl-biao-da-shi/" alt="微信分享二维码">
+    </div>
+</div>
+
+<div class="mask js-mask"></div>
+      
+      <div class="clearfix"></div>
+    </div>
   </div>
 </article>
+
   
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2016/06/05/mybatis-ni-xiang-gong-cheng/" class="archive-article-date">
-  	<time datetime="2016-06-05T14:56:56.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2016-06-05</time>
-</a>
+<nav id="article-nav">
+  
+    <a href="/2016/06/06/maven-gai-shu/" id="article-nav-newer" class="article-nav-link-wrap">
+      <i class="icon-circle-left"></i>
+      <div class="article-nav-title">
+        
+          Maven 概述
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2016/06/05/mybatis-ni-xiang-gong-cheng/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">MyBatis 逆向工程</div>
+      <i class="icon-circle-right"></i>
+    </a>
+  
+</nav>
+
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
         </div>
-    	 
+        
+        
+    </div>
+</aside>
+
+
+
   
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2016/06/05/mybatis-ni-xiang-gong-cheng/">MyBatis 逆向工程</a>
-    </h1>
+  
   
 
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">框架</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2016/06/04/fu-za-cha-xun-cao-zuo/" class="archive-article-date">
-  	<time datetime="2016-06-04T11:09:12.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2016-06-04</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2016/06/04/fu-za-cha-xun-cao-zuo/">复杂查询操作</a>
-    </h1>
   
 
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">数据库</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2016/06/03/oracle-yu-mysqlde-da-xiao-xie-wen-ti/" class="archive-article-date">
-  	<time datetime="2016-06-03T02:03:20.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2016-06-03</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2016/06/03/oracle-yu-mysqlde-da-xiao-xie-wen-ti/">Oracle 与 MySQL的大小写问题</a>
-    </h1>
   
 
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">数据库</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
   
-  
-    </div></section>
+  <div id="gitment-ctn"></div> 
+<link rel="stylesheet" href="https://billts.site/extra_css/gitment.css">
+<script src="https://billts.site/js/gitment.js"></script>
+<script>
+var gitment = new Gitment({
+  id: 'EL,JSTL和OGNL 表达式',
+  owner: 'Ryan-hou',
+  repo: 'Ryan-hou.github.io',
+  oauth: {
+    client_id: '10b94f286862e039846e',
+    client_secret: '51c6b587d0a58d70f6da2e9c5641e66a431751d9',
+  },
+})
+gitment.render('gitment-ctn')
+</script>
+
   
 
-    
-    <nav id="page-nav">
-      <a class="extend prev" rel="prev" href="/archives/page/3/">&laquo; Prev</a><a class="page-number" href="/archives/">1</a><a class="page-number" href="/archives/page/2/">2</a><a class="page-number" href="/archives/page/3/">3</a><span class="page-number current">4</span><a class="page-number" href="/archives/page/5/">5</a><a class="page-number" href="/archives/page/6/">6</a><a class="page-number" href="/archives/page/7/">7</a><a class="extend next" rel="next" href="/archives/page/5/">Next &raquo;</a>
-    </nav>
-  
 
 
           </div>
@@ -580,8 +484,8 @@
 	var yiliaConfig = {
 		mathjax: false,
 		isHome: false,
-		isPost: false,
-		isArchive: true,
+		isPost: true,
+		isArchive: false,
 		isTag: false,
 		isCategory: false,
 		open_in_new: true,

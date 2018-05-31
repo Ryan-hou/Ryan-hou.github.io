@@ -647,6 +647,90 @@
 
 
   
+    <article id="post-el-jstlhe-ognl-biao-da-shi" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/06/06/el-jstlhe-ognl-biao-da-shi/">EL,JSTL和OGNL 表达式</a>
+    </h1>
+  
+
+        
+        <a href="/2016/06/06/el-jstlhe-ognl-biao-da-shi/" class="archive-article-date">
+  	<time datetime="2016-06-06T12:36:51.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2016-06-06</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h3 id="EL-表达式"><a href="#EL-表达式" class="headerlink" title="EL 表达式"></a>EL 表达式</h3><p>EL 表达式用于<strong>查找作用域中的数据，然后对他们执行简单操作</strong></p>
+<p>比如在 JSP 页面中，使用 <code>${标识符}</code> 形式，通知 JSP 引擎调用 <code>pageContext.findAttribute()</code> 方法，以标识符为关键字从各个域中获取对象，如果域对象中不存在标识符关键字对应的对象，则返回结果为 <code>&quot;&quot;</code>(注意不是 null)</p>
+<ul>
+<li>EL 表达式的格式为 <code>${}:</code> <code>$</code> 为定界符，内容包括在 <code>{}</code>中</li>
+<li>EL 表达式由<strong>标识符, 存取器, 运算符和文字</strong>组成；标识符用来标识存储在作用域中的数据对象，EL 表达式存在 11 个保留标识符对应 11 个隐式对象(比如 <code>pageContext, requestScope, sessionScope 等</code>)，除此外所有的标识符用来标识作用域的对象；例:</li>
+</ul>
+        
+          <a class="article-more-a" href="/2016/06/06/el-jstlhe-ognl-biao-da-shi/#more">more >></a>
+        
+      
+
+      
+    </div>
+	<!-- 版权内容 -->
+	
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">web</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2016/06/06/el-jstlhe-ognl-biao-da-shi/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+
+  
     <article id="post-mybatis-ni-xiang-gong-cheng" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -867,86 +951,6 @@
       
         <p class="article-more-link">
           <a class="article-more-a" href="/2016/06/03/oracle-yu-mysqlde-da-xiao-xie-wen-ti/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-
-  
-    <article id="post-shuo-shuo-hashcodefang-fa" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/05/23/shuo-shuo-hashcodefang-fa/">说说hashCode方法</a>
-    </h1>
-  
-
-        
-        <a href="/2016/05/23/shuo-shuo-hashcodefang-fa/" class="archive-article-date">
-  	<time datetime="2016-05-23T14:43:25.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2016-05-23</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h3 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h3><p>在 Java 中，每个对象都有一个容易理解但是容易忽略的 <code>hashCode 方法</code>，一个对象的哈希码允许算法和数据结构将对象放入”隔间”，这样系统在未排序的抽屉中<strong>寻找对象的时候会更快</strong>，这也是基于哈希的集合的想法，例如 <code>HashMap</code> 和 <code>HashSet</code>；关于哈希有三件事需要知道：</p>
-<h3 id="hashCode-契约"><a href="#hashCode-契约" class="headerlink" title="hashCode 契约"></a>hashCode 契约</h3><p>为了使你自己的类与其他基于哈希的集合或其他依赖哈希码的算法一起正常工作，所有的 hashCode 的实现必须遵守一个契约，大致包括以下几点：</p>
-        
-          <a class="article-more-a" href="/2016/05/23/shuo-shuo-hashcodefang-fa/#more">more >></a>
-        
-      
-
-      
-    </div>
-	<!-- 版权内容 -->
-	
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">Java</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2016/05/23/shuo-shuo-hashcodefang-fa/">展开全文 >></a>
         </p>
       
 
