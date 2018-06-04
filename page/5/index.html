@@ -148,6 +148,173 @@
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-mybatis-ni-xiang-gong-cheng" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/06/05/mybatis-ni-xiang-gong-cheng/">MyBatis 逆向工程</a>
+    </h1>
+  
+
+        
+        <a href="/2016/06/05/mybatis-ni-xiang-gong-cheng/" class="archive-article-date">
+  	<time datetime="2016-06-05T14:56:56.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2016-06-05</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h3 id="逆向工程生成了什么"><a href="#逆向工程生成了什么" class="headerlink" title="逆向工程生成了什么"></a>逆向工程生成了什么</h3><ul>
+<li><strong>Java POJOs</strong> that match the table structure.</li>
+<li>MyBatis/iBatis Compatible <strong>SQL Map XML files.</strong> MBG generates SQL for simple CRUD functions on each table in a configuration.</li>
+<li>Java clinet classes that make appropriate use of the above objects. For MyBatis 3.x is <strong>A mapper interface</strong> that works with the MyBatis 3.x mapper infrastructure</li>
+</ul>
+<p>简单来说就是三个东西：Java 实体类，Mapper 映射文件和 Mapper 接口类</p>
+        
+          <a class="article-more-a" href="/2016/06/05/mybatis-ni-xiang-gong-cheng/#more">more >></a>
+        
+      
+
+      
+    </div>
+	<!-- 版权内容 -->
+	
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">框架</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2016/06/05/mybatis-ni-xiang-gong-cheng/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+
+  
+    <article id="post-fu-za-cha-xun-cao-zuo" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/06/04/fu-za-cha-xun-cao-zuo/">复杂查询操作</a>
+    </h1>
+  
+
+        
+        <a href="/2016/06/04/fu-za-cha-xun-cao-zuo/" class="archive-article-date">
+  	<time datetime="2016-06-04T11:09:12.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2016-06-04</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>说明：本文 sql 语句均以 Oracle 数据库为例，均可测试执行</p>
+<h3 id="分组查询"><a href="#分组查询" class="headerlink" title="分组查询"></a>分组查询</h3><p>分组函数作用于一组数据，并<strong>对一组数据返回一个值</strong>，常用的分组函数有： <code>avg，sum，max，min，count，wm_concat等</code></p>
+<p>举个例子：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 求员工总人数：</span></span><br><span class="line"><span class="keyword">select</span> <span class="keyword">count</span>(empno) <span class="keyword">from</span> emp;</span><br><span class="line"><span class="comment">-- 配合 distinct 关键字：</span></span><br><span class="line"><span class="keyword">select</span> <span class="keyword">count</span>(<span class="keyword">distinct</span> deptno) <span class="keyword">from</span> emp;</span><br></pre></td></tr></table></figure>
+<h4 id="分组函数与空值"><a href="#分组函数与空值" class="headerlink" title="分组函数与空值"></a>分组函数与空值</h4><p>分组函数会自动过滤空值(至于要不要过滤空值，取决于实际情况),<br>在分组函数中使用 <code>nvl</code> 函数可以使分组函数无法忽略空值</p>
+        
+          <a class="article-more-a" href="/2016/06/04/fu-za-cha-xun-cao-zuo/#more">more >></a>
+        
+      
+
+      
+    </div>
+	<!-- 版权内容 -->
+	
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">数据库</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2016/06/04/fu-za-cha-xun-cao-zuo/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+
+  
     <article id="post-oracle-yu-mysqlde-da-xiao-xie-wen-ti" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -815,173 +982,6 @@
 
 
   
-    <article id="post-urljie-xi-yu-bian-ma" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/04/12/urljie-xi-yu-bian-ma/">URL解析与编码</a>
-    </h1>
-  
-
-        
-        <a href="/2016/04/12/urljie-xi-yu-bian-ma/" class="archive-article-date">
-  	<time datetime="2016-04-12T12:46:57.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2016-04-12</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h3 id="URI-与-URL"><a href="#URI-与-URL" class="headerlink" title="URI 与 URL"></a>URI 与 URL</h3><ul>
-<li>URI(Uniform Resource Identifier)统一资源标识符是 URL(Universal Resource Locator)统一资源定位符的<strong>父类</strong></li>
-<li>URI 用于定义一个资源，而 URL 同时需要说明如何访问这个资源(比如通过 HTTP 协议：http://…)，相比 URI，URL 更加具体</li>
-</ul>
-<h3 id="URL标准格式及含义"><a href="#URL标准格式及含义" class="headerlink" title="URL标准格式及含义"></a>URL标准格式及含义</h3><p><code>protocol://host[:port]/path/.../[;parameters][?query-string][#anchor]([]中的内容表示可选项)</code></p>
-        
-          <a class="article-more-a" href="/2016/04/12/urljie-xi-yu-bian-ma/#more">more >></a>
-        
-      
-
-      
-    </div>
-	<!-- 版权内容 -->
-	
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">web</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2016/04/12/urljie-xi-yu-bian-ma/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-
-  
-    <article id="post-liu-lan-qi-huan-cun-ji-zhi-xue-xi" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/04/11/liu-lan-qi-huan-cun-ji-zhi-xue-xi/">浏览器缓存机制学习</a>
-    </h1>
-  
-
-        
-        <a href="/2016/04/11/liu-lan-qi-huan-cun-ji-zhi-xue-xi/" class="archive-article-date">
-  	<time datetime="2016-04-11T14:15:12.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2016-04-11</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="是什么"><a href="#是什么" class="headerlink" title="是什么"></a>是什么</h2><p>浏览器的缓存机制其实主要就是 HTTP 协议的缓存机制(比如 response 头信息中的 <code>Expires</code>, <code>Cache-Control</code> 等字段信息)，也包括部分 HTML 的 <code>Meta 标签</code>，不过说白了，HTML 的 Mete 标签也是通过模拟 HTTP 协议来进行浏览器的缓存控制，如下 HTML 页面代码：</p>
-<p><code>&lt;META HTTP-EQUIV=&quot;Pragma&quot; CONTENT=&quot;no-cache&quot;&gt;</code></p>
-        
-          <a class="article-more-a" href="/2016/04/11/liu-lan-qi-huan-cun-ji-zhi-xue-xi/#more">more >></a>
-        
-      
-
-      
-    </div>
-	<!-- 版权内容 -->
-	
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">web</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">网络</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2016/04/11/liu-lan-qi-huan-cun-ji-zhi-xue-xi/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-
-  
   
     <nav id="page-nav">
       <a class="extend prev" rel="prev" href="/page/4/">&laquo; Prev</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/3/">3</a><a class="page-number" href="/page/4/">4</a><span class="page-number current">5</span><a class="page-number" href="/page/6/">6</a><a class="page-number" href="/page/7/">7</a><a class="page-number" href="/page/8/">8</a><a class="extend next" rel="next" href="/page/6/">Next &raquo;</a>
@@ -1071,10 +1071,6 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
           <ul class="article-tag-list" q-show="showTags">
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">总结</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">Java</a>
               </li>
              
@@ -1084,6 +1080,10 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">翻译</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">总结</a>
               </li>
              
               <li class="article-tag-list-item">

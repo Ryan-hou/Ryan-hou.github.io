@@ -148,6 +148,180 @@
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-解读Java内存模型-下" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2018/06/04/解读Java内存模型-下/">解读Java内存模型(下)</a>
+    </h1>
+  
+
+        
+        <a href="/2018/06/04/解读Java内存模型-下/" class="archive-article-date">
+  	<time datetime="2018-06-04T09:58:27.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-06-04</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>接着上一篇文章<a href="">解读Java内存模型(上)</a>继续整理Java内存模型相关的重要知识</p>
+<h4 id="incorrectly-synchronized-program"><a href="#incorrectly-synchronized-program" class="headerlink" title="incorrectly synchronized program"></a>incorrectly synchronized program</h4><p>没有正确进行同步的代码对于不同的人来说可能代表不同的事儿，当我们在Java内存模型的上下文中讨论没有正确进行同步的代码时，我们指任何满足下面条件的代码：</p>
+<ul>
+<li>一个线程正在写一个变量</li>
+<li>另外一个线程同时正在读同一个变量</li>
+<li>这两个线程之间的读写操作没有通过同步来保证顺序</li>
+</ul>
+<p>当上面的规则被违背时，我们说那个变量出现了<strong>data rece</strong>。一个存在竞态数据的程序是没有正确同步的程序</p>
+        
+          <a class="article-more-a" href="/2018/06/04/解读Java内存模型-下/#more">more >></a>
+        
+      
+
+      
+    </div>
+	<!-- 版权内容 -->
+	
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">Java</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">设计</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2018/06/04/解读Java内存模型-下/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+
+  
+    <article id="post-解读Java内存模型" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2018/06/04/解读Java内存模型/">解读Java内存模型(上)</a>
+    </h1>
+  
+
+        
+        <a href="/2018/06/04/解读Java内存模型/" class="archive-article-date">
+  	<time datetime="2018-06-04T05:24:25.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-06-04</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>理解Java内存模型，是更好的学习Java多线程并发和使用相关工具类/关键字的基础，本文主要参考了：<a href="http://www.cs.umd.edu/~pugh/java/memoryModel/jsr-133-faq.html" target="_blank" rel="noopener">JSR 133 (Java Memory Model) FAQ</a> 和 <a href="http://www.cs.umd.edu/~pugh/java/memoryModel/" target="_blank" rel="noopener">The Java Memory Model</a>。非常推荐去看这两份权威文档</p>
+<h3 id="why-should-I-care？"><a href="#why-should-I-care？" class="headerlink" title="why should I care？"></a>why should I care？</h3><p>主要原因在于并发程序很难debug。一般的测试很难发现问题，只有当你的系统负载比较大时问题才会出现，而且很难复现和捕捉。所以最好多花精力让我们的程序能正确的处理同步问题而不是寄希望于debug。 <strong>while this is not easy, it’s a lot easier than trying to debug a badly synchronized application.</strong></p>
+        
+          <a class="article-more-a" href="/2018/06/04/解读Java内存模型/#more">more >></a>
+        
+      
+
+      
+    </div>
+	<!-- 版权内容 -->
+	
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">Java</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">设计</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2018/06/04/解读Java内存模型/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+
+  
     <article id="post-Using-and-avoiding-null" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -845,176 +1019,6 @@
 
 
   
-    <article id="post-basic-but-important-conception-in-language" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/09/30/basic-but-important-conception-in-language/">important conceptions in language</a>
-    </h1>
-  
-
-        
-        <a href="/2017/09/30/basic-but-important-conception-in-language/" class="archive-article-date">
-  	<time datetime="2017-09-30T06:21:37.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-09-30</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>整理一些非常基础容易忽视但是却很重要的语言概念，概念不是教条，但是对概念有一个清晰的认识是一件好事。内容大部分来自 Oracle 官方文档的翻译和对维基百科的翻译。会给出链接，需要详细信息的可以自行查阅</p>
-<h2 id="Expression-Statements-Blocks"><a href="#Expression-Statements-Blocks" class="headerlink" title="Expression, Statements, Blocks"></a>Expression, Statements, Blocks</h2><blockquote>
-<p>Operators may be used in building expressions, which compute values; expressions are the core componens of statements; statements may be grouped into blocks.</p>
-</blockquote>
-<h3 id="Expressions"><a href="#Expressions" class="headerlink" title="Expressions"></a>Expressions</h3><p>一个表达式是由各种变量，操作符和方法调用按照语言提供的语法规则构成，<strong>并且可以计算得到一个值。</strong>表达式得到的值的类型根据表达式中的元素推导出。比如表达式 <code>cadence = 0</code> 返回 int 类型的数据，因为赋值操作符返回一个相同的数据类型给操作符左边的操作数。在这个例子中，cadence 是一个 int 类型数据</p>
-<p>Java 编程语言允许你通过各种更小的表达式来构造复合的表达式，只要表达式的返回类型互相匹配即可。比如<code>1 * 2 * 3</code> 就是一个比较简单的复合表达式</p>
-<p><strong>在书写复合表达式时，通过使用括号来明确的指定各运算符的优先顺序会使代码更加易读和可维护。把复杂的表达式拆分成简单的表达式并用合适的变量定义也是很好的代码重构手段</strong></p>
-        
-          <a class="article-more-a" href="/2017/09/30/basic-but-important-conception-in-language/#more">more >></a>
-        
-      
-
-      
-    </div>
-	<!-- 版权内容 -->
-	
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">总结</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">Java</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2017/09/30/basic-but-important-conception-in-language/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-
-  
-    <article id="post-fan-zhuan-dan-lian-biao-de-ji-chong-zi-shi" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/09/30/fan-zhuan-dan-lian-biao-de-ji-chong-zi-shi/">反转单链表的几种姿势</a>
-    </h1>
-  
-
-        
-        <a href="/2017/09/30/fan-zhuan-dan-lian-biao-de-ji-chong-zi-shi/" class="archive-article-date">
-  	<time datetime="2017-09-30T03:20:02.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-09-30</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>基础数据结构的操作，简单但是有意义，整理下几种实现思路</p>
-<h2 id="头插法建立单链表"><a href="#头插法建立单链表" class="headerlink" title="头插法建立单链表"></a>头插法建立单链表</h2><p>由头插法操作一组数据后生成逆序的单链表，利用这个性质，我们可以遍历给出的单链表，利用头插法建立新的单链表，返回链表的头节点即可。实现简单，但是需要开辟额外的空间，空间复杂度和时间复杂度都是 <code>O(n)</code>，代码如下：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">static</span> LinkNode <span class="title">reverseWithCreate</span><span class="params">(LinkNode head)</span> </span>&#123;</span><br><span class="line">        <span class="comment">// 虚拟头指针</span></span><br><span class="line">        LinkNode newHead = <span class="keyword">new</span> LinkNode(<span class="number">0</span>);</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">while</span> (head != <span class="keyword">null</span>) &#123;</span><br><span class="line">            <span class="comment">// 头插法建立单链表</span></span><br><span class="line">            LinkNode cur = <span class="keyword">new</span> LinkNode(head.val);</span><br><span class="line">            cur.next = newHead.next;</span><br><span class="line">            newHead.next = cur;</span><br><span class="line"></span><br><span class="line">            head = head.next;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> newHead.next;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
-        
-          <a class="article-more-a" href="/2017/09/30/fan-zhuan-dan-lian-biao-de-ji-chong-zi-shi/#more">more >></a>
-        
-      
-
-      
-    </div>
-	<!-- 版权内容 -->
-	
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">算法</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2017/09/30/fan-zhuan-dan-lian-biao-de-ji-chong-zi-shi/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-
-  
   
     <nav id="page-nav">
       <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><span class="space">&hellip;</span><a class="page-number" href="/page/8/">8</a><a class="extend next" rel="next" href="/page/2/">Next &raquo;</a>
@@ -1104,10 +1108,6 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
           <ul class="article-tag-list" q-show="showTags">
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">总结</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">Java</a>
               </li>
              
@@ -1117,6 +1117,10 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">翻译</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">总结</a>
               </li>
              
               <li class="article-tag-list-item">
