@@ -148,6 +148,90 @@
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-el-jstlhe-ognl-biao-da-shi" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/06/06/el-jstlhe-ognl-biao-da-shi/">EL&amp;JSTL和OGNL 表达式</a>
+    </h1>
+  
+
+        
+        <a href="/2016/06/06/el-jstlhe-ognl-biao-da-shi/" class="archive-article-date">
+  	<time datetime="2016-06-06T12:36:51.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2016-06-06</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h3 id="EL-表达式"><a href="#EL-表达式" class="headerlink" title="EL 表达式"></a>EL 表达式</h3><p>EL 表达式用于<strong>查找作用域中的数据，然后对他们执行简单操作</strong></p>
+<p>比如在 JSP 页面中，使用 <code>${标识符}</code> 形式，通知 JSP 引擎调用 <code>pageContext.findAttribute()</code> 方法，以标识符为关键字从各个域中获取对象，如果域对象中不存在标识符关键字对应的对象，则返回结果为 <code>&quot;&quot;</code>(注意不是 null)</p>
+<ul>
+<li>EL 表达式的格式为 <code>${}:</code> <code>$</code> 为定界符，内容包括在 <code>{}</code>中</li>
+<li>EL 表达式由<strong>标识符, 存取器, 运算符和文字</strong>组成；标识符用来标识存储在作用域中的数据对象，EL 表达式存在 11 个保留标识符对应 11 个隐式对象(比如 <code>pageContext, requestScope, sessionScope 等</code>)，除此外所有的标识符用来标识作用域的对象；例:</li>
+</ul>
+        
+          <a class="article-more-a" href="/2016/06/06/el-jstlhe-ognl-biao-da-shi/#more">more >></a>
+        
+      
+
+      
+    </div>
+	<!-- 版权内容 -->
+	
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">web</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2016/06/06/el-jstlhe-ognl-biao-da-shi/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+
+  
     <article id="post-mybatis-ni-xiang-gong-cheng" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -898,90 +982,6 @@
 
 
   
-    <article id="post-ideade-templateshe-zhi" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/04/15/ideade-templateshe-zhi/">IDEA Template的设置</a>
-    </h1>
-  
-
-        
-        <a href="/2016/04/15/ideade-templateshe-zhi/" class="archive-article-date">
-  	<time datetime="2016-04-15T11:44:09.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2016-04-15</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="为什么要学习-Template-的设置"><a href="#为什么要学习-Template-的设置" class="headerlink" title="为什么要学习 Template 的设置"></a>为什么要学习 Template 的设置</h2><p>简单来说一句话：<strong>提高开发效率</strong>；本着所有机械重复的工作都应该自动化处理的原则，我们有必要学习一下设置 IDEA 的 <code>Live Templates</code> 和 <code>File and Code Templates</code></p>
-<h2 id="需要的准备"><a href="#需要的准备" class="headerlink" title="需要的准备"></a>需要的准备</h2><ul>
-<li>基本的 <strong>Apache Velocity</strong>语法</li>
-<li>开发工具 <strong>IntelliJ IDEA</strong></li>
-<li>本文介绍主要的操作流程和重要的使用，具体详细的内容一定要记得去看<strong>官方文档</strong>：<a href="https://www.jetbrains.com/help/idea/2016.1/live-templates.html?search=live%20template" target="_blank" rel="noopener">IDEA Help</a> 和 <a href="http://velocity.apache.org/engine/devel/user-guide.html#set" target="_blank" rel="noopener">Apeche Velocity</a></li>
-</ul>
-        
-          <a class="article-more-a" href="/2016/04/15/ideade-templateshe-zhi/#more">more >></a>
-        
-      
-
-      
-    </div>
-	<!-- 版权内容 -->
-	
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">工具</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2016/04/15/ideade-templateshe-zhi/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-
-  
   
     <nav id="page-nav">
       <a class="extend prev" rel="prev" href="/page/4/">&laquo; Prev</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/3/">3</a><a class="page-number" href="/page/4/">4</a><span class="page-number current">5</span><a class="page-number" href="/page/6/">6</a><a class="page-number" href="/page/7/">7</a><a class="page-number" href="/page/8/">8</a><a class="extend next" rel="next" href="/page/6/">Next &raquo;</a>
@@ -1123,11 +1123,11 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">非技术</a>
+                <a href="javascript:void(0)" class="js-tag color5">数据结构</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">数据结构</a>
+                <a href="javascript:void(0)" class="js-tag color4">非技术</a>
               </li>
              
               <li class="article-tag-list-item">

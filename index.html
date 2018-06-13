@@ -148,6 +148,90 @@
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-AQS解析-1" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2018/06/12/AQS解析-1/">AQS解析(1)</a>
+    </h1>
+  
+
+        
+        <a href="/2018/06/12/AQS解析-1/" class="archive-article-date">
+  	<time datetime="2018-06-12T02:14:01.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-06-12</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>本文部分内容来自<code>Doug Lea</code>的论文<code>The java.util.concurrent Synchronizer Framework</code>和 jdk 中相关文档与源码，非常推荐大家去认真读一下这篇论文和相关代码，对AQS这个框架有一个全面的了解</p>
+<h3 id="是什么"><a href="#是什么" class="headerlink" title="是什么"></a>是什么</h3><p>AQS即<code>AbstractQueuedSynchronizer</code>，在jdk中大部分的同步器比如<code>locks, barriers, semaphore</code>等都是基于该框架实现的。这个框架提供了一些公共的方法用来<strong>原子化的管理同步状态，阻塞和唤醒线程，以及排队</strong>(这三个部分也是这个框架最核心的三部分组成，后面会逐一分析)。</p>
+        
+          <a class="article-more-a" href="/2018/06/12/AQS解析-1/#more">more >></a>
+        
+      
+
+      
+    </div>
+	<!-- 版权内容 -->
+	
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">Java</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">设计</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2018/06/12/AQS解析-1/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+
+  
     <article id="post-解读Java内存模型-下" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -168,7 +252,7 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>接着上一篇文章<a href="https://ryan-hou.github.io/2018/06/04/%E8%A7%A3%E8%AF%BBJava%E5%86%85%E5%AD%98%E6%A8%A1%E5%9E%8B/">解读Java内存模型(上)</a>继续整理Java内存模型相关的重要知识</p>
+        <p>接着上一篇文章 <a href="https://ryan-hou.github.io/2018/06/04/%E8%A7%A3%E8%AF%BBJava%E5%86%85%E5%AD%98%E6%A8%A1%E5%9E%8B/">解读Java内存模型(上)</a> 继续整理Java内存模型相关的重要知识</p>
 <h4 id="incorrectly-synchronized-program"><a href="#incorrectly-synchronized-program" class="headerlink" title="incorrectly synchronized program"></a>incorrectly synchronized program</h4><p>没有正确进行同步的代码对于不同的人来说可能代表不同的事儿，当我们在Java内存模型的上下文中讨论没有正确进行同步的代码时，我们指任何满足下面条件的代码：</p>
 <ul>
 <li>一个线程正在写一个变量</li>
@@ -929,96 +1013,6 @@
 
 
   
-    <article id="post-efficient-data-transfer-through-zero-copy" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/11/27/efficient-data-transfer-through-zero-copy/">Efficient data transfer through zero copy</a>
-    </h1>
-  
-
-        
-        <a href="/2017/11/27/efficient-data-transfer-through-zero-copy/" class="archive-article-date">
-  	<time datetime="2017-11-27T09:03:56.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-11-27</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>本文为翻译文章，原文链接为:<a href="https://www.ibm.com/developerworks/library/j-zerocopy/" target="_blank" rel="noopener">Efficient data transfer through zero copy</a></p>
-<p>许多web应用都会提供从磁盘读取大量的静态数据，然后再把这些数据写到 response socket 中。这种服务看起来几乎不会用到 cpu 计算，但是这里却存在不高效的情况：内核从磁盘读取数据后，会把它通过kernel-user边界push到应用，然后再通过kernel-user边界push回socket buffer供socket写出。实际上，这里应用层成了磁盘和socket之间一个低效的中间介质</p>
-<p>每次数据通过kernel-user边界时，必须被复制，这就会消耗cpu cycles 和内存带宽。幸运的是，我们可以通过<code>zero copy</code>技术来消除这些拷贝。<strong>使用 zero copy技术，应用可以直接把磁盘数据移动到socket，不需要经过应用</strong>。zero copy 技术很大的提升了应用性能并且减少了kernel和user模式的切换</p>
-<p>Java 类库通过 <code>java.nio.channels.FileChannel</code>类的<code>transferTo()</code>方法支持在 Linux 和 Unix操作系统上的zero copy技术。你可以使用 transferTo() 方法把字节流从调用这个方法的 channel直接移动到另一个可写的字节channel，不需要数据经由应用。本文首先会证明使用传统的复制语义会带来 overhead，然后展示使用zero copy技术的transferTo()方法如何实现更好的性能</p>
-        
-          <a class="article-more-a" href="/2017/11/27/efficient-data-transfer-through-zero-copy/#more">more >></a>
-        
-      
-
-      
-    </div>
-	<!-- 版权内容 -->
-	
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">翻译</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">OS</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">优化</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2017/11/27/efficient-data-transfer-through-zero-copy/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-
-  
   
     <nav id="page-nav">
       <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><span class="space">&hellip;</span><a class="page-number" href="/page/8/">8</a><a class="extend next" rel="next" href="/page/2/">Next &raquo;</a>
@@ -1160,11 +1154,11 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">非技术</a>
+                <a href="javascript:void(0)" class="js-tag color5">数据结构</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">数据结构</a>
+                <a href="javascript:void(0)" class="js-tag color4">非技术</a>
               </li>
              
               <li class="article-tag-list-item">
