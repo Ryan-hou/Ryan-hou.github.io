@@ -148,6 +148,95 @@
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-phantom-types-in-java" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2018/02/20/phantom-types-in-java/">Phantom types in Java</a>
+    </h1>
+  
+
+        
+        <a href="/2018/02/20/phantom-types-in-java/" class="archive-article-date">
+  	<time datetime="2018-02-20T04:12:36.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-02-20</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>本文为翻译文章，原文链接为：<a href="http://gabrielsw.blogspot.com/2012/09/phantom-types-in-java.html" target="_blank" rel="noopener">Phantom types in Java</a></p>
+<p>相比于Python这种动态类型语言来说，使用Java这种静态语言在有些场景下会让代码显得啰嗦冗长，但是合理的利用静态语言的类型系统，对于写出<strong>更安全且语义更明确</strong>的代码是非常有帮助的，这篇翻译的文章，实际上就是关于如何利用类型系统(Phantom type)来书写更健壮的代码的一个技巧，值得思考和借鉴</p>
+<h2 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h2><p>我喜欢编程语言中的类型，其中一个原因就在于它会帮助我们(尽管有时也有相反的作用，比如相比动态类型语言，类型有时会让代码显得啰嗦)。在编译期能进行的检查越多，在测试时需要做的检查就越少(运行时出错的可能性也就越小)。</p>
+<p>自从Java1.5，我们有了参数化类型(泛型)－－也就是可以把类型参数加到其他类型上：<br><code>public class MyType&lt;TypeParameter&gt; { ... }</code></p>
+<p>我们也可以在方法上使用类型参数:<br><code>public &lt;T&gt; Result doSomething(MyType&lt;T&gt; p) { ... do something with p ... }</code></p>
+<p>或者限制在方法上使用确定的类型参数(也叫 generic type in invocation):</p>
+<p><code>public Result doSomethingStringy(MyType&lt;String&gt; p) {... do something with p ... }</code></p>
+        
+          <a class="article-more-a" href="/2018/02/20/phantom-types-in-java/#more">more >></a>
+        
+      
+
+      
+    </div>
+	<!-- 版权内容 -->
+	
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">Java</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">翻译</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2018/02/20/phantom-types-in-java/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+
+  
     <article id="post-efficient-data-transfer-through-zero-copy" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -940,92 +1029,6 @@
 
 
   
-    <article id="post-bi-bao-yu-javanei-bu-lei" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/04/30/bi-bao-yu-javanei-bu-lei/">闭包与Java内部类</a>
-    </h1>
-  
-
-        
-        <a href="/2017/04/30/bi-bao-yu-javanei-bu-lei/" class="archive-article-date">
-  	<time datetime="2017-04-30T15:16:52.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-04-30</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="什么是闭包"><a href="#什么是闭包" class="headerlink" title="什么是闭包"></a>什么是闭包</h2><p>简单来说一句话：<strong>带上下文的函数</strong>，下面具体解释一下</p>
-<p>声明：接下来的内容来自对 StackOverflow 回答的翻译，原答案写的非常好！链接在此：<a href="http://stackoverflow.com/questions/36636/what-is-a-closure" target="_blank" rel="noopener">What is a ‘Closure’?</a></p>
-<p>要想理解好闭包，首先要清楚 <code>Scope</code>，当我们声明一个局部变量时，这个变量会有一个 Scope，通常局部变量仅在声明它的 block 或 function 中有效，比如下面 js 代码：</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span></span><br><span class="line"><span class="function">	<span class="title">var</span> <span class="title">a</span> = 1;</span></span><br><span class="line"><span class="function">	<span class="title">console</span>.<span class="title">log</span>(<span class="params">a</span>); // <span class="title">works</span></span></span><br><span class="line"><span class="function">&#125;</span></span><br><span class="line"><span class="function"><span class="title">console</span>.<span class="title">log</span>(<span class="params">a</span>); //<span class="title">fails</span></span></span><br></pre></td></tr></table></figure>
-        
-          <a class="article-more-a" href="/2017/04/30/bi-bao-yu-javanei-bu-lei/#more">more >></a>
-        
-      
-
-      
-    </div>
-	<!-- 版权内容 -->
-	
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">Java</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">设计</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2017/04/30/bi-bao-yu-javanei-bu-lei/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-
-  
   
     <nav id="page-nav">
       <a class="extend prev" rel="prev" href="/">&laquo; Prev</a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><a class="page-number" href="/page/4/">4</a><span class="space">&hellip;</span><a class="page-number" href="/page/8/">8</a><a class="extend next" rel="next" href="/page/3/">Next &raquo;</a>
@@ -1127,10 +1130,6 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">总结</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">数据库</a>
               </li>
              
@@ -1139,11 +1138,15 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">FE</a>
+                <a href="javascript:void(0)" class="js-tag color3">总结</a>
               </li>
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">算法</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">FE</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1167,11 +1170,11 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">数据结构</a>
+                <a href="javascript:void(0)" class="js-tag color4">非技术</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">非技术</a>
+                <a href="javascript:void(0)" class="js-tag color5">数据结构</a>
               </li>
              
               <li class="article-tag-list-item">

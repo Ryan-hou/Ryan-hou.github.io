@@ -148,6 +148,91 @@
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-AQS解析-2" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2018/06/13/AQS解析-2/">AQS解析(2)</a>
+    </h1>
+  
+
+        
+        <a href="/2018/06/13/AQS解析-2/" class="archive-article-date">
+  	<time datetime="2018-06-13T06:29:36.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-06-13</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>接着上一篇关于AQS的文章 <a href="https://ryan-hou.github.io/2018/06/12/AQS解析-1/">AQS解析(1)</a> 继续分析，接下来是AQS框架的第二个重要组成部分</p>
+<h3 id="Blocking"><a href="#Blocking" class="headerlink" title="Blocking"></a>Blocking</h3><p>在 JSR166 之前，除了基于内置的 monitor 的方法外(wait/notify)，Java 没有可用的API用于线程阻塞和唤醒操作来实现同步器。唯一可用的备选方案是 <code>Thread.suspend</code> 和 <code>Thread.resume</code>，但是这两个方法在遇到竞态问题时会出现无法解决的问题，比如：当一个当前未被阻塞的线程在一个线程执行 <code>suspend</code> 方法之前调用 <code>resume</code>  方法，那么这个 <code>resume</code> 方法将没有任何效果(后面提到的 LockSupport 通过给每个线程引入一个permit解决了这个问题)</p>
+<p>j.u.c 包中新增了一个  <code>LockSupport</code> 类提供了线程的 blocking/unblocking 操作(LockSupport: <strong>Basic thread blocking primitives for creating locks and other synchronization classes.</strong>)，推荐去看该类的jdk文档，介绍的很清楚。</p>
+        
+          <a class="article-more-a" href="/2018/06/13/AQS解析-2/#more">more >></a>
+        
+      
+
+      
+    </div>
+	<!-- 版权内容 -->
+	
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">Java</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">设计</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2018/06/13/AQS解析-2/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+
+  
     <article id="post-AQS解析-1" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -924,95 +1009,6 @@
 
 
   
-    <article id="post-phantom-types-in-java" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2018/02/20/phantom-types-in-java/">Phantom types in Java</a>
-    </h1>
-  
-
-        
-        <a href="/2018/02/20/phantom-types-in-java/" class="archive-article-date">
-  	<time datetime="2018-02-20T04:12:36.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-02-20</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>本文为翻译文章，原文链接为：<a href="http://gabrielsw.blogspot.com/2012/09/phantom-types-in-java.html" target="_blank" rel="noopener">Phantom types in Java</a></p>
-<p>相比于Python这种动态类型语言来说，使用Java这种静态语言在有些场景下会让代码显得啰嗦冗长，但是合理的利用静态语言的类型系统，对于写出<strong>更安全且语义更明确</strong>的代码是非常有帮助的，这篇翻译的文章，实际上就是关于如何利用类型系统(Phantom type)来书写更健壮的代码的一个技巧，值得思考和借鉴</p>
-<h2 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h2><p>我喜欢编程语言中的类型，其中一个原因就在于它会帮助我们(尽管有时也有相反的作用，比如相比动态类型语言，类型有时会让代码显得啰嗦)。在编译期能进行的检查越多，在测试时需要做的检查就越少(运行时出错的可能性也就越小)。</p>
-<p>自从Java1.5，我们有了参数化类型(泛型)－－也就是可以把类型参数加到其他类型上：<br><code>public class MyType&lt;TypeParameter&gt; { ... }</code></p>
-<p>我们也可以在方法上使用类型参数:<br><code>public &lt;T&gt; Result doSomething(MyType&lt;T&gt; p) { ... do something with p ... }</code></p>
-<p>或者限制在方法上使用确定的类型参数(也叫 generic type in invocation):</p>
-<p><code>public Result doSomethingStringy(MyType&lt;String&gt; p) {... do something with p ... }</code></p>
-        
-          <a class="article-more-a" href="/2018/02/20/phantom-types-in-java/#more">more >></a>
-        
-      
-
-      
-    </div>
-	<!-- 版权内容 -->
-	
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">Java</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">翻译</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2018/02/20/phantom-types-in-java/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-
-  
   
     <nav id="page-nav">
       <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><span class="space">&hellip;</span><a class="page-number" href="/page/8/">8</a><a class="extend next" rel="next" href="/page/2/">Next &raquo;</a>
@@ -1114,10 +1110,6 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">总结</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">数据库</a>
               </li>
              
@@ -1126,11 +1118,15 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">FE</a>
+                <a href="javascript:void(0)" class="js-tag color3">总结</a>
               </li>
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">算法</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">FE</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1154,11 +1150,11 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">数据结构</a>
+                <a href="javascript:void(0)" class="js-tag color4">非技术</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">非技术</a>
+                <a href="javascript:void(0)" class="js-tag color5">数据结构</a>
               </li>
              
               <li class="article-tag-list-item">
