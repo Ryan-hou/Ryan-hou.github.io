@@ -16,7 +16,7 @@
 <meta property="og:site_name" content="0x08 0x17">
 <meta property="og:description" content="理解Java内存模型，是更好的学习Java多线程并发和使用相关工具类/关键字的基础，本文主要参考了：JSR 133 (Java Memory Model) FAQ 和 The Java Memory Model。非常推荐去看这两份权威文档 why should I care？主要原因在于并发程序很难debug。一般的测试很难发现问题，只有当你的系统负载比较大时问题才会出现，而且很难复现和捕捉。所以">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2018-06-04T09:57:36.000Z">
+<meta property="og:updated_time" content="2018-06-25T07:01:08.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="解读Java内存模型(上)">
 <meta name="twitter:description" content="理解Java内存模型，是更好的学习Java多线程并发和使用相关工具类/关键字的基础，本文主要参考了：JSR 133 (Java Memory Model) FAQ 和 The Java Memory Model。非常推荐去看这两份权威文档 why should I care？主要原因在于并发程序很难debug。一般的测试很难发现问题，只有当你的系统负载比较大时问题才会出现，而且很难复现和捕捉。所以">
@@ -194,7 +194,7 @@
 <p>处理器在某些场景下可能会乱序执行指令，数据在寄存器，处理器缓存和主内存中的移动可能会与在程序中定义的顺序不同。有很多可以导致指令重排序的来源，比如编译器，JIT和缓存</p>
 <p>编译器，runtime和硬件应该实现 as-if-serial 语义，也就是说在单线程程序中，程序执行不应该能看到重排序指令带来的影响。然而，在多线程环境下，重排序可能会导致并发程序出现与程序定义的行为不一致的情况。大部分情况下，一个线程不关心其他的线程在干什么，但是一旦他需要关心，这就需要通过来同步保证(single-thread program –&gt; as-if-serial semantic)，multithread program –&gt; synchronization)</p>
 <h4 id="what’s-wrong-with-old-memory-model"><a href="#what’s-wrong-with-old-memory-model" class="headerlink" title="what’s wrong with old memory model?"></a>what’s wrong with old memory model?</h4><p>举个列子，如果字段被final修饰，那么线程之间不需要通过同步来保证可以看到该字段的值，这是一个合理的假设，也是我们希望的结果，然而在旧的内存模型下，并没有这样的保证</p>
-<p>在旧的内存模型下，final字段并没有获得与别的字段不同的对待–也即是说同步是唯一的方式来保证各个线程看到一致的通过构造器赋的final字段值。着导致的结果就是，一个线程可能一个字段的默认值，然后又看到了这个字段通过构造器赋的值。举个例子，一个像String这样的不可变对象能够表现出变化的值，这是非常让人困惑的结果</p>
+<p>在旧的内存模型下，final字段并没有获得与别的字段不同的对待–也就是说同步是唯一的方式来保证各个线程看到一致的通过构造器赋的final字段值。这导致的结果就是，一个线程可能看到一个字段的默认值，然后又看到了这个字段通过构造器赋的值。举个例子，一个像String这样的不可变对象能够表现出变化的值，这是非常让人困惑的结果</p>
 <p>旧的内存模型允许volatile字段的写操作和非volatile字段的读写操作进行重排序，这会导致开发者对于volatile字段作用的直觉不一致，从而带来困惑</p>
 <p>最终就像我们上面看到的，程序员对于他们的程序是不是正确的同步会出现错误的直觉，JSR-133的目标之一就是来处理这些问题</p>
 
@@ -523,6 +523,10 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">总结</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">翻译</a>
               </li>
              
@@ -535,14 +539,6 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">总结</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">算法</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">FE</a>
               </li>
              
@@ -551,7 +547,7 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">web</a>
+                <a href="javascript:void(0)" class="js-tag color3">算法</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -560,6 +556,10 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">优化</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">web</a>
               </li>
              
               <li class="article-tag-list-item">
