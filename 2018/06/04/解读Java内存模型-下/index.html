@@ -16,7 +16,7 @@
 <meta property="og:site_name" content="0x08 0x17">
 <meta property="og:description" content="接着上一篇文章 解读Java内存模型(上) 继续整理Java内存模型相关的重要知识 incorrectly synchronized program没有正确进行同步的代码对于不同的人来说可能代表不同的事儿，当我们在Java内存模型的上下文中讨论没有正确进行同步的代码时，我们指任何满足下面条件的代码：  一个线程正在写一个变量 另外一个线程同时正在读同一个变量 这两个线程之间的读写操作没有通过同步来">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2018-06-04T14:18:07.000Z">
+<meta property="og:updated_time" content="2018-06-27T06:11:49.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="解读Java内存模型(下)">
 <meta name="twitter:description" content="接着上一篇文章 解读Java内存模型(上) 继续整理Java内存模型相关的重要知识 incorrectly synchronized program没有正确进行同步的代码对于不同的人来说可能代表不同的事儿，当我们在Java内存模型的上下文中讨论没有正确进行同步的代码时，我们指任何满足下面条件的代码：  一个线程正在写一个变量 另外一个线程同时正在读同一个变量 这两个线程之间的读写操作没有通过同步来">
@@ -209,14 +209,14 @@
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">VolatileExample</span> </span>&#123;</span><br><span class="line">	<span class="keyword">int</span> x = <span class="number">0</span>;</span><br><span class="line">	<span class="keyword">volatile</span> <span class="keyword">boolean</span> v = <span class="keyword">false</span>;</span><br><span class="line">	</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">writer</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		x = <span class="number">42</span>;</span><br><span class="line">		v = <span class="keyword">true</span>;</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">reader</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		<span class="keyword">if</span> (v == <span class="keyword">true</span>) &#123;</span><br><span class="line">		<span class="comment">// uses x - guaranteed to see 42</span></span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>实际上，volatile的语义已经被加强到几乎和synchronization 一个级别。<strong>Each read or write of a volatile field acts like “half” a synchronization, for purposes of visibility.</strong></p>
 <p>需要注意的是，<strong>不同的线程需要访问同一个volatile修饰的变量才可以设置相应的 happens-before 关系</strong>。释放和获取操作需要对应起来才行，It is not the case that everything visible to thread A when it writes volatile field f becomes visible to thread B after it reads volatile field g.</p>
-<h4 id="how-final-fields-work-in-JMM"><a href="#how-final-fields-work-in-JMM" class="headerlink" title="how final fields work in JMM?"></a>how final fields work in JMM?</h4><p>一个对象的final字段值在构造器中被赋予，假设这个对象被正确的创建，一个这个对象被创建了：</p>
+<h4 id="how-final-fields-work-in-JMM"><a href="#how-final-fields-work-in-JMM" class="headerlink" title="how final fields work in JMM?"></a>how final fields work in JMM?</h4><p>一个对象的final字段值在构造器中被赋予，假设这个对象被正确的创建，一但这个对象被创建了：</p>
 <ul>
 <li>在构造器中赋予final字段的值不需要同步操作就可以对所有的线程可见</li>
 <li>此外，任何被final字段引用的对象或者数组的可见值至少会和其他final字段一样新(at least as up-to-date as the final fields.)</li>
 </ul>
 <p>能够看到一个被正确创建的对象的字段值是一件很好的事儿，但是如果字段本身是一个引用，那么你想要看到的是这个引用所指向的对象或者数组的最新的值。如果你的字段是final修饰，那么这就能得到保证。需要强调的是，这里的正确是指“<strong>up to date as of the end of the object’s constructor, not the latest value available.</strong>”</p>
-<p>那么什么叫一个对象被正确的构建呢？<br>简单说就是在构建这个对象时，任何指向该对象的引用不能泄漏出去。换句话说，不要在构建一个对象时把指向该对象的引用放到别的线程可以访问的到的地方；不要把它赋值给静态字段；不要把他作为一个监听器注册到别的对象；<strong>这些操作应该放在对象被构建完成之后，而不是在对象的构建过程中</strong></p>
-<p>即使说了上面这么多，如果想要在一个线程中构建一个不可变对象，你想要确保它能够被所有的其他线程正确的看到，你仍然需要使用同步。举个例子，没有别的方式可以确保一个指向不可变对象的引用对别的线程可见。程序中使用final字段带来的保证需要对你的并发代码有深刻的理解才行</p>
+<p>那么什么叫一个对象被正确的构建呢？<br>简单说就是在构建这个对象时，任何指向该对象的引用不能泄漏出去。换句话说，不要在构建一个对象时把指向该对象的引用放到别的线程可以访问得到的地方；不要把它赋值给静态字段；不要把他作为一个监听器注册到别的对象；<strong>这些操作应该放在对象被构建完成之后，而不是在对象的构建过程中</strong></p>
+<p>即使说了上面这么多，如果想要在一个线程中构建一个不可变对象，你想要确保它能够被所有的其他线程正确的看到，你仍然需要使用同步。举个例子，没有别的方式可以确保一个指向不可变对象的引用对别的线程可见。程序中使用final字段带来的保证需要你对你的并发代码有深刻的理解才行</p>
 <p>使用JNI来改变final字段的值会导致未定义的结果</p>
 
       
@@ -544,11 +544,15 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">翻译</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">总结</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">翻译</a>
+                <a href="javascript:void(0)" class="js-tag color3">算法</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -568,10 +572,6 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">算法</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">OS</a>
               </li>
              
@@ -580,19 +580,19 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">web</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">工具</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">非技术</a>
+                <a href="javascript:void(0)" class="js-tag color4">web</a>
               </li>
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">数据结构</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">非技术</a>
               </li>
              
               <li class="article-tag-list-item">

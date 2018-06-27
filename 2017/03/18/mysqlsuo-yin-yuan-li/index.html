@@ -17,7 +17,7 @@
 <meta property="og:description" content="为什么要使用索引使用索引的目的是为了加快查询速度，那么为什么索引可以加快查询速度呢？我们知道，一个好的算法一般是建立在一个合理的数据结构的基础上，比如我们这里的谈搜索算法，二分法需要数据是有序的，二叉树查找需要数据满足二叉树的结构，但是很明显，数据库中的数据不可能是有序的或者树形结构的，那么我们怎么办呢？这就有了索引 在数据库的存储数据外建立新的适合查询的数据结构（B+树），也就是索引，通过索引来">
 <meta property="og:locale" content="default">
 <meta property="og:image" content="http://ryan-hou.github.io/assets/img/blogPic/b+tree.png">
-<meta property="og:updated_time" content="2018-05-23T09:59:37.000Z">
+<meta property="og:updated_time" content="2018-06-27T06:11:40.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="MySQL索引原理">
 <meta name="twitter:description" content="为什么要使用索引使用索引的目的是为了加快查询速度，那么为什么索引可以加快查询速度呢？我们知道，一个好的算法一般是建立在一个合理的数据结构的基础上，比如我们这里的谈搜索算法，二分法需要数据是有序的，二叉树查找需要数据满足二叉树的结构，但是很明显，数据库中的数据不可能是有序的或者树形结构的，那么我们怎么办呢？这就有了索引 在数据库的存储数据外建立新的适合查询的数据结构（B+树），也就是索引，通过索引来">
@@ -197,8 +197,7 @@
 <p>索引列不要参与运算，比如<code>from_unixtime(create_time) = ’2014-05-29’</code>就不能使用到索引，原因很简单，b+树中存的都是数据表中的字段值，但进行检索时，需要把所有元素都应用函数才能比较，显然成本太大。所以语句应该写成<code>create_time = unix_timestamp(’2014-05-29’)</code><br><br><br>尽量选择区分度高的列作为索引,区分度的公式是<code>count(distinct col)/count(*)</code>，表示字段不重复的比例，比例越大我们扫描的记录数越少，唯一键的区分度是1，而一些状态、性别字段可能在大数据面前区分度就是0</p>
 </blockquote>
 <hr>
-<p>####推荐阅读：</p>
-<ul>
+<h3 id="推荐阅读："><a href="#推荐阅读：" class="headerlink" title="推荐阅读："></a>推荐阅读：</h3><ul>
 <li><a href="http://tech.meituan.com/mysql-index.html" target="_blank" rel="noopener">MySQL索引原理及慢查询优化</a></li>
 <li><a href="https://www.zhihu.com/question/36996520/answer/93256153" target="_blank" rel="noopener">mysql索引最左匹配原则的理解?</a></li>
 </ul>
@@ -528,11 +527,15 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">翻译</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">总结</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">翻译</a>
+                <a href="javascript:void(0)" class="js-tag color3">算法</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -552,10 +555,6 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">算法</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">OS</a>
               </li>
              
@@ -564,19 +563,19 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">web</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">工具</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">非技术</a>
+                <a href="javascript:void(0)" class="js-tag color4">web</a>
               </li>
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">数据结构</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">非技术</a>
               </li>
              
               <li class="article-tag-list-item">
