@@ -6,19 +6,19 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="https://ryan-hou.github.io">
-  <title>闭包与Java内部类 | 0x08 0x17</title>
+  <title>Closure | 0x08 0x17</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <meta name="description" content="什么是闭包简单来说一句话：带上下文的函数，下面具体解释一下 声明：接下来的内容来自对 StackOverflow 回答的翻译，原答案写的非常好！链接在此：What is a ‘Closure’? 要想理解好闭包，首先要清楚 Scope，当我们声明一个局部变量时，这个变量会有一个 Scope，通常局部变量仅在声明它的 block 或 function 中有效，比如下面 js 代码： 12345fun">
 <meta name="keywords" content="Java,设计">
 <meta property="og:type" content="article">
-<meta property="og:title" content="闭包与Java内部类">
+<meta property="og:title" content="Closure">
 <meta property="og:url" content="https://ryan-hou.github.io/2017/04/30/bi-bao-yu-javanei-bu-lei/index.html">
 <meta property="og:site_name" content="0x08 0x17">
 <meta property="og:description" content="什么是闭包简单来说一句话：带上下文的函数，下面具体解释一下 声明：接下来的内容来自对 StackOverflow 回答的翻译，原答案写的非常好！链接在此：What is a ‘Closure’? 要想理解好闭包，首先要清楚 Scope，当我们声明一个局部变量时，这个变量会有一个 Scope，通常局部变量仅在声明它的 block 或 function 中有效，比如下面 js 代码： 12345fun">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2018-05-21T08:02:33.000Z">
+<meta property="og:updated_time" content="2019-01-10T03:24:28.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="闭包与Java内部类">
+<meta name="twitter:title" content="Closure">
 <meta name="twitter:description" content="什么是闭包简单来说一句话：带上下文的函数，下面具体解释一下 声明：接下来的内容来自对 StackOverflow 回答的翻译，原答案写的非常好！链接在此：What is a ‘Closure’? 要想理解好闭包，首先要清楚 Scope，当我们声明一个局部变量时，这个变量会有一个 Scope，通常局部变量仅在声明它的 block 或 function 中有效，比如下面 js 代码： 12345fun">
   
     <link rel="alternative" href="/atom.xml" title="0x08 0x17" type="application/atom+xml">
@@ -158,7 +158,7 @@
         
   
     <h1 class="article-title" itemprop="name">
-      闭包与Java内部类
+      Closure
     </h1>
   
 
@@ -174,30 +174,46 @@
         <h2 id="什么是闭包"><a href="#什么是闭包" class="headerlink" title="什么是闭包"></a>什么是闭包</h2><p>简单来说一句话：<strong>带上下文的函数</strong>，下面具体解释一下</p>
 <p>声明：接下来的内容来自对 StackOverflow 回答的翻译，原答案写的非常好！链接在此：<a href="http://stackoverflow.com/questions/36636/what-is-a-closure" target="_blank" rel="noopener">What is a ‘Closure’?</a></p>
 <p>要想理解好闭包，首先要清楚 <code>Scope</code>，当我们声明一个局部变量时，这个变量会有一个 Scope，通常局部变量仅在声明它的 block 或 function 中有效，比如下面 js 代码：</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span></span><br><span class="line"><span class="function">	<span class="title">var</span> <span class="title">a</span> = 1;</span></span><br><span class="line"><span class="function">	<span class="title">console</span>.<span class="title">log</span>(<span class="params">a</span>); // <span class="title">works</span></span></span><br><span class="line"><span class="function">&#125;</span></span><br><span class="line"><span class="function"><span class="title">console</span>.<span class="title">log</span>(<span class="params">a</span>); //<span class="title">fails</span></span></span><br></pre></td></tr></table></figure>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">	<span class="keyword">var</span> a = <span class="number">1</span>;</span><br><span class="line">	<span class="built_in">console</span>.log(a); <span class="comment">// works</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="built_in">console</span>.log(a); <span class="comment">//fails</span></span><br></pre></td></tr></table></figure>
 <a id="more"></a>
 <p>当我们访问一个局部变量，大部分的语言会先在当前 Scope 中寻找这个变量，找不到然后去该 Scope 的父 Scope 中去寻找，直到找到根 Scope 为止</p>
 <figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> a = <span class="number">1</span>;</span><br><span class="line"><span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">	<span class="built_in">console</span>.log(a); <span class="comment">// works</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="built_in">console</span>.log(a); <span class="comment">// works</span></span><br></pre></td></tr></table></figure>
 <p>当一个 block 或者 function 结束时，他的局部变量会被清理掉，这是我们通常期望的结果</p>
-<h3 id="闭包是持续存在的局部变量Scope"><a href="#闭包是持续存在的局部变量Scope" class="headerlink" title="闭包是持续存在的局部变量Scope"></a>闭包是持续存在的局部变量Scope</h3><p>闭包是一个持续存在的 Scope，该 Scope 会持有局部变量，即使在代码执行并跳出局部变量所在的 block 仍然有效。支持闭包的语言(如js，Swift和Ruby)允许你持有一个指向 Scope 对象(包括他的 parent scopes)的引用，即使在这些变量被声明的 block 执行完，你仍然可以在其他的地方持有指向这个 block 或者 function 的引用</p>
-<p><strong>这些Scope对象和在该 Scope 下的局部变量被绑定到 function，并且只要该 function 存在，那么这些局部变量就存在</strong></p>
-<p>这给我们使用函数提供了便利性，<strong>在函数第一次被声明的 Scope 中的局部变量会始终保持在该 Scope中，即使我们下次从不同的 context 调用该 function 依然可以得到该局部变量</strong></p>
+<h3 id="闭包是持续存在的局部变量-Scope"><a href="#闭包是持续存在的局部变量-Scope" class="headerlink" title="闭包是持续存在的局部变量 Scope"></a>闭包是持续存在的局部变量 Scope</h3><p>闭包是一个持续存在的 Scope，该 Scope 会持有局部变量，即使在代码执行并跳出局部变量所在的 block 仍然有效。支持闭包的语言(如js，Swift和Ruby)允许你持有一个指向 Scope 对象(包括他的 parent scopes)的引用，即使在这些变量被声明的 block 执行完，你仍然可以在其他的地方持有指向这个 block 或者 function 的引用</p>
+<p><strong>这些 Scope 对象和在该 Scope 下的局部变量被绑定到 function，并且只要该 function 存在，那么这些局部变量就存在 (函数和函数声明时的scope共存亡)</strong></p>
+<p>这给我们使用函数提供了便利性，<strong>在函数第一次被声明的 Scope 中的局部变量会始终保持在该 Scope 中，即使我们下次从不同的 context 调用该 function 依然可以得到该局部变量</strong></p>
 <p>举个例子：</p>
 <figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> outer = <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">	<span class="keyword">var</span> a = <span class="number">1</span>;</span><br><span class="line">	<span class="keyword">var</span> inner = funciton() &#123;</span><br><span class="line">		<span class="built_in">console</span>.log(a);</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> inner; <span class="comment">// this returns a function</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> fnc = outer(); <span class="comment">// execute outer to get inner</span></span><br><span class="line">fnc(); <span class="comment">// prints the value of a, which is 1</span></span><br></pre></td></tr></table></figure>
-<p>上面在一个函数中定义了一个函数，内部的函数可以访问外部函数所有的局部变量，包括<code>a</code>，变量a在内部函数的Scope中</p>
+<p>上面在一个函数中定义了一个函数，内部的函数可以访问外部函数所有的局部变量，包括<code>a</code>，变量 a 在内部函数的Scope中</p>
 <p>通常当一个函数退出，他所声明的所有的局部变量会被回收，然而这里，当我们返回内部函数并把它指向变量 fnc 时，外部函数(outer)退出后，<strong>在内部函数(inner)被定义的 Scope 中的所有的局部变量会持续存在。</strong><code>变量a within a closure.</code></p>
-<p>在上面的例子中，<strong>变量 a 完全是 fnc 函数私有的(函数加数据)，这为我们在函数式语言中创建私有变量提供了一种方式。</strong></p>
+<p>在上面的例子中，<strong>变量 a 完全是 fnc 函数私有的(函数加数据)，这为我们在函数式语言中创建私有变量提供了一种方式。(函数加上私有变量, 是不是看起来很像OOP中的对象(方法加上数据), 确实可以基于 Closure 构建对象系统 )</strong></p>
 <p>上面的示例代码中，<code>a</code> 属于 <code>outer</code> scope，<code>inner</code> scope 存在一个指向父scope<code>outer</code>的指针。<code>fnc</code> 是一个指向 <code>inner</code> 的变量，<code>a</code> 会和 <code>fnc</code> 共存亡，<code>a</code> 在闭包中</p>
-<h2 id="OO化的闭包"><a href="#OO化的闭包" class="headerlink" title="OO化的闭包"></a>OO化的闭包</h2><p>在 js 中，函数是一等公民，可以作为参数或者返回值传递，可以用于高阶函数，但是在 Java 中，函数不能独立存在，需要依附于类或者对象，正因此，才有了类似函数对象，命令模式等一些东西，看似高大上，实际上是语言的限制导致的无奈之举</p>
+<h2 id="OO化的闭包"><a href="#OO化的闭包" class="headerlink" title="OO化的闭包"></a>OO化的闭包</h2><p>在 js 中，函数是一等公民，可以作为参数或者返回值传递，可以用于高阶函数，但是在 Java 中，函数不能独立存在，需要依附于类或者对象(被叫做方法，其实函数应该是可以单独存在的一种抽象)，正因此，才有了类似函数对象，命令模式等一些东西，看似高大上，实际上是语言的限制导致的无奈之举</p>
 <p>有人曾说过，<strong>类是带函数的数据，闭包是带数据的函数</strong>，上面我们看到了在 JS 中是如何使用闭包的，下面我们看一下在 OO 中如何使用闭包</p>
 <p>在 <code>Thinking in Java</code>中对于闭包与回调一节曾提到过：</p>
 <blockquote>
 <p>闭包(closure)是一个可调用的对象，它记录了一些信息，这些信息来自于创建他的作用域。通过这个定义，可以看出<strong>内部类是面向对象的闭包</strong>，因为他不仅包含外围类对象(创建内部类的作用域)的信息，还自动拥有一个指向此外围类对象的引用，在此作用域内，内部类有权操作所有的成员，包括 private 成员</p>
 </blockquote>
 <p>举个例子(代码来自 Thinking in Java)：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//  回调接口</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">Incrementable</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">increment</span><span class="params">()</span></span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Callee2</span> <span class="keyword">extends</span> <span class="title">MyIncrement</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span> i = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">increment</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">super</span>.increment();</span><br><span class="line">        i++;</span><br><span class="line">        System.out.println(i);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="class"><span class="keyword">class</span> <span class="title">Closure</span> <span class="keyword">implements</span> <span class="title">Incrementable</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">        <span class="meta">@Override</span></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">increment</span><span class="params">()</span> </span>&#123;</span><br><span class="line">            <span class="comment">// Specify outer-class method, otherwise you'd get an infinite recursion:</span></span><br><span class="line">            Callee2.<span class="keyword">this</span>.increment();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">public</span> Incrementable <span class="title">getCallbackReference</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> Closure();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Caller</span> </span>&#123;</span><br><span class="line">	 </span><br><span class="line">    <span class="keyword">private</span> Incrementable callbackReference;</span><br><span class="line"></span><br><span class="line">	 <span class="comment">// 注册回调接口</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">Caller</span><span class="params">(Incrementable callbackReference)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.callbackReference = callbackReference;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">go</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    	 <span class="comment">// 调用回调接口</span></span><br><span class="line">        callbackReference.increment();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Callbacks</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        Callee2 c2 = <span class="keyword">new</span> Callee2();</span><br><span class="line">        Caller caller2 = <span class="keyword">new</span> Caller(c2.getCallbackReference());</span><br><span class="line">        caller2.go();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//  回调接口</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">Incrementable</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">increment</span><span class="params">()</span></span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Callee2</span> <span class="keyword">extends</span> <span class="title">MyIncrement</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span> i = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">increment</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">super</span>.increment();</span><br><span class="line">        i++;</span><br><span class="line">        System.out.println(i);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="class"><span class="keyword">class</span> <span class="title">Closure</span> <span class="keyword">implements</span> <span class="title">Incrementable</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">        <span class="meta">@Override</span></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">increment</span><span class="params">()</span> </span>&#123;</span><br><span class="line">            <span class="comment">// Specify outer-class method, otherwise you'd get an infinite recursion:</span></span><br><span class="line">            Callee2.<span class="keyword">this</span>.increment();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">public</span> Incrementable <span class="title">getCallbackReference</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> Closure();</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// ... other methods</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Caller</span> </span>&#123;</span><br><span class="line">	 </span><br><span class="line">    <span class="keyword">private</span> Incrementable callbackReference;</span><br><span class="line"></span><br><span class="line">	 <span class="comment">// 注册回调接口</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">Caller</span><span class="params">(Incrementable callbackReference)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.callbackReference = callbackReference;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">go</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    	 <span class="comment">// 调用回调接口</span></span><br><span class="line">        callbackReference.increment();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Callbacks</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        Callee2 c2 = <span class="keyword">new</span> Callee2();</span><br><span class="line">        Caller caller2 = <span class="keyword">new</span> Caller(c2.getCallbackReference());</span><br><span class="line">        caller2.go();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>上面的示例代码中，内部类 Closure 实现了 Incrementable，以提供一个返回 Callee2 的“钩子”，而且是一个安全的钩子，无论谁获得此 Incrementable 的引用，都只能调用 increment()(如果直接使用Callee2类的实例作为钩子，该钩子还可以调用Callee2类的其它方法，控制的力度不够细)，除此之外没有其他的功能。Caller 的构造器需要一个 Incrementable 的引用作为参数(也可以通过 set 方法注入的方式在任意时刻捕获回调引用)，然后在以后的某个时刻，Caller 对象可以使用此引用回调 Callee 类。<strong>回调的价值在于它的灵活性，可以在运行时动态的决定需要调用什么方法</strong></p>
-
+<h2 id="补充"><a href="#补充" class="headerlink" title="补充"></a>补充</h2><p>最近看了R大关于闭包的一篇博客，感觉又有了一些新的思考，<a href="https://rednaxelafx.iteye.com/blog/245022" target="_blank" rel="noopener">关于对象与闭包的关系的一个有趣小故事</a>，总结一些要点：</p>
+<h3 id="闭包的定义"><a href="#闭包的定义" class="headerlink" title="闭包的定义"></a>闭包的定义</h3><blockquote>
+</blockquote>
+<p>要点有俩：<br>1、一个含有自由变量的函数；<br>2、这些自由变量所在的环境。</p>
+<blockquote>
+</blockquote>
+<p><strong>外部环境持有内部函数所使用的自由变量，对内部函数形成“闭包”，就这样。</strong> </p>
+<blockquote>
+</blockquote>
+<p>简单但不严格的说，一个函数的“自由变量”就是既不是参数也不是局部变量的变量。全局变量是一种特殊的自由变量。基于类的面向对象程序语言中有一种情况，就是方法使用的自由变量是来自其所在的类的实例的</p>
+<h3 id="OO里一般不提闭包"><a href="#OO里一般不提闭包" class="headerlink" title="OO里一般不提闭包"></a>OO里一般不提闭包</h3><p>不过面向对象的语言里一般不把类称为闭包，没为什么，就是种习惯。 </p>
+<p>当然严格来说方法(类的成员方法)所捕获的自由变量不是类的字段x，而是this；x是通过this来访问到的，完整写出应该是this.x。</p>
+<h3 id="外围环境来自外围函数"><a href="#外围环境来自外围函数" class="headerlink" title="外围环境来自外围函数"></a>外围环境来自外围函数</h3><p>如果这个“外围环境”来自一个外围函数，并且内部函数可以作为返回值返回，那么外围函数的局部环境就不能在调用结束时就撤销。也就是说不能在栈上分配空间。 </p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">addWith</span>(<span class="params">x</span>) </span>&#123;</span><br><span class="line">	<span class="keyword">return</span> <span class="function"><span class="keyword">function</span>(<span class="params">y</span>) </span>&#123;</span><br><span class="line">		<span class="keyword">return</span> x + y;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这样的内部函数有一个参数y和<strong>一个自由变量x</strong>。x在外围函数addWith()里是一个参数，也就是一个“已绑定了值的变量”（bound variable）。addWith()的局部作用域中含有内部函数所使用的自由变量，对内部函数形成闭包。为了让返回出去的内部函数能正常工作，这个内部函数必须依附于一个能提供x的值的环境，也就是addWith()提供的闭包。这样我们就能够</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> addFive = addWith(<span class="number">5</span>);</span><br><span class="line"><span class="keyword">var</span> seven = addFive(<span class="number">2</span>); <span class="comment">// 2 + 5 = 7</span></span><br></pre></td></tr></table></figure>
+<h3 id="闭包与对象之争的“宗教性”"><a href="#闭包与对象之争的“宗教性”" class="headerlink" title="闭包与对象之争的“宗教性”"></a>闭包与对象之争的“宗教性”</h3>
       
 
       
@@ -280,8 +296,8 @@ div.article-footer-copyright{
 </style>
 
 <div class="article-footer-copyright">
-	<p>本文标题: <a href="/2017/04/30/bi-bao-yu-javanei-bu-lei/" target="_blank" title="闭包与Java内部类">闭包与Java内部类</a></p>
-	<p>本文链接: <a href="/2017/04/30/bi-bao-yu-javanei-bu-lei/" target="_blank" title="闭包与Java内部类">https://ryan-hou.github.io/2017/04/30/bi-bao-yu-javanei-bu-lei/</a></p>
+	<p>本文标题: <a href="/2017/04/30/bi-bao-yu-javanei-bu-lei/" target="_blank" title="Closure">Closure</a></p>
+	<p>本文链接: <a href="/2017/04/30/bi-bao-yu-javanei-bu-lei/" target="_blank" title="Closure">https://ryan-hou.github.io/2017/04/30/bi-bao-yu-javanei-bu-lei/</a></p>
 	<p>转载请注明本文链接~~</p>
 </div>
 
@@ -418,7 +434,7 @@ div.article-footer-copyright{
 <script src="https://billts.site/js/gitment.js"></script>
 <script>
 var gitment = new Gitment({
-  id: '闭包与Java内部类',
+  id: 'Closure',
   owner: 'Ryan-hou',
   repo: 'Ryan-hou.github.io',
   oauth: {
@@ -440,7 +456,7 @@ gitment.render('gitment-ctn')
   <div class="outer">
     <div id="footer-info">
     	<div class="footer-left">
-    		&copy; 2018 0x08 0x17
+    		&copy; 2019 0x08 0x17
     	</div>
       	<div class="footer-right">
       		<a href="http://hexo.io/" target="_blank">Hexo</a>  Theme <a href="https://github.com/litten/hexo-theme-yilia" target="_blank">Yilia</a> by Litten
@@ -543,10 +559,6 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">算法</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">分布式</a>
               </li>
              
@@ -556,6 +568,10 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">优化</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">算法</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -579,11 +595,11 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">网络</a>
+                <a href="javascript:void(0)" class="js-tag color3">框架</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">框架</a>
+                <a href="javascript:void(0)" class="js-tag color3">网络</a>
               </li>
             
             <div class="clearfix"></div>
