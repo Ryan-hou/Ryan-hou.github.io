@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html>
-<head>
+<head><meta name="generator" content="Hexo 3.9.0">
   <meta charset="utf-8">
   
   <meta name="renderer" content="webkit">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge" >
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <link rel="dns-prefetch" href="https://ryan-hou.github.io">
   <title>浅谈 Java 反射(下) | 0x08 0x17</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
@@ -38,7 +38,7 @@
   
 
 </head>
-
+</html>
 <body>
   <div id="container" q-class="show:isCtnShow">
     <canvas id="anm-canvas" class="anm-canvas"></canvas>
@@ -173,19 +173,19 @@
       
         <p>接着上文，继续聊反射。我们已经知道通过 Class类可以获得一个类自身的相关信息，那么如何获取一个类的父类的 Class对象呢？这里 Class类为我们提供了<code>getSuperclass()方法</code>。现在考虑这样一个场景：我们想通过一个类的对象来调用该类的方法，但是不确定该方法是该类自身的方法还是它继承的父类的方法，也不知道该方法有没有被重写或者该方法是不是私有方法，这时我们就需要<strong>通过循环向上转型的方式结合反射</strong>来调用这样的方法，代码如下：</p>
 <a id="more"></a>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">获取指定的方法</span><br><span class="line"><span class="function"><span class="keyword">public</span> Method <span class="title">getMethod</span><span class="params">(Class clzaa, String methodName, Class ... parameterTypes)</span> </span>&#123;</span><br><span class="line">	<span class="keyword">for</span>( ; clazz != Object.class; clazz = clazz.getSuperclass()) &#123;</span><br><span class="line">		<span class="keyword">try</span> &#123;</span><br><span class="line">	  		Method method = clazz.getDeclaredMethod(methodName, parameterTypes);</span><br><span class="line">	  		<span class="keyword">if</span> (method != <span class="keyword">null</span>) &#123;</span><br><span class="line">	  			<span class="keyword">return</span> method;</span><br><span class="line">	  		&#125;</span><br><span class="line">		&#125; <span class="keyword">catch</span> (Exception e) &#123;</span><br><span class="line">			<span class="comment">// do something</span></span><br><span class="line">		&#125;</span><br><span class="line">  	&#125;</span><br><span class="line">	<span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">获取指定的方法</span><br><span class="line"><span class="function"><span class="keyword">public</span> Method <span class="title">getMethod</span><span class="params">(Class clzaa, String methodName, Class ... parameterTypes)</span> </span>&#123;</span><br><span class="line">	<span class="keyword">for</span>( ; clazz != Object<span class="class">.<span class="keyword">class</span></span>; clazz = clazz.getSuperclass()) &#123;</span><br><span class="line">		<span class="keyword">try</span> &#123;</span><br><span class="line">	  		Method method = clazz.getDeclaredMethod(methodName, parameterTypes);</span><br><span class="line">	  		<span class="keyword">if</span> (method != <span class="keyword">null</span>) &#123;</span><br><span class="line">	  			<span class="keyword">return</span> method;</span><br><span class="line">	  		&#125;</span><br><span class="line">		&#125; <span class="keyword">catch</span> (Exception e) &#123;</span><br><span class="line">			<span class="comment">// do something</span></span><br><span class="line">		&#125;</span><br><span class="line">  	&#125;</span><br><span class="line">	<span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>继续探讨，为了<strong>增强编译器类型检查和省去强制类型转换带来的麻烦</strong>，我们通常会把类，接口还有集合和泛型一起使用。下面我们我们看一下泛型与反射在一起的操作：</p>
 <p>反射的操作都是<strong>在编译之后的操作</strong>，也就是运行时的操作，我们通过具体的例子来解释,先看一段代码：</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">ArrayList list = <span class="keyword">new</span> Arraylist();</span><br><span class="line">ArrayList&lt;String&gt; list1 = <span class="keyword">new</span> ArrayList&lt;&gt; ();</span><br><span class="line">list1.add(<span class="string">"hello"</span>);</span><br><span class="line">list1.add(<span class="number">20</span>); <span class="comment">//由于泛型的限定，这句话编译报错</span></span><br></pre></td></tr></table></figure>
 <p>接下来我们对比上面的代码看下面这段代码：</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Class c1 = list.getClass();</span><br><span class="line">Class c2 = list1.getClass();</span><br><span class="line"><span class="keyword">boolean</span> b = (c1 == c2); <span class="comment">//这里b的值为true</span></span><br></pre></td></tr></table></figure>
 <p>布尔值b为ture这件事告诉我们<strong>编译之后集合的泛型是去泛型化的</strong>，具体点说，就是Java中的泛型是为了防止错误输入，<strong>只在编译阶段有效，编译之后泛型信息就被擦除了</strong>。这句话非常的有价值，有了这个基础我们就可以在第一个例子中加入我们想要加入的整数而不出现错误，接着看下面代码：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 绕过编译添加集合元素</span></span><br><span class="line">Method m = c2.getMethod(<span class="string">"add"</span>, Object.class);</span><br><span class="line">m.invoke(list1, <span class="number">20</span>) <span class="comment">//绕过编译就绕过了泛型</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 绕过编译添加集合元素</span></span><br><span class="line">Method m = c2.getMethod(<span class="string">"add"</span>, Object<span class="class">.<span class="keyword">class</span>)</span>;</span><br><span class="line">m.invoke(list1, <span class="number">20</span>) <span class="comment">//绕过编译就绕过了泛型</span></span><br></pre></td></tr></table></figure>
 <p>现在是不是开始喜欢反射了？我们有时还需要获取泛型的类型，下面来介绍一下通过反射获得定义Class时声明的父类泛型参数的类型:（这里需要用到<strong>Type接口(空接口)和ParameterizedType接口，具体信息可以查看相关接口的源代码</strong>）</p>
 <p>例：<code>public EmployeeDao extends BaseDao &lt;Employee, String&gt;</code>，下面方法中，clazz为子类对应的Class对象，index为子类继承父类时传入的泛型参数索引，从0开始。</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 获取父类指定索引的泛型类型 </span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> Class <span class="title">getSuperClassGenericType</span><span class="params">(Class clazz, <span class="keyword">int</span> index)</span> </span>&#123;</span><br><span class="line">  Type genType = clazz.getGenericSuperclass();</span><br><span class="line">  <span class="keyword">if</span>(!(genType <span class="keyword">instanceof</span> ParameterizedType)) &#123;</span><br><span class="line">	<span class="keyword">return</span> Object.class;</span><br><span class="line">  &#125;</span><br><span class="line">  Type [] params = ((ParameterizedType)genType).getActualTypeArguments();</span><br><span class="line">  <span class="keyword">if</span>(index &gt;= params.length || index &lt; <span class="number">0</span>) &#123;</span><br><span class="line">	<span class="keyword">return</span> Object.class;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">if</span>(! (params[index] <span class="keyword">instanceof</span> Class)) &#123;</span><br><span class="line">	<span class="keyword">return</span> Object.class;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> (Class)params[index];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 获取父类指定索引的泛型类型 </span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> Class <span class="title">getSuperClassGenericType</span><span class="params">(Class clazz, <span class="keyword">int</span> index)</span> </span>&#123;</span><br><span class="line">  Type genType = clazz.getGenericSuperclass();</span><br><span class="line">  <span class="keyword">if</span>(!(genType <span class="keyword">instanceof</span> ParameterizedType)) &#123;</span><br><span class="line">	<span class="keyword">return</span> Object<span class="class">.<span class="keyword">class</span></span>;</span><br><span class="line">  &#125;</span><br><span class="line">  Type [] params = ((ParameterizedType)genType).getActualTypeArguments();</span><br><span class="line">  <span class="keyword">if</span>(index &gt;= params.length || index &lt; <span class="number">0</span>) &#123;</span><br><span class="line">	<span class="keyword">return</span> Object<span class="class">.<span class="keyword">class</span></span>;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">if</span>(! (params[index] <span class="keyword">instanceof</span> Class)) &#123;</span><br><span class="line">	<span class="keyword">return</span> Object<span class="class">.<span class="keyword">class</span></span>;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> (Class)params[index];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>反射与泛型暂时聊这么多，下面简单谈谈反射与注解。<strong>注解Annotation</strong>是指代码里的特殊标记，例如：<strong>@Override，@Deprecated, @SuppressWarnings</strong>等，这些标记运行时被读取，并执行相应的处理，通过使用Annotation我们可以在不改变原有逻辑的情况下，在原文件中嵌入一些补充信息；Annotation还能被用来为程序元素(类，方法，成员变量等)设置元数据，还是举个例子来解释，代码如下：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//自定义Annotation类</span></span><br><span class="line"><span class="meta">@Retention</span> (RetentionPolicy.RUNTIME)</span><br><span class="line"><span class="meta">@Target</span> (value = &#123;ElementType.METHOD&#125;)</span><br><span class="line"><span class="keyword">public</span> <span class="meta">@interface</span> AgeValidator &#123;</span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">min</span><span class="params">()</span></span>; <span class="comment">//int型变量min，用来限定待验证年龄的最小值</span></span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">max</span><span class="params">()</span></span>;</span><br><span class="line">&#125;</span><br><span class="line">...</span><br><span class="line"><span class="comment">//在需要感知Annotation的方法上面添加注解</span></span><br><span class="line"><span class="meta">@AgeValidator</span> (min = <span class="number">18</span>, max =<span class="number">30</span>)</span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setAge</span> <span class="params">(<span class="keyword">int</span> age)</span> </span>&#123;</span><br><span class="line">  <span class="keyword">this</span>.age = age;</span><br><span class="line">&#125;</span><br><span class="line">...</span><br><span class="line"><span class="comment">//通过反射感知Annotation实现相关的验证</span></span><br><span class="line">Class clazz = Class.forName(className);</span><br><span class="line">Object obj = clazz.newInstance();</span><br><span class="line">Method mehtod = clazz.getDeclaredMethod(<span class="string">"setAge"</span>, <span class="keyword">int</span>.class);</span><br><span class="line"><span class="keyword">int</span> val = <span class="number">10</span>; </span><br><span class="line"><span class="comment">//下面代码将对val的范围进行验证</span></span><br><span class="line">Annotation annotation = method.getAnnotation(AgeValidator.class);</span><br><span class="line"><span class="keyword">if</span>(annotation != <span class="keyword">null</span>) &#123;</span><br><span class="line">  <span class="keyword">if</span> (annotation <span class="keyword">instanceof</span> AgeValidator) &#123;</span><br><span class="line">	AgeValidator ageValidator = (AgeValidator)annotation;</span><br><span class="line">	<span class="keyword">if</span>(val &lt; ageValidator.min() || ageValidator.max() &lt; val) &#123;</span><br><span class="line">	  <span class="keyword">throw</span> <span class="keyword">new</span> RuntimeException(<span class="string">"年龄非法！"</span>);</span><br><span class="line">	&#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//自定义Annotation类</span></span><br><span class="line"><span class="meta">@Retention</span> (RetentionPolicy.RUNTIME)</span><br><span class="line"><span class="meta">@Target</span> (value = &#123;ElementType.METHOD&#125;)</span><br><span class="line"><span class="keyword">public</span> <span class="meta">@interface</span> AgeValidator &#123;</span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">min</span><span class="params">()</span></span>; <span class="comment">//int型变量min，用来限定待验证年龄的最小值</span></span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">max</span><span class="params">()</span></span>;</span><br><span class="line">&#125;</span><br><span class="line">...</span><br><span class="line"><span class="comment">//在需要感知Annotation的方法上面添加注解</span></span><br><span class="line"><span class="meta">@AgeValidator</span> (min = <span class="number">18</span>, max =<span class="number">30</span>)</span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setAge</span> <span class="params">(<span class="keyword">int</span> age)</span> </span>&#123;</span><br><span class="line">  <span class="keyword">this</span>.age = age;</span><br><span class="line">&#125;</span><br><span class="line">...</span><br><span class="line"><span class="comment">//通过反射感知Annotation实现相关的验证</span></span><br><span class="line">Class clazz = Class.forName(className);</span><br><span class="line">Object obj = clazz.newInstance();</span><br><span class="line">Method mehtod = clazz.getDeclaredMethod(<span class="string">"setAge"</span>, <span class="keyword">int</span><span class="class">.<span class="keyword">class</span>)</span>;</span><br><span class="line"><span class="keyword">int</span> val = <span class="number">10</span>; </span><br><span class="line"><span class="comment">//下面代码将对val的范围进行验证</span></span><br><span class="line">Annotation annotation = method.getAnnotation(AgeValidator<span class="class">.<span class="keyword">class</span>)</span>;</span><br><span class="line"><span class="keyword">if</span>(annotation != <span class="keyword">null</span>) &#123;</span><br><span class="line">  <span class="keyword">if</span> (annotation <span class="keyword">instanceof</span> AgeValidator) &#123;</span><br><span class="line">	AgeValidator ageValidator = (AgeValidator)annotation;</span><br><span class="line">	<span class="keyword">if</span>(val &lt; ageValidator.min() || ageValidator.max() &lt; val) &#123;</span><br><span class="line">	  <span class="keyword">throw</span> <span class="keyword">new</span> RuntimeException(<span class="string">"年龄非法！"</span>);</span><br><span class="line">	&#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>这段代码大体上就是通过反射和注解来对程序执行相应处理的一个简单实现过程，当然了，这里只是抛砖引玉，像这样的使用你可以在框架中(比如SpringMVC)发现很多，它们可以用来做验证或实现其他功能，这也是反射的一大应用。</p>
 <p>关于反射还有不少内容，我们在使用框架的时候确实要多考虑一下的底层的实现，对框架做更深的理解，只有这样才不会对层出不穷的新框架感到害怕，因为这时你有信心可以学会！学到一定程度我们也应该模仿这些优秀开源框架造自己的轮子，也许开始做的很烂，但是又有什么关系呢？学习本就不是一件一蹴而就的事，共勉</p>
 
@@ -427,7 +427,7 @@ gitment.render('gitment-ctn')
   <div class="outer">
     <div id="footer-info">
     	<div class="footer-left">
-    		&copy; 2019 0x08 0x17
+    		&copy; 2020 0x08 0x17
     	</div>
       	<div class="footer-right">
       		<a href="http://hexo.io/" target="_blank">Hexo</a>  Theme <a href="https://github.com/litten/hexo-theme-yilia" target="_blank">Yilia</a> by Litten
@@ -510,11 +510,11 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">翻译</a>
+                <a href="javascript:void(0)" class="js-tag color3">总结</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">总结</a>
+                <a href="javascript:void(0)" class="js-tag color3">翻译</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -526,15 +526,19 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">FE</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">算法</a>
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">FE</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">分布式</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">web</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -546,15 +550,7 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">web</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">工具</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">数据结构</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -562,11 +558,15 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">网络</a>
+                <a href="javascript:void(0)" class="js-tag color5">数据结构</a>
               </li>
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">虚拟机</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">网络</a>
               </li>
              
               <li class="article-tag-list-item">

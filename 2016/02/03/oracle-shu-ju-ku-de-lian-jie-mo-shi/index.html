@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html>
-<head>
+<head><meta name="generator" content="Hexo 3.9.0">
   <meta charset="utf-8">
   
   <meta name="renderer" content="webkit">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge" >
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <link rel="dns-prefetch" href="https://ryan-hou.github.io">
   <title>Oracle 数据库的连接配置 | 0x08 0x17</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
@@ -42,7 +42,7 @@
   
 
 </head>
-
+</html>
 <body>
   <div id="container" q-class="show:isCtnShow">
     <canvas id="anm-canvas" class="anm-canvas"></canvas>
@@ -188,7 +188,7 @@
 <p>一图胜千言，推荐结合我后面的说明，深刻理解下面这幅图</p>
 </li>
 </ul>
-<p><img src="http://Ryan-hou.github.io/assets/img/OracleLink/link.png" alt=""></p>
+<p><img src="http://Ryan-hou.github.io/assets/img/OracleLink/link.png" alt></p>
 <h3 id="Oracle-相关的重要概念"><a href="#Oracle-相关的重要概念" class="headerlink" title="Oracle 相关的重要概念"></a>Oracle 相关的重要概念</h3><h4 id="SID"><a href="#SID" class="headerlink" title="SID"></a>SID</h4><ul>
 <li>SID 是 Oracle 数据库实例的唯一标识</li>
 <li>用户访问数据库，实际上是在向某个 Oracle 实例发送请求，Oracle 实例负责和数据库进行交互</li>
@@ -210,9 +210,9 @@
 </blockquote>
 <p>连接字符串是我们定义在客户端 <code>tnsnames.ora</code> 中的用于连接远程数据库或者本地数据库的字符串</p>
 <p>举个例子：我在本地客户端文件 <code>tnsnames.ora</code> 中配置的用于连接远程数据库的连接字符串如下：</p>
-<p><img src="http://Ryan-hou.github.io/assets/img/OracleLink/connect.png" alt=""></p>
+<p><img src="http://Ryan-hou.github.io/assets/img/OracleLink/connect.png" alt></p>
 <p>配置了连接字符串后，我们就可以使用 <code>username/password@connectString</code> 来连接数据库了，在连接前，我们可以先用 使用 TNSPING 命令来测试一下，我在本地的测试情况如下：</p>
-<p><img src="http://Ryan-hou.github.io/assets/img/OracleLink/test.png" alt=""></p>
+<p><img src="http://Ryan-hou.github.io/assets/img/OracleLink/test.png" alt></p>
 <h3 id="TNS-配置"><a href="#TNS-配置" class="headerlink" title="TNS 配置"></a>TNS 配置</h3><p>TNS 的配置文件包括服务器端和客户端两部分，服务器端有<code>listener.orasqlnet.ora</code>tnsnames.ora<code>，客户端有</code>tnsnames.ora<code>sqlnet.ora</code>；<strong>不推荐直接修改相应文件，使用 Oracel 数据库提供的网络配置工具不容易出错</strong></p>
 <p>服务器端的主要配置是监听文件<code>listener.ora</code>，作用很显然，用来监听客户端的连接请求，以及建立客户端和服务器端的连接通道。默认情况下 Oracle 数据库在 1521 端口上侦听连接请求。配置的内容不难理解也就是数据库 SID，主机地址，端口号，通信协议</p>
 <p><code>sqlnet.ora</code>文件用来管理和约束 tns 连接，需要在服务端和客户端配置，一般不需操作</p>
@@ -463,7 +463,7 @@ gitment.render('gitment-ctn')
   <div class="outer">
     <div id="footer-info">
     	<div class="footer-left">
-    		&copy; 2019 0x08 0x17
+    		&copy; 2020 0x08 0x17
     	</div>
       	<div class="footer-right">
       		<a href="http://hexo.io/" target="_blank">Hexo</a>  Theme <a href="https://github.com/litten/hexo-theme-yilia" target="_blank">Yilia</a> by Litten
@@ -546,11 +546,11 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">翻译</a>
+                <a href="javascript:void(0)" class="js-tag color3">总结</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">总结</a>
+                <a href="javascript:void(0)" class="js-tag color3">翻译</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -562,15 +562,19 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">FE</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">算法</a>
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">FE</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">分布式</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">web</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -582,15 +586,7 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">web</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">工具</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">数据结构</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -598,11 +594,15 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">网络</a>
+                <a href="javascript:void(0)" class="js-tag color5">数据结构</a>
               </li>
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">虚拟机</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">网络</a>
               </li>
              
               <li class="article-tag-list-item">

@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html>
-<head>
+<head><meta name="generator" content="Hexo 3.9.0">
   <meta charset="utf-8">
   
   <meta name="renderer" content="webkit">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge" >
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <link rel="dns-prefetch" href="https://ryan-hou.github.io">
   <title>浏览器缓存机制学习 | 0x08 0x17</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
@@ -42,7 +42,7 @@
   
 
 </head>
-
+</html>
 <body>
   <div id="container" q-class="show:isCtnShow">
     <canvas id="anm-canvas" class="anm-canvas"></canvas>
@@ -184,12 +184,12 @@
 <li>浏览器第一次请求服务器</li>
 </ul>
 <p>浏览器中没有缓存文件，直接请求服务器，服务器返回 200OK ，缓存该次请求的资源(包括 js/css/图片等静态资源)，并设置与缓存相关的头信息，过程示意图如下：</p>
-<p><img src="http://ryan-hou.github.io/assets/img/cache/1.png" alt=""></p>
+<p><img src="http://ryan-hou.github.io/assets/img/cache/1.png" alt></p>
 <ul>
 <li>浏览器第 N 次访问服务器(N&gt;1)</li>
 </ul>
 <p>浏览器<strong>先判断本地的缓存是否过期，用来决定是否要向服务器端发送请求</strong>；如果过期，则向服务器端发送请求，这时<strong>还需要判断缓存的内容是否更新</strong>，如果没有更新，则服务器返回 <code>304 Not Modified</code>，浏览器继续使用本地缓存，否则服务器重新返回请求的数据，过程示意图如下：</p>
-<p><img src="http://ryan-hou.github.io/assets/img/cache/2.png" alt=""></p>
+<p><img src="http://ryan-hou.github.io/assets/img/cache/2.png" alt></p>
 <h2 id="HTTP-协议缓存相关的头信息字段"><a href="#HTTP-协议缓存相关的头信息字段" class="headerlink" title="HTTP 协议缓存相关的头信息字段"></a>HTTP 协议缓存相关的头信息字段</h2><h3 id="HTTP-响应"><a href="#HTTP-响应" class="headerlink" title="HTTP 响应"></a>HTTP 响应</h3><p>在 HTTP 响应头字段中，与缓存有关的是<code>Expires</code>，<code>Cache-Control</code>，<code>Last-Modified</code>和<code>ETag</code></p>
 <p>其中 Expires 和 Cache-Control 字段是服务器控制浏览器是否缓存和缓存时间的字段，而 Expires 在 HTTP/1.0 中已经定义，<strong>Cache-Control:max-age=xxx(单位是秒) 在HTTP/1.1中才有定义</strong>，所以为了向下兼容，一般会一块儿使用；Expires值为-1和0不缓存。Cache-Control的值为no-cache不缓存.</p>
 <p>而 Last-Modified 和 Etag 字段是服务器文件的最后修改时间，浏览器缓存过期时，需要使用该字段来向服务器端进行文件内容的验证，以判断文件自从上次访问后是否有过更新</p>
@@ -200,7 +200,7 @@
 <li>对于定期生成的文件，内容没有变化，但是 Last-Modified 改变了导致无法使用缓存</li>
 </ul>
 <p>举个例子，看一下各个响应字段头信息(通过 Fiddler 来获取报文信息)：</p>
-<p><img src="http://ryan-hou.github.io/assets/img/cache/3.png" alt=""></p>
+<p><img src="http://ryan-hou.github.io/assets/img/cache/3.png" alt></p>
 <h3 id="HTTP-请求"><a href="#HTTP-请求" class="headerlink" title="HTTP 请求"></a>HTTP 请求</h3><p>浏览器先要判断本地缓存是否过期，决定是否要向服务器发送请求；在浏览器请求的头字段中，与缓存有关的信息是<code>If-Modified-Since</code> 和 <code>If-None-Match</code></p>
 <p>If-Modified-Since的值为缓存中最初收到的Last-Modified的值；If-None-Match的值为缓存中最初收到的ETag的值。如果最初的返回中没有Last-Modified和ETag的值则不会带上这个请求参数。服务器收到后会<strong>验证</strong>，如果相同则返回一个<code>304 Not Modified</code>响应，不会将内容再传一次，浏览器使用本地缓存文件，节省了带宽。</p>
 <h2 id="与缓存相关的一些操作"><a href="#与缓存相关的一些操作" class="headerlink" title="与缓存相关的一些操作"></a>与缓存相关的一些操作</h2><ul>
@@ -452,7 +452,7 @@ gitment.render('gitment-ctn')
   <div class="outer">
     <div id="footer-info">
     	<div class="footer-left">
-    		&copy; 2019 0x08 0x17
+    		&copy; 2020 0x08 0x17
     	</div>
       	<div class="footer-right">
       		<a href="http://hexo.io/" target="_blank">Hexo</a>  Theme <a href="https://github.com/litten/hexo-theme-yilia" target="_blank">Yilia</a> by Litten
@@ -535,11 +535,11 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">翻译</a>
+                <a href="javascript:void(0)" class="js-tag color3">总结</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">总结</a>
+                <a href="javascript:void(0)" class="js-tag color3">翻译</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -551,15 +551,19 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">FE</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">算法</a>
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">FE</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">分布式</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">web</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -571,15 +575,7 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">web</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">工具</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">数据结构</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -587,11 +583,15 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">网络</a>
+                <a href="javascript:void(0)" class="js-tag color5">数据结构</a>
               </li>
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">虚拟机</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">网络</a>
               </li>
              
               <li class="article-tag-list-item">

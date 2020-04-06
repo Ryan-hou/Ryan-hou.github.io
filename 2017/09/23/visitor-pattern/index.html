@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html>
-<head>
+<head><meta name="generator" content="Hexo 3.9.0">
   <meta charset="utf-8">
   
   <meta name="renderer" content="webkit">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge" >
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <link rel="dns-prefetch" href="https://ryan-hou.github.io">
   <title>Visitor pattern | 0x08 0x17</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
@@ -40,7 +40,7 @@
   
 
 </head>
-
+</html>
 <body>
   <div id="container" q-class="show:isCtnShow">
     <canvas id="anm-canvas" class="anm-canvas"></canvas>
@@ -183,7 +183,7 @@
 <p>Allows for one or more operation to be applied to a set of objects at runtime, decoupling the operations from the object structure.</p>
 </blockquote>
 <p>Visitor 实际上做的事情是通过创建一个外部类来操作其他类的数据。如果你需要在一组不同的对象上进行一些操作，那就可以考虑使用这个模式(个人认为Visitor 模式本质上类似于模式匹配，对能匹配上的对象进行一些操作)。GoF 的书中也提到了该模式为一个类提供了扩展的方法而没有修改这个类(所以这个模式<strong>也体现出了开闭原则</strong>)。下面我们看一下 Visitor 模式的类图：</p>
-<p><img src="http://Ryan-hou.github.io/assets/img/blogPic/visitor.png" alt=""></p>
+<p><img src="http://Ryan-hou.github.io/assets/img/blogPic/visitor.png" alt></p>
 <p>这个模式的核心是 <code>Visitor</code> 接口，这个接口定义了对于每一个 <code>ConcreteElement</code> 类型对象的 <code>visit</code> 操作。同时，ConcreteVisitor 实现了 Visitor 接口中定义的所有操作。这个具体的 visitor 会保存一个局部状态，通常是在遍历每一个 Element 时使用。<code>Element</code> 接口就是很简单的定义了一个 <code>accept</code> 方法来允许 visitor 在该 element 上执行一些操作，ConcreteElement 类则会具体的实现这个 accept 方法</p>
 <h2 id="Where-Would-I-Use-This-Pattern"><a href="#Where-Would-I-Use-This-Pattern" class="headerlink" title="Where Would I Use This Pattern?"></a>Where Would I Use This Pattern?</h2><p><strong>当你需要在一些不同类型的对象结构上执行一些不相关的操作时可以使用该模式。这样就避免了你需要把这些操作直接加到每一个类型上，从而带来了更干净的代码。也就是说如果你想把一些逻辑处理的代码从各种 element 类中解耦出去(通常这些elements实例会作为逻辑代码的输入)，那么visitor模式可能就是最好的手段</strong></p>
 <h2 id="So-How-Does-It-Work-In-Java"><a href="#So-How-Does-It-Work-In-Java" class="headerlink" title="So How Does It Work In Java?"></a>So How Does It Work In Java?</h2><p>接下来的例子展示了一个该模式的简单实现，这个例子是一个邮费系统，我们的 elements 集合是我们购物车中的各种 items，邮费会根据不同的 element 元素的类型，重量等有所不同，当然也会根据运送地点的不同而产生不同的邮费</p>
@@ -451,7 +451,7 @@ gitment.render('gitment-ctn')
   <div class="outer">
     <div id="footer-info">
     	<div class="footer-left">
-    		&copy; 2019 0x08 0x17
+    		&copy; 2020 0x08 0x17
     	</div>
       	<div class="footer-right">
       		<a href="http://hexo.io/" target="_blank">Hexo</a>  Theme <a href="https://github.com/litten/hexo-theme-yilia" target="_blank">Yilia</a> by Litten
@@ -534,11 +534,11 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">翻译</a>
+                <a href="javascript:void(0)" class="js-tag color3">总结</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">总结</a>
+                <a href="javascript:void(0)" class="js-tag color3">翻译</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -550,15 +550,19 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">FE</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">算法</a>
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">FE</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">分布式</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">web</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -570,15 +574,7 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">web</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">工具</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">数据结构</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -586,11 +582,15 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">网络</a>
+                <a href="javascript:void(0)" class="js-tag color5">数据结构</a>
               </li>
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">虚拟机</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">网络</a>
               </li>
              
               <li class="article-tag-list-item">

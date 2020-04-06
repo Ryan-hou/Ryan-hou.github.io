@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html>
-<head>
+<head><meta name="generator" content="Hexo 3.9.0">
   <meta charset="utf-8">
   
   <meta name="renderer" content="webkit">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge" >
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <link rel="dns-prefetch" href="https://ryan-hou.github.io">
   <title>Web 服务器如何工作 | 0x08 0x17</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
@@ -45,7 +45,7 @@
   
 
 </head>
-
+</html>
 <body>
   <div id="container" q-class="show:isCtnShow">
     <canvas id="anm-canvas" class="anm-canvas"></canvas>
@@ -193,9 +193,9 @@
 <h3 id="什么是-Servlet，有啥用？"><a href="#什么是-Servlet，有啥用？" class="headerlink" title="什么是 Servlet，有啥用？"></a>什么是 Servlet，有啥用？</h3><p>在 Java 中，Servlet 使我们能够编写基于请求来产生动态内容的服务器端组件。事实上， Servlet 是 javax.servlet 包中定义的一个接口，该接口中定义了三个基本的与 servlet 生命周期相关的方法：<code>init(),service(),destroy()</code>。每个具体的 servlet 类均需要实现这三个方法(要么在 SDK 中，要么自己定义实现)，这三个方法在 servlet 特定的生命周期中被调用</p>
 <p>Servlet 类通过类加载器被自动加载到 Servlet 容器，加载的方式分为懒加载和预加载。<strong>每一个请求都是一个独立的线程，一个 servlet 类可以同时处理多个线程，当 servlet 对象不再被使用时，他们被 JVM 当做垃圾进行回</strong></p>
 <p>懒加载的 Servlet</p>
-<p><img src="http://ryan-hou.github.io/assets/img/web服务器/1.png" alt=""> <img src="http://ryan-hou.github.io/assets/img/web服务器/2.png" alt=""></p>
+<p><img src="http://ryan-hou.github.io/assets/img/web服务器/1.png" alt> <img src="http://ryan-hou.github.io/assets/img/web服务器/2.png" alt></p>
 <p>预加载的 Servlet</p>
-<p><img src="http://ryan-hou.github.io/assets/img/web服务器/3.png" alt=""> <img src="http://ryan-hou.github.io/assets/img/web服务器/4.png" alt=""></p>
+<p><img src="http://ryan-hou.github.io/assets/img/web服务器/3.png" alt> <img src="http://ryan-hou.github.io/assets/img/web服务器/4.png" alt></p>
 <h3 id="什么是-ServletContext，谁创造了它？"><a href="#什么是-ServletContext，谁创造了它？" class="headerlink" title="什么是 ServletContext，谁创造了它？"></a>什么是 ServletContext，谁创造了它？</h3><p>当 servlet 容器启动时，它会部署并加载所有的 web 应用，<strong>当一个 web 应用被加载时，servlet 容器将会为每一个 web 应用创建一个且仅创建一个 ServletContext 对象，并存储在服务器内存中。</strong>同时 web 应用的 web.xml 文件会被解析，文件里面的每一个 Servlet，Filter和 Listener 类被创建一个对象实例，也被保存在服务器内存中。当 servlet 容器关闭时，将会卸载所有的 web 应用，同时 ServletContext，Servlet，Filter，Listener类的实例均被当做垃圾进行回收</p>
 <p>根据 java 文档说明，ServletContext 类定义了一组使 servlet 类和 servlet 容器进行交互的方法，比如获取文件的 MIME 类型，转发请求或者生成日志文件。需要注意的是，当一个 web 应用在部署文件中声明为分布式时，web 应用的每一个虚拟机都有一个上下文对象，因而此时上下文对象不能作为全局变量，我们可以使用数据库等外部资源来代替</p>
 <h3 id="ServletRequest-和-ServletResponse-从哪里开始他们的生命周期？"><a href="#ServletRequest-和-ServletResponse-从哪里开始他们的生命周期？" class="headerlink" title="ServletRequest 和 ServletResponse 从哪里开始他们的生命周期？"></a>ServletRequest 和 ServletResponse 从哪里开始他们的生命周期？</h3><p>web 服务器监听来自特定端口(通常是80号端口)的 http 请求，当客户端(通常是用户通过浏览器)向服务器发送一个 http 请求后，web 服务器中的 Servlet 容器会创建 HttpServletRequest 和 HttpServletResponse 对象，并且通过已经创建的与客户端请求的 URL 地址相匹配的 Filter，Servlet 类中的方法来传递这些对象，所有这些都使用同一个线程</p>
@@ -204,9 +204,9 @@
 <p>根据 HTTP cookie 规范(正规的 web 浏览器和 web 服务器都必须遵守的规范)，随后的客户端请求需要带有该 cookie 对象，<strong>servlet 容器将从每次发送过来的 http 请求中根据名为 JSESSIONID 的cookie对象获取相应的 cookie 值，并且把该值与 web 服务器内存中的 HttpSession 值进行对比，通过这种方式来实现对同一会话的记忆</strong></p>
 <p>当超过默认的时间时，HttpSession 对象将失效，该默认时间通常是在 web.xml 文件中定义的， 通常为 30 分钟，也就是说，当客户端长达30分钟没有访问该 web 应用时，servlet 容器就会结束 session 的生存，随后的请求即使包含对应的 session 对象也不能访问到相同的 session 了，servlet 容器会创建一个新的 session 对象</p>
 <p>现有的 Session</p>
-<p><img src="http://ryan-hou.github.io/assets/img/web服务器/5.png" alt=""></p>
+<p><img src="http://ryan-hou.github.io/assets/img/web服务器/5.png" alt></p>
 <p>新的 session</p>
-<p><img src="http://ryan-hou.github.io/assets/img/web服务器/6.png" alt=""></p>
+<p><img src="http://ryan-hou.github.io/assets/img/web服务器/6.png" alt></p>
 <p>同时，客户端中 session 对象的 cookie 值也有一个默认的生存时间，该时间也就是浏览器的运行时间。所以当客户端关闭浏览器(关闭所有的页面或标签)后，客户端的 session 就会被销毁。重新打开浏览器后，与之前服务器端 Session 相关的 cookie 值就不再发送了，而是重新开始</p>
 <h3 id="如何保证线程安全？"><a href="#如何保证线程安全？" class="headerlink" title="如何保证线程安全？"></a>如何保证线程安全？</h3><p>你应该知道了<strong>所有的请求都在共享 Servlet 和 Filter</strong>，这是 Java 一个很好的特性，它是多线程的并且不同的线程(即 http 请求)可以使用同一个实例，这节省了很多的资源; 也正因为如此，你不应该使用 Servlet 或 Filter 的实例变量来存放任何请求或会话范围内的数据，这些数据会被其他 Session 的所有请求共享，这不是线程安全的，具体看下面这段代码：</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MyServlet</span> <span class="title">extendsHttpServlet</span></span></span><br><span class="line"><span class="class"></span>&#123;</span><br><span class="line">    <span class="keyword">private</span> Object thisIsNOTThreadSafe; <span class="comment">//Don't to this</span></span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">doGet</span><span class="params">(HttpServletRequest request, HttpServletResponse response)</span> <span class="keyword">throws</span> ServletException, IOException</span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        Object thisIsThreadSafe;</span><br><span class="line"></span><br><span class="line">        thisIsNOTThreadSafe = request.getParameter(<span class="string">"foo"</span>); <span class="comment">// BAD!! Shared among all requests!</span></span><br><span class="line">        thisIsThreadSafe = request.getParameter(<span class="string">"foo"</span>); <span class="comment">//OK, this is thread safe.</span></span><br><span class="line">    &#125;</span><br><span class="line">   </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
@@ -454,7 +454,7 @@ gitment.render('gitment-ctn')
   <div class="outer">
     <div id="footer-info">
     	<div class="footer-left">
-    		&copy; 2019 0x08 0x17
+    		&copy; 2020 0x08 0x17
     	</div>
       	<div class="footer-right">
       		<a href="http://hexo.io/" target="_blank">Hexo</a>  Theme <a href="https://github.com/litten/hexo-theme-yilia" target="_blank">Yilia</a> by Litten
@@ -537,11 +537,11 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">翻译</a>
+                <a href="javascript:void(0)" class="js-tag color3">总结</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">总结</a>
+                <a href="javascript:void(0)" class="js-tag color3">翻译</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -553,15 +553,19 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">FE</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">算法</a>
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">FE</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">分布式</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">web</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -573,15 +577,7 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">web</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">工具</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">数据结构</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -589,11 +585,15 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">网络</a>
+                <a href="javascript:void(0)" class="js-tag color5">数据结构</a>
               </li>
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">虚拟机</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">网络</a>
               </li>
              
               <li class="article-tag-list-item">

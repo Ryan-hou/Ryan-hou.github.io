@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html>
-<head>
+<head><meta name="generator" content="Hexo 3.9.0">
   <meta charset="utf-8">
   
   <meta name="renderer" content="webkit">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge" >
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <link rel="dns-prefetch" href="https://ryan-hou.github.io">
   <title>动态代理实现 AOP | 0x08 0x17</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
@@ -40,7 +40,7 @@
   
 
 </head>
-
+</html>
 <body>
   <div id="container" q-class="show:isCtnShow">
     <canvas id="anm-canvas" class="anm-canvas"></canvas>
@@ -200,7 +200,7 @@
 <li><strong>Class&lt;?&gt;[]:</strong>由动态代理产生的对象必须要实现的接口的<strong>Class数组</strong>。这里要强调一下，这个参数一般是被代理对象实现的<strong>接口</strong>的类型，也可以是其他的接口类型，但必须是<strong>接口</strong>的类型</li>
 <li><strong>InvocationHandler:</strong>当具体调用代理对象的方法时，将产生什么行为。这个在下一步中我们再具体解释，写到这里，我们可以给出这一步的代码如下：</li>
 </ul>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">Object proxy = Proxy.newInstance(target.getClass().getClassLoader()), </span><br><span class="line">	<span class="keyword">new</span> Class[]&#123;ArithmeticCalculator.class&#125;, </span><br><span class="line">	<span class="keyword">new</span> InvocationHandler()&#123; </span><br><span class="line">		实现接口的匿名类的类体，下面给出</span><br><span class="line">	&#125;</span><br><span class="line">);</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">Object proxy = Proxy.newInstance(target.getClass().getClassLoader()), </span><br><span class="line">	<span class="keyword">new</span> Class[]&#123;ArithmeticCalculator<span class="class">.<span class="keyword">class</span>&#125;, </span></span><br><span class="line"><span class="class">	<span class="title">new</span> <span class="title">InvocationHandler</span>()</span>&#123; </span><br><span class="line">		实现接口的匿名类的类体，下面给出</span><br><span class="line">	&#125;</span><br><span class="line">);</span><br></pre></td></tr></table></figure>
 <ul>
 <li><strong>关于InvocationHandler接口:</strong>，我们先给出代码，然后再来解释：</li>
 </ul>
@@ -215,7 +215,7 @@
 <p>下面再给出通过代理对象调用方法的代码:</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">proxy.mul(<span class="number">1</span>,<span class="number">2</span>);</span><br><span class="line"><span class="comment">//接口的实现类中重写的mul方法</span></span><br><span class="line"><span class="meta">@override</span> </span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">mul</span><span class="params">(<span class="keyword">int</span> i, <span class="keyword">int</span> j)</span></span>&#123;</span><br><span class="line">	<span class="keyword">int</span> result = i * j;</span><br><span class="line">	System.out.println(result);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>至此，动态代理的主要知识点和代码已经完成，不过，我们还需要了解这些代码之间是如何调用的，下面就给出代码调用的过程图:</p>
-<p><img src="http://Ryan-hou.github.io/assets/img/blogPic/AOPImpl.png" alt=""></p>
+<p><img src="http://Ryan-hou.github.io/assets/img/blogPic/AOPImpl.png" alt></p>
 <p>上图就比较清晰地描述了各个参数传递的过程，还需结合代码和上机操作加以熟悉，有不清楚的地方就 debug 一下代码，查看程序的执行过程</p>
 
       
@@ -460,7 +460,7 @@ gitment.render('gitment-ctn')
   <div class="outer">
     <div id="footer-info">
     	<div class="footer-left">
-    		&copy; 2019 0x08 0x17
+    		&copy; 2020 0x08 0x17
     	</div>
       	<div class="footer-right">
       		<a href="http://hexo.io/" target="_blank">Hexo</a>  Theme <a href="https://github.com/litten/hexo-theme-yilia" target="_blank">Yilia</a> by Litten
@@ -543,11 +543,11 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">翻译</a>
+                <a href="javascript:void(0)" class="js-tag color3">总结</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">总结</a>
+                <a href="javascript:void(0)" class="js-tag color3">翻译</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -559,15 +559,19 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">FE</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">算法</a>
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">FE</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">分布式</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">web</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -579,15 +583,7 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">web</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">工具</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">数据结构</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -595,11 +591,15 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">网络</a>
+                <a href="javascript:void(0)" class="js-tag color5">数据结构</a>
               </li>
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">虚拟机</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">网络</a>
               </li>
              
               <li class="article-tag-list-item">
