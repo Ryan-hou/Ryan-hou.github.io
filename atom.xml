@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title>0x08 0x17</title>
+  
+  <subtitle>Build something useful.</subtitle>
+  <link href="/atom.xml" rel="self"/>
+  
+  <link href="https://ryan-hou.github.io/"/>
+  <updated>2020-04-06T15:50:20.770Z</updated>
+  <id>https://ryan-hou.github.io/</id>
+  
+  <author>
+    <name>0x08 0x17</name>
+    
+  </author>
+  
+  <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>Using and avoiding null</title>
+    <link href="https://ryan-hou.github.io/2020/04/06/Using-and-avoiding-null/"/>
+    <id>https://ryan-hou.github.io/2020/04/06/Using-and-avoiding-null/</id>
+    <published>2020-04-06T15:50:20.000Z</published>
+    <updated>2020-04-06T15:50:20.770Z</updated>
+    
+    <summary type="html">
+    
+    </summary>
+    
+    
+    
+  </entry>
+  
+</feed>
