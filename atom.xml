@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://ryan-hou.github.io/"/>
-  <updated>2020-04-08T02:58:57.690Z</updated>
+  <updated>2020-04-08T07:05:56.745Z</updated>
   <id>https://ryan-hou.github.io/</id>
   
   <author>
@@ -15,6 +15,30 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>null awareness</title>
+    <link href="https://ryan-hou.github.io/2019/04/07/null-awareness/"/>
+    <id>https://ryan-hou.github.io/2019/04/07/null-awareness/</id>
+    <published>2019-04-07T14:30:20.000Z</published>
+    <updated>2020-04-08T07:05:56.745Z</updated>
+    
+    <content type="html"><![CDATA[<p>前面翻译了一篇关于如何合理使用 null 的文章:<a href="https://ryan-hou.github.io/2019/04/06/Using-and-avoiding-null/">Using and avoiding null</a>，考虑到 null 的普遍性和 NPE 带来的大量问题，再写一篇文章做个总结是有必要的</p><h3 id="null-是什么"><a href="#null-是什么" class="headerlink" title="null 是什么"></a>null 是什么</h3><p>null 是任何一个引用类型变量的默认值。设计初衷是为了表示一些缺失的东西，比如缺失的资源或其他东西，再具体点说:</p><a id="more"></a><ul><li>null 是关键字，大小写敏感</li><li>null 既不是对象也不是一种类型，它仅是一个<strong>特殊值</strong>，你可以将它赋予任何引用类型，你也可以将 null 强制转化为任何引用类型</li><li>可以使用 == 和 = 来操作 null 值，但是不能使用其他逻辑操作，在 Java 中 <code>null == null</code> 返回 true</li><li>使用作为引用类型变量默认值的 null，instanceof 操作符将会返回 false</li></ul><h3 id="null-带来的问题"><a href="#null-带来的问题" class="headerlink" title="null 带来的问题"></a>null 带来的问题</h3><p>null 本身不是一个对象，通过 null 访问对象的成员方法或者成员变量(解引用)会导致空指针异常(NPE)；由于我们很容易忽略判断一个对象是否为 null，所以想当然的进行解引用操作时会带来 NPE 问题</p><h3 id="如何规避-null-的问题"><a href="#如何规避-null-的问题" class="headerlink" title="如何规避 null 的问题"></a>如何规避 null 的问题</h3><p><strong>意识非常重要，意识非常重要，意识非常重要</strong>，重要的事情说三遍！当我们拿到一个引用类型的变量时，条件反射的就要考虑这个变量是不是 null，如果是 null 该怎么处理？我自己写的代码导致了 NPE 时，我总会反思自己: 代码里的 NPE 都解决不了，难怪现实中也没对象……</p><p>有了上面的意识，下面再介绍一些实用的方法来规避 NPE。部分内容在 <a href="https://ryan-hou.github.io/2019/04/06/Using-and-avoiding-null/">Using and avoiding null</a> 也有提到，可以互为参考。</p><p>既然 NPE 的源头在于 null，那么避免使用 null 就可以从源头上解决这个问题。比如可以使用 Guava 提供的 <code>ImmutableMap, ImmutableList</code> 等不允许元素为 null 的集合类。尽量不要用 null 来初始化变量，函数尽量不要返回 null。对于必须要用 null 的场景考虑单独定义相应的 null object</p><p>采用防御性编程。作为函数作者，我们要对入参进行必要的校验，不允许参数为空时直接抛出异常而不是继续执行。由函数的调用者对程序异常负责；尽量不返回 null，比如可以返回 Optional 对象，或者 null object</p><p>作为函数调用者，要对返回值是否为 null 保持敏感。明确返回的 null 值含义，进行相应的检查和处理。比如远程调用时，对于返回值通常要进行判空处理</p><p>使用 @NotNull 和 @Nullable 注解配合 IntelliJ 尽量在早期发现和预防 NPE</p><p>对于链式调用要格外注意，很容易在某个调用过程发生 NPE。比如 <code>obj.methodA().methodB().methodC()</code></p><p>警惕包装类型的自动装箱和拆箱。相比基本数据类型，包装类型存在 null 这个默认值，在自动拆箱时很容易 NPE。而且正是由于这个语法糖，我们会下意识的把包装类和基本类型等同，实际上两者是很不一样的。所以对于这个语法糖我个人持弊大于利的观点。总之，在使用包装类型时，要格外留心，他们是包装类型而不是基本类型，不能闭着眼睛混用！</p><p>以上是对于 null 的总结，概括来说，就是<strong>要时刻对于 null 这个 corner case 保持警惕，然后采取合理的处理方式</strong></p>]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;前面翻译了一篇关于如何合理使用 null 的文章:&lt;a href=&quot;https://ryan-hou.github.io/2019/04/06/Using-and-avoiding-null/&quot;&gt;Using and avoiding null&lt;/a&gt;，考虑到 null 的普遍性和 NPE 带来的大量问题，再写一篇文章做个总结是有必要的&lt;/p&gt;
+&lt;h3 id=&quot;null-是什么&quot;&gt;&lt;a href=&quot;#null-是什么&quot; class=&quot;headerlink&quot; title=&quot;null 是什么&quot;&gt;&lt;/a&gt;null 是什么&lt;/h3&gt;&lt;p&gt;null 是任何一个引用类型变量的默认值。设计初衷是为了表示一些缺失的东西，比如缺失的资源或其他东西，再具体点说:&lt;/p&gt;
+    
+    </summary>
+    
+    
+    
+      <category term="Java" scheme="https://ryan-hou.github.io/tags/Java/"/>
+    
+      <category term="经验" scheme="https://ryan-hou.github.io/tags/%E7%BB%8F%E9%AA%8C/"/>
+    
+  </entry>
   
   <entry>
     <title>Using and avoiding null</title>
