@@ -97,29 +97,6 @@
   </entry>
   
   <entry>
-    <title>反转单链表三种经典的思路</title>
-    <link href="https://ryan-hou.github.io/2019/01/20/%E5%8F%8D%E8%BD%AC%E5%8D%95%E9%93%BE%E8%A1%A8%E7%BB%8F%E5%85%B8%E7%9A%84%E4%B8%89%E7%A7%8D%E6%96%B9%E5%BC%8F/"/>
-    <id>https://ryan-hou.github.io/2019/01/20/%E5%8F%8D%E8%BD%AC%E5%8D%95%E9%93%BE%E8%A1%A8%E7%BB%8F%E5%85%B8%E7%9A%84%E4%B8%89%E7%A7%8D%E6%96%B9%E5%BC%8F/</id>
-    <published>2019-01-20T13:20:02.000Z</published>
-    <updated>2020-04-11T10:06:34.076Z</updated>
-    
-    <content type="html"><![CDATA[<p>基础的数据结构和算法题目，基础但是很有意义，本文整理三种不同的实现思路</p><h2 id="头插法构建单链表"><a href="#头插法构建单链表" class="headerlink" title="头插法构建单链表"></a>头插法构建单链表</h2><p>头插法操作一组数据后生成逆序的单链表，利用这个性质，我们可以遍历给定的单链表，利用头插法建立新的单链表，最后返回链表的头节点即可。实现简单，但是需要开辟额外的空间，空间复杂度和时间复杂度都是 <code>O(n)</code>，代码如下：</p><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> LinkNode <span class="title">reverse</span><span class="params">(LinkNode head)</span> </span>&#123;</span><br><span class="line">    LinkNode dummy = <span class="keyword">new</span> LinkNode(<span class="number">0</span>);</span><br><span class="line">    <span class="keyword">while</span> (head != <span class="keyword">null</span>) &#123;</span><br><span class="line">        LinkNode cur = <span class="keyword">new</span> LinkNode(head.val);</span><br><span class="line">        cur.next = dummy.next;</span><br><span class="line">        dummy.next = cur;</span><br><span class="line">        head = head.next;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> dummy.next;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><a id="more"></a><h2 id="指针移动实现反转"><a href="#指针移动实现反转" class="headerlink" title="指针移动实现反转"></a>指针移动实现反转</h2><p>反转一个单链表还有一种很直观的解决方法就是遍历这个单链表，然后依次反转每个需要反转的节点。但是这里存在一个问题，在反转当前节点的时候，当前节点的下一个节点需要先提前保存一下，不然会丢失下一个节点。对于算法的边界，需要考虑链表为空，链表只有一个节点，有两个节点和多于两个节点这几种情况。时间复杂度为<code>O(n)</code>，空间复杂度为<code>O(1)</code>。代码如下：</p><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> LinkNode <span class="title">reverse</span><span class="params">(LinkNode head)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (head == <span class="keyword">null</span>) &#123;</span><br><span class="line">        <span class="keyword">return</span> head;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    LinkNode pre = head;</span><br><span class="line">    LinkNode cur = head.next;</span><br><span class="line">    LinkNode next = <span class="keyword">null</span>;</span><br><span class="line">    <span class="keyword">while</span> (cur != <span class="keyword">null</span>) &#123;</span><br><span class="line">        <span class="comment">// next 保存指针指向将要反转的节点原本的下一个节点</span></span><br><span class="line">        next = cur.next;</span><br><span class="line">        cur.next = pre;</span><br><span class="line">        <span class="comment">// pre, cur 同时后移</span></span><br><span class="line">        pre = cur;</span><br><span class="line">        cur = next;</span><br><span class="line">    &#125;</span><br><span class="line">    head.next = <span class="keyword">null</span>;</span><br><span class="line">    <span class="keyword">return</span> pre;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><h2 id="递归"><a href="#递归" class="headerlink" title="递归"></a>递归</h2><p>链表的定义和二叉树类似，也是一个递归的定义，因此使用递归的思路来处理链表也是可行的。反转一个单链表，可以分解为，先反转单链表除了头节点之后的单链表，然后处理反转后的单链表与头节点的关系即可。递归出口是头节点为空或者头节点的下一个节点为空。使用递归这种声明式的实现方式使代码更加简洁，重在描述代码做什么而不是怎么做。空间复杂度为<code>O(n)</code>，时间复杂度为<code>O(n)</code>，代码如下：</p><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> LinkNode <span class="title">reverse</span><span class="params">(LinkNode head)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (head == <span class="keyword">null</span> || head.next == <span class="keyword">null</span>) &#123;</span><br><span class="line">        <span class="keyword">return</span> head; <span class="comment">// 递归出口</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    LinkNode headOfLeft = reverse(head.next);</span><br><span class="line">    head.next.next = head;</span><br><span class="line">    head.next = <span class="keyword">null</span>;</span><br><span class="line">    <span class="keyword">return</span> headOfLeft;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>]]></content>
-    
-    <summary type="html">
-    
-      &lt;p&gt;基础的数据结构和算法题目，基础但是很有意义，本文整理三种不同的实现思路&lt;/p&gt;
-&lt;h2 id=&quot;头插法构建单链表&quot;&gt;&lt;a href=&quot;#头插法构建单链表&quot; class=&quot;headerlink&quot; title=&quot;头插法构建单链表&quot;&gt;&lt;/a&gt;头插法构建单链表&lt;/h2&gt;&lt;p&gt;头插法操作一组数据后生成逆序的单链表，利用这个性质，我们可以遍历给定的单链表，利用头插法建立新的单链表，最后返回链表的头节点即可。实现简单，但是需要开辟额外的空间，空间复杂度和时间复杂度都是 &lt;code&gt;O(n)&lt;/code&gt;，代码如下：&lt;/p&gt;
-&lt;figure class=&quot;highlight java&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;5&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;6&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;7&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;8&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;9&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;10&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; LinkNode &lt;span class=&quot;title&quot;&gt;reverse&lt;/span&gt;&lt;span class=&quot;params&quot;&gt;(LinkNode head)&lt;/span&gt; &lt;/span&gt;&amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    LinkNode dummy = &lt;span class=&quot;keyword&quot;&gt;new&lt;/span&gt; LinkNode(&lt;span class=&quot;number&quot;&gt;0&lt;/span&gt;);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;keyword&quot;&gt;while&lt;/span&gt; (head != &lt;span class=&quot;keyword&quot;&gt;null&lt;/span&gt;) &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        LinkNode cur = &lt;span class=&quot;keyword&quot;&gt;new&lt;/span&gt; LinkNode(head.val);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        cur.next = dummy.next;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        dummy.next = cur;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        head = head.next;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;keyword&quot;&gt;return&lt;/span&gt; dummy.next;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&amp;#125;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
-    
-    </summary>
-    
-    
-    
-      <category term="算法" scheme="https://ryan-hou.github.io/tags/%E7%AE%97%E6%B3%95/"/>
-    
-  </entry>
-  
-  <entry>
     <title>创建一个对象的思考</title>
     <link href="https://ryan-hou.github.io/2019/01/01/%E5%88%9B%E5%BB%BA%E4%B8%80%E4%B8%AA%E5%AF%B9%E8%B1%A1%E7%9A%84%E6%80%9D%E8%80%83/"/>
     <id>https://ryan-hou.github.io/2019/01/01/%E5%88%9B%E5%BB%BA%E4%B8%80%E4%B8%AA%E5%AF%B9%E8%B1%A1%E7%9A%84%E6%80%9D%E8%80%83/</id>
@@ -196,23 +173,6 @@
       <category term="Java" scheme="https://ryan-hou.github.io/tags/Java/"/>
     
       <category term="设计" scheme="https://ryan-hou.github.io/tags/%E8%AE%BE%E8%AE%A1/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>反转单链表经典的三种方式</title>
-    <link href="https://ryan-hou.github.io/2017/09/30/%E5%8F%8D%E8%BD%AC%E5%8D%95%E9%93%BE%E8%A1%A8%E4%B8%89%E7%A7%8D%E7%BB%8F%E5%85%B8%E7%9A%84%E6%80%9D%E8%B7%AF/"/>
-    <id>https://ryan-hou.github.io/2017/09/30/%E5%8F%8D%E8%BD%AC%E5%8D%95%E9%93%BE%E8%A1%A8%E4%B8%89%E7%A7%8D%E7%BB%8F%E5%85%B8%E7%9A%84%E6%80%9D%E8%B7%AF/</id>
-    <published>2017-09-30T03:20:02.000Z</published>
-    <updated>2020-04-10T07:28:04.345Z</updated>
-    
-    <summary type="html">
-    
-    </summary>
-    
-    
-    
-      <category term="算法" scheme="https://ryan-hou.github.io/tags/%E7%AE%97%E6%B3%95/"/>
     
   </entry>
   
