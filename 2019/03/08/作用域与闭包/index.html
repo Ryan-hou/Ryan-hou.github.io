@@ -16,7 +16,7 @@
 <meta property="og:site_name" content="0x08 0x17">
 <meta property="og:description" content="什么是闭包简单来说一句话：带上下文的函数，下面展开说明一下 声明：接下来的部分内容来自对 StackOverflow 回答的翻译，原答案链接 What is a ‘Closure’? 要想理解好闭包，首先要弄清楚 Scope，当我们声明一个局部变量时，这个变量会有一个 Scope，通常局部变量仅在声明它的 block 或 function 中有效，比如下面 JS 代码： 12345function">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2020-04-13T08:44:32.064Z">
+<meta property="og:updated_time" content="2020-04-13T08:46:12.100Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="作用域与闭包">
 <meta name="twitter:description" content="什么是闭包简单来说一句话：带上下文的函数，下面展开说明一下 声明：接下来的部分内容来自对 StackOverflow 回答的翻译，原答案链接 What is a ‘Closure’? 要想理解好闭包，首先要弄清楚 Scope，当我们声明一个局部变量时，这个变量会有一个 Scope，通常局部变量仅在声明它的 block 或 function 中有效，比如下面 JS 代码： 12345function">
@@ -183,7 +183,7 @@
 <p>上面在一个函数中定义了一个函数，内部的函数可以访问外部函数所有的局部变量，包括 <code>a</code>，变量 a 在内部函数的父 Scope 中</p>
 <p>通常当一个函数退出，他所声明的所有的局部变量都会被回收，然而在这里，当我们返回内部函数并把它指向变量 fnc 时，外部函数(outer)退出后，<strong>在内部函数(inner)被定义的 Scope 中的所有的局部变量会持续存在。</strong><code>变量a within a closure.</code></p>
 <p><strong>在上面的例子中，变量 a 完全是 fnc 函数私有的(函数加数据)，这为我们在函数式语言中创建私有变量提供了一种方式。(函数加上私有变量, 是不是看起来很像 OOP 中的对象(方法加上数据), 确实可以基于 Closure 构建对象系统 )</strong></p>
-<p>上面的示例代码中，<code>a</code> 属于 <code>outer</code> scope，<code>inner</code> scope 存在一个指向父scope<code>outer</code>的指针。<code>fnc</code> 是一个指向 <code>inner</code> 的变量，<code>a</code> 会和 <code>fnc</code> 共存亡，<code>a</code> 在闭包中</p>
+<p>上面的示例代码中，a 属于 <code>outer</code> scope，<code>inner</code> scope 存在一个指向父scope<code>outer</code>的指针。<code>fnc</code> 是一个指向 <code>inner</code> 的变量，a 会和 <code>fnc</code> 共存亡，a 在闭包中</p>
 <p>以上，翻译结束，下面再对照下 OO 下的闭包</p>
 <h2 id="OO-化的闭包"><a href="#OO-化的闭包" class="headerlink" title="OO 化的闭包"></a>OO 化的闭包</h2><p>在 JS 中，函数是一等公民，可以作为参数或者返回值传递，可以用于高阶函数，但是在 Java 中，函数不能独立存在，需要依附于类或者对象(函数在类中被称为方法，其实函数应该是可以单独存在的一种抽象)，正因此才有了类似函数对象，命令模式等一些东西，看似高大上，实际上是编程语言的限制带来的无奈之举</p>
 <p>有人曾说过，<strong>类是带函数的数据，闭包是带数据的函数</strong>，上面我们看到了在 JS 中是如何使用闭包的，下面我们看一下在 OO 中如何使用闭包</p>
@@ -196,7 +196,7 @@
 <p>上面的示例代码中，内部类 Closure 实现了 Incrementable，以提供一个返回 Callee 的“钩子”，而且是一个安全的钩子，无论谁获得此 Incrementable 的引用，都只能调用 increment() (如果直接使用 Callee 类的实例作为钩子，该钩子还可以调用 Callee 类的其它方法，控制的力度不够细)，除此之外没有其他的功能。Caller 的构造器需要一个 Incrementable 的引用作为参数 (也可以通过 set 方法注入的方式在运行时动态设置回调引用)，然后在以后某个时刻，Caller 对象可以使用此引用回调 Callee 类。<strong>回调的价值在于它的灵活性，可以在运行时动态的决定需要调用什么方法</strong> (更多关于回调的内容可以参考之前整理的文章: <a href="https://ryan-hou.github.io/2019/02/10/%E5%9B%9E%E8%B0%83%E5%8F%8A%E5%9C%A8Java%E4%B8%AD%E7%9A%84%E4%BD%BF%E7%94%A8/">回调及在Java中的使用</a>)</p>
 <h2 id="补充"><a href="#补充" class="headerlink" title="补充"></a>补充</h2><p>最近看了R大关于闭包的一篇博客，又有了一些新的思考，原文地址: <a href="https://rednaxelafx.iteye.com/blog/245022" target="_blank" rel="noopener">关于对象与闭包的关系的一个有趣小故事</a>，总结一些要点:</p>
 <blockquote>
-<p>必包的要点有两个:<br>1、一个含有自由变量的函数；<br>2、这些自由变量所在的环境。<br><strong>外部环境持有内部函数所使用的自由变量，对内部函数形成“闭包”，就这样。</strong><br>简单但不严格的说，一个函数的“自由变量”就是既不是参数也不是局部变量的变量。基于类的面向对象程序语言中有一种情况，就是方法使用的自由变量来自其所在的类的实例</p>
+<p>闭包的要点有两个:<br>1、一个含有自由变量的函数；<br>2、这些自由变量所在的环境。<br><strong>外部环境持有内部函数所使用的自由变量，对内部函数形成“闭包”，就这样。</strong><br>简单但不严格的说，一个函数的“自由变量”就是既不是参数也不是局部变量的变量。基于类的面向对象程序语言中有一种情况，就是方法使用的自由变量来自其所在的类的实例</p>
 </blockquote>
 <blockquote>
 <p>OO 里一般不提闭包<br>面向对象的语言里一般不把类称为闭包，没为什么，就是种习惯。<br><strong>当然严格来说方法(类的成员方法)所捕获的自由变量不是类的字段 x，而是this；x 是通过 this 来访问到的，完整写出应该是 <code>this.x</code></strong></p>
@@ -423,11 +423,11 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">设计</a>
+                <a href="javascript:void(0)" class="js-tag color3">翻译</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">翻译</a>
+                <a href="javascript:void(0)" class="js-tag color3">设计</a>
               </li>
              
               <li class="article-tag-list-item">
