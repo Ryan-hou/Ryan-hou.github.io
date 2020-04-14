@@ -6,15 +6,20 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <link rel="dns-prefetch" href="https://ryan-hou.github.io">
-  <title>Archives: 2018/11 | 0x08 0x17</title>
+  <title>迭代器模式及fail-fast策略 | 0x08 0x17</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta property="og:type" content="website">
-<meta property="og:title" content="0x08 0x17">
-<meta property="og:url" content="https://ryan-hou.github.io/archives/2018/11/index.html">
+  <meta name="description" content="是什么迭代器模式提供了一种顺序访问一个聚合对象中的各个元素，而又不暴露其内部数据结构的方式。把遍历的任务放在迭代器上而不是聚合上 为什么需要迭代器思考这样一个问题，客户端中有一个类，需要访问不同的聚合对象，遍历各个聚合对象的所有元素，来进行相应的操作，应该怎么做？ 最简单直接的方式当然是由各个聚合对象来提供遍历的接口，在客户端的类中调用这个接口来实现遍历，这样当然可以，但我们可以思考一下这样做的弊">
+<meta name="keywords" content="Java,设计">
+<meta property="og:type" content="article">
+<meta property="og:title" content="迭代器模式及fail-fast策略">
+<meta property="og:url" content="https://ryan-hou.github.io/2018/11/11/迭代器模式及fail-fast策略/index.html">
 <meta property="og:site_name" content="0x08 0x17">
+<meta property="og:description" content="是什么迭代器模式提供了一种顺序访问一个聚合对象中的各个元素，而又不暴露其内部数据结构的方式。把遍历的任务放在迭代器上而不是聚合上 为什么需要迭代器思考这样一个问题，客户端中有一个类，需要访问不同的聚合对象，遍历各个聚合对象的所有元素，来进行相应的操作，应该怎么做？ 最简单直接的方式当然是由各个聚合对象来提供遍历的接口，在客户端的类中调用这个接口来实现遍历，这样当然可以，但我们可以思考一下这样做的弊">
 <meta property="og:locale" content="default">
+<meta property="og:updated_time" content="2020-04-14T13:59:26.709Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="0x08 0x17">
+<meta name="twitter:title" content="迭代器模式及fail-fast策略">
+<meta name="twitter:description" content="是什么迭代器模式提供了一种顺序访问一个聚合对象中的各个元素，而又不暴露其内部数据结构的方式。把遍历的任务放在迭代器上而不是聚合上 为什么需要迭代器思考这样一个问题，客户端中有一个类，需要访问不同的聚合对象，遍历各个聚合对象的所有元素，来进行相应的操作，应该怎么做？ 最简单直接的方式当然是由各个聚合对象来提供遍历的接口，在客户端的类中调用这个接口来实现遍历，这样当然可以，但我们可以思考一下这样做的弊">
   
     <link rel="alternative" href="/atom.xml" title="0x08 0x17" type="application/atom+xml">
   
@@ -142,78 +147,120 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            
-  
-  
+            <article id="post-迭代器模式及fail-fast策略" class="article article-type-post " itemscope itemprop="blogPost">
+  <div class="article-inner">
     
-    
-      
-      
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2018" class="archive-year">2018</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2018/11/26/适配器模式/" class="archive-article-date">
-  	<time datetime="2018-11-26T13:01:39.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-11-26</time>
-</a>
-        </div>
-    	 
+      <header class="article-header">
+        
   
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2018/11/26/适配器模式/">适配器模式</a>
+    <h1 class="article-title" itemprop="name">
+      迭代器模式及fail-fast策略
     </h1>
   
 
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">Java</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">设计</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2018/11/11/迭代器模式及fail-fast策略/" class="archive-article-date">
+        
+        <a href="/2018/11/11/迭代器模式及fail-fast策略/" class="archive-article-date">
   	<time datetime="2018-11-11T12:49:35.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-11-11</time>
 </a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2018/11/11/迭代器模式及fail-fast策略/">迭代器模式及fail-fast策略</a>
-    </h1>
-  
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h3 id="是什么"><a href="#是什么" class="headerlink" title="是什么"></a>是什么</h3><p>迭代器模式提供了一种顺序访问一个聚合对象中的各个元素，而又不暴露其内部数据结构的方式。把遍历的任务放在迭代器上而不是聚合上</p>
+<h2 id="为什么需要迭代器"><a href="#为什么需要迭代器" class="headerlink" title="为什么需要迭代器"></a>为什么需要迭代器</h2><p>思考这样一个问题，客户端中有一个类，需要访问不同的聚合对象，遍历各个聚合对象的所有元素，来进行相应的操作，应该怎么做？</p>
+<p>最简单直接的方式当然是由各个聚合对象来提供遍历的接口，在客户端的类中调用这个接口来实现遍历，这样当然可以，但我们可以思考一下这样做的弊端：</p>
+<a id="more"></a>
+<ul>
+<li>由各个聚合类分别提供迭代接口可能会暴露聚合类内部的数据结构</li>
+<li>客户端的代码需要分别遍历不同的聚合对象(通过多个循环操作实现)，存在代码冗余</li>
+<li>客户端代码是面向具体的实现编程，而不是针对接口，灵活性差</li>
+</ul>
+<p>如何做？这就需要用到迭代器模式来提供统一的抽象，迭代器模式有几个要点：</p>
+<ul>
+<li>在面向对象对象编程中，有一个很重要的思想就是<strong>封装变化</strong>，上面例子中，发生变化的部分很明显是<strong>由不同集合类型的遍历造成的</strong>，所以我们通过迭代器模式对这个遍历操作进行封装</li>
+<li>封装的操作其实很简单，<strong>就是定义一个迭代器接口，然后由不同的聚合类根据自己的数据结构来自定义实现遍历操作，而客户端代码只需要调用一致的迭代器接口即可，也面向接口编程</strong></li>
+<li>把遍历相关的操作单独拿出去，作为一个接口定义，然后由具体的类来实现，符合<strong>单一责任原则</strong>，有利于创建高内聚的类或模块</li>
+</ul>
+<h2 id="JDK-中的实现"><a href="#JDK-中的实现" class="headerlink" title="JDK 中的实现"></a>JDK 中的实现</h2><p>根据上面的思路，我们以 ArrayList 为例来看一下 JDK 中的实现</p>
+<p>在 <code>java.util</code> 包中，定义了 <code>Iterator&lt;E&gt;</code> 接口，接口中定义了遍历相关的操作，主要是: <code>boolean hasNext();</code> <code>E next();</code>和<code>void remove();</code></p>
+<p>在 ArrayList 类的内部，提供一个私有内部类 <code>Itr</code> 来实现了上面的迭代器接口，部分代码如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> Iterator&lt;E&gt; <span class="title">iterator</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> Itr();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span> <span class="class"><span class="keyword">class</span> <span class="title">Itr</span> <span class="keyword">implements</span> <span class="title">Iterator</span>&lt;<span class="title">E</span>&gt; </span>&#123;</span><br><span class="line">    <span class="keyword">int</span> cursor; <span class="comment">// index of next element to return</span></span><br><span class="line">    <span class="comment">// index of last element returned; -1 if no such</span></span><br><span class="line">    <span class="keyword">int</span> lastRet = -<span class="number">1</span>;</span><br><span class="line">    <span class="keyword">int</span> expectedModCount = modCount;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">hasNext</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> cursor != size;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@SuppressWarnings</span>(<span class="string">"unchecked"</span>)</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> E <span class="title">next</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        checkForComodification();</span><br><span class="line">        <span class="keyword">int</span> i = cursor;</span><br><span class="line">        <span class="keyword">if</span> (i &gt;= size) &#123;</span><br><span class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> NoSuchElementException();</span><br><span class="line">        &#125;</span><br><span class="line">        Object[] elementData = ArrayList.<span class="keyword">this</span>.elementData;</span><br><span class="line">        <span class="keyword">if</span> (i &gt;= elementData.length) &#123;</span><br><span class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> ConcurrentModificationException();</span><br><span class="line">        &#125;</span><br><span class="line">        cursor = i + <span class="number">1</span>;</span><br><span class="line">        <span class="keyword">return</span> (E) elementData[lastRet = i];</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// ....</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>上面迭代器的实现，提供了 <code>fail-fast</code> 的机制，以保证在多线程并发访问时尽最大可能抛出 <code>ConcurrentModificationException</code> 异常，下面会具体说明</p>
+<h2 id="for-each-循环"><a href="#for-each-循环" class="headerlink" title="for-each 循环"></a>for-each 循环</h2><p>借助 Iterable 接口和迭代器 Iterator，可以使用 for-each 语法糖。JDK 1.5 提供的 for-each 循环，通过隐藏迭代器或者索引变量(编译器语法糖)，避免了混乱和出错的可能性，for-each 循环不仅可以让你遍历数组和集合，还可以让你遍历任何实现了 Iterable 接口的对象。在遍历元素时，<strong>for-each循环优于传统的循环</strong> （但是需要注意参与遍历的聚合对象不能为 null，否则会 NPE）</p>
+<h2 id="关于迭代器的-fail-fast"><a href="#关于迭代器的-fail-fast" class="headerlink" title="关于迭代器的 fail-fast"></a>关于迭代器的 fail-fast</h2><p>在迭代器创建之后，如果从<strong>结构</strong>上对其进行修改(比如删除或者增加新的元素)，除非通过<strong>迭代器本身</strong>的 <code>remove</code> 方法，其他任何方式的修改，迭代器都将尽可能抛出 <code>ConcurrentModificationException</code>。这一现象，我们称作<code>fail-fast</code></p>
+<p>举个例子：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">List&lt;Integer&gt; list = <span class="keyword">new</span> ArrayList&lt;&gt;();</span><br><span class="line">list.add(<span class="number">3</span>);</span><br><span class="line"><span class="keyword">for</span> (Integer num : list) &#123;</span><br><span class="line">    <span class="keyword">if</span> (num == <span class="number">2</span>) &#123;</span><br><span class="line">        <span class="comment">// 该操作会产生 ConcurrentModfication 异常，应该使用迭代器 iterator 自身的 remove 方法来进行操作</span></span><br><span class="line">        list.remove(num);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>具体实现方式可以参见 JDK 源码，主要是通过 <code>modCout</code> 和 <code>expectedModCount</code> 变量值的比对来实现</p>
+<h2 id="为什么要-fail-fast"><a href="#为什么要-fail-fast" class="headerlink" title="为什么要 fail-fast"></a>为什么要 fail-fast</h2><p>从抛出异常 <code>ConcurrentModificationException</code> 的名字我们也可以猜到，这是为了防止多线程并发操作带来的问题而设计的，<code>modCount</code> 变量是可变共享的，我们用迭代器来迭代数据，应该保证迭代器遍历的聚合对象处在单线程操作下，否则在我们迭代数据时，其他线程对于该集合结构的修改会导致我们当前线程出现不可预知的异常，比如<code>ArrayIndexOutOfBoundsException</code> 异常</p>
+<p>最后，迭代器的 fail-fast 行为不能得到保证，也就是说迭代器会尽最大努力抛出 ConcurrentModificationException。因此，在 JDK 源码注释中也写到，编写依赖于此异常的程序是错误的，正确做法是迭代器的 fail-fast 行为应该仅用于检测程序错误</p>
+<p><strong>多说一句，fail-fast 并不仅仅用于迭代器，它本身也是一个非常重要的设计原则，尤其是在处理在线业务时，比如当业务量突然增大，导致大量任务堆积或者阻塞时，如果没有 fail-fast，那么可能会导致整个在线系统崩溃。因此在设计系统或者接口时，fail-fast 也是一个需要重要考虑的点</strong></p>
 
-        <div class="article-info info-on-right">
-          
+      
+
+      
+    </div>
+	<!-- 版权内容 -->
+	
+		<style type="text/css">
+	.article-footer-copyright{
+   border-top:1px solid #d3d3d3;
+   margin: 20px auto;     
+   padding-left:2em;
+   width: 80%;
+}
+.article-footer-copyright p{
+  font-size:1.2em;
+}
+.article-footer-copyright span,.copyright abbr{
+  color:#3d3d3d;
+}
+div.copyright{
+    
+       font-weight:bold;
+       color:#FCB297;
+       padding:0.3em 0.5em;
+       margin:0 0 1em 0;
+       border-bottom:none;
+       background-color:#AAD2F0;
+       -moz-border-radius: 1em;
+       -webkit-border-radius:1em;
+       border-radius: 1em;
+  -moz-box-shadow:inset 0px 1px 0px 0px #eeeeee;
+  -webkit-box-shadow:inset 0px 1px 0px 0px #eeeeee;
+  box-shadow:inset 0px 1px 0px 0px #eeeeee;
+  background:-webkit-gradient( linear, left top, left bottom, color-stop(0.05, #aad2f0), color-stop(1, #8bc1ed) );
+  background:-moz-linear-gradient( center top, #aad2f0 5%, #8bc1ed 100% );
+  /* filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#aad2f0', endColorstr='#8bc1ed'); */
+  background-color:#aad2f0;
+  border:1px solid #dcdcdc;
+  text-shadow:1px 1px 0px #eeeeee;
+  
+}
+div.article-footer-copyright{
+    margin:0em 0em 0em 5em;
+	margin-top:2em;
+    padding:0.5em 1em;
+    border-left:3px solid #ff1700;
+    background-color:#f9f9f9;
+}
+.article-footer-copyright p{
+    line-height: 160%;
+    margin: 10px;
+    font-size: 100%;
+}
+</style>
+
+<div class="article-footer-copyright">
+	<p>本文标题: <a href="/2018/11/11/迭代器模式及fail-fast策略/" target="_blank" title="迭代器模式及fail-fast策略">迭代器模式及fail-fast策略</a></p>
+	<p>本文链接: <a href="/2018/11/11/迭代器模式及fail-fast策略/" target="_blank" title="迭代器模式及fail-fast策略">https://ryan-hou.github.io/2018/11/11/迭代器模式及fail-fast策略/</a></p>
+	<p>转载请注明本文链接~~</p>
+</div>
+
+	
+    <div class="article-info article-info-index">
+      
+      
 	<div class="article-tag tagcloud">
 		<i class="icon-price-tags icon"></i>
 		<ul class="article-tag-list">
@@ -229,19 +276,65 @@
 		</ul>
 	</div>
 
-          
+      
 
-        </div>
-        <div class="clearfix"></div>
-    </header>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
   </div>
 </article>
+
+  
+<nav id="article-nav">
+  
+    <a href="/2018/11/26/适配器模式/" id="article-nav-newer" class="article-nav-link-wrap">
+      <i class="icon-circle-left"></i>
+      <div class="article-nav-title">
+        
+          适配器模式
+        
+      </div>
+    </a>
   
   
-    </div></section>
+    <a href="/2018/10/04/Java泛型与通配符/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">Java泛型与通配符</div>
+      <i class="icon-circle-right"></i>
+    </a>
+  
+</nav>
+
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+  
+  
   
 
-    
+  
+
+  
+
+  
+
 
 
           </div>
@@ -265,8 +358,8 @@
 	var yiliaConfig = {
 		mathjax: false,
 		isHome: false,
-		isPost: false,
-		isArchive: true,
+		isPost: true,
+		isArchive: false,
 		isTag: false,
 		isCategory: false,
 		open_in_new: true,
