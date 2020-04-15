@@ -6,15 +6,20 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <link rel="dns-prefetch" href="https://ryan-hou.github.io">
-  <title>Archives: 2018/10 | 0x08 0x17</title>
+  <title>Java嵌套类的使用 | 0x08 0x17</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta property="og:type" content="website">
-<meta property="og:title" content="0x08 0x17">
-<meta property="og:url" content="https://ryan-hou.github.io/archives/2018/10/index.html">
+  <meta name="description" content="是什么嵌套类是指被定义在另一个类内部的类，嵌套类存在的目的应该只是为了他的外围类(enclosing class)提供服务，如果将来还会出现在其他的环境中，他就该是顶层类(top-level class)。嵌套类有四种，静态成员类(static member class)，成员类(member class)，匿名类和局部类，除了第一种，其他三种都是内部类 不同嵌套类的使用下面部分内容和示例来自 O">
+<meta name="keywords" content="Java,设计">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Java嵌套类的使用">
+<meta property="og:url" content="https://ryan-hou.github.io/2018/09/13/Java嵌套类的使用/index.html">
 <meta property="og:site_name" content="0x08 0x17">
+<meta property="og:description" content="是什么嵌套类是指被定义在另一个类内部的类，嵌套类存在的目的应该只是为了他的外围类(enclosing class)提供服务，如果将来还会出现在其他的环境中，他就该是顶层类(top-level class)。嵌套类有四种，静态成员类(static member class)，成员类(member class)，匿名类和局部类，除了第一种，其他三种都是内部类 不同嵌套类的使用下面部分内容和示例来自 O">
 <meta property="og:locale" content="default">
+<meta property="og:updated_time" content="2020-04-15T03:27:10.139Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="0x08 0x17">
+<meta name="twitter:title" content="Java嵌套类的使用">
+<meta name="twitter:description" content="是什么嵌套类是指被定义在另一个类内部的类，嵌套类存在的目的应该只是为了他的外围类(enclosing class)提供服务，如果将来还会出现在其他的环境中，他就该是顶层类(top-level class)。嵌套类有四种，静态成员类(static member class)，成员类(member class)，匿名类和局部类，除了第一种，其他三种都是内部类 不同嵌套类的使用下面部分内容和示例来自 O">
   
     <link rel="alternative" href="/atom.xml" title="0x08 0x17" type="application/atom+xml">
   
@@ -142,36 +147,117 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            
-  
-  
+            <article id="post-Java嵌套类的使用" class="article article-type-post " itemscope itemprop="blogPost">
+  <div class="article-inner">
     
-    
-      
-      
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2018" class="archive-year">2018</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2018/10/04/Java泛型与通配符/" class="archive-article-date">
-  	<time datetime="2018-10-04T13:34:50.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-10-04</time>
-</a>
-        </div>
-    	 
+      <header class="article-header">
+        
   
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2018/10/04/Java泛型与通配符/">Java泛型与通配符</a>
+    <h1 class="article-title" itemprop="name">
+      Java嵌套类的使用
     </h1>
   
 
-        <div class="article-info info-on-right">
-          
+        
+        <a href="/2018/09/13/Java嵌套类的使用/" class="archive-article-date">
+  	<time datetime="2018-09-13T12:21:47.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-09-13</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="是什么"><a href="#是什么" class="headerlink" title="是什么"></a>是什么</h2><p>嵌套类是指被定义在另一个类内部的类，嵌套类存在的目的应该只是为了他的外围类(enclosing class)提供服务，如果将来还会出现在其他的环境中，他就该是顶层类(top-level class)。嵌套类有四种，静态成员类(static member class)，成员类(member class)，匿名类和局部类，除了第一种，其他三种都是内部类</p>
+<h2 id="不同嵌套类的使用"><a href="#不同嵌套类的使用" class="headerlink" title="不同嵌套类的使用"></a>不同嵌套类的使用</h2><p>下面部分内容和示例来自 <a href="https://docs.oracle.com/javase/tutorial/java/javaOO/innerclasses.html" target="_blank" rel="noopener">Oracle官方文档</a></p>
+<a id="more"></a>
+<h3 id="静态成员类"><a href="#静态成员类" class="headerlink" title="静态成员类"></a>静态成员类</h3><p>最简单的一种嵌套类，<strong>当需要使用嵌套类时，优先考虑使用静态成员类</strong>。可以把静态成员类看作一个普通类，只是恰好被声明在另一个类内部而已，静态成员类是外围类的静态成员，与其它静态成员一样，遵守同样的访问性规则(只能访问外部类的静态成员和静态方法)</p>
+<p>公有静态成员类：常用作公有的辅助类，仅当他与外围类一起使用时才有意义。比如考虑一个枚举，他描述了计算器支持的运算，Operation 枚举应该是 Calculator 类的公有静态成员，然后，Calculator 类的客户端就可以用诸如 Calculator.Opeartion.PLUS 这样的名称来引用这些操作</p>
+<p>私有静态成员类：常用来代表外围类所代表的对象的组件。例如 Map 中的 Entry，虽然每个 entry 都与一个 Map 关联，但是 entry 上的方法（getKey, getValue）并不需要访问该 Map，使用非静态成员类也可以，但是每个 entry 将会包含一个指向该 Map 的引用，浪费了时间和空间，最好是使用私有的静态成员类</p>
+<p>如果嵌套类的实例可以在外围类的实例之外独立存在，这个嵌套类就必须是静态成员类，在没有外围类的实例下，要创建成员类的实例是不可能的。创建公有静态成员类对象的方法为 <code>OuterClass.InnerClass inner = new OuterClass.InnerClass()</code>，举个例子:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">StaticInnerClass</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">int</span> test = <span class="number">100</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 静态成员类，生成的类名为: StaticInnerClass$InnerClass</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="class"><span class="keyword">class</span> <span class="title">InnerClass</span> </span>&#123;</span><br><span class="line">        <span class="comment">// 静态成员类可以声明静态成员，而其他嵌套类不可以（static final 除外）</span></span><br><span class="line">        <span class="comment">// you are required to define all static members within a top-level or static member class or interface</span></span><br><span class="line">        <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">int</span> a = <span class="number">200</span>;</span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">test</span><span class="params">()</span> </span>&#123;</span><br><span class="line">            <span class="comment">// 静态成员类只能访问外围类的静态成员</span></span><br><span class="line">            System.out.println(test);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="成员类"><a href="#成员类" class="headerlink" title="成员类"></a>成员类</h3><p>成员类可以访问外部类的静态和非静态成员变量和方法；生成公有成员类对象的方法：<code>OuterClass.InnerClass inner = new OuterClass().new InnerClass()</code></p>
+<p>成员类的常见用法是定义一个 Adapter，它允许外部类的实例被看做另一个不相关类的实例。例如 Map 接口的实现往往使用成员类来实现集合视图（由 Map 的 keySet，entrySet 方法返回），Set 和 List 中也使用成员类来实现它们的迭代器，如 ArrayList 类部分代码：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> Iterator&lt;E&gt; <span class="title">iterator</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> Itr();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span> <span class="class"><span class="keyword">class</span> <span class="title">Itr</span> <span class="keyword">implements</span> <span class="title">Iterator</span>&lt;<span class="title">E</span>&gt; </span>&#123;</span><br><span class="line">    <span class="comment">// ...</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="局部类"><a href="#局部类" class="headerlink" title="局部类"></a>局部类</h3><p>定义在 <code>block(a group of zero or more statements between balanced braces)</code> 作用域的类；常见的情形是在一个方法体中出现的类，因此局部内部类不能用 <code>public, private, protected, static</code>修饰，举个例子：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">LocalInner</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">test</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">final</span> <span class="keyword">int</span> a = <span class="number">1</span>;</span><br><span class="line">        <span class="comment">// 创建局部类，对外部完全不可见，更安全</span></span><br><span class="line">        <span class="class"><span class="keyword">class</span> <span class="title">InnerClass</span> </span>&#123;</span><br><span class="line">            <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">execute</span><span class="params">()</span> </span>&#123;</span><br><span class="line">                <span class="comment">// 局部内部类只能访问 final(or effectively final) 类型的局部变量。原因与局部变量和局部类对象的生命周期有关</span></span><br><span class="line">                System.out.println(a);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125; <span class="comment">// end InnerClass</span></span><br><span class="line">        <span class="comment">// 只能在相应的 block 中创建</span></span><br><span class="line">        <span class="keyword">new</span> InnerClass().execute();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="匿名类"><a href="#匿名类" class="headerlink" title="匿名类"></a>匿名类</h3><p>匿名类可以继承某个类，也可以实现某个接口；<strong>匿名类可以在声明的同时实例化一个对象，很像局部类，只不过匿名类没有名字</strong>，所以当你使用局部类而且仅使用一次时，不妨考虑使用匿名类。匿名类最好代码简洁，保证可读性。如果只是想实现匿名函数，推荐使用 lambda 表达式替代匿名类</p>
+<p>下面的例子中使用了局部类实例化的变量 englishGreeting 和 匿名类实例化的变量 frenchGreeting</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">HelloWorldAnonymousClasses</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="class"><span class="keyword">interface</span> <span class="title">HelloWorld</span> </span>&#123;</span><br><span class="line">        <span class="function"><span class="keyword">void</span> <span class="title">greet</span><span class="params">()</span></span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">sayHello</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        </span><br><span class="line">        <span class="class"><span class="keyword">class</span> <span class="title">EnglishGreeting</span> <span class="keyword">implements</span> <span class="title">HelloWorld</span> </span>&#123;</span><br><span class="line">            </span><br><span class="line">            <span class="meta">@Override</span></span><br><span class="line">            <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">greet</span><span class="params">()</span> </span>&#123;</span><br><span class="line">                System.out.println(<span class="string">"Hello world!"</span>);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">// 使用局部类对象</span></span><br><span class="line">        HelloWorld englishGreeting = <span class="keyword">new</span> EnglishGreeting();</span><br><span class="line">        <span class="comment">// 使用匿名类对象</span></span><br><span class="line">        HelloWorld frenchGreeting = <span class="keyword">new</span> HelloWorld() &#123;</span><br><span class="line"></span><br><span class="line">            <span class="meta">@Override</span></span><br><span class="line">            <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">greet</span><span class="params">()</span> </span>&#123;</span><br><span class="line">                System.out.println(<span class="string">"Salut tout le monde."</span>);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        englishGreeting.greet();</span><br><span class="line">        frenchGreeting.greet();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>匿名类的语法：</strong></p>
+<p>匿名类表达式的语法类似于调用一个构造器，只不过 <code>there is a class definition contained in a block of code</code>（参见上面示例代码中 frenchGreeting 对象的实例化)，一个匿名类表达式包括：</p>
+<ul>
+<li>new 操作符</li>
+<li>要实现的接口名或者要继承的类名，上面的例子中是实现了 HelloWorld 接口</li>
+<li>括号及要传给构造器的参数，就像一个正常类的实例化表达式一样。注：当实现一个接口时，没有构造器，因此括号中参数为空即可，就像上面例子</li>
+<li>类声明体，里面会包含一些方法声明</li>
+<li>因为匿名类是一个表达式，所以他必须是一个 statement 的一部分，在上面例子中，匿名类表达式是 frenchGreeting 对象实例化 statement 的一部分（所以在花括号 <code>}</code> 后面是一个分号 <code>;</code>）</li>
+</ul>
+
+      
+
+      
+    </div>
+	<!-- 版权内容 -->
+	
+		<style type="text/css">
+	.article-footer-copyright{
+   border-top:1px solid #d3d3d3;
+   margin: 20px auto;     
+   padding-left:2em;
+   width: 80%;
+}
+.article-footer-copyright p{
+  font-size:1.2em;
+}
+.article-footer-copyright span,.copyright abbr{
+  color:#3d3d3d;
+}
+div.copyright{
+    
+       font-weight:bold;
+       color:#FCB297;
+       padding:0.3em 0.5em;
+       margin:0 0 1em 0;
+       border-bottom:none;
+       background-color:#AAD2F0;
+       -moz-border-radius: 1em;
+       -webkit-border-radius:1em;
+       border-radius: 1em;
+  -moz-box-shadow:inset 0px 1px 0px 0px #eeeeee;
+  -webkit-box-shadow:inset 0px 1px 0px 0px #eeeeee;
+  box-shadow:inset 0px 1px 0px 0px #eeeeee;
+  background:-webkit-gradient( linear, left top, left bottom, color-stop(0.05, #aad2f0), color-stop(1, #8bc1ed) );
+  background:-moz-linear-gradient( center top, #aad2f0 5%, #8bc1ed 100% );
+  /* filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#aad2f0', endColorstr='#8bc1ed'); */
+  background-color:#aad2f0;
+  border:1px solid #dcdcdc;
+  text-shadow:1px 1px 0px #eeeeee;
+  
+}
+div.article-footer-copyright{
+    margin:0em 0em 0em 5em;
+	margin-top:2em;
+    padding:0.5em 1em;
+    border-left:3px solid #ff1700;
+    background-color:#f9f9f9;
+}
+.article-footer-copyright p{
+    line-height: 160%;
+    margin: 10px;
+    font-size: 100%;
+}
+</style>
+
+<div class="article-footer-copyright">
+	<p>本文标题: <a href="/2018/09/13/Java嵌套类的使用/" target="_blank" title="Java嵌套类的使用">Java嵌套类的使用</a></p>
+	<p>本文链接: <a href="/2018/09/13/Java嵌套类的使用/" target="_blank" title="Java嵌套类的使用">https://ryan-hou.github.io/2018/09/13/Java嵌套类的使用/</a></p>
+	<p>转载请注明本文链接~~</p>
+</div>
+
+	
+    <div class="article-info article-info-index">
+      
+      
 	<div class="article-tag tagcloud">
 		<i class="icon-price-tags icon"></i>
 		<ul class="article-tag-list">
@@ -179,61 +265,68 @@
         		<li class="article-tag-list-item">
         			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">Java</a>
         		</li>
-      		
-		</ul>
-	</div>
-
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2018/10/01/简谈Java泛型/" class="archive-article-date">
-  	<time datetime="2018-10-01T13:09:25.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-10-01</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2018/10/01/简谈Java泛型/">简谈Java泛型</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
+      		 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">Java</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">设计</a>
         		</li>
       		
 		</ul>
 	</div>
 
-          
+      
 
-        </div>
-        <div class="clearfix"></div>
-    </header>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
   </div>
 </article>
+
+  
+<nav id="article-nav">
+  
+    <a href="/2018/10/01/简谈Java泛型/" id="article-nav-newer" class="article-nav-link-wrap">
+      <i class="icon-circle-left"></i>
+      <div class="article-nav-title">
+        
+          简谈Java泛型
+        
+      </div>
+    </a>
   
   
-    </div></section>
+</nav>
+
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+  
+  
   
 
-    
+  
+
+  
+
+  
+
 
 
           </div>
@@ -257,8 +350,8 @@
 	var yiliaConfig = {
 		mathjax: false,
 		isHome: false,
-		isPost: false,
-		isArchive: true,
+		isPost: true,
+		isArchive: false,
 		isTag: false,
 		isCategory: false,
 		open_in_new: true,
