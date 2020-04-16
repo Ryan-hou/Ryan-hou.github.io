@@ -541,6 +541,85 @@
 
 
   
+    <article id="post-Java枚举类" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2018/08/23/Java枚举类/">Java枚举类</a>
+    </h1>
+  
+
+        
+        <a href="/2018/08/23/Java枚举类/" class="archive-article-date">
+  	<time datetime="2018-08-23T12:13:56.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-08-23</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h3 id="是什么"><a href="#是什么" class="headerlink" title="是什么"></a>是什么</h3><p>enum 全称为 enumeration，是 JDK 1.5 中引入的新特性，通过引入 <code>java.lang.Enum</code> 抽象类结合编译器语法糖实现</p>
+<blockquote>
+<p>In general you can use an enum as if it were another way to create a data type, and then just put the results to work.<br>In many ways you can treat an enum as if it were any other class.  In fact, enums are classes and have their own methods.</p>
+</blockquote>
+<h3 id="enum-语法规则"><a href="#enum-语法规则" class="headerlink" title="enum 语法规则"></a>enum 语法规则</h3><p>创建枚举类需要使用 enum 关键字，隐含了所创建的类型都是 java.lang.Enum 类的子类。枚举类中定义的每一个值(实例对象)都会通过 Enum 类的构造函数 <code>protected Enum(String name, int ordinal)</code> 来隐式创建，对象的名称被转为一个字符串 name，并且 ordinal 记录了此值被创建的顺序，从 0 开始(该顺序值也是枚举类可以支持 <code>switch</code> 关键字的原因所在)</p>
+        
+          <a class="article-more-a" href="/2018/08/23/Java枚举类/#more">more >></a>
+        
+      
+
+      
+    </div>
+	<!-- 版权内容 -->
+	
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">Java</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+
+  
   
     <nav id="page-nav">
       <a class="extend prev" rel="prev" href="/">&laquo; Prev</a><a class="page-number" href="/">1</a><span class="page-number current">2</span>
