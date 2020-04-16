@@ -304,6 +304,29 @@
   </entry>
   
   <entry>
+    <title>Checked&amp;Unchecked Exception</title>
+    <link href="https://ryan-hou.github.io/2018/10/07/Checked-Unchecked-Exception/"/>
+    <id>https://ryan-hou.github.io/2018/10/07/Checked-Unchecked-Exception/</id>
+    <published>2018-10-07T12:12:50.000Z</published>
+    <updated>2020-04-16T03:46:12.054Z</updated>
+    
+    <content type="html"><![CDATA[<h2 id="Is-checked-exception-necessary"><a href="#Is-checked-exception-necessary" class="headerlink" title="Is checked exception necessary?"></a>Is checked exception necessary?</h2><p>很多言论认为 Java 受检异常(checked exception，也就是那些你需要明确的捕获或者 rethrow 的异常)的存在是没有必要的，例如在 C# 语言中就取消了受检异常，而且大部分的语言都没有受检异常这一概念，无论何时直接声明异常为 RuntimeException 或其子类(即 unchecked exception)会更加方便，事实是如此吗？</p><a id="more"></a><h2 id="Oracle-的官方声明"><a href="#Oracle-的官方声明" class="headerlink" title="Oracle 的官方声明"></a>Oracle 的官方声明</h2><p>关于这个争议，Oracle 在官方文档中作出过解释，下面是一些重要观点的翻译：</p><p>因为 Java 语言不强制要求方法捕获或处理非受检异常(RuntionException, Error 及其子类)，所以程序员会倾向于让自己的异常类继承 RuntimeException，从而只抛出非受检的异常。这种“捷径”使程序员的代码不受编译器编译错误的影响，也不用费心去捕获或处理任何异常。这种方式看似非常便捷，但是破坏了 <code>catch</code> 和 <code>specity</code> 的设计目的，对其他程序员操作自己的方法也埋下了隐患</p><p>为什么设计者会要求去处理方法中抛出的所有受检异常呢？因为任何可以被方法抛出的异常都是该方法的公共编程接口。<strong>其他调用该方法的用户必须知道当前方法可能抛出的异常，以便于作出合理的处理。这些异常和方法中的参数列表及返回值一样，都是方法接口的一部分。</strong>那么接下来一个问题就是，“如果把方法 API 文档化(包括该方法的异常)有这么多好处，那为什么不对 runtime exception 也做这种特殊的处理呢？” 那是因为<strong>运行时异常是程序代码错误导致的，因此调用 API 的用户不应该也不知道如何恢复或处理这类异常</strong>。导致运行时异常的问题有算术异常，比如除数为0；空指针异常；数组下标越界异常等等，这类异常可以发生在程序代码中的任何地方，因而数量也是很多的，如果把这类异常加到方法声明中，会降级程序的可读性。因此编译器不会强制要求捕获或处理非受检异常(当然你可以处理，但是大多数情况下没有必要)</p><p>总的来说，不能仅仅因为你不想处理方法抛出的异常就粗暴的使用 RuntimeException 或他的子类</p><h2 id="指导原则"><a href="#指导原则" class="headerlink" title="指导原则"></a>指导原则</h2><p>如果方法的调用者可以合理的处理或者恢复这个异常，那么该异常应该被声明为受检的异常；如果方法的调用者不需要关心或者无法做出合理的处理，那么就声明该异常为非受检的异常。Never swallow the Exception！</p><h2 id="实践中的问题"><a href="#实践中的问题" class="headerlink" title="实践中的问题"></a>实践中的问题</h2><p>在实际编程中，尤其是一些框架(比如 iBatis )和类库，通常会把抛出 RuntimeException 作为习惯用法，这是出于对向后兼容性和设计库函数的难度(在设计一个公用组件时，很难把所有可能出现的异常都考虑清楚)的折衷，但是我们在写一些特定的业务代码时，个人还是建议，根据这个异常是否需要被处理或者能不能被用户处理，把异常声明为受检异常或者非受检异常，而不是直接无脑的抛出 RuntimeException。<strong>正确的使用异常对于程序的正确性和健壮性至关重要，无论何时都要仔细思考程序的边界和可能出现的所有情况，尤其是在分布式环境下，异常的处理往往比正常情况的处理逻辑更加复杂，也更加考验一个程序员思考问题的严谨性。</strong></p><p>关于受检异常和非受检异常，要在合适的情况下进行判断和选用，不能偏废，关于这方面的讨论，推荐两篇阅读文章</p><hr><h3 id="推荐阅读"><a href="#推荐阅读" class="headerlink" title="推荐阅读"></a>推荐阅读</h3><ul><li><a href="http://www.yinwang.org/blog-cn/2017/05/23/kotlin" target="_blank" rel="noopener">Kotlin 和 Checked Exception</a></li><li><a href="https://zhuanlan.zhihu.com/p/33731510" target="_blank" rel="noopener">有人知道Java异常声明的正确用法吗？</a></li></ul>]]></content>
+    
+    <summary type="html">
+    
+      &lt;h2 id=&quot;Is-checked-exception-necessary&quot;&gt;&lt;a href=&quot;#Is-checked-exception-necessary&quot; class=&quot;headerlink&quot; title=&quot;Is checked exception necessary?&quot;&gt;&lt;/a&gt;Is checked exception necessary?&lt;/h2&gt;&lt;p&gt;很多言论认为 Java 受检异常(checked exception，也就是那些你需要明确的捕获或者 rethrow 的异常)的存在是没有必要的，例如在 C# 语言中就取消了受检异常，而且大部分的语言都没有受检异常这一概念，无论何时直接声明异常为 RuntimeException 或其子类(即 unchecked exception)会更加方便，事实是如此吗？&lt;/p&gt;
+    
+    </summary>
+    
+    
+    
+      <category term="Java" scheme="https://ryan-hou.github.io/tags/Java/"/>
+    
+      <category term="设计" scheme="https://ryan-hou.github.io/tags/%E8%AE%BE%E8%AE%A1/"/>
+    
+  </entry>
+  
+  <entry>
     <title>Java泛型与通配符</title>
     <link href="https://ryan-hou.github.io/2018/10/04/Java%E6%B3%9B%E5%9E%8B%E4%B8%8E%E9%80%9A%E9%85%8D%E7%AC%A6/"/>
     <id>https://ryan-hou.github.io/2018/10/04/Java%E6%B3%9B%E5%9E%8B%E4%B8%8E%E9%80%9A%E9%85%8D%E7%AC%A6/</id>
