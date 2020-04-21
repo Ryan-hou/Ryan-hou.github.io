@@ -17,7 +17,7 @@
 <meta property="og:description" content="AOP(Aspect Oriented Programming)也就是我们说的面向切面编程，可以看作面向对象编程的一种补充。AOP 应用很广，比如 Spring 框架中的 @Transactional 声明式事务就是借助 AOP 实现的。 为什么要使用AOP？试想这样一个场景，假如需要在所有已经实现的业务方法中添加打印日志的功能，该怎么实现？把打印日志的代码复制粘贴到每一个业务方法中？这样当然可以">
 <meta property="og:locale" content="default">
 <meta property="og:image" content="http://Ryan-hou.github.io/assets/img/blogPic/AOPImpl.png">
-<meta property="og:updated_time" content="2020-04-21T03:36:25.651Z">
+<meta property="og:updated_time" content="2020-04-21T03:40:04.294Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="动态代理实现AOP">
 <meta name="twitter:description" content="AOP(Aspect Oriented Programming)也就是我们说的面向切面编程，可以看作面向对象编程的一种补充。AOP 应用很广，比如 Spring 框架中的 @Transactional 声明式事务就是借助 AOP 实现的。 为什么要使用AOP？试想这样一个场景，假如需要在所有已经实现的业务方法中添加打印日志的功能，该怎么实现？把打印日志的代码复制粘贴到每一个业务方法中？这样当然可以">
@@ -183,7 +183,7 @@
 <h4 id="明确被代理对象"><a href="#明确被代理对象" class="headerlink" title="明确被代理对象"></a>明确被代理对象</h4><p>既然是动态代理，我们首先就要有一个被代理的对象，很简单，被代理的对象自然是实现 <code>ArithmeticCalculator</code> 接口的类的对象，代码如下：</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 创建被代理对象</span></span><br><span class="line">ArithmeticCalculator target = <span class="keyword">new</span> ArithmeticCalculatorImpl();</span><br></pre></td></tr></table></figure>
 <h4 id="创建代理对象"><a href="#创建代理对象" class="headerlink" title="创建代理对象"></a>创建代理对象</h4><p>这一步是关键，里面内容有点多，这里我们先给出 <code>Proxy</code> 类的<code>newProxyInstance</code> 方法再具体讲解</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Proxy provides static methods for creating dynamic proxy classes and instances, and it is * also the superclass of all dynamic proxy classes created by those methods.</span></span><br><span class="line"><span class="comment"> */</span> </span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Proxy</span> <span class="keyword">implements</span> <span class="title">java</span>.<span class="title">io</span>.<span class="title">Serializable</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> Object <span class="title">newProxyInstance</span><span class="params">(ClassLoader loader, Class&lt;?&gt;[] interfaces, InvocationHandler h)</span> <span class="keyword">throws</span> IllegalArgumentException </span>&#123;</span><br><span class="line">        <span class="comment">// ...</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Proxy provides static methods for creating dynamic proxy classes and instances, </span></span><br><span class="line"><span class="comment"> * and it is also the superclass of all dynamic proxy classes created by those methods.</span></span><br><span class="line"><span class="comment"> */</span> </span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Proxy</span> <span class="keyword">implements</span> <span class="title">java</span>.<span class="title">io</span>.<span class="title">Serializable</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> Object <span class="title">newProxyInstance</span><span class="params">(ClassLoader loader</span></span></span><br><span class="line"><span class="function"><span class="params">    , Class&lt;?&gt;[] interfaces</span></span></span><br><span class="line"><span class="function"><span class="params">    , InvocationHandler h)</span> <span class="keyword">throws</span> IllegalArgumentException </span>&#123;</span><br><span class="line">        <span class="comment">// ...</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>简单解释一下这个方法中的三个参数：</p>
 <ul>
 <li><strong>ClassLoader:</strong>动态代理产生的对象由哪个类加载器加载。通常情况下，和被代理对象使用一样的类加载器(很好理解，明星和经纪人一般都是一个公司)</li>
@@ -434,11 +434,11 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">经验</a>
+                <a href="javascript:void(0)" class="js-tag color3">翻译</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">翻译</a>
+                <a href="javascript:void(0)" class="js-tag color3">经验</a>
               </li>
              
               <li class="article-tag-list-item">
