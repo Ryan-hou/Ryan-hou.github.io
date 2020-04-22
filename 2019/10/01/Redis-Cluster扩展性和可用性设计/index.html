@@ -6,15 +6,20 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <link rel="dns-prefetch" href="https://ryan-hou.github.io">
-  <title>Archives: 2018 | 0x08 0x17</title>
+  <title>Redis Cluster扩展性和可用性设计 | 0x08 0x17</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta property="og:type" content="website">
-<meta property="og:title" content="0x08 0x17">
-<meta property="og:url" content="https://ryan-hou.github.io/archives/2018/page/2/index.html">
+  <meta name="description" content="Redis Cluster 如何解决扩展性问题思考如下场景，当单台 redis 服务节点存储容量达到上限，不考虑加内存等垂直扩展方式，如何通过增加 redis 服务节点实现水平扩展？增加服务节点本身不是难点所在，问题在于增加了服务节点后，客户端如何确定需要访问哪个服务节点？ 最简单的方式是客户端计算出 key 的哈希值后，对服务节点数量做取模运算，结果即为服务节点下标值(服务节点从零开始进行编号)">
+<meta name="keywords" content="设计,分布式,中间件">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Redis Cluster扩展性和可用性设计">
+<meta property="og:url" content="https://ryan-hou.github.io/2019/10/01/Redis-Cluster扩展性和可用性设计/index.html">
 <meta property="og:site_name" content="0x08 0x17">
+<meta property="og:description" content="Redis Cluster 如何解决扩展性问题思考如下场景，当单台 redis 服务节点存储容量达到上限，不考虑加内存等垂直扩展方式，如何通过增加 redis 服务节点实现水平扩展？增加服务节点本身不是难点所在，问题在于增加了服务节点后，客户端如何确定需要访问哪个服务节点？ 最简单的方式是客户端计算出 key 的哈希值后，对服务节点数量做取模运算，结果即为服务节点下标值(服务节点从零开始进行编号)">
 <meta property="og:locale" content="default">
+<meta property="og:updated_time" content="2020-04-22T09:10:50.438Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="0x08 0x17">
+<meta name="twitter:title" content="Redis Cluster扩展性和可用性设计">
+<meta name="twitter:description" content="Redis Cluster 如何解决扩展性问题思考如下场景，当单台 redis 服务节点存储容量达到上限，不考虑加内存等垂直扩展方式，如何通过增加 redis 服务节点实现水平扩展？增加服务节点本身不是难点所在，问题在于增加了服务节点后，客户端如何确定需要访问哪个服务节点？ 最简单的方式是客户端计算出 key 的哈希值后，对服务节点数量做取模运算，结果即为服务节点下标值(服务节点从零开始进行编号)">
   
     <link rel="alternative" href="/atom.xml" title="0x08 0x17" type="application/atom+xml">
   
@@ -142,64 +147,176 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            
-  
-  
+            <article id="post-Redis-Cluster扩展性和可用性设计" class="article article-type-post " itemscope itemprop="blogPost">
+  <div class="article-inner">
     
-    
-      
-      
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2018" class="archive-year">2018</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2018/08/23/Java枚举类/" class="archive-article-date">
-  	<time datetime="2018-08-23T12:13:56.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-08-23</time>
-</a>
-        </div>
-    	 
+      <header class="article-header">
+        
   
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2018/08/23/Java枚举类/">Java枚举类</a>
+    <h1 class="article-title" itemprop="name">
+      Redis Cluster扩展性和可用性设计
     </h1>
   
 
-        <div class="article-info info-on-right">
-          
+        
+        <a href="/2019/10/01/Redis-Cluster扩展性和可用性设计/" class="archive-article-date">
+  	<time datetime="2019-10-01T07:38:24.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-10-01</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h3 id="Redis-Cluster-如何解决扩展性问题"><a href="#Redis-Cluster-如何解决扩展性问题" class="headerlink" title="Redis Cluster 如何解决扩展性问题"></a>Redis Cluster 如何解决扩展性问题</h3><p>思考如下场景，当单台 redis 服务节点存储容量达到上限，不考虑加内存等垂直扩展方式，如何通过增加 redis 服务节点实现水平扩展？增加服务节点本身不是难点所在，问题在于增加了服务节点后，客户端如何确定需要访问哪个服务节点？</p>
+<p>最简单的方式是客户端计算出 key 的哈希值后，对服务节点数量做取模运算，结果即为服务节点下标值(服务节点从零开始进行编号)。当然弊端也很明显，一旦增加或者删除节点，会导致大量缓存键失效重建，一般不会采用这种实现。</p>
+<a id="more"></a>
+<p>为了解决大量缓存键失效的问题，业界设计了一致性哈希算法。算法思路是将整个 hash 值空间组织成一个虚拟的圆环，整个空间按顺时针方向组织，下一步将各个服务节点（使用服务器的 ip 或主机名）进行 hash 后放置到该哈希环上。这样客户端计算出 key 的哈希值后，从该值所在的哈希环位置顺时针行走，遇到的第一个服务节点就是 key 所在位置。这样在增删服务节点时，受影响的只是此节点到环空间前一个节点（逆时针方向行走）之间的数据。为了解决服务节点过少时导致的数据分布不均匀，引入了虚拟节点机制，即每一个服务节点计算多个哈希值，每个计算结果都放到哈希环上参与计算</p>
+<h4 id="hash-slot"><a href="#hash-slot" class="headerlink" title="hash slot"></a>hash slot</h4><p>在 Redis Cluster 架构下，每个 Redis 服务节点要放开两个端口号，6379 和 16379。16379 端口号是用来进行节点间通信的，也就是 cluster bus 的东西，cluster bus 的通信，用来进行故障检测、配置更新、故障转移授权</p>
+<p>Redis Cluster 没有使用一致性哈希算法，而是引入哈希槽这个概念作为一个中间层解决了扩展性问题。在 Redis Cluster 总共有 16384 个 hash slot，对于每个 key，通过 CRC16 算法计算出哈希值后对 16384 取模，得到的值就是具体哪个 hash slot。对于客户端来说同一个 key 对应的 hash slot 是不会变的，由 Redis Cluster 来完成从 hash slot 到具体服务节点的映射，通过这个 hash slot，数据分片和服务节点扩容缩容完全对客户端透明</p>
+<p>Redis 提供了一组 <code>CLUSTER SETSLOT</code> 命令来支持 hash slot 的数据在不同服务节点间迁移，通过这些命令就可以很方便的在服务节点间 resharding 数据，服务节点的增加和删除很自然也就能实现了，不存在缓存键失效的问题（因为缓存键对应的 hash slot 不变）；而且移动 hash slot 的成本是很低的，整个迁移过程可能出现对于单个 key 的访问阻塞，但是一般来说，一个 key 的数据不会特别大，所以绝大多数情况下瞬间都能完成，所以一般不会真正影响使用。上述扩展操作可以通过脚本或者统一的运维工具来实现（比如搜狐tv的 redis 运维工具 cachecloud，本人目前所在公司的 redis 管理平台就是基于该开源项目二次开发的）</p>
+<h3 id="Redis-Cluster-如何解决可用性问题"><a href="#Redis-Cluster-如何解决可用性问题" class="headerlink" title="Redis Cluster 如何解决可用性问题"></a>Redis Cluster 如何解决可用性问题</h3><p>hash slot 通过数据分片，解决了扩展性问题。但是当其中一个服务节点不可用时，该节点上分配的所有的 hash slot 都不可用，为了增强可用性，Redis Cluster 也支持主从模式，每个主节点都可以配置一个或多个从节点，当主节点出现问题时，从节点可以提升为主节点对外继续提供服务。需要注意的是，Redis Cluster 不支持强一致性，也就是在故障转移过程中，客户端的写操作可能丢失。在性能和一致性的取舍中，Redis Cluster 默认选择了性能</p>
+<h3 id="推荐阅读"><a href="#推荐阅读" class="headerlink" title="推荐阅读"></a>推荐阅读</h3><ul>
+<li><a href="https://redis.io/topics/cluster-tutorial" target="_blank" rel="noopener">Redis cluster tutorial</a></li>
+<li><a href="https://redis.io/commands/cluster-setslot" target="_blank" rel="noopener">CLUSTER SETSLOT slot</a></li>
+<li><a href="https://www.jianshu.com/p/fe7b7800473e" target="_blank" rel="noopener">Redis Cluster及hash slot 算法</a></li>
+<li><a href="https://zhuanlan.zhihu.com/p/44679936" target="_blank" rel="noopener">redis cluster的数据迁移</a></li>
+<li><a href="https://github.com/sohutv/cachecloud" target="_blank" rel="noopener">搜狐视频(sohu tv)Redis私有云平台</a></li>
+</ul>
+
+      
+
+      
+    </div>
+	<!-- 版权内容 -->
+	
+		<style type="text/css">
+	.article-footer-copyright{
+   border-top:1px solid #d3d3d3;
+   margin: 20px auto;     
+   padding-left:2em;
+   width: 80%;
+}
+.article-footer-copyright p{
+  font-size:1.2em;
+}
+.article-footer-copyright span,.copyright abbr{
+  color:#3d3d3d;
+}
+div.copyright{
+    
+       font-weight:bold;
+       color:#FCB297;
+       padding:0.3em 0.5em;
+       margin:0 0 1em 0;
+       border-bottom:none;
+       background-color:#AAD2F0;
+       -moz-border-radius: 1em;
+       -webkit-border-radius:1em;
+       border-radius: 1em;
+  -moz-box-shadow:inset 0px 1px 0px 0px #eeeeee;
+  -webkit-box-shadow:inset 0px 1px 0px 0px #eeeeee;
+  box-shadow:inset 0px 1px 0px 0px #eeeeee;
+  background:-webkit-gradient( linear, left top, left bottom, color-stop(0.05, #aad2f0), color-stop(1, #8bc1ed) );
+  background:-moz-linear-gradient( center top, #aad2f0 5%, #8bc1ed 100% );
+  /* filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#aad2f0', endColorstr='#8bc1ed'); */
+  background-color:#aad2f0;
+  border:1px solid #dcdcdc;
+  text-shadow:1px 1px 0px #eeeeee;
+  
+}
+div.article-footer-copyright{
+    margin:0em 0em 0em 5em;
+	margin-top:2em;
+    padding:0.5em 1em;
+    border-left:3px solid #ff1700;
+    background-color:#f9f9f9;
+}
+.article-footer-copyright p{
+    line-height: 160%;
+    margin: 10px;
+    font-size: 100%;
+}
+</style>
+
+<div class="article-footer-copyright">
+	<p>本文标题: <a href="/2019/10/01/Redis-Cluster扩展性和可用性设计/" target="_blank" title="Redis Cluster扩展性和可用性设计">Redis Cluster扩展性和可用性设计</a></p>
+	<p>本文链接: <a href="/2019/10/01/Redis-Cluster扩展性和可用性设计/" target="_blank" title="Redis Cluster扩展性和可用性设计">https://ryan-hou.github.io/2019/10/01/Redis-Cluster扩展性和可用性设计/</a></p>
+	<p>转载请注明本文链接~~</p>
+</div>
+
+	
+    <div class="article-info article-info-index">
+      
+      
 	<div class="article-tag tagcloud">
 		<i class="icon-price-tags icon"></i>
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">Java</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">设计</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">分布式</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">中间件</a>
         		</li>
       		
 		</ul>
 	</div>
 
-          
+      
 
-        </div>
-        <div class="clearfix"></div>
-    </header>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
   </div>
 </article>
+
+  
+<nav id="article-nav">
   
   
-    </div></section>
+    <a href="/2019/09/10/Sharding-IDs-at-Instagram/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">Sharding &amp; IDs at Instagram</div>
+      <i class="icon-circle-right"></i>
+    </a>
+  
+</nav>
+
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+  
+  
   
 
-    
-    <nav id="page-nav">
-      <a class="extend prev" rel="prev" href="/archives/2018/">&laquo; Prev</a><a class="page-number" href="/archives/2018/">1</a><span class="page-number current">2</span>
-    </nav>
   
+
+  
+
+  
+
 
 
           </div>
@@ -223,8 +340,8 @@
 	var yiliaConfig = {
 		mathjax: false,
 		isHome: false,
-		isPost: false,
-		isArchive: true,
+		isPost: true,
+		isArchive: false,
 		isTag: false,
 		isCategory: false,
 		open_in_new: true,

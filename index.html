@@ -144,6 +144,90 @@
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-Redis-Cluster扩展性和可用性设计" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/10/01/Redis-Cluster扩展性和可用性设计/">Redis Cluster扩展性和可用性设计</a>
+    </h1>
+  
+
+        
+        <a href="/2019/10/01/Redis-Cluster扩展性和可用性设计/" class="archive-article-date">
+  	<time datetime="2019-10-01T07:38:24.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-10-01</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h3 id="Redis-Cluster-如何解决扩展性问题"><a href="#Redis-Cluster-如何解决扩展性问题" class="headerlink" title="Redis Cluster 如何解决扩展性问题"></a>Redis Cluster 如何解决扩展性问题</h3><p>思考如下场景，当单台 redis 服务节点存储容量达到上限，不考虑加内存等垂直扩展方式，如何通过增加 redis 服务节点实现水平扩展？增加服务节点本身不是难点所在，问题在于增加了服务节点后，客户端如何确定需要访问哪个服务节点？</p>
+<p>最简单的方式是客户端计算出 key 的哈希值后，对服务节点数量做取模运算，结果即为服务节点下标值(服务节点从零开始进行编号)。当然弊端也很明显，一旦增加或者删除节点，会导致大量缓存键失效重建，一般不会采用这种实现。</p>
+        
+          <a class="article-more-a" href="/2019/10/01/Redis-Cluster扩展性和可用性设计/#more">more >></a>
+        
+      
+
+      
+    </div>
+	<!-- 版权内容 -->
+	
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">设计</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">分布式</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">中间件</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+
+  
     <article id="post-Sharding-IDs-at-Instagram" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -189,11 +273,11 @@
         		</li>
       		 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">翻译</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">分布式</a>
         		</li>
       		 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">分布式</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">翻译</a>
         		</li>
       		
 		</ul>
@@ -881,91 +965,6 @@
 
 
   
-    <article id="post-创建一个对象的思考" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2019/01/01/创建一个对象的思考/">创建一个对象的思考</a>
-    </h1>
-  
-
-        
-        <a href="/2019/01/01/创建一个对象的思考/" class="archive-article-date">
-  	<time datetime="2019-01-01T05:59:25.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-01-01</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="事情可能没有看起来那么简单"><a href="#事情可能没有看起来那么简单" class="headerlink" title="事情可能没有看起来那么简单"></a>事情可能没有看起来那么简单</h2><p>Java 作为支持 OOP 的语言，对象创建自然是最基本的，然而如何更合理的创建对象这件事，并没有想当然那么简单，不是无脑的使用 new 关键字加构造器就完了。那么创建一个对象，我们可能要思考哪些问题呢？</p>
-<ul>
-<li>创建方式: 是直接通过 new 关键字加构造器创建，还是使用工厂类，或者 Builder，或者反射，克隆，反序列化呢？</li>
-<li>数量: 是构造单例对象，还是通过对象池构造有限个对象，还是不加限制呢？</li>
-<li>时间: 是立即构建，还是延迟构建呢？</li>
-<li>形式: 是构造实际对象，还是构造代理对象？是本地对象，还是远程对象的 stub？</li>
-</ul>
-        
-          <a class="article-more-a" href="/2019/01/01/创建一个对象的思考/#more">more >></a>
-        
-      
-
-      
-    </div>
-	<!-- 版权内容 -->
-	
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">Java</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">设计</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-
-  
   
     <nav id="page-nav">
       <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><a class="extend next" rel="next" href="/page/2/">Next &raquo;</a>
@@ -1060,19 +1059,23 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">翻译</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">分布式</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">算法</a>
+                <a href="javascript:void(0)" class="js-tag color4">中间件</a>
               </li>
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">经验</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">翻译</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">算法</a>
               </li>
             
             <div class="clearfix"></div>
