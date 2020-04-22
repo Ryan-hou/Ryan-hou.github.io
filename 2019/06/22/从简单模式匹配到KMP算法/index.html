@@ -6,22 +6,20 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <link rel="dns-prefetch" href="https://ryan-hou.github.io">
-  <title>JVM类加载器 | 0x08 0x17</title>
+  <title>从简单模式匹配到KMP算法 | 0x08 0x17</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="类加载器是什么定义摘自深入理解Java虚拟机  虚拟机设计团队把类加载阶段中的“通过一个类的全限定名获取描述此类的二进制字节流”这个动作放到 Java 虚拟机外部去实现，以便让应用程序自己决定如何去获取所需要的类。而实现这个动作的代码模块称为“类加载器”  从上面的定义中，我们可以得到如下信息：">
-<meta name="keywords" content="Java,虚拟机">
+  <meta name="description" content="在日常编程中，字符串的使用是相当频繁的，从一个文本串中找到另一个我们需要的子串是常见的场景，所以有必要了解一下模式匹配的知识 本文主要从思路上来比较简单模式匹配与 KMP 算法的不同之处，体会解决问题的思路对于算法设计的重要性。当然程序的编写也有用到一些技巧，不过技巧这种东西随着不断练习只是时间问题，而思路这东西就未必了，尤其是原创性的思路">
+<meta name="keywords" content="算法">
 <meta property="og:type" content="article">
-<meta property="og:title" content="JVM类加载器">
-<meta property="og:url" content="https://ryan-hou.github.io/2019/06/01/JVM类加载器/index.html">
+<meta property="og:title" content="从简单模式匹配到KMP算法">
+<meta property="og:url" content="https://ryan-hou.github.io/2019/06/22/从简单模式匹配到KMP算法/index.html">
 <meta property="og:site_name" content="0x08 0x17">
-<meta property="og:description" content="类加载器是什么定义摘自深入理解Java虚拟机  虚拟机设计团队把类加载阶段中的“通过一个类的全限定名获取描述此类的二进制字节流”这个动作放到 Java 虚拟机外部去实现，以便让应用程序自己决定如何去获取所需要的类。而实现这个动作的代码模块称为“类加载器”  从上面的定义中，我们可以得到如下信息：">
+<meta property="og:description" content="在日常编程中，字符串的使用是相当频繁的，从一个文本串中找到另一个我们需要的子串是常见的场景，所以有必要了解一下模式匹配的知识 本文主要从思路上来比较简单模式匹配与 KMP 算法的不同之处，体会解决问题的思路对于算法设计的重要性。当然程序的编写也有用到一些技巧，不过技巧这种东西随着不断练习只是时间问题，而思路这东西就未必了，尤其是原创性的思路">
 <meta property="og:locale" content="default">
-<meta property="og:image" content="http://ryan-hou.github.io/assets/img/blogPic/classLoader.png">
-<meta property="og:updated_time" content="2020-04-17T07:19:20.678Z">
+<meta property="og:updated_time" content="2020-04-22T03:29:32.560Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="JVM类加载器">
-<meta name="twitter:description" content="类加载器是什么定义摘自深入理解Java虚拟机  虚拟机设计团队把类加载阶段中的“通过一个类的全限定名获取描述此类的二进制字节流”这个动作放到 Java 虚拟机外部去实现，以便让应用程序自己决定如何去获取所需要的类。而实现这个动作的代码模块称为“类加载器”  从上面的定义中，我们可以得到如下信息：">
-<meta name="twitter:image" content="http://ryan-hou.github.io/assets/img/blogPic/classLoader.png">
+<meta name="twitter:title" content="从简单模式匹配到KMP算法">
+<meta name="twitter:description" content="在日常编程中，字符串的使用是相当频繁的，从一个文本串中找到另一个我们需要的子串是常见的场景，所以有必要了解一下模式匹配的知识 本文主要从思路上来比较简单模式匹配与 KMP 算法的不同之处，体会解决问题的思路对于算法设计的重要性。当然程序的编写也有用到一些技巧，不过技巧这种东西随着不断练习只是时间问题，而思路这东西就未必了，尤其是原创性的思路">
   
     <link rel="alternative" href="/atom.xml" title="0x08 0x17" type="application/atom+xml">
   
@@ -149,69 +147,54 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            <article id="post-JVM类加载器" class="article article-type-post " itemscope itemprop="blogPost">
+            <article id="post-从简单模式匹配到KMP算法" class="article article-type-post " itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
         
   
     <h1 class="article-title" itemprop="name">
-      JVM类加载器
+      从简单模式匹配到KMP算法
     </h1>
   
 
         
-        <a href="/2019/06/01/JVM类加载器/" class="archive-article-date">
-  	<time datetime="2019-06-01T13:42:58.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-06-01</time>
+        <a href="/2019/06/22/从简单模式匹配到KMP算法/" class="archive-article-date">
+  	<time datetime="2019-06-21T23:45:01.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-06-22</time>
 </a>
         
       </header>
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h2 id="类加载器是什么"><a href="#类加载器是什么" class="headerlink" title="类加载器是什么"></a>类加载器是什么</h2><p>定义摘自<code>深入理解Java虚拟机</code></p>
-<blockquote>
-<p>虚拟机设计团队把类加载阶段中的“通过一个类的全限定名获取描述此类的二进制字节流”这个动作放到 Java 虚拟机外部去实现，以便让应用程序自己决定如何去获取所需要的类。而实现这个动作的代码模块称为“类加载器”</p>
-</blockquote>
-<p>从上面的定义中，我们可以得到如下信息：</p>
+        <p>在日常编程中，字符串的使用是相当频繁的，从一个文本串中找到另一个我们需要的子串是常见的场景，所以有必要了解一下模式匹配的知识</p>
+<p>本文主要从思路上来比较简单模式匹配与 KMP 算法的不同之处，体会<strong>解决问题的思路</strong>对于算法设计的重要性。当然程序的编写也有用到一些技巧，不过技巧这种东西随着不断练习只是时间问题，而思路这东西就未必了，尤其是原创性的思路</p>
 <a id="more"></a>
+<p>先从最简单的模式匹配算法开始说，面对这样一个问题：给定一个文本串和模式串，要求我们从文本串中查找是否存在模式串，如果存在则返回文本串中开始匹配模式串的位置，否则返回 -1。看到这个问题我们不难得到一种简单直观的思路：</p>
+<p>保持模式串不动，用文本串第一个字符与模式串第一个字符比较，如果相等，继续比较文本串和模式串的下一个字符；如果不相等，文本串左移一个字符，下一次从第二个字符开始再次与模式串从头比较 ；如果匹配成功则返回开始匹配的位置，否则返回-1即可</p>
+<p>这种思路其实是一种遍历的方式，找出文本串中从任一位置开始的可能情况，这里说成<strong>模式串不动，文本串每次左移一个单位</strong>会更直观一些。这属于一种<strong>暴力解法</strong>，算法的时间复杂度为<code>O(m*n)</code>(m,n为文本串和模式串的长度)。反正不论什么问题，穷举法总是可以得到正确答案，计算机嘛，这点比我们强多了，算得快，慢慢试呗，不过这种方法总觉得有点”low”啊，下面来看下大牛解决问题的思路</p>
+<p>模式匹配的 KMP 算法：这里 KMP 三个字母分别为三位大神名字的首字母（K 我们比较熟悉了，<a href="http://en.wikipedia.org/wiki/Donald_Knuth" target="_blank" rel="noopener">Donald Knuth</a>）KMP 这个算法的思路很巧妙，对比上面介绍的简单算法，这里先把 KMP 算法概括为一句话：<strong>文本串固定不动，模式串右移进行匹配</strong></p>
+<p>先回想一下我们第一个算法的弊端，时间复杂度为<code>O(m*n)</code>，分析一下不难得出原因，每次匹配失败，不管匹配了多少个字符，我们的文本串<strong>仅仅左移一个字符的位置</strong>，文本串本来就很长，这样匹配就太慢了，做了好多无用功。所以 KMP 算法的主要想法就是<strong>在比较失败时，尽可能快的让模式串全部比较完，而不是简单的从头开始。</strong>怎么做呢？这里通过右移模式串的方式来实现，那么问题来了，怎么右移模式串呢？这里需要我们了解关于前缀串和后缀串的知识，还有一个用来记录最长匹配长度的 next 数组(求next数组就是整个算法的关键问题了)，下面通过例子和代码具体说明。</p>
+<p>我们先来人工求一个 next 数组感受一下这是怎样一个过程，在进行匹配时，模式串匹配失效的位置前面的子串我们称为S串。假设模式串为 <strong>ABABABB</strong></p>
+<p>对于一个给定字符串，求最大匹配的前缀串和后缀串我们应该比较熟悉，而 next 数组记录的就是这个最大匹配的长度：</p>
 <ul>
-<li>类加载器的作用：获取描述此类的二进制字节流，也就是 <code>.class</code> 文件，那么什么是 <code>.class</code> 文件？</li>
-<li>获取类的二进制字节流只是类加载阶段中的一部分，那么整个类加载过程是怎样的？</li>
-<li>类加载器的目的是让应用程序自己决定如何获取需要的类，这样做有什么好处？换句话说，我什么时候可能需要自己定义一个类加载器？</li>
+<li>当模式串第一个字符与文本串第一个字符不匹配时，从文本串的下一个位置与模式串继续比较，next[0] 设置为-1来表示这种特殊情况</li>
+<li>当模式串第二个字符与文本串对应位置不匹配时，此时S串为A，不存在匹配的前缀串和后缀串，next[1] 设置为0</li>
+<li>当模式串第三个字符与文本串对应位置不匹配时，此时S串为AB，不存在匹配的前缀串和后缀串，next[2] 设置为0</li>
+<li>当模式串第四个字符与文本串对应位置不匹配时，此时S串为ABA，存在最大匹配的前缀串和后缀串A，next[3]设置为1</li>
+<li>当模式串第五个字符与文本串对应位置不匹配时，此时S串为ABAB，存在最大匹配的前缀串和后缀串AB，next[4]设置为2</li>
+<li>依次类推，可得<code>next = {-1, 0, 0, 1, 2, 3, 4}</code></li>
 </ul>
-<h2 id="关于类加载涉及的一些定义"><a href="#关于类加载涉及的一些定义" class="headerlink" title="关于类加载涉及的一些定义"></a>关于类加载涉及的一些定义</h2><h3 id="class-文件"><a href="#class-文件" class="headerlink" title="class 文件"></a>class 文件</h3><p>每个 <code>.class</code> 文件都对应着唯一一个类或者接口的定义信息，该文件是一个二进制字节流，每个字节的数据都有严格的定义和顺序。虚拟机通过该文件实现了语言无关性，其他编程语言也可以编译为 <code>.class</code> 文件，然后使用 JVM</p>
-<h3 id="类加载的步骤"><a href="#类加载的步骤" class="headerlink" title="类加载的步骤"></a>类加载的步骤</h3><p>包括加载，验证，准备，解析和初始化，其中验证，准备和解析合称为连接。类型的加载，连接和初始化都是在程序运行期间完成的，增加了类加载带来的性能负担但是提高了灵活性，比如：</p>
-<blockquote>
-<p>编写一个面向接口的应用程序，可以等到运行时再指定其实现类；用户可以通过自定义的类加载器，让一个本地的应用程序可以在运行时从网络或者其他地方加载一个二进制流作为程序代码的一部分，这种组装程序的方式广泛应用于 Java 程序之中，如 JSP，OSGi 等</p>
-</blockquote>
-<h3 id="加载与类加载"><a href="#加载与类加载" class="headerlink" title="加载与类加载"></a>加载与类加载</h3><p>加载是类加载的第一个步骤，加载阶段虚拟机完成三件事：</p>
+<p>通过这个过程我们应该发现了，求 next 数组的过程存在一个递归调用：如果我们已经求出了<code>next[n]</code>的数值，如何求<code>next[n+1]</code>？假设<code>next[n]=k</code>，即0到 k-1 位置的子串与 n-k 到 n-1 位置的子串是匹配。这里分为两种情况：</p>
 <ul>
-<li>通过一个类的全限定名来获取定义此类的二进制字节流，也就是<strong>类加载器实现的功能</strong></li>
-<li>将这个字节流所代表的静态存储结构转为方法区的运行时数据结构</li>
-<li>在堆内存中生成一个代表这个类的 <code>java.lang.Class</code> 对象，作为方法区这个类的各种数据的访问入口</li>
+<li>模式串下标 k 处的字符与 n 处的字符匹配，即0到k位置的子串与n-k到n位置的子串匹配，显然有 <code>next[n+1] = next[n] + 1 = k + 1</code></li>
+<li>模式串下标k处的字符与n处的字符不匹配，这时我们需要<strong>对0到k-1位置的字符串递归的使用模式匹配</strong>，也就是为了消除n处的不匹配，我们需要“缩短”0到k-1位置的子串为0到next[k]（这个也比较好证明，根据next数组的定义作个图即可明白）<br>求 next 数组的代码如下：</li>
 </ul>
-<h2 id="类加载器的-parent-delegation-model"><a href="#类加载器的-parent-delegation-model" class="headerlink" title="类加载器的 parent-delegation model"></a>类加载器的 parent-delegation model</h2><h3 id="是什么"><a href="#是什么" class="headerlink" title="是什么"></a>是什么</h3><p>parent-delegation model 中文通常翻译为双亲委派模式，这里的“双亲”其实翻译的不准确，存在误导，父辈代理模型可能更恰当。为了沿用中文习惯，下文还是以双亲委派模型来指代。</p>
-<p>双亲委派模型的工作过程是：如果一个类加载器收到了类加载的请求，它首先不会自己去尝试加载这个类，而是把这个请求委派给父类加载器去完成，每一个层次的类加载器都是如此，因此所有的加载请求最终都应传送到顶层的启动类加载器中，只有当父加载器反馈自己无法完成这个加载请求（在它的搜索范围中没有找到所需的类）时，子加载器才会尝试自己去加载。模型如下图：</p>
-<p><img src="http://ryan-hou.github.io/assets/img/blogPic/classLoader.png" alt></p>
-<h3 id="如何实现"><a href="#如何实现" class="headerlink" title="如何实现"></a>如何实现</h3><p>实现双亲委派的代码集中在 <code>java.lang.ClassLoader</code> 类的 <code>loadClass()</code> 方法中，很清晰易懂：先检查是否已被加载过，若没有则递归调用父加载器的 loadClass() 方法，若父加载器为空则默认使用启动类的加载器作为父加载器。如果父加载器加载不到该类，再调用自己的 <code>findClass()</code> 方法进行加载</p>
-<h3 id="双亲委派模型的优点"><a href="#双亲委派模型的优点" class="headerlink" title="双亲委派模型的优点"></a>双亲委派模型的优点</h3><p>保证 Java 程序稳定运行</p>
-<blockquote>
-<p>使用双亲委派模型来组织类加载器之间的关系，有一个显而易见的好处就是<strong>Java类随着它的类加载器一起具备了一种带有优先级的层次关系。</strong>例如类 java.lang.Object，它存放在 rt.jar 之中，无论哪一个类加载器要加载这个类，最终都是委派给处于模型最顶端的启动类加载器进行加载，因此 Object 类在程序的各种类加载器环境中都是同一个类。相反，如果没有使用双亲委派模型，由各个类加载器自行去加载的话，如果用户自己编写了一个称为 java.lang.Object 的类，并放在程序的 ClassPath中，那系统中将会出现多个不同的 Object 类，Java 类型体系中最基础的行为也就无法保证，应用程序也将会变得一片混乱。如果自己去编写一个与 rt.jar 类库中已有类重名的 Java 类，将会发现可以正常编译，但永远无法被加载运行</p>
-</blockquote>
-<h2 id="自定义类加载器"><a href="#自定义类加载器" class="headerlink" title="自定义类加载器"></a>自定义类加载器</h2><p>通常情况下应用使用默认的系统类加载器（AppClassLoader）就可以满足要求，但如果我们需要加载远程服务器的类，或者说加载网络上的不是本机上的类的时候，就需要自定义类加载器</p>
-<p>自定义类加载器实现过程：</p>
-<ul>
-<li>继承 ClassLoader 类</li>
-<li>如果只是想重新定义如何获取字节码文件的字节流，只需重写 <code>findClass()</code> 方法即可。如果需要打破默认的双亲委派模式，则需要重写 <code>loadClass()</code> 方法</li>
-</ul>
-<p>在 <code>ClassLoader</code> 抽象类中，有三个重要的方法：</p>
-<ul>
-<li><code>loadClass(String name, Boolean reslove)</code>方法，该方法前面说过了，实现了双亲委派模型，一般不重写</li>
-<li><code>defineClass(String name, byte[] b, int off, int len)</code> 用于将原始字节码转为 Class 对象，通过 JNI 实现，一般也不用重写</li>
-<li><code>findClass(String name)</code>方法，根据类的 binary name 来查找类的数据，把找到的 <code>.class</code> 文件的内容加载到内存的字节数组，供 defineClass() 方法使用，一般我们会改写这个方法，这里前面也描述过，一旦所有的父加载器无法加载到对应的类，就会调用自己的 <code>findClass(String name)</code> 方法来加载</li>
-</ul>
-<p>下面举个例子：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Slf</span>4j</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">CustomClassLoader</span> <span class="keyword">extends</span> <span class="title">ClassLoader</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> String CLASSLOADER_NAME;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> String PATH = <span class="string">""</span>; <span class="comment">// .class file's location</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> String FILE_TYPE = <span class="string">".class"</span>;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">CustomerClassLoader</span><span class="params">(String classLoaderName)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">super</span>();</span><br><span class="line">        <span class="keyword">this</span>.CLASSLOADER_NAME = classLoaderName;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">protected</span> Class&lt;?&gt; findClass(String name) <span class="keyword">throws</span> ClassNotFoundException &#123;</span><br><span class="line">        <span class="keyword">byte</span>[] data = loadClassData(name);</span><br><span class="line">        <span class="keyword">if</span> (data == <span class="keyword">null</span>) &#123;</span><br><span class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> ClassNotFoundException(name);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">super</span>.defineClass(name, data, <span class="number">0</span>, data.length);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">byte</span>[] loadClassData(String name) &#123;</span><br><span class="line">        InputStream in = <span class="keyword">null</span>;</span><br><span class="line">        ByteArrayOutputStream baos = <span class="keyword">null</span>;</span><br><span class="line"></span><br><span class="line">        String filePath = PATH + name + FILE_TYPE;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            in = <span class="keyword">new</span> FileInputStream(<span class="keyword">new</span> File(filePath));</span><br><span class="line">            baos = <span class="keyword">new</span> ByteArrayOutputStream();</span><br><span class="line">            <span class="keyword">int</span> index;</span><br><span class="line">            <span class="keyword">while</span> (-<span class="number">1</span> != (index = in.read())) &#123;</span><br><span class="line">                baos.write(index);</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">byte</span>[] data = baos.toByteArray();</span><br><span class="line">            <span class="keyword">return</span> data;</span><br><span class="line">        &#125; <span class="keyword">catch</span> (FileNotFoundException e) &#123;</span><br><span class="line">            log.error(<span class="string">"File not found error, file path = &#123;&#125;"</span>, filePath, e);</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">        &#125; <span class="keyword">catch</span> (IOException e) &#123;</span><br><span class="line">            log.error(<span class="string">"read class file error!"</span>, e);</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">        &#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">            <span class="keyword">try</span> &#123;</span><br><span class="line">                <span class="keyword">if</span> (in != <span class="keyword">null</span>) &#123;</span><br><span class="line">                    in.close();</span><br><span class="line">                &#125;</span><br><span class="line">                <span class="keyword">if</span> (baos != <span class="keyword">null</span>) &#123;</span><br><span class="line">                    baos.close();</span><br><span class="line">                &#125;</span><br><span class="line">            &#125; <span class="keyword">catch</span> (IOException e) &#123;</span><br><span class="line">                log.error(<span class="string">"close io stream error!"</span>, e);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125; <span class="comment">// end finally</span></span><br><span class="line">    &#125;</span><br><span class="line">     </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">getNextArray</span><span class="params">(String needle, <span class="keyword">int</span>[] next)</span> </span>&#123;</span><br><span class="line">    next[<span class="number">0</span>] = -<span class="number">1</span>;</span><br><span class="line">    <span class="keyword">char</span>[] source = needle.toCharArray();</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt; needle.length(); i++) &#123;</span><br><span class="line">        fillNext(source, next, i, i - <span class="number">1</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">fillNext</span><span class="params">(<span class="keyword">char</span>[] source, <span class="keyword">int</span>[] next, <span class="keyword">int</span> i, <span class="keyword">int</span> pre)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (next[pre] == -<span class="number">1</span>) &#123;</span><br><span class="line">        <span class="comment">//  递归出口</span></span><br><span class="line">        next[i] = <span class="number">0</span>;</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="keyword">if</span> (source[i - <span class="number">1</span>] == source[next[pre]]) &#123;</span><br><span class="line">            next[i] = next[pre] + <span class="number">1</span>;</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="comment">// 递归调用</span></span><br><span class="line">            fillNext(source, next, i, next[pre]);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>在给出 KMP 算法的代码前，我们还需要清楚关于模式串移动的问题。其实这个思路也不难理解，因为我们在前面是根据最大匹配的前缀串和后缀串来求得next数组，比如假设 <code>next[j] = k</code>，这代表j位置之前的模式串子串中，有最大长度为k的相同前缀和后缀(也就是0到k-1位置的子串与j-k到j-1位置的子串完全一样)。<strong>当模式串在j处的字符失配时，下一步用next[j]处的字符继续跟文本串匹配，相当于模式串右移<code>j - next[j]</code>，</strong>下面给出KMP算法的具体代码：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">KMP</span><span class="params">(String haystack, String needle, <span class="keyword">int</span>[] next)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">char</span>[] source = haystack.toCharArray();</span><br><span class="line">    <span class="keyword">char</span>[] pattern = needle.toCharArray();</span><br><span class="line">    <span class="keyword">int</span> i = <span class="number">0</span>, j = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">while</span> (j &lt; pattern.length &amp;&amp; j &lt; source.length) &#123;</span><br><span class="line">        <span class="keyword">if</span> (pattern[j] == source[i]) &#123;</span><br><span class="line">            i++;</span><br><span class="line">            j++;</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            j = next[j];</span><br><span class="line">            <span class="keyword">if</span> (j == -<span class="number">1</span>) &#123;</span><br><span class="line">                j = <span class="number">0</span>;</span><br><span class="line">                i++;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125; <span class="comment">// end while</span></span><br><span class="line">    <span class="keyword">return</span> j == pattern.length ? i - pattern.length : -<span class="number">1</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这样通过固定文本串，右移模式串的方式，我们可以在某一位置匹配失败时对文本串进行快速的检索，而不是按部就班的一个字符一个字符的移动文本串，整个算法的时间复杂度变为<code>O(m+n)</code>，为线性时间</p>
+<p>KMP 算法的设计思路的确很巧妙，虽然整个思路不难理解，但是很多细节还是比较琐碎，建议不太清楚的时候在纸上演算一下运行过程以加深理解，尤其是对于next数组的求解部分和移动距离的理解</p>
 
       
 
@@ -269,8 +252,8 @@ div.article-footer-copyright{
 </style>
 
 <div class="article-footer-copyright">
-	<p>本文标题: <a href="/2019/06/01/JVM类加载器/" target="_blank" title="JVM类加载器">JVM类加载器</a></p>
-	<p>本文链接: <a href="/2019/06/01/JVM类加载器/" target="_blank" title="JVM类加载器">https://ryan-hou.github.io/2019/06/01/JVM类加载器/</a></p>
+	<p>本文标题: <a href="/2019/06/22/从简单模式匹配到KMP算法/" target="_blank" title="从简单模式匹配到KMP算法">从简单模式匹配到KMP算法</a></p>
+	<p>本文链接: <a href="/2019/06/22/从简单模式匹配到KMP算法/" target="_blank" title="从简单模式匹配到KMP算法">https://ryan-hou.github.io/2019/06/22/从简单模式匹配到KMP算法/</a></p>
 	<p>转载请注明本文链接~~</p>
 </div>
 
@@ -283,11 +266,7 @@ div.article-footer-copyright{
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">Java</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">虚拟机</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">算法</a>
         		</li>
       		
 		</ul>
@@ -306,18 +285,18 @@ div.article-footer-copyright{
   
 <nav id="article-nav">
   
-    <a href="/2019/06/22/从简单模式匹配到KMP算法/" id="article-nav-newer" class="article-nav-link-wrap">
+    <a href="/2019/09/10/Sharding-IDs-at-Instagram/" id="article-nav-newer" class="article-nav-link-wrap">
       <i class="icon-circle-left"></i>
       <div class="article-nav-title">
         
-          从简单模式匹配到KMP算法
+          Sharding &amp; IDs at Instagram
         
       </div>
     </a>
   
   
-    <a href="/2019/04/07/null-awareness/" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">null awareness</div>
+    <a href="/2019/06/01/JVM类加载器/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">JVM类加载器</div>
       <i class="icon-circle-right"></i>
     </a>
   

@@ -6,22 +6,15 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <link rel="dns-prefetch" href="https://ryan-hou.github.io">
-  <title>JVM类加载器 | 0x08 0x17</title>
+  <title>0x08 0x17</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="类加载器是什么定义摘自深入理解Java虚拟机  虚拟机设计团队把类加载阶段中的“通过一个类的全限定名获取描述此类的二进制字节流”这个动作放到 Java 虚拟机外部去实现，以便让应用程序自己决定如何去获取所需要的类。而实现这个动作的代码模块称为“类加载器”  从上面的定义中，我们可以得到如下信息：">
-<meta name="keywords" content="Java,虚拟机">
-<meta property="og:type" content="article">
-<meta property="og:title" content="JVM类加载器">
-<meta property="og:url" content="https://ryan-hou.github.io/2019/06/01/JVM类加载器/index.html">
+  <meta property="og:type" content="website">
+<meta property="og:title" content="0x08 0x17">
+<meta property="og:url" content="https://ryan-hou.github.io/page/3/index.html">
 <meta property="og:site_name" content="0x08 0x17">
-<meta property="og:description" content="类加载器是什么定义摘自深入理解Java虚拟机  虚拟机设计团队把类加载阶段中的“通过一个类的全限定名获取描述此类的二进制字节流”这个动作放到 Java 虚拟机外部去实现，以便让应用程序自己决定如何去获取所需要的类。而实现这个动作的代码模块称为“类加载器”  从上面的定义中，我们可以得到如下信息：">
 <meta property="og:locale" content="default">
-<meta property="og:image" content="http://ryan-hou.github.io/assets/img/blogPic/classLoader.png">
-<meta property="og:updated_time" content="2020-04-17T07:19:20.678Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="JVM类加载器">
-<meta name="twitter:description" content="类加载器是什么定义摘自深入理解Java虚拟机  虚拟机设计团队把类加载阶段中的“通过一个类的全限定名获取描述此类的二进制字节流”这个动作放到 Java 虚拟机外部去实现，以便让应用程序自己决定如何去获取所需要的类。而实现这个动作的代码模块称为“类加载器”  从上面的定义中，我们可以得到如下信息：">
-<meta name="twitter:image" content="http://ryan-hou.github.io/assets/img/blogPic/classLoader.png">
+<meta name="twitter:title" content="0x08 0x17">
   
     <link rel="alternative" href="/atom.xml" title="0x08 0x17" type="application/atom+xml">
   
@@ -149,131 +142,41 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            <article id="post-JVM类加载器" class="article article-type-post " itemscope itemprop="blogPost">
+            
+  
+    <article id="post-Java枚举类" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
         
   
-    <h1 class="article-title" itemprop="name">
-      JVM类加载器
+    <h1 itemprop="name">
+      <a class="article-title" href="/2018/08/23/Java枚举类/">Java枚举类</a>
     </h1>
   
 
         
-        <a href="/2019/06/01/JVM类加载器/" class="archive-article-date">
-  	<time datetime="2019-06-01T13:42:58.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-06-01</time>
+        <a href="/2018/08/23/Java枚举类/" class="archive-article-date">
+  	<time datetime="2018-08-23T12:13:56.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-08-23</time>
 </a>
         
       </header>
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h2 id="类加载器是什么"><a href="#类加载器是什么" class="headerlink" title="类加载器是什么"></a>类加载器是什么</h2><p>定义摘自<code>深入理解Java虚拟机</code></p>
+        <h3 id="是什么"><a href="#是什么" class="headerlink" title="是什么"></a>是什么</h3><p>enum 全称为 enumeration，是 JDK 1.5 中引入的新特性，通过引入 <code>java.lang.Enum</code> 抽象类结合编译器语法糖实现</p>
 <blockquote>
-<p>虚拟机设计团队把类加载阶段中的“通过一个类的全限定名获取描述此类的二进制字节流”这个动作放到 Java 虚拟机外部去实现，以便让应用程序自己决定如何去获取所需要的类。而实现这个动作的代码模块称为“类加载器”</p>
+<p>In general you can use an enum as if it were another way to create a data type, and then just put the results to work.<br>In many ways you can treat an enum as if it were any other class.  In fact, enums are classes and have their own methods.</p>
 </blockquote>
-<p>从上面的定义中，我们可以得到如下信息：</p>
-<a id="more"></a>
-<ul>
-<li>类加载器的作用：获取描述此类的二进制字节流，也就是 <code>.class</code> 文件，那么什么是 <code>.class</code> 文件？</li>
-<li>获取类的二进制字节流只是类加载阶段中的一部分，那么整个类加载过程是怎样的？</li>
-<li>类加载器的目的是让应用程序自己决定如何获取需要的类，这样做有什么好处？换句话说，我什么时候可能需要自己定义一个类加载器？</li>
-</ul>
-<h2 id="关于类加载涉及的一些定义"><a href="#关于类加载涉及的一些定义" class="headerlink" title="关于类加载涉及的一些定义"></a>关于类加载涉及的一些定义</h2><h3 id="class-文件"><a href="#class-文件" class="headerlink" title="class 文件"></a>class 文件</h3><p>每个 <code>.class</code> 文件都对应着唯一一个类或者接口的定义信息，该文件是一个二进制字节流，每个字节的数据都有严格的定义和顺序。虚拟机通过该文件实现了语言无关性，其他编程语言也可以编译为 <code>.class</code> 文件，然后使用 JVM</p>
-<h3 id="类加载的步骤"><a href="#类加载的步骤" class="headerlink" title="类加载的步骤"></a>类加载的步骤</h3><p>包括加载，验证，准备，解析和初始化，其中验证，准备和解析合称为连接。类型的加载，连接和初始化都是在程序运行期间完成的，增加了类加载带来的性能负担但是提高了灵活性，比如：</p>
-<blockquote>
-<p>编写一个面向接口的应用程序，可以等到运行时再指定其实现类；用户可以通过自定义的类加载器，让一个本地的应用程序可以在运行时从网络或者其他地方加载一个二进制流作为程序代码的一部分，这种组装程序的方式广泛应用于 Java 程序之中，如 JSP，OSGi 等</p>
-</blockquote>
-<h3 id="加载与类加载"><a href="#加载与类加载" class="headerlink" title="加载与类加载"></a>加载与类加载</h3><p>加载是类加载的第一个步骤，加载阶段虚拟机完成三件事：</p>
-<ul>
-<li>通过一个类的全限定名来获取定义此类的二进制字节流，也就是<strong>类加载器实现的功能</strong></li>
-<li>将这个字节流所代表的静态存储结构转为方法区的运行时数据结构</li>
-<li>在堆内存中生成一个代表这个类的 <code>java.lang.Class</code> 对象，作为方法区这个类的各种数据的访问入口</li>
-</ul>
-<h2 id="类加载器的-parent-delegation-model"><a href="#类加载器的-parent-delegation-model" class="headerlink" title="类加载器的 parent-delegation model"></a>类加载器的 parent-delegation model</h2><h3 id="是什么"><a href="#是什么" class="headerlink" title="是什么"></a>是什么</h3><p>parent-delegation model 中文通常翻译为双亲委派模式，这里的“双亲”其实翻译的不准确，存在误导，父辈代理模型可能更恰当。为了沿用中文习惯，下文还是以双亲委派模型来指代。</p>
-<p>双亲委派模型的工作过程是：如果一个类加载器收到了类加载的请求，它首先不会自己去尝试加载这个类，而是把这个请求委派给父类加载器去完成，每一个层次的类加载器都是如此，因此所有的加载请求最终都应传送到顶层的启动类加载器中，只有当父加载器反馈自己无法完成这个加载请求（在它的搜索范围中没有找到所需的类）时，子加载器才会尝试自己去加载。模型如下图：</p>
-<p><img src="http://ryan-hou.github.io/assets/img/blogPic/classLoader.png" alt></p>
-<h3 id="如何实现"><a href="#如何实现" class="headerlink" title="如何实现"></a>如何实现</h3><p>实现双亲委派的代码集中在 <code>java.lang.ClassLoader</code> 类的 <code>loadClass()</code> 方法中，很清晰易懂：先检查是否已被加载过，若没有则递归调用父加载器的 loadClass() 方法，若父加载器为空则默认使用启动类的加载器作为父加载器。如果父加载器加载不到该类，再调用自己的 <code>findClass()</code> 方法进行加载</p>
-<h3 id="双亲委派模型的优点"><a href="#双亲委派模型的优点" class="headerlink" title="双亲委派模型的优点"></a>双亲委派模型的优点</h3><p>保证 Java 程序稳定运行</p>
-<blockquote>
-<p>使用双亲委派模型来组织类加载器之间的关系，有一个显而易见的好处就是<strong>Java类随着它的类加载器一起具备了一种带有优先级的层次关系。</strong>例如类 java.lang.Object，它存放在 rt.jar 之中，无论哪一个类加载器要加载这个类，最终都是委派给处于模型最顶端的启动类加载器进行加载，因此 Object 类在程序的各种类加载器环境中都是同一个类。相反，如果没有使用双亲委派模型，由各个类加载器自行去加载的话，如果用户自己编写了一个称为 java.lang.Object 的类，并放在程序的 ClassPath中，那系统中将会出现多个不同的 Object 类，Java 类型体系中最基础的行为也就无法保证，应用程序也将会变得一片混乱。如果自己去编写一个与 rt.jar 类库中已有类重名的 Java 类，将会发现可以正常编译，但永远无法被加载运行</p>
-</blockquote>
-<h2 id="自定义类加载器"><a href="#自定义类加载器" class="headerlink" title="自定义类加载器"></a>自定义类加载器</h2><p>通常情况下应用使用默认的系统类加载器（AppClassLoader）就可以满足要求，但如果我们需要加载远程服务器的类，或者说加载网络上的不是本机上的类的时候，就需要自定义类加载器</p>
-<p>自定义类加载器实现过程：</p>
-<ul>
-<li>继承 ClassLoader 类</li>
-<li>如果只是想重新定义如何获取字节码文件的字节流，只需重写 <code>findClass()</code> 方法即可。如果需要打破默认的双亲委派模式，则需要重写 <code>loadClass()</code> 方法</li>
-</ul>
-<p>在 <code>ClassLoader</code> 抽象类中，有三个重要的方法：</p>
-<ul>
-<li><code>loadClass(String name, Boolean reslove)</code>方法，该方法前面说过了，实现了双亲委派模型，一般不重写</li>
-<li><code>defineClass(String name, byte[] b, int off, int len)</code> 用于将原始字节码转为 Class 对象，通过 JNI 实现，一般也不用重写</li>
-<li><code>findClass(String name)</code>方法，根据类的 binary name 来查找类的数据，把找到的 <code>.class</code> 文件的内容加载到内存的字节数组，供 defineClass() 方法使用，一般我们会改写这个方法，这里前面也描述过，一旦所有的父加载器无法加载到对应的类，就会调用自己的 <code>findClass(String name)</code> 方法来加载</li>
-</ul>
-<p>下面举个例子：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Slf</span>4j</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">CustomClassLoader</span> <span class="keyword">extends</span> <span class="title">ClassLoader</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> String CLASSLOADER_NAME;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> String PATH = <span class="string">""</span>; <span class="comment">// .class file's location</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> String FILE_TYPE = <span class="string">".class"</span>;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">CustomerClassLoader</span><span class="params">(String classLoaderName)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">super</span>();</span><br><span class="line">        <span class="keyword">this</span>.CLASSLOADER_NAME = classLoaderName;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">protected</span> Class&lt;?&gt; findClass(String name) <span class="keyword">throws</span> ClassNotFoundException &#123;</span><br><span class="line">        <span class="keyword">byte</span>[] data = loadClassData(name);</span><br><span class="line">        <span class="keyword">if</span> (data == <span class="keyword">null</span>) &#123;</span><br><span class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> ClassNotFoundException(name);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">super</span>.defineClass(name, data, <span class="number">0</span>, data.length);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">byte</span>[] loadClassData(String name) &#123;</span><br><span class="line">        InputStream in = <span class="keyword">null</span>;</span><br><span class="line">        ByteArrayOutputStream baos = <span class="keyword">null</span>;</span><br><span class="line"></span><br><span class="line">        String filePath = PATH + name + FILE_TYPE;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            in = <span class="keyword">new</span> FileInputStream(<span class="keyword">new</span> File(filePath));</span><br><span class="line">            baos = <span class="keyword">new</span> ByteArrayOutputStream();</span><br><span class="line">            <span class="keyword">int</span> index;</span><br><span class="line">            <span class="keyword">while</span> (-<span class="number">1</span> != (index = in.read())) &#123;</span><br><span class="line">                baos.write(index);</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">byte</span>[] data = baos.toByteArray();</span><br><span class="line">            <span class="keyword">return</span> data;</span><br><span class="line">        &#125; <span class="keyword">catch</span> (FileNotFoundException e) &#123;</span><br><span class="line">            log.error(<span class="string">"File not found error, file path = &#123;&#125;"</span>, filePath, e);</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">        &#125; <span class="keyword">catch</span> (IOException e) &#123;</span><br><span class="line">            log.error(<span class="string">"read class file error!"</span>, e);</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">        &#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">            <span class="keyword">try</span> &#123;</span><br><span class="line">                <span class="keyword">if</span> (in != <span class="keyword">null</span>) &#123;</span><br><span class="line">                    in.close();</span><br><span class="line">                &#125;</span><br><span class="line">                <span class="keyword">if</span> (baos != <span class="keyword">null</span>) &#123;</span><br><span class="line">                    baos.close();</span><br><span class="line">                &#125;</span><br><span class="line">            &#125; <span class="keyword">catch</span> (IOException e) &#123;</span><br><span class="line">                log.error(<span class="string">"close io stream error!"</span>, e);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125; <span class="comment">// end finally</span></span><br><span class="line">    &#125;</span><br><span class="line">     </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-
+<h3 id="enum-语法规则"><a href="#enum-语法规则" class="headerlink" title="enum 语法规则"></a>enum 语法规则</h3><p>创建枚举类需要使用 enum 关键字，隐含了所创建的类型都是 java.lang.Enum 类的子类。枚举类中定义的每一个值(实例对象)都会通过 Enum 类的构造函数 <code>protected Enum(String name, int ordinal)</code> 来隐式创建，对象的名称被转为一个字符串 name，并且 ordinal 记录了此值被创建的顺序，从 0 开始(该顺序值也是枚举类可以支持 <code>switch</code> 关键字的原因所在)</p>
+        
+          <a class="article-more-a" href="/2018/08/23/Java枚举类/#more">more >></a>
+        
       
 
       
     </div>
 	<!-- 版权内容 -->
-	
-		<style type="text/css">
-	.article-footer-copyright{
-   border-top:1px solid #d3d3d3;
-   margin: 20px auto;     
-   padding-left:2em;
-   width: 80%;
-}
-.article-footer-copyright p{
-  font-size:1.2em;
-}
-.article-footer-copyright span,.copyright abbr{
-  color:#3d3d3d;
-}
-div.copyright{
-    
-       font-weight:bold;
-       color:#FCB297;
-       padding:0.3em 0.5em;
-       margin:0 0 1em 0;
-       border-bottom:none;
-       background-color:#AAD2F0;
-       -moz-border-radius: 1em;
-       -webkit-border-radius:1em;
-       border-radius: 1em;
-  -moz-box-shadow:inset 0px 1px 0px 0px #eeeeee;
-  -webkit-box-shadow:inset 0px 1px 0px 0px #eeeeee;
-  box-shadow:inset 0px 1px 0px 0px #eeeeee;
-  background:-webkit-gradient( linear, left top, left bottom, color-stop(0.05, #aad2f0), color-stop(1, #8bc1ed) );
-  background:-moz-linear-gradient( center top, #aad2f0 5%, #8bc1ed 100% );
-  /* filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#aad2f0', endColorstr='#8bc1ed'); */
-  background-color:#aad2f0;
-  border:1px solid #dcdcdc;
-  text-shadow:1px 1px 0px #eeeeee;
-  
-}
-div.article-footer-copyright{
-    margin:0em 0em 0em 5em;
-	margin-top:2em;
-    padding:0.5em 1em;
-    border-left:3px solid #ff1700;
-    background-color:#f9f9f9;
-}
-.article-footer-copyright p{
-    line-height: 160%;
-    margin: 10px;
-    font-size: 100%;
-}
-</style>
-
-<div class="article-footer-copyright">
-	<p>本文标题: <a href="/2019/06/01/JVM类加载器/" target="_blank" title="JVM类加载器">JVM类加载器</a></p>
-	<p>本文链接: <a href="/2019/06/01/JVM类加载器/" target="_blank" title="JVM类加载器">https://ryan-hou.github.io/2019/06/01/JVM类加载器/</a></p>
-	<p>转载请注明本文链接~~</p>
-</div>
-
 	
     <div class="article-info article-info-index">
       
@@ -284,10 +187,6 @@ div.article-footer-copyright{
 			 
         		<li class="article-tag-list-item">
         			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">Java</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">虚拟机</a>
         		</li>
       		
 		</ul>
@@ -302,27 +201,6 @@ div.article-footer-copyright{
     </div>
   </div>
 </article>
-
-  
-<nav id="article-nav">
-  
-    <a href="/2019/06/22/从简单模式匹配到KMP算法/" id="article-nav-newer" class="article-nav-link-wrap">
-      <i class="icon-circle-left"></i>
-      <div class="article-nav-title">
-        
-          从简单模式匹配到KMP算法
-        
-      </div>
-    </a>
-  
-  
-    <a href="/2019/04/07/null-awareness/" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">null awareness</div>
-      <i class="icon-circle-right"></i>
-    </a>
-  
-</nav>
-
 
 <aside class="wrap-side-operation">
     <div class="mod-side-operation">
@@ -342,16 +220,14 @@ div.article-footer-copyright{
 
 
 
-  
-  
-  
+
 
   
-
   
-
+    <nav id="page-nav">
+      <a class="extend prev" rel="prev" href="/page/2/">&laquo; Prev</a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><span class="page-number current">3</span>
+    </nav>
   
-
 
 
           </div>
@@ -374,8 +250,8 @@ div.article-footer-copyright{
     <script>
 	var yiliaConfig = {
 		mathjax: false,
-		isHome: false,
-		isPost: true,
+		isHome: true,
+		isPost: false,
 		isArchive: false,
 		isTag: false,
 		isCategory: false,
