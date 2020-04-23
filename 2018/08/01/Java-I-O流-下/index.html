@@ -6,20 +6,22 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <link rel="dns-prefetch" href="https://ryan-hou.github.io">
-  <title>Checked&amp;Unchecked Exception | 0x08 0x17</title>
+  <title>Java I/O流(下) | 0x08 0x17</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="Is checked exception necessary?很多言论认为 Java 受检异常(checked exception，也就是那些你需要明确的捕获或者 rethrow 的异常)的存在是没有必要的，例如在 C# 语言中就取消了受检异常，而且大部分的语言都没有受检异常这一概念，无论何时直接声明异常为 RuntimeException 或其子类(即 unchecked exception)会">
+  <meta name="description" content="在介绍具体的 I/O 类前，有必要先了解一下装饰者模式 ，因为 java.io 包内的类实在有点多，如果了解装饰者模式的话，再看各种 I/O 流类会清晰很多 什么是装饰者模式 装饰者模式动态的将“责任”(也就是增强的功能)附加到对象上，若要实现动态扩展功能，装饰者提供了比继承更有弹性的替代方案  总结几个要点：">
 <meta name="keywords" content="Java,设计">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Checked&amp;Unchecked Exception">
-<meta property="og:url" content="https://ryan-hou.github.io/2018/10/07/Checked-Unchecked-Exception/index.html">
+<meta property="og:title" content="Java I&#x2F;O流(下)">
+<meta property="og:url" content="https://ryan-hou.github.io/2018/08/01/Java-I-O流-下/index.html">
 <meta property="og:site_name" content="0x08 0x17">
-<meta property="og:description" content="Is checked exception necessary?很多言论认为 Java 受检异常(checked exception，也就是那些你需要明确的捕获或者 rethrow 的异常)的存在是没有必要的，例如在 C# 语言中就取消了受检异常，而且大部分的语言都没有受检异常这一概念，无论何时直接声明异常为 RuntimeException 或其子类(即 unchecked exception)会">
+<meta property="og:description" content="在介绍具体的 I/O 类前，有必要先了解一下装饰者模式 ，因为 java.io 包内的类实在有点多，如果了解装饰者模式的话，再看各种 I/O 流类会清晰很多 什么是装饰者模式 装饰者模式动态的将“责任”(也就是增强的功能)附加到对象上，若要实现动态扩展功能，装饰者提供了比继承更有弹性的替代方案  总结几个要点：">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2020-04-16T03:48:59.945Z">
+<meta property="og:image" content="http://Ryan-hou.github.io/assets/img/blogPic/IO_1.png">
+<meta property="og:updated_time" content="2020-04-23T10:15:09.489Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Checked&amp;Unchecked Exception">
-<meta name="twitter:description" content="Is checked exception necessary?很多言论认为 Java 受检异常(checked exception，也就是那些你需要明确的捕获或者 rethrow 的异常)的存在是没有必要的，例如在 C# 语言中就取消了受检异常，而且大部分的语言都没有受检异常这一概念，无论何时直接声明异常为 RuntimeException 或其子类(即 unchecked exception)会">
+<meta name="twitter:title" content="Java I&#x2F;O流(下)">
+<meta name="twitter:description" content="在介绍具体的 I/O 类前，有必要先了解一下装饰者模式 ，因为 java.io 包内的类实在有点多，如果了解装饰者模式的话，再看各种 I/O 流类会清晰很多 什么是装饰者模式 装饰者模式动态的将“责任”(也就是增强的功能)附加到对象上，若要实现动态扩展功能，装饰者提供了比继承更有弹性的替代方案  总结几个要点：">
+<meta name="twitter:image" content="http://Ryan-hou.github.io/assets/img/blogPic/IO_1.png">
   
     <link rel="alternative" href="/atom.xml" title="0x08 0x17" type="application/atom+xml">
   
@@ -147,38 +149,75 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            <article id="post-Checked-Unchecked-Exception" class="article article-type-post " itemscope itemprop="blogPost">
+            <article id="post-Java-I-O流-下" class="article article-type-post " itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
         
   
     <h1 class="article-title" itemprop="name">
-      Checked&amp;Unchecked Exception
+      Java I/O流(下)
     </h1>
   
 
         
-        <a href="/2018/10/07/Checked-Unchecked-Exception/" class="archive-article-date">
-  	<time datetime="2018-10-07T12:12:50.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-10-07</time>
+        <a href="/2018/08/01/Java-I-O流-下/" class="archive-article-date">
+  	<time datetime="2018-08-01T05:02:16.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-08-01</time>
 </a>
         
       </header>
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h2 id="Is-checked-exception-necessary"><a href="#Is-checked-exception-necessary" class="headerlink" title="Is checked exception necessary?"></a>Is checked exception necessary?</h2><p>很多言论认为 Java 受检异常(checked exception，也就是那些你需要明确的捕获或者 rethrow 的异常)的存在是没有必要的，例如在 C# 语言中就取消了受检异常，而且大部分的语言都没有受检异常这一概念，无论何时直接声明异常为 RuntimeException 或其子类(即 unchecked exception)会更加方便，事实是如此吗？</p>
+        <p>在介绍具体的 I/O 类前，有必要先了解一下<strong>装饰者模式</strong> ，因为 <code>java.io</code> 包内的类实在有点多，如果了解装饰者模式的话，再看各种 I/O 流类会清晰很多</p>
+<h2 id="什么是装饰者模式"><a href="#什么是装饰者模式" class="headerlink" title="什么是装饰者模式"></a>什么是装饰者模式</h2><blockquote>
+<p>装饰者模式动态的将“责任”(也就是增强的功能)附加到对象上，若要实现动态扩展功能，装饰者提供了比继承更有弹性的替代方案</p>
+</blockquote>
+<p>总结几个要点：</p>
 <a id="more"></a>
-<h2 id="Oracle-的官方声明"><a href="#Oracle-的官方声明" class="headerlink" title="Oracle 的官方声明"></a>Oracle 的官方声明</h2><p>关于这个争议，Oracle 在官方文档中作出过解释，下面是一些重要观点的翻译：</p>
-<p>因为 Java 语言不强制要求方法捕获或处理非受检异常(RuntionException, Error 及其子类)，所以程序员会倾向于让自己的异常类继承 RuntimeException，从而只抛出非受检的异常。这种“捷径”使程序员的代码不受编译器编译错误的影响，也不用费心去捕获或处理任何异常。这种方式看似非常便捷，但是破坏了 <code>catch</code> 和 <code>specity</code> 的设计目的，对其他程序员操作自己的方法也埋下了隐患</p>
-<p>为什么设计者会要求去处理方法中抛出的所有受检异常呢？因为任何可以被方法抛出的异常都是该方法的公共编程接口。<strong>其他调用该方法的用户必须知道当前方法可能抛出的异常，以便于作出合理的处理。这些异常和方法中的参数列表及返回值一样，都是方法接口的一部分。</strong>那么接下来一个问题就是，“如果把方法 API 文档化(包括该方法的异常)有这么多好处，那为什么不对 runtime exception 也做这种特殊的处理呢？” 那是因为<strong>运行时异常是程序代码错误导致的，因此调用 API 的用户不应该也不知道如何恢复或处理这类异常</strong>。导致运行时异常的问题有算术异常，比如除数为0；空指针异常；数组下标越界异常等等，这类异常可以发生在程序代码中的任何地方，因而数量也是很多的，如果把这类异常加到方法声明中，会降级程序的可读性。因此编译器不会强制要求捕获或处理非受检异常(当然你可以处理，但是大多数情况下没有必要)</p>
-<p>总的来说，不能仅仅因为你不想处理方法抛出的异常就粗暴的使用 RuntimeException 或他的子类</p>
-<h2 id="指导原则"><a href="#指导原则" class="headerlink" title="指导原则"></a>指导原则</h2><p>如果方法的调用者可以合理的处理或者恢复这个异常，那么该异常应该被声明为受检的异常；如果方法的调用者不需要关心或者无法做出合理的处理，那么就声明该异常为非受检的异常。Never swallow the Exception！</p>
-<h2 id="实践中的问题"><a href="#实践中的问题" class="headerlink" title="实践中的问题"></a>实践中的问题</h2><p>在实际编程中，尤其是一些框架(比如 iBatis )和类库，通常会把抛出 RuntimeException 作为习惯用法，这是出于对向后兼容性和设计库函数的难度(在设计一个公用组件时，很难把所有可能出现的异常都考虑清楚)的折衷，但是我们在写一些特定的业务代码时，个人还是建议，根据这个异常是否需要被处理或者能不能被用户处理，把异常声明为受检异常或者非受检异常，而不是直接无脑的抛出 RuntimeException。<strong>正确的使用异常对于程序的正确性和健壮性至关重要，无论何时都要仔细思考程序的边界和可能出现的所有情况，尤其是在分布式环境下，异常的处理往往比正常情况的处理逻辑更加复杂，也更加考验一个程序员思考问题的严谨性。</strong></p>
-<p>关于受检异常和非受检异常，要在合适的情况下进行判断和选用，不能偏废，关于这方面的讨论，推荐两篇阅读文章:</p>
 <ul>
-<li><a href="http://www.yinwang.org/blog-cn/2017/05/23/kotlin" target="_blank" rel="noopener">Kotlin 和 Checked Exception</a></li>
-<li><a href="https://zhuanlan.zhihu.com/p/33731510" target="_blank" rel="noopener">有人知道Java异常声明的正确用法吗？</a></li>
+<li>装饰者和被装饰者是一样的类型，也就是有共同的超类；在这里使用继承来达到<strong>类型匹配</strong>的功能，而不是通过继承获得<strong>行为</strong></li>
+<li>继承属于扩展类的一种形式，但是不利于弹性设计；在装饰者模式中，我们通过<strong>组合和委托，可以在运行时动态的添加新行为。组合优于实现继承</strong></li>
+<li>可以用一个或多个装饰者包装一个对象，可以通过构造器来实现包装（在使用 Java I/O 流类时，你是不是对一长串的 <code>new</code> 记忆犹新呢？）或者提供set方法动态注入被装饰的对象</li>
+<li><strong>符合开闭原则</strong>：类应该对扩展开放,对修改关闭 </li>
+<li>装饰者模式的优点在于提供了功能上的弹性扩展，但是使用不当会导致出现很多小对象，让程序变的复杂</li>
+</ul>
+<p>举例说明：</p>
+<p>Java I/O 类中的装饰者模式的部分类关系图如下：</p>
+<p><img src="http://Ryan-hou.github.io/assets/img/blogPic/IO_1.png" alt></p>
+<p>在这个图中，我们最熟悉的 <code>InpusStream</code> 就是抽象组件，也就是上面说的装饰者和被装饰者共同的超类；<code>FilterInputStream</code> 是一个抽象的装饰者类；<code>FilterInputStream</code> 下面的 <code>BufferedInputStream</code>,<code>DataInputStream</code> 等类是具体的装饰者类；<code>FileInputStream</code>，<code>StringBufferInputStream</code> 等类是可以被装饰者类包装起来的具体的被装饰类。有了这样一个概念，再看这行代码 <code>BufferedInputStream bis = new BufferedInputStream(new FileInputStream(&quot;test.txt&quot;));</code> 是不是亲切多了？</p>
+<p>铺垫到这里，再开始 I/O 类的说明就简单多了，两个点：认识常见的各种 I/O 类；熟悉常用的 API；三个字：读文档</p>
+<h2 id="Java-字节流"><a href="#Java-字节流" class="headerlink" title="Java 字节流"></a>Java 字节流</h2><p>抽象基类：<code>InputStream/OutputStream</code>：InputStream  抽象了应用程序读取数据的方式，OutputStream 抽象了应用程序写出数据的方式</p>
+<p>一些常用的具体类(<strong>后缀名均为 InputStream/OutputStream</strong>)：</p>
+<ul>
+<li><code>FileInputStream/FileOutputStream</code>：实现了通过文件系统读写数据</li>
+<li><code>DataInputStream/DataOutputStream</code>：对字节流操作的增强，可以可以更加方便的读写 <code>int</code>，<code>long</code>，<code>double</code> 等类型的数据，继承自 <code>FilterInputStream/FilterOutputStream</code> 作为装饰者。多说一句，像读取 int 等基本数据类型这种包装并不神秘，一个一个字节的读取，然后通过位操作进行组装就可以了</li>
+<li><code>BufferedInputStream/BufferedOutputStream</code>：也是装饰者实现，为 I/O 流增加了缓冲区的操作，提高了 I/O 操作的性能；其他类不具体展开，参见官方文档</li>
+</ul>
+<h2 id="Java-字符流"><a href="#Java-字符流" class="headerlink" title="Java 字符流"></a>Java 字符流</h2><p>抽象基类：<code>Reader/Writer</code>。一些常用的具体类(<strong>后缀名均为 Reader/Writer</strong>)：</p>
+<ul>
+<li><code>InputStreamReader/OutputStreamWriter</code>：完成字节流到字符流的转换，可以设置编码方式</li>
+<li><code>FileReader/FileWriter</code>：继承自上面的两个类，创建更方便，但是不能指定编码方式</li>
+<li><code>BufferedReader/BufferedWriter</code>：通过缓存字符流提高性能</li>
+</ul>
+<p>通过一个例子来看一下具体的 I/O 流操作，代码实现功能为：把 a 地址处的文本文件复制到 b 地址</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">BufferedReader br = <span class="keyword">new</span> BufferedReader(<span class="keyword">new</span> InputStreamReader(<span class="keyword">new</span> FileInputStream(<span class="string">"a"</span>)));</span><br><span class="line">BufferedWriter bw = <span class="keyword">new</span> BufferedWriter(<span class="keyword">new</span> OutputStreamWriter(<span class="keyword">new</span> FileOutputStream(<span class="string">"b"</span>)));</span><br><span class="line"></span><br><span class="line">String line;</span><br><span class="line"><span class="keyword">while</span> ((line = br.readLine()) != <span class="keyword">null</span>) &#123;</span><br><span class="line">    bw.write(line);</span><br><span class="line">    bw.newLine();</span><br><span class="line">    bw.flush();</span><br><span class="line">&#125;</span><br><span class="line">br.close();</span><br><span class="line">bw.close();</span><br><span class="line"><span class="comment">// ...</span></span><br></pre></td></tr></table></figure>
+<h2 id="序列化与反序列化"><a href="#序列化与反序列化" class="headerlink" title="序列化与反序列化"></a>序列化与反序列化</h2><p>这是一个重要的知识点，可以展开为一篇文章，这里只简单概述下</p>
+<p>虚拟机内存中的对象在变为“垃圾”后，会被垃圾回收机制回收，因此当我们需要持久化对象的信息，以便在需要的时候再读取这个对象时，需要使用到序列化与反序列化的知识</p>
+<h3 id="定义"><a href="#定义" class="headerlink" title="定义"></a>定义</h3><p>广义上来说，把数据从一种格式转为另一种格式，都可以称作序列化。在 Java 应用的语境下，对象的序列化是指将对象转为字节序列(可用于存储或者在网络中传输)；反序列化反之</p>
+<p>注：由于 Java 自带的序列化反序列化机制存在诸多问题，比如不能跨语言使用，性能不够好，序列化的数据占用空间比较大，存在安全问题等，在实际的RPC等应用中一般都不使用自带的序列化功能，可以考虑使用如 <code>Hessian, Protobuf</code> 等序列化框架。但是这并不代表原生的序列化机制一无是处，比如在不跨进程等轻量级的使用场景下，自带的序列化功能完全够用，不需要再引入额外的依赖</p>
+<h3 id="基本概念"><a href="#基本概念" class="headerlink" title="基本概念"></a>基本概念</h3><ul>
+<li>一个对象想实现序列化，该对象所在的类必须实现 <code>Serializble</code> 标记接口</li>
+<li>一个类实现了序列化接口，其子类均可以序列化</li>
+<li>类的静态变量不会参与序列化(序列化是针对具体对象，而静态变量属于类层面的属性)</li>
+<li>基本实现类： 序列化流 <code>ObjectOutputStream</code> 和反序列化流 <code>ObjectInputStream</code></li>
+<li>重写 writeObject(ObjectOutputStream out) 和 readObject(ObjectInputStream in) 方法可以实现自定义操作，比如可以对一些敏感字段实现加密</li>
+<li>transient 关键字修饰的成员变量不会参与 JVM 默认的序列化和反序列化的操作（在 ArrayList 中，把 elementData 数组声明为 transient，在自定义的序列化方法 writeObject 中，只把数组的有效元素进行序列化，可以减少不必要的操作）</li>
+<li>序列化 ID 的使用。没有特殊情况，建议定义为 <code>private static final long serialVersionUID = 1L;</code>，避免反序列化时因为ID值不一致导致失败</li>
+</ul>
+<h3 id="推荐阅读"><a href="#推荐阅读" class="headerlink" title="推荐阅读"></a>推荐阅读</h3><ul>
+<li><a href="http://www.cnblogs.com/archimedes/p/java-study-note16.html" target="_blank" rel="noopener">java学习笔记16-I/O流和文件</a></li>
+<li><a href="http://www.cnblogs.com/rollenholt/articles/2180119.html" target="_blank" rel="noopener">Java序列化的高级认识</a></li>
 </ul>
 
       
@@ -237,8 +276,8 @@ div.article-footer-copyright{
 </style>
 
 <div class="article-footer-copyright">
-	<p>本文标题: <a href="/2018/10/07/Checked-Unchecked-Exception/" target="_blank" title="Checked&amp;Unchecked Exception">Checked&amp;Unchecked Exception</a></p>
-	<p>本文链接: <a href="/2018/10/07/Checked-Unchecked-Exception/" target="_blank" title="Checked&amp;Unchecked Exception">https://ryan-hou.github.io/2018/10/07/Checked-Unchecked-Exception/</a></p>
+	<p>本文标题: <a href="/2018/08/01/Java-I-O流-下/" target="_blank" title="Java I/O流(下)">Java I/O流(下)</a></p>
+	<p>本文链接: <a href="/2018/08/01/Java-I-O流-下/" target="_blank" title="Java I/O流(下)">https://ryan-hou.github.io/2018/08/01/Java-I-O流-下/</a></p>
 	<p>转载请注明本文链接~~</p>
 </div>
 
@@ -274,18 +313,18 @@ div.article-footer-copyright{
   
 <nav id="article-nav">
   
-    <a href="/2018/10/30/动态代理实现AOP/" id="article-nav-newer" class="article-nav-link-wrap">
+    <a href="/2018/08/23/Java枚举类/" id="article-nav-newer" class="article-nav-link-wrap">
       <i class="icon-circle-left"></i>
       <div class="article-nav-title">
         
-          动态代理实现AOP
+          Java枚举类
         
       </div>
     </a>
   
   
-    <a href="/2018/10/04/Java泛型与通配符/" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">Java泛型与通配符</div>
+    <a href="/2018/07/25/Java-I-O流-上/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">Java I/O流(上)</div>
       <i class="icon-circle-right"></i>
     </a>
   
