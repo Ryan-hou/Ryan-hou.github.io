@@ -6,20 +6,26 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <link rel="dns-prefetch" href="https://ryan-hou.github.io">
-  <title>Java I/O流(上) | 0x08 0x17</title>
+  <title>零拷贝技术解析 | 0x08 0x17</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="Java I/O 流作为日常编程中经常使用的类，包含的东西比较多: 各种 I/O 流类的选择；Java I/O 流类的装饰者模式；乱码问题；序列化与反序列化的使用等，这些问题将在下面的文章进行介绍 字节流与字符流想要更好的理解 I/O 流，计算机的各种操作码及相关的编码知识是必要的。Java 中 I/O 流类可以分为字节流和字符流，实际上，字符流也是在字节流的基础上进行的包装，对于计算机来说，他只">
-<meta name="keywords" content="Java">
+  <meta name="description" content="本文为翻译文章，原文链接为: Efficient data transfer through zero copy Zero-copy 是什么 “Zero-copy” describes computer operations in which the CPU does not perform the task of copying data from one memory area to anot">
+<meta name="keywords" content="翻译,系统,优化">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Java I&#x2F;O流(上)">
-<meta property="og:url" content="https://ryan-hou.github.io/2018/07/25/Java-I-O流-上/index.html">
+<meta property="og:title" content="零拷贝技术解析">
+<meta property="og:url" content="https://ryan-hou.github.io/2019/11/11/零拷贝技术解析/index.html">
 <meta property="og:site_name" content="0x08 0x17">
-<meta property="og:description" content="Java I/O 流作为日常编程中经常使用的类，包含的东西比较多: 各种 I/O 流类的选择；Java I/O 流类的装饰者模式；乱码问题；序列化与反序列化的使用等，这些问题将在下面的文章进行介绍 字节流与字符流想要更好的理解 I/O 流，计算机的各种操作码及相关的编码知识是必要的。Java 中 I/O 流类可以分为字节流和字符流，实际上，字符流也是在字节流的基础上进行的包装，对于计算机来说，他只">
+<meta property="og:description" content="本文为翻译文章，原文链接为: Efficient data transfer through zero copy Zero-copy 是什么 “Zero-copy” describes computer operations in which the CPU does not perform the task of copying data from one memory area to anot">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2020-04-23T05:33:37.528Z">
+<meta property="og:image" content="http://Ryan-hou.github.io/assets/img/blogPic/zeroCopy/figure1.png">
+<meta property="og:image" content="http://Ryan-hou.github.io/assets/img/blogPic/zeroCopy/figure2.png">
+<meta property="og:image" content="http://Ryan-hou.github.io/assets/img/blogPic/zeroCopy/figure3.png">
+<meta property="og:image" content="http://Ryan-hou.github.io/assets/img/blogPic/zeroCopy/figure4.png">
+<meta property="og:image" content="http://Ryan-hou.github.io/assets/img/blogPic/zeroCopy/figure5.png">
+<meta property="og:updated_time" content="2020-04-24T03:40:57.703Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Java I&#x2F;O流(上)">
-<meta name="twitter:description" content="Java I/O 流作为日常编程中经常使用的类，包含的东西比较多: 各种 I/O 流类的选择；Java I/O 流类的装饰者模式；乱码问题；序列化与反序列化的使用等，这些问题将在下面的文章进行介绍 字节流与字符流想要更好的理解 I/O 流，计算机的各种操作码及相关的编码知识是必要的。Java 中 I/O 流类可以分为字节流和字符流，实际上，字符流也是在字节流的基础上进行的包装，对于计算机来说，他只">
+<meta name="twitter:title" content="零拷贝技术解析">
+<meta name="twitter:description" content="本文为翻译文章，原文链接为: Efficient data transfer through zero copy Zero-copy 是什么 “Zero-copy” describes computer operations in which the CPU does not perform the task of copying data from one memory area to anot">
+<meta name="twitter:image" content="http://Ryan-hou.github.io/assets/img/blogPic/zeroCopy/figure1.png">
   
     <link rel="alternative" href="/atom.xml" title="0x08 0x17" type="application/atom+xml">
   
@@ -147,67 +153,76 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            <article id="post-Java-I-O流-上" class="article article-type-post " itemscope itemprop="blogPost">
+            <article id="post-零拷贝技术解析" class="article article-type-post " itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
         
   
     <h1 class="article-title" itemprop="name">
-      Java I/O流(上)
+      零拷贝技术解析
     </h1>
   
 
         
-        <a href="/2018/07/25/Java-I-O流-上/" class="archive-article-date">
-  	<time datetime="2018-07-25T04:48:32.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-07-25</time>
+        <a href="/2019/11/11/零拷贝技术解析/" class="archive-article-date">
+  	<time datetime="2019-11-11T12:03:56.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-11-11</time>
 </a>
         
       </header>
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>Java I/O 流作为日常编程中经常使用的类，包含的东西比较多: 各种 I/O 流类的选择；Java I/O 流类的装饰者模式；乱码问题；序列化与反序列化的使用等，这些问题将在下面的文章进行介绍</p>
-<h2 id="字节流与字符流"><a href="#字节流与字符流" class="headerlink" title="字节流与字符流"></a>字节流与字符流</h2><p>想要更好的理解 I/O 流，计算机的各种操作码及相关的编码知识是必要的。Java 中 I/O 流类可以分为字节流和字符流，实际上，<strong>字符流也是在字节流的基础上进行的包装</strong>，对于计算机来说，他只认识二进制数字，字符流什么的他是不懂的，所以对于 I/O 流来说，到了最底层还是一个一个的字节</p>
-<a id="more"></a>
-<p>字节是很“固定”的，<strong>1字节(1 Byte)就是8位二进制数字(1B=8b)</strong>，而二进制数字是计算机可以识别的。字符就不那么“固定”了，这与字符的编码方式有关，比如 gbk 编码的中文字符占用两个字节，英文占用一个字节；而 utf-8 编码的中文字符占用三个字节，英文字符占用一个字节。正是由于采用的编码方式不同，使用中可能会出现乱码问题。为了方便我们操作字符，从而在字节的基础上，根据相应的编码方式提供了字符流。字节流和字符流的区别：</p>
-<ul>
-<li>读写单位不同：字节流以字节（8bit）为单位，字符流以字符为单位，根据不同的字符编码方式，一次可能读取多个字节</li>
-<li>处理对象不同：字节流能处理所有类型的数据（如图片、avi等），而字符流只能处理字符类型的数据</li>
-</ul>
-<p>所以，只要是处理纯文本数据，就可以优先考虑使用字符流，除此之外都使用字节流</p>
-<h2 id="文件相关的概念"><a href="#文件相关的概念" class="headerlink" title="文件相关的概念"></a>文件相关的概念</h2><p>区分几个概念：</p>
-<ul>
-<li>文件：<strong>字节的序列</strong>。如果字节的内容被解释为字符，则文件被称为<strong>文本文件</strong>，否则文件被称为<strong>二进制文件</strong></li>
-<li>文本文件：字符序列按照某种编码方式(utf-8，gbk 等) 序列化为 byte 的存储结果</li>
-<li>Java 文本: 采用 <strong>utf-16be</strong> 双字节编码，每个中英文字符均占用两个字节(<code>utf-16be：Unicode Transformation Format 16-bit Big Endian</code>: Big Endian即大端存储，高位字节存储在低地址，符合我们的操作习惯)</li>
-</ul>
-<p>关于大端存储的理解对于获取想要的字符和位移操作也是必要的，举个例子进行说明：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">String str = <span class="string">"so what"</span>;</span><br><span class="line"><span class="keyword">byte</span>[] bytes = str.getBytes(<span class="string">"utf-16be"</span>);</span><br><span class="line"><span class="comment">// utf-16be 为双字节编码，且为大端存储</span></span><br><span class="line"><span class="comment">// 即低地址存放高位字节，也就是先读取高位字节</span></span><br><span class="line"><span class="comment">// 字符't' 占两个字节，但是高位字节在这里没有意义，所以取低位字节即可，即这里取最后一个字节就可以得到字符't'</span></span><br><span class="line"><span class="keyword">char</span> t = (<span class="keyword">char</span>) bytes[<span class="number">7</span> * <span class="number">2</span> - <span class="number">1</span>];</span><br><span class="line"><span class="comment">// output character 't'</span></span><br><span class="line">System.out.println(t);</span><br></pre></td></tr></table></figure>
-<h2 id="乱码问题"><a href="#乱码问题" class="headerlink" title="乱码问题"></a>乱码问题</h2><p>Eclipse 项目的默认编码为 gbk，在 Eclipse 中什么样编码的项目就只认识什么样编码的文件。当你的字节序列采用某种编码方式得到，这时想把字节序列变为字符串，也要用同样的编码方式，否则会出现乱码，比如：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">String str = <span class="string">"so what"</span>;</span><br><span class="line"><span class="keyword">byte</span>[] bytes = str.getBytes(<span class="string">"utf-16be"</span>);</span><br><span class="line"><span class="comment">// 项目默认编码方式为 GBK</span></span><br><span class="line">String disorderStr = <span class="keyword">new</span> String(bytes);</span><br><span class="line"><span class="comment">// 输出乱码</span></span><br><span class="line">System.out.println(disorderStr);</span><br><span class="line"></span><br><span class="line">String normalStr = <span class="keyword">new</span> String(bytes, <span class="string">"utf-16be"</span>);</span><br><span class="line"><span class="comment">// 正常输出</span></span><br><span class="line">System.out.println(normalStr);</span><br></pre></td></tr></table></figure>
-<p>在 Web 编程中经常会碰到中文乱码问题，<strong>根本原因就在于有的编码方式不支持中文或者编码方式不一致导致的，因此统一编码方式是非常良好的习惯，建议使用强大的 <code>utf－8</code> 编码</strong></p>
-<h2 id="Java-File-类"><a href="#Java-File-类" class="headerlink" title="Java File 类"></a>Java File 类</h2><p>开始 I/O 流类的总结前，关于 File 类需要提一下。一言以蔽之，<strong>File 类仅仅是定义了一个文件的抽象路径名</strong>，至于该抽象路径被操作系统解析为路径字符串并进行查找后，文件到底存不存在，无从确定，可能有也可能没有</p>
-<p>在<code>Thinking in Java</code>中，关于 File 类的定义我觉得很清晰，引用如下:</p>
-<blockquote>
-<p>The File has a deceiving name; you might think it refers to a file, but it doesn’t. In fact, “FilePath” would have been a better name for the class. It represent either the name of a particular file or the name of a set of files in a directory.</p>
+        <p>本文为翻译文章，原文链接为: <a href="https://developer.ibm.com/technologies/java/articles/j-zerocopy/" target="_blank" rel="noopener">Efficient data transfer through zero copy</a></p>
+<h3 id="Zero-copy-是什么"><a href="#Zero-copy-是什么" class="headerlink" title="Zero-copy 是什么"></a>Zero-copy 是什么</h3><blockquote>
+<p>“Zero-copy” describes computer operations in which the CPU does not perform the task of copying data from one memory area to another. This is frequently used to save CPU cycles and memory bandwidth when transmitting a file over a network.       – from Wikipedia</p>
 </blockquote>
-<p>因此，<strong>File 类只用于表示文件(目录)的信息(名称，大小等)，不能用于文件内容的访问</strong>(RandomAccessFile 类是 Java 提供的文件内容的访问类，可以读写文件，支持随机访问，可实现多线程下载，文件组装等)</p>
-<p>这里还有两个重要概念需要拿出来说明一下：</p>
-<ul>
-<li>绝对路径与相对路径</li>
-</ul>
-<p>绝对路径没什么好说的，绝对路径名是完整的路径名，不需要其他信息就可以定位自身表示的文件；</p>
-<p>相对路径：相对路径名必须使用来自其他路径名的信息进行解释，默认情况下，<code>java.io</code> 包中的类总是根据当前用户工作目录来分析相对路径名。<strong>此目录由系统属性 <code>user.dir</code> 指定，通常是我们调用 JVM 的路径。</strong>在 web 应用中也经常涉及到相对路径的使用，一定要搞清楚相对路径相对的是哪个文件或路径</p>
-<ul>
-<li>抽象路径与路径名字符串</li>
-</ul>
-<p>File 类是文件或者目录(目录本质也是文件)的抽象路径表示，而操作系统需要使用依赖于特定操作系统的路径名字符串来表示文件和目录；所以这里就涉及两者之间的一个转换，这种转换与不同的操作系统有关；比如，在 windows 操作系统下，以下代码均可以使用：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">file = <span class="keyword">new</span> File(<span class="string">"C:"</span> + File.separator + <span class="string">"test"</span>);</span><br><span class="line">file = <span class="keyword">new</span> File(<span class="string">"C:/test"</span>);</span><br><span class="line">file = <span class="keyword">new</span> File(<span class="string">"C:\\test"</span>);</span><br></pre></td></tr></table></figure>
-<p>这与 Java 语言提供的方法有关，但是针对不同的操作系统以及后续操作中可能涉及到的路径解析等问题，推荐使用路径分隔符：<strong>File.separator</strong></p>
-<p>关于文件类 File 接下来就简单了，一句话: 熟悉常用的 API。最后附一段关于 File 类的操作代码帮助了解 File 类。代码实现删除指定文件夹，包括所有的文件和目录(使用递归来进行处理)</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">deleteDirectory</span><span class="params">(File file)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (file == <span class="keyword">null</span>) <span class="keyword">return</span>;</span><br><span class="line">    <span class="keyword">while</span> (file.exists()) &#123;</span><br><span class="line">        <span class="keyword">if</span> (file.isFile()) &#123;</span><br><span class="line">            System.out.println(<span class="string">"文件"</span> + file.getName() + <span class="string">" 将被删除!"</span>);</span><br><span class="line">            file.delete();</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            File[] files = file.listFiles();</span><br><span class="line">            <span class="keyword">if</span> (files.length == <span class="number">0</span>) &#123;</span><br><span class="line">                System.out.println(<span class="string">"目录 "</span> + file.getName() + <span class="string">" 被删除！"</span>);</span><br><span class="line">                file.delete();</span><br><span class="line">                <span class="keyword">break</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">for</span> (File f : files) &#123;</span><br><span class="line">                <span class="comment">// 递归调用</span></span><br><span class="line">                deleteDirectory(f);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>至此，关于 Java I/O 流相关的重要基础介绍完毕，下一篇会具体展开 Java I/O 类的分析</p>
+<a id="more"></a>
+<h3 id="应用场景及实现原理"><a href="#应用场景及实现原理" class="headerlink" title="应用场景及实现原理"></a>应用场景及实现原理</h3><p>许多 web 应用都会提供从磁盘读取大量的静态数据，然后再把这些数据写到 response socket 中。这种服务看起来几乎不会用到 cpu 计算，但事实并非如此：内核从磁盘读取数据后，会把它通过 kernel-user 边界 push 到应用，然后再通过kernel-user 边界 push 回 socket buffer 供 socket 写出。实际上，这里应用层成了磁盘和 socket 之间一个低效的中间介质</p>
+<p>每次数据通过 kernel-user 边界时，必须被复制，这就会消耗cpu cycles 和内存带宽。幸运的是，我们可以通过 <code>zero copy</code> 技术来消除这些拷贝。<strong>使用 zero copy技术，应用可以直接把磁盘数据移动到 socket，不需要经过应用</strong>。zero copy 技术提升了应用性能并且减少了 kernel 和 user 模式的切换</p>
+<p>Java 类库通过 <code>java.nio.channels.FileChannel</code> 类的<code>transferTo()</code> 方法支持在 Linux 和 Unix 操作系统上的zero copy 技术。你可以使用 transferTo() 方法把字节流从调用这个方法的 channel 直接转移到另一个可写的字节channel，数据不需要经过应用。本文首先会证明使用传统的复制语义会带来 overhead，然后展示使用 zero copy 技术的transferTo() 方法如何实现更好的性能</p>
+<h3 id="Data-transfer-The-traditional-approach"><a href="#Data-transfer-The-traditional-approach" class="headerlink" title="Data transfer: The traditional approach"></a>Data transfer: The traditional approach</h3><p>考虑这样一个场景：从文件中读取数据然后通过网络把数据传输到另一个程序中(这个场景描述了很多服务应用的行为，包括提供静态内容的 web 应用，FTP 服务器，邮件服务等)，这个操作的核心代码如下 Listing1</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Listing1 Copying bytes from a file to a socket</span></span><br><span class="line">File.read(fileDesc, buf, len);</span><br><span class="line">Socket.send(socket, buf, len);</span><br></pre></td></tr></table></figure>
+<p>尽管 Listing1 看起来很简单，但在内部这个 copy 操作需要在 user 模式和 kernel 模式间转换4次，数据也需要拷贝4次。下面 Figure1 展示了数据是如何从文件移动到 socket 的：</p>
+<p>Figure1 Traditional data copying approach</p>
+<p><img src="http://Ryan-hou.github.io/assets/img/blogPic/zeroCopy/figure1.png" alt></p>
+<p>Figure2 展示了上下文的切换：</p>
+<p>Figure2 Traditional context switches</p>
+<p><img src="http://Ryan-hou.github.io/assets/img/blogPic/zeroCopy/figure2.png" alt></p>
+<p>涉及到的步骤如下：</p>
+<ol>
+<li>read() 调用会导致图二中从用户模式到内核模式的切换。Figure1 中的第一次复制是通过 DMA（Direct Memory Access），从磁盘中读取文件内容然后保存到内核地址空间的buffer(CPU 不参与复制)</li>
+<li>请求的数据从内核 read buffer 被复制到 user buffer，然后 read() 调用返回。从 call 调用返回导致上下文从内核态切换回用户态。现在数据保存在用户地址空间的buffer</li>
+<li>socket 的 send() 方法调用使用户态再一次切换到内核态，第三次拷贝再一次把数据复制到内核地址空间的 buffer，但是这一次数据被放在了不同的 buffer，这个 buffer 与目标socket 相关联</li>
+<li>send() 系统调用返回，导致第四次上下文切换，第四次拷贝发生在 DMA 引擎把数据从内核 buffer 传递到 protocol 引擎</li>
+</ol>
+<p>使用作为间接层的内核 buffer(而不是直接把数据转移到用户buffer)看起来是很低效的。但是内核缓存被引入进程却提高了性能，使用内核缓存在读取数据量不大于缓存容量的数据时，可以把应用数据缓存到内核 buffer 作为 “readahead cache”，这能很好的提高性能。同时该中间缓存允许写数据实现异步</p>
+<p>不幸的是，<strong>当请求的数据比内核 buffer 的容量大很多时，这种方式就变成了性能瓶颈。数据在磁盘，内核 buffer，用户buffer，与应用之间被复制了多次。Zero copy 通过消除这些冗余的数据拷贝来提升性能</strong>（注：本来是为了提升性能引入的内核缓存，却在特殊的场景下成为了性能的阻碍。软件开发中通过引入中间层可以解决所有问题，但同时也会引入新的问题）</p>
+<h3 id="Data-transfer-The-zero-copy-approach"><a href="#Data-transfer-The-zero-copy-approach" class="headerlink" title="Data transfer: The zero-copy approach"></a>Data transfer: The zero-copy approach</h3><p>如果你再看一下上面传统的复制方式，你会注意到第二次和第三次的数据拷贝并不是必须的。应用除了缓存数据然后把数据移动到 socket buffer 外，什么也没有做。事实上，数据可以从 read buffer 直接移动到 socket buffer。transferTo() 方法就是这样做的。Listing2 展示了该方法签名:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Listing2 The transferTo() method()</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">transferTo</span><span class="params">(<span class="keyword">long</span> position, <span class="keyword">long</span> count, WritableByteChannel target)</span></span>;</span><br></pre></td></tr></table></figure>
+<p>transferTo() 方法把数据从一个文件 channel 转移到另一个可写的字节 channel，这依赖于底层的操作系统支持 zero copy；在 Unix  和各种 Linux系统中，通过 <code>sendfile()</code>系统调用来实现，在 Listing3 中展示了数据从一个文件 descriptor 转移到另一个：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Listing3 the sendfile() system call</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;sys/socket.h&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">ssize_t</span> <span class="title">sendfile</span><span class="params">(<span class="keyword">int</span> out_fd, <span class="keyword">int</span> in_fd, <span class="keyword">off_t</span> *offset, <span class="keyword">size_t</span> count)</span></span>;</span><br></pre></td></tr></table></figure>
+<p>在 Listing1 中的 <code>file.read()</code> 和 <code>socket.send()</code> 调用可以被 Listing4 中的一个 transferTo() 调用替换:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Listing4 Using transferTo() to copy data from a disk file to a socket</span></span><br><span class="line">transferTo(position, count, writableChannel);</span><br></pre></td></tr></table></figure>
+<p>Figure3 展示了当 transferTo() 方法被调用时数据的移动：</p>
+<p>Figure3 Data copy with transferTo()</p>
+<p><img src="http://Ryan-hou.github.io/assets/img/blogPic/zeroCopy/figure3.png" alt></p>
+<p>Figure4 展示了 transferTo 方法调用时上下文的切换</p>
+<p>Figure4 Context switching with transferTo()</p>
+<p><img src="http://Ryan-hou.github.io/assets/img/blogPic/zeroCopy/figure4.png" alt></p>
+<p>在 Listing4 中使用 transferTo() 方法时的步骤为：</p>
+<ol>
+<li>transferTo 方法使文件内容通过 DMA 被拷贝到 read buffer，然后数据再被内核拷贝到与输出 socket 相关的内核buffer</li>
+<li>第三次拷贝发生在 DMA 把数据从内核 socket buffer 传递到 protocol 引擎</li>
+</ol>
+<p>上面的操作发生了如下改进：我们把上下文切换从四次减少到了两次，把数据拷贝从四次减少到了三次（只有一次需要cpu参与）。但是这还没有到达我们 zero copy 的目标，我们可以进一步减少数据复制如果底层的网络接口支持 <code>gather operations</code>。在 Linux2.4 及以后的内核版本中，socket buffer descriptor 被修改用来支持该操作。这不仅减少了上下文的切换，而且消除了需要 cpu 参与的那次内存复制。客户端的使用保持不变，但是内在的操作发生了变化：</p>
+<ol>
+<li>transferTo() 方法使文件内容通过 DMA 被拷贝到内核buffer</li>
+<li>没有数据被拷贝到 socket buffer。相应的，只有带有关于数据位置和数据长度信息的 descriptors 被 append 到socket buffer。DMA 直接把数据从内核缓存传递到 protocol 引擎，因此消除了仅有的那一次 cpu 拷贝</li>
+</ol>
+<p>Figure5 展示了使用 gather operation 的 transferTo 方法的数据拷贝过程：</p>
+<p>Figure5 Data copies when transferTo() and gather operations are used</p>
+<p><img src="http://Ryan-hou.github.io/assets/img/blogPic/zeroCopy/figure5.png" alt></p>
 
       
 
@@ -265,8 +280,8 @@ div.article-footer-copyright{
 </style>
 
 <div class="article-footer-copyright">
-	<p>本文标题: <a href="/2018/07/25/Java-I-O流-上/" target="_blank" title="Java I/O流(上)">Java I/O流(上)</a></p>
-	<p>本文链接: <a href="/2018/07/25/Java-I-O流-上/" target="_blank" title="Java I/O流(上)">https://ryan-hou.github.io/2018/07/25/Java-I-O流-上/</a></p>
+	<p>本文标题: <a href="/2019/11/11/零拷贝技术解析/" target="_blank" title="零拷贝技术解析">零拷贝技术解析</a></p>
+	<p>本文链接: <a href="/2019/11/11/零拷贝技术解析/" target="_blank" title="零拷贝技术解析">https://ryan-hou.github.io/2019/11/11/零拷贝技术解析/</a></p>
 	<p>转载请注明本文链接~~</p>
 </div>
 
@@ -279,7 +294,15 @@ div.article-footer-copyright{
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">Java</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">翻译</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">系统</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">优化</a>
         		</li>
       		
 		</ul>
@@ -298,15 +321,11 @@ div.article-footer-copyright{
   
 <nav id="article-nav">
   
-    <a href="/2018/08/01/Java-I-O流-下/" id="article-nav-newer" class="article-nav-link-wrap">
-      <i class="icon-circle-left"></i>
-      <div class="article-nav-title">
-        
-          Java I/O流(下)
-        
-      </div>
-    </a>
   
+    <a href="/2019/10/01/Redis-Cluster扩展性和可用性设计/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">Redis Cluster扩展性和可用性设计</div>
+      <i class="icon-circle-right"></i>
+    </a>
   
 </nav>
 

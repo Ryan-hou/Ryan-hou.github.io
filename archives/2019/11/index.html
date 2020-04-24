@@ -6,20 +6,15 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <link rel="dns-prefetch" href="https://ryan-hou.github.io">
-  <title>Java I/O流(上) | 0x08 0x17</title>
+  <title>Archives: 2019/11 | 0x08 0x17</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="Java I/O 流作为日常编程中经常使用的类，包含的东西比较多: 各种 I/O 流类的选择；Java I/O 流类的装饰者模式；乱码问题；序列化与反序列化的使用等，这些问题将在下面的文章进行介绍 字节流与字符流想要更好的理解 I/O 流，计算机的各种操作码及相关的编码知识是必要的。Java 中 I/O 流类可以分为字节流和字符流，实际上，字符流也是在字节流的基础上进行的包装，对于计算机来说，他只">
-<meta name="keywords" content="Java">
-<meta property="og:type" content="article">
-<meta property="og:title" content="Java I&#x2F;O流(上)">
-<meta property="og:url" content="https://ryan-hou.github.io/2018/07/25/Java-I-O流-上/index.html">
+  <meta property="og:type" content="website">
+<meta property="og:title" content="0x08 0x17">
+<meta property="og:url" content="https://ryan-hou.github.io/archives/2019/11/index.html">
 <meta property="og:site_name" content="0x08 0x17">
-<meta property="og:description" content="Java I/O 流作为日常编程中经常使用的类，包含的东西比较多: 各种 I/O 流类的选择；Java I/O 流类的装饰者模式；乱码问题；序列化与反序列化的使用等，这些问题将在下面的文章进行介绍 字节流与字符流想要更好的理解 I/O 流，计算机的各种操作码及相关的编码知识是必要的。Java 中 I/O 流类可以分为字节流和字符流，实际上，字符流也是在字节流的基础上进行的包装，对于计算机来说，他只">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2020-04-23T05:33:37.528Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Java I&#x2F;O流(上)">
-<meta name="twitter:description" content="Java I/O 流作为日常编程中经常使用的类，包含的东西比较多: 各种 I/O 流类的选择；Java I/O 流类的装饰者模式；乱码问题；序列化与反序列化的使用等，这些问题将在下面的文章进行介绍 字节流与字符流想要更好的理解 I/O 流，计算机的各种操作码及相关的编码知识是必要的。Java 中 I/O 流类可以分为字节流和字符流，实际上，字符流也是在字节流的基础上进行的包装，对于计算机来说，他只">
+<meta name="twitter:title" content="0x08 0x17">
   
     <link rel="alternative" href="/atom.xml" title="0x08 0x17" type="application/atom+xml">
   
@@ -147,198 +142,68 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            <article id="post-Java-I-O流-上" class="article article-type-post " itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
+            
   
-    <h1 class="article-title" itemprop="name">
-      Java I/O流(上)
+  
+    
+    
+      
+      
+      <section class="archives-wrap">
+        <div class="archive-year-wrap">
+          <a href="/archives/2019" class="archive-year">2019</a>
+        </div>
+        <div class="archives">
+    
+    <article class="archive-article archive-type-post">
+  <div class="archive-article-inner">
+    <header class="archive-article-header">
+      	<div class="article-meta">
+	      	<a href="/2019/11/11/零拷贝技术解析/" class="archive-article-date">
+  	<time datetime="2019-11-11T12:03:56.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-11-11</time>
+</a>
+        </div>
+    	 
+  
+    <h1 itemprop="name">
+      <a class="archive-article-title" href="/2019/11/11/零拷贝技术解析/">零拷贝技术解析</a>
     </h1>
   
 
-        
-        <a href="/2018/07/25/Java-I-O流-上/" class="archive-article-date">
-  	<time datetime="2018-07-25T04:48:32.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-07-25</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>Java I/O 流作为日常编程中经常使用的类，包含的东西比较多: 各种 I/O 流类的选择；Java I/O 流类的装饰者模式；乱码问题；序列化与反序列化的使用等，这些问题将在下面的文章进行介绍</p>
-<h2 id="字节流与字符流"><a href="#字节流与字符流" class="headerlink" title="字节流与字符流"></a>字节流与字符流</h2><p>想要更好的理解 I/O 流，计算机的各种操作码及相关的编码知识是必要的。Java 中 I/O 流类可以分为字节流和字符流，实际上，<strong>字符流也是在字节流的基础上进行的包装</strong>，对于计算机来说，他只认识二进制数字，字符流什么的他是不懂的，所以对于 I/O 流来说，到了最底层还是一个一个的字节</p>
-<a id="more"></a>
-<p>字节是很“固定”的，<strong>1字节(1 Byte)就是8位二进制数字(1B=8b)</strong>，而二进制数字是计算机可以识别的。字符就不那么“固定”了，这与字符的编码方式有关，比如 gbk 编码的中文字符占用两个字节，英文占用一个字节；而 utf-8 编码的中文字符占用三个字节，英文字符占用一个字节。正是由于采用的编码方式不同，使用中可能会出现乱码问题。为了方便我们操作字符，从而在字节的基础上，根据相应的编码方式提供了字符流。字节流和字符流的区别：</p>
-<ul>
-<li>读写单位不同：字节流以字节（8bit）为单位，字符流以字符为单位，根据不同的字符编码方式，一次可能读取多个字节</li>
-<li>处理对象不同：字节流能处理所有类型的数据（如图片、avi等），而字符流只能处理字符类型的数据</li>
-</ul>
-<p>所以，只要是处理纯文本数据，就可以优先考虑使用字符流，除此之外都使用字节流</p>
-<h2 id="文件相关的概念"><a href="#文件相关的概念" class="headerlink" title="文件相关的概念"></a>文件相关的概念</h2><p>区分几个概念：</p>
-<ul>
-<li>文件：<strong>字节的序列</strong>。如果字节的内容被解释为字符，则文件被称为<strong>文本文件</strong>，否则文件被称为<strong>二进制文件</strong></li>
-<li>文本文件：字符序列按照某种编码方式(utf-8，gbk 等) 序列化为 byte 的存储结果</li>
-<li>Java 文本: 采用 <strong>utf-16be</strong> 双字节编码，每个中英文字符均占用两个字节(<code>utf-16be：Unicode Transformation Format 16-bit Big Endian</code>: Big Endian即大端存储，高位字节存储在低地址，符合我们的操作习惯)</li>
-</ul>
-<p>关于大端存储的理解对于获取想要的字符和位移操作也是必要的，举个例子进行说明：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">String str = <span class="string">"so what"</span>;</span><br><span class="line"><span class="keyword">byte</span>[] bytes = str.getBytes(<span class="string">"utf-16be"</span>);</span><br><span class="line"><span class="comment">// utf-16be 为双字节编码，且为大端存储</span></span><br><span class="line"><span class="comment">// 即低地址存放高位字节，也就是先读取高位字节</span></span><br><span class="line"><span class="comment">// 字符't' 占两个字节，但是高位字节在这里没有意义，所以取低位字节即可，即这里取最后一个字节就可以得到字符't'</span></span><br><span class="line"><span class="keyword">char</span> t = (<span class="keyword">char</span>) bytes[<span class="number">7</span> * <span class="number">2</span> - <span class="number">1</span>];</span><br><span class="line"><span class="comment">// output character 't'</span></span><br><span class="line">System.out.println(t);</span><br></pre></td></tr></table></figure>
-<h2 id="乱码问题"><a href="#乱码问题" class="headerlink" title="乱码问题"></a>乱码问题</h2><p>Eclipse 项目的默认编码为 gbk，在 Eclipse 中什么样编码的项目就只认识什么样编码的文件。当你的字节序列采用某种编码方式得到，这时想把字节序列变为字符串，也要用同样的编码方式，否则会出现乱码，比如：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">String str = <span class="string">"so what"</span>;</span><br><span class="line"><span class="keyword">byte</span>[] bytes = str.getBytes(<span class="string">"utf-16be"</span>);</span><br><span class="line"><span class="comment">// 项目默认编码方式为 GBK</span></span><br><span class="line">String disorderStr = <span class="keyword">new</span> String(bytes);</span><br><span class="line"><span class="comment">// 输出乱码</span></span><br><span class="line">System.out.println(disorderStr);</span><br><span class="line"></span><br><span class="line">String normalStr = <span class="keyword">new</span> String(bytes, <span class="string">"utf-16be"</span>);</span><br><span class="line"><span class="comment">// 正常输出</span></span><br><span class="line">System.out.println(normalStr);</span><br></pre></td></tr></table></figure>
-<p>在 Web 编程中经常会碰到中文乱码问题，<strong>根本原因就在于有的编码方式不支持中文或者编码方式不一致导致的，因此统一编码方式是非常良好的习惯，建议使用强大的 <code>utf－8</code> 编码</strong></p>
-<h2 id="Java-File-类"><a href="#Java-File-类" class="headerlink" title="Java File 类"></a>Java File 类</h2><p>开始 I/O 流类的总结前，关于 File 类需要提一下。一言以蔽之，<strong>File 类仅仅是定义了一个文件的抽象路径名</strong>，至于该抽象路径被操作系统解析为路径字符串并进行查找后，文件到底存不存在，无从确定，可能有也可能没有</p>
-<p>在<code>Thinking in Java</code>中，关于 File 类的定义我觉得很清晰，引用如下:</p>
-<blockquote>
-<p>The File has a deceiving name; you might think it refers to a file, but it doesn’t. In fact, “FilePath” would have been a better name for the class. It represent either the name of a particular file or the name of a set of files in a directory.</p>
-</blockquote>
-<p>因此，<strong>File 类只用于表示文件(目录)的信息(名称，大小等)，不能用于文件内容的访问</strong>(RandomAccessFile 类是 Java 提供的文件内容的访问类，可以读写文件，支持随机访问，可实现多线程下载，文件组装等)</p>
-<p>这里还有两个重要概念需要拿出来说明一下：</p>
-<ul>
-<li>绝对路径与相对路径</li>
-</ul>
-<p>绝对路径没什么好说的，绝对路径名是完整的路径名，不需要其他信息就可以定位自身表示的文件；</p>
-<p>相对路径：相对路径名必须使用来自其他路径名的信息进行解释，默认情况下，<code>java.io</code> 包中的类总是根据当前用户工作目录来分析相对路径名。<strong>此目录由系统属性 <code>user.dir</code> 指定，通常是我们调用 JVM 的路径。</strong>在 web 应用中也经常涉及到相对路径的使用，一定要搞清楚相对路径相对的是哪个文件或路径</p>
-<ul>
-<li>抽象路径与路径名字符串</li>
-</ul>
-<p>File 类是文件或者目录(目录本质也是文件)的抽象路径表示，而操作系统需要使用依赖于特定操作系统的路径名字符串来表示文件和目录；所以这里就涉及两者之间的一个转换，这种转换与不同的操作系统有关；比如，在 windows 操作系统下，以下代码均可以使用：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">file = <span class="keyword">new</span> File(<span class="string">"C:"</span> + File.separator + <span class="string">"test"</span>);</span><br><span class="line">file = <span class="keyword">new</span> File(<span class="string">"C:/test"</span>);</span><br><span class="line">file = <span class="keyword">new</span> File(<span class="string">"C:\\test"</span>);</span><br></pre></td></tr></table></figure>
-<p>这与 Java 语言提供的方法有关，但是针对不同的操作系统以及后续操作中可能涉及到的路径解析等问题，推荐使用路径分隔符：<strong>File.separator</strong></p>
-<p>关于文件类 File 接下来就简单了，一句话: 熟悉常用的 API。最后附一段关于 File 类的操作代码帮助了解 File 类。代码实现删除指定文件夹，包括所有的文件和目录(使用递归来进行处理)</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">deleteDirectory</span><span class="params">(File file)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (file == <span class="keyword">null</span>) <span class="keyword">return</span>;</span><br><span class="line">    <span class="keyword">while</span> (file.exists()) &#123;</span><br><span class="line">        <span class="keyword">if</span> (file.isFile()) &#123;</span><br><span class="line">            System.out.println(<span class="string">"文件"</span> + file.getName() + <span class="string">" 将被删除!"</span>);</span><br><span class="line">            file.delete();</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            File[] files = file.listFiles();</span><br><span class="line">            <span class="keyword">if</span> (files.length == <span class="number">0</span>) &#123;</span><br><span class="line">                System.out.println(<span class="string">"目录 "</span> + file.getName() + <span class="string">" 被删除！"</span>);</span><br><span class="line">                file.delete();</span><br><span class="line">                <span class="keyword">break</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">for</span> (File f : files) &#123;</span><br><span class="line">                <span class="comment">// 递归调用</span></span><br><span class="line">                deleteDirectory(f);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>至此，关于 Java I/O 流相关的重要基础介绍完毕，下一篇会具体展开 Java I/O 类的分析</p>
-
-      
-
-      
-    </div>
-	<!-- 版权内容 -->
-	
-		<style type="text/css">
-	.article-footer-copyright{
-   border-top:1px solid #d3d3d3;
-   margin: 20px auto;     
-   padding-left:2em;
-   width: 80%;
-}
-.article-footer-copyright p{
-  font-size:1.2em;
-}
-.article-footer-copyright span,.copyright abbr{
-  color:#3d3d3d;
-}
-div.copyright{
-    
-       font-weight:bold;
-       color:#FCB297;
-       padding:0.3em 0.5em;
-       margin:0 0 1em 0;
-       border-bottom:none;
-       background-color:#AAD2F0;
-       -moz-border-radius: 1em;
-       -webkit-border-radius:1em;
-       border-radius: 1em;
-  -moz-box-shadow:inset 0px 1px 0px 0px #eeeeee;
-  -webkit-box-shadow:inset 0px 1px 0px 0px #eeeeee;
-  box-shadow:inset 0px 1px 0px 0px #eeeeee;
-  background:-webkit-gradient( linear, left top, left bottom, color-stop(0.05, #aad2f0), color-stop(1, #8bc1ed) );
-  background:-moz-linear-gradient( center top, #aad2f0 5%, #8bc1ed 100% );
-  /* filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#aad2f0', endColorstr='#8bc1ed'); */
-  background-color:#aad2f0;
-  border:1px solid #dcdcdc;
-  text-shadow:1px 1px 0px #eeeeee;
-  
-}
-div.article-footer-copyright{
-    margin:0em 0em 0em 5em;
-	margin-top:2em;
-    padding:0.5em 1em;
-    border-left:3px solid #ff1700;
-    background-color:#f9f9f9;
-}
-.article-footer-copyright p{
-    line-height: 160%;
-    margin: 10px;
-    font-size: 100%;
-}
-</style>
-
-<div class="article-footer-copyright">
-	<p>本文标题: <a href="/2018/07/25/Java-I-O流-上/" target="_blank" title="Java I/O流(上)">Java I/O流(上)</a></p>
-	<p>本文链接: <a href="/2018/07/25/Java-I-O流-上/" target="_blank" title="Java I/O流(上)">https://ryan-hou.github.io/2018/07/25/Java-I-O流-上/</a></p>
-	<p>转载请注明本文链接~~</p>
-</div>
-
-	
-    <div class="article-info article-info-index">
-      
-      
+        <div class="article-info info-on-right">
+          
 	<div class="article-tag tagcloud">
 		<i class="icon-price-tags icon"></i>
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">Java</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">翻译</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">系统</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">优化</a>
         		</li>
       		
 		</ul>
 	</div>
 
-      
+          
 
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
+        </div>
+        <div class="clearfix"></div>
+    </header>
   </div>
 </article>
-
-  
-<nav id="article-nav">
-  
-    <a href="/2018/08/01/Java-I-O流-下/" id="article-nav-newer" class="article-nav-link-wrap">
-      <i class="icon-circle-left"></i>
-      <div class="article-nav-title">
-        
-          Java I/O流(下)
-        
-      </div>
-    </a>
   
   
-</nav>
-
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-  
-  
+    </div></section>
   
 
-  
-
-  
-
-  
-
+    
 
 
           </div>
@@ -362,8 +227,8 @@ div.article-footer-copyright{
 	var yiliaConfig = {
 		mathjax: false,
 		isHome: false,
-		isPost: true,
-		isArchive: false,
+		isPost: false,
+		isArchive: true,
 		isTag: false,
 		isCategory: false,
 		open_in_new: true,
