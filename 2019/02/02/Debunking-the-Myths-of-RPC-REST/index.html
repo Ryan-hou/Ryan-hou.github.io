@@ -6,15 +6,20 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <link rel="dns-prefetch" href="https://ryan-hou.github.io">
-  <title>Tag: 算法 | 0x08 0x17</title>
+  <title>Debunking the Myths of RPC &amp; REST | 0x08 0x17</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta property="og:type" content="website">
-<meta property="og:title" content="0x08 0x17">
-<meta property="og:url" content="https://ryan-hou.github.io/tags/算法/index.html">
+  <meta name="description" content="本文为翻译文章，原文链接为:Debunking the Myths of RPC &amp;amp; REST 网上有很多关于 RPC 和 REST 的文章，博客与讨论，但是大部分都在回答某一个特定的应用下，应该选择使用 RPC 还是 REST，而这本身并不是一个正确的二分法。这些回答普遍没有解释我想要知道的问题，而是让我感觉到大部分的开发者并不懂为什么要使用 REST，仅仅是因为觉得这个架构听起来很酷。">
+<meta name="keywords" content="设计,翻译,分布式">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Debunking the Myths of RPC &amp; REST">
+<meta property="og:url" content="https://ryan-hou.github.io/2019/02/02/Debunking-the-Myths-of-RPC-REST/index.html">
 <meta property="og:site_name" content="0x08 0x17">
+<meta property="og:description" content="本文为翻译文章，原文链接为:Debunking the Myths of RPC &amp;amp; REST 网上有很多关于 RPC 和 REST 的文章，博客与讨论，但是大部分都在回答某一个特定的应用下，应该选择使用 RPC 还是 REST，而这本身并不是一个正确的二分法。这些回答普遍没有解释我想要知道的问题，而是让我感觉到大部分的开发者并不懂为什么要使用 REST，仅仅是因为觉得这个架构听起来很酷。">
 <meta property="og:locale" content="default">
+<meta property="og:updated_time" content="2020-05-27T09:33:13.486Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="0x08 0x17">
+<meta name="twitter:title" content="Debunking the Myths of RPC &amp; REST">
+<meta name="twitter:description" content="本文为翻译文章，原文链接为:Debunking the Myths of RPC &amp;amp; REST 网上有很多关于 RPC 和 REST 的文章，博客与讨论，但是大部分都在回答某一个特定的应用下，应该选择使用 RPC 还是 REST，而这本身并不是一个正确的二分法。这些回答普遍没有解释我想要知道的问题，而是让我感觉到大部分的开发者并不懂为什么要使用 REST，仅仅是因为觉得这个架构听起来很酷。">
   
     <link rel="alternative" href="/atom.xml" title="0x08 0x17" type="application/atom+xml">
   
@@ -142,98 +147,133 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            
-  
-  
+            <article id="post-Debunking-the-Myths-of-RPC-REST" class="article article-type-post " itemscope itemprop="blogPost">
+  <div class="article-inner">
     
-    
-      
-      
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2019" class="archive-year">2019</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2019/06/22/从简单模式匹配到KMP算法/" class="archive-article-date">
-  	<time datetime="2019-06-21T23:45:01.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-06-22</time>
-</a>
-        </div>
-    	 
+      <header class="article-header">
+        
   
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2019/06/22/从简单模式匹配到KMP算法/">从简单模式匹配到KMP算法</a>
+    <h1 class="article-title" itemprop="name">
+      Debunking the Myths of RPC &amp; REST
     </h1>
   
 
-        <div class="article-info info-on-right">
-          
+        
+        <a href="/2019/02/02/Debunking-the-Myths-of-RPC-REST/" class="archive-article-date">
+  	<time datetime="2019-02-02T07:01:52.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-02-02</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>本文为翻译文章，原文链接为:<a href="http://etherealbits.com/2012/12/debunking-the-myths-of-rpc-rest/" target="_blank" rel="noopener">Debunking the Myths of RPC &amp; REST</a></p>
+<p>网上有很多关于 RPC 和 REST 的文章，博客与讨论，但是大部分都在回答某一个特定的应用下，应该选择使用 RPC 还是 REST，而这本身并不是一个正确的二分法。这些回答普遍没有解释我想要知道的问题，而是让我感觉到大部分的开发者并不懂为什么要使用 REST，仅仅是因为觉得这个架构听起来很酷。讽刺的是<a href="https://en.wikipedia.org/wiki/Roy_Fielding" target="_blank" rel="noopener">Roy Fielding</a>在介绍 REST 的论文中就提到了这种<strong>“design by fad”</strong></p>
+<blockquote>
+<p>“Consider how often we see software projects begin with adoption of the latest fad in architectural design, and only later discover whether or not the system requirements call for such an architecture.”</p>
+</blockquote>
+<a id="more"></a>
+<p>如果你想深入了解 REST 而且只能读一篇文档，那不要阅读本文，去参考 Fielding 的论文 <a href="http://www.ics.uci.edu/~fielding/pubs/dissertation/rest_arch_style.htm" target="_blank" rel="noopener">DISSERTATION</a>。如果你没有时间或者只是想在更高的层面上了解 RPC 和 REST，那么可以继续阅读，在开始之前，我们先来看下 RPC，REST 和 HTTP 的一些细节</p>
+<p><strong>Remote Procedure Call(RPC)</strong>是一种允许你调用其他进程的方法并且通过通信来交换数据。通常会在客户端生成方法 stub，使用 stub 使得调用看起来更像本地调用，而实际上在 stub 背后会包装请求然后把请求发送到服务端，服务端进程会解析这个请求并且调用客户端想要调用的方法，然后再反向的把这个调用的执行结果返回给客户端。<strong>HTTP 协议有时会是底层的通信协议，但是 RPC 并不强制要求一定使用 HTTP 协议。</strong>远程方法调用(RMI)和 RPC 更相近，RMI 比 RPC 的远程调用更进一步，它更加面向对象，可以保存远程对象的引用并且调用这个对象的相关方法</p>
+<p><strong>Representational State Transfer(REST)是一种架构方式，通过对接口进行一系列限制来实现一些目标。</strong>REST 强制使用客户端／服务器模型，客户端获取和操作由服务端管理的各种资源，服务端通过提供各种资源的状态来告诉客户端相关资源的信息，同时提供获取资源最新状态和操作这些资源的方法。客户端和服务端所有的交互必须是无状态的和可缓存的。实现了 REST 的架构就被成为 RESTful</p>
+<p><strong>Hypertext Transfer Protocol(HTTP)</strong>是一个 RESTful 的协议，可以在分布式环境下暴露相应的资源。在 HTTP 协议中，服务端通过 HTTP 响应的 body 告诉客户端这些资源的信息。如果 body 是 HTML 的话，那么后续合法的操作会给出在 A 标签里，让客户端要么通过 GET 请求获取新的资源状态，要么通过 POST / PUT 或者 DELETE 请求来操作这些资源</p>
+<p>通过以上这些定义，我们可以得出下面结论：</p>
+<ul>
+<li><strong>把 RPC 和 REST 作类比是没有道理的</strong>。事实上你可以通过在任何 RPC 实现的基础上构建 RESTful 的服务（比如 dubbo 作为 RPC 框架就可以支持 RESTful 的服务），只要创建遵守 REST 架构限制的方法即可。你甚至可以基于 RPC 的实现构建 HTTP 风格的 REST 架构，你需要做的就是通过实现相应的 GET,POST,PUT,DELETE 方法来把 HTTP 请求头和请求体的数据提取并转化到 RPC 的调用</li>
+<li><strong>HTTP 和 REST 不是一对一的关系，HTTP 是 REST 一种实现方式</strong>。REST 是由一组限制构成，但是并没有包括 HTTP 实现方面的限制。例如你的服务可以不使用 HTTP 协议来暴露接口仍然可以是RESTful 的</li>
+</ul>
+<p>事实上当人们在问他们是否应该用 RPC 或者 REST 时，真正想要问的是<strong>我应该通过 HTTP 协议实现的 RESTful 服务来对外暴露我的资源，还是我应该使用像 SOAP 或者 XML－RPC 这样更定制化的方式来构建更高一层的抽象</strong>。要回答这个问题，我们首先来看一下 REST 和 HTTP 的优点，注意，虽然我们分开来说为什么你要使服务 RESTful 和为什么你要使用 HTTP 协议，然而前者的观点对于后者也是适用的(反之则不适用)</p>
+<p><strong>REST 架构的优点在于任何状态下的合法行为都是被服务端控制的，只需要制定很少的与客户端的约定。</strong>就 HTTP 协议实现的 REST 架构来说，服务端与客户端之间的约定仅仅是顶层的 URI，我可以使用这个 URI 来发送一个 GET 请求。从这里也可以看出，这些服务端对于客户端的限制是在运行时的。相比之下，传统的 RPC 限制更为严格，服务端定义的需要被客户端消费的程序在构建时就要被明确定义好（比如通常作为二方包由消费端引入）。为了方便理解，可以比较通过页面导航来找到需要的商品(通过调用服务端提供各种链接)和直接通过产品的名字来获取这个产品。在第一种方式中，API 的变化完全是由服务端来控制的，但是在第二种情况下需要协同部署客户端与服务端。这个例子中很明显的问题在于计算机本身并不能很好的以动态的形式处理 API（但是大部分场景下也是可以实现的，比如通过动态代理），所以如果你正在构建一个被其他服务消费的服务，你很难获得由服务端来控制行为的好处（一旦服务导出，修改服务就需要考虑兼容性的问题）</p>
+<p>使用 HTTP 协议来暴露资源的一个很大的好处在于，你可以使用很多专门为 HTTP 协议开发的工具而不需要额外进行开发。我们来考虑下使用缓存的例子，因为 HTTP 请求的输入是被良好定义的(query string,HTTP headers,POST data)，所以我可以在我的服务前面加一个中间层[Squid]来实现缓存处理(<a href="http://www.squid-cache.org/)。如果使用" target="_blank" rel="noopener">http://www.squid-cache.org/)。如果使用</a> RPC，即使 RPC 的通信协议使用 HTTP，我们无法保证消息和远程调用是一对一的，因为一个远程调用可能需要传入多个消息，而且 RPC 的输入可以使用标准的方式也可以不使用，这就让能否为请求缓存处理结果存在不确定性，而请求中也可能不存在相关的缓存处理的元数据(而 HTTP <a href="https://www.w3.org/Protocols/rfc2616/rfc2616-sec13.html" target="_blank" rel="noopener">dose</a>)。<strong>通过使用 HTTP 协议我们可以避免重新造一些轮子，站在其他人的肩膀上</strong></p>
+<p>使用 HTTP 协议的另一个好处就是它通过一种很通用的<a href="https://www.w3.org/Protocols/rfc2616/rfc2616-sec9.html" target="_blank" rel="noopener">方式</a>，GET,POST/PUT 和 DELETE 来暴露资源，并且这些都经过了时间的检验。在实际开发中如果你按照自己的方式来暴露资源，很可能会出现暴露的接口语义过于狭窄而不能很好的支持将来的需求，而这会导致你的方法，接口或者服务过分膨胀，并最终成为你的 SOA 的一部分。关于这一点其实就可以单独写一篇文章来说明，所以在这一篇文章中就不深入的探讨了</p>
+
+      
+
+      
+    </div>
+	<!-- 版权内容 -->
+	
+    <div class="article-info article-info-index">
+      
+      
 	<div class="article-tag tagcloud">
 		<i class="icon-price-tags icon"></i>
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">算法</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">设计</a>
         		</li>
-      		
-		</ul>
-	</div>
-
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2019/01/20/反转单链表三种经典的思路/" class="archive-article-date">
-  	<time datetime="2019-01-20T13:20:02.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-01-20</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2019/01/20/反转单链表三种经典的思路/">反转单链表三种经典的思路</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
+      		 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">算法</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">翻译</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">分布式</a>
         		</li>
       		
 		</ul>
 	</div>
 
-          
+      
 
-        </div>
-        <div class="clearfix"></div>
-    </header>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
   </div>
 </article>
+
+  
+<nav id="article-nav">
+  
+    <a href="/2019/02/10/回调及在Java中的使用/" id="article-nav-newer" class="article-nav-link-wrap">
+      <i class="icon-circle-left"></i>
+      <div class="article-nav-title">
+        
+          回调及在Java中的使用
+        
+      </div>
+    </a>
   
   
-    </div></section>
+    <a href="/2019/01/20/反转单链表三种经典的思路/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">反转单链表三种经典的思路</div>
+      <i class="icon-circle-right"></i>
+    </a>
+  
+</nav>
+
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+  
+  
   
 
-    
+  
+
+  
+
+  
+
 
 
           </div>
@@ -257,9 +297,9 @@
 	var yiliaConfig = {
 		mathjax: false,
 		isHome: false,
-		isPost: false,
+		isPost: true,
 		isArchive: false,
-		isTag: true,
+		isTag: false,
 		isCategory: false,
 		open_in_new: true,
 		toc_hide_index: true,
